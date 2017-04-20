@@ -58,7 +58,7 @@ public class MainStage extends Application {
         simulatorTabPane.getTabs().add(mainSimulatorTab);
         mainGridPane.add(simulatorTabPane,0,1);
 
-        TextArea editorTextArea = new TextArea();
+        editorTextArea = new TextArea();
         editorElementsGridPane.add(editorTextArea,0,0);
 
         simulatorGridPane = new GridPane();
@@ -195,15 +195,67 @@ public class MainStage extends Application {
         r7TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(r7TextField,8,8);
 
+        p0Label = new Label("P0");
+        p0Label.setMaxWidth(Double.MAX_VALUE);
+        p0Label.setAlignment(Pos.CENTER);
+        p0Label.setFont(new Font("Arial",11));
+        simulatorGridPane.add(p0Label,13,1);
+
+        p0TextField = new Label("11111111");
+        p0TextField.setMaxWidth(Double.MAX_VALUE);
+        p0TextField.setAlignment(Pos.CENTER);
+        p0TextField.setFont(new Font("Arial",11));
+        p0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(p0TextField,14,1,2,1);
+
+        p1Label = new Label("P1");
+        p1Label.setMaxWidth(Double.MAX_VALUE);
+        p1Label.setAlignment(Pos.CENTER);
+        p1Label.setFont(new Font("Arial",11));
+        simulatorGridPane.add(p1Label,13,3);
+
+        p1TextField = new Label("11111111");
+        p1TextField.setMaxWidth(Double.MAX_VALUE);
+        p1TextField.setAlignment(Pos.CENTER);
+        p1TextField.setFont(new Font("Arial",11));
+        p1TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(p1TextField,14,3,2,1);
+
+        p2Label = new Label("P2");
+        p2Label.setMaxWidth(Double.MAX_VALUE);
+        p2Label.setAlignment(Pos.CENTER);
+        p2Label.setFont(new Font("Arial",11));
+        simulatorGridPane.add(p2Label,13,5);
+
+        p2TextField = new Label("11111111");
+        p2TextField.setMaxWidth(Double.MAX_VALUE);
+        p2TextField.setAlignment(Pos.CENTER);
+        p2TextField.setFont(new Font("Arial",11));
+        p2TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(p2TextField,14,5,2,1);
+
+        p3Label = new Label("P3");
+        p3Label.setMaxWidth(Double.MAX_VALUE);
+        p3Label.setAlignment(Pos.CENTER);
+        p3Label.setFont(new Font("Arial",11));
+        simulatorGridPane.add(p3Label,13,7);
+
+        p3TextField = new Label("11111111");
+        p3TextField.setMaxWidth(Double.MAX_VALUE);
+        p3TextField.setAlignment(Pos.CENTER);
+        p3TextField.setFont(new Font("Arial",11));
+        p3TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(p3TextField,14,7,2,1);
+
         translateToMemoryButton = new Button("Uruchom");
         translateToMemoryButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String lines[] = editorTextArea.getText().split("\n");
+                lines = editorTextArea.getText().split("\n");
                 try {
                     Main.cpu.codeMemory.setMemory(lines);
-                    Main.cpu.resetCounter();
-                    //Main.cpu.refreshGui();
+                    Main.cpu.resetCpu();
+                    Main.cpu.refreshGui();
                     translateToMemoryButton.setDisable(true);
                     stopSimulationButton.setDisable(false);
                     oneStepButton.setDisable(false);
@@ -228,6 +280,14 @@ public class MainStage extends Application {
                 stopSimulationButton.setDisable(true);
                 oneStepButton.setDisable(true);
                 editorTextArea.setEditable(true);
+                editorTextArea.setText("");
+                String textToSet = "";
+                for(String line : lines) {
+                    textToSet = textToSet + line + "\n";
+                }
+                editorTextArea.setText(textToSet.substring(0,textToSet.length()-1));
+                Main.cpu.resetCpu();
+                Main.cpu.refreshGui();
             }
         });
 
@@ -301,6 +361,10 @@ public class MainStage extends Application {
         this.width = width;
     }
 
+    public void setEditorText(String text) {
+        editorTextArea.setText(text);
+    }
+
     GridPane mainGridPane;
     GridPane editorElementsGridPane;
     GridPane simulatorGridPane;
@@ -337,11 +401,26 @@ public class MainStage extends Application {
     public Label r7Label;
     public Label r7TextField;
 
+    public Label p0Label;
+    public Label p0TextField;
+
+    public Label p1Label;
+    public Label p1TextField;
+
+    public Label p2Label;
+    public Label p2TextField;
+
+    public Label p3Label;
+    public Label p3TextField;
+
     private Button translateToMemoryButton;
     private Button stopSimulationButton;
     private Button oneStepButton;
 
+    private TextArea editorTextArea;
 
     Stage mainStage;
     Scene mainScene;
+
+    private String lines[];
 }

@@ -3,10 +3,14 @@ package microcontroller;
 import components.CodeMemory;
 import core.Main;
 import elements.Instruction;
+import elements.Mnemonic;
 import exceptions.InstructionException;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by Mateusz on 18.04.2017.
@@ -14,20 +18,27 @@ import java.util.ArrayList;
  */
 public class Cpu {
 
-    public void resetCounter(){
+    public void resetCpu(){
         linePointer=0;
-        acc = 0;
-        r0 = 0;
-        r1 = 0;
-        r2 = 0;
-        r3 = 0;
-        r4 = 0;
-        r5 = 0;
-        r6 = 0;
-        r7 = 0;
+        registers.clear();
+        registers.put("R0",0);
+        registers.put("R1",0);
+        registers.put("R2",0);
+        registers.put("R3",0);
+        registers.put("R4",0);
+        registers.put("R5",0);
+        registers.put("R6",0);
+        registers.put("R7",0);
+        registers.put("A",0);
+        ports.clear();
+        ports.put("P0",255);
+        ports.put("P1",255);
+        ports.put("P2",255);
+        ports.put("P3",255);
+
     }
 
-    public void machineCycle(){
+    private void machineCycle(){
 
     }
 
@@ -56,8 +67,6 @@ public class Cpu {
 
             }
             linePointer = jump;
-            machineCycle();
-            refreshGui();
         }
         else if (toExecute.getMnemonic().equals("MOV")) {
             if(toExecute.getParam2().charAt(0) == '#') {
@@ -78,67 +87,93 @@ public class Cpu {
                     throw new InstructionException();
                 }
 
-                if(toExecute.getParam1().equals("A")) {
-                    acc = intNumberToAdd;
+                if(registers.containsKey(toExecute.getParam1())) {
+                    registers.put(toExecute.getParam1(),intNumberToAdd);
                 }
-
-                if(toExecute.getParam1().equals("R0")) {
-                    r0 = intNumberToAdd;
-                }
-                if(toExecute.getParam1().equals("R1")) {
-                    r1 = intNumberToAdd;
-                }
-                if(toExecute.getParam1().equals("R2")) {
-                    r2 = intNumberToAdd;
-                }
-                if(toExecute.getParam1().equals("R3")) {
-                    r3 = intNumberToAdd;
-                }
-                if(toExecute.getParam1().equals("R4")) {
-                    r4 = intNumberToAdd;
-                }
-                if(toExecute.getParam1().equals("R5")) {
-                    r5 = intNumberToAdd;
-                }
-                if(toExecute.getParam1().equals("R6")) {
-                    r6 = intNumberToAdd;
-                }
-                if(toExecute.getParam1().equals("R7")) {
-                    r7 = intNumberToAdd;
+                else {
+                    if(ports.containsKey(toExecute.getParam1())) {
+                        ports.put(toExecute.getParam1(),intNumberToAdd);
+                    }
+                    else
+                        throw new InstructionException();
                 }
 
             }
-            machineCycle();
-            linePointer++;
-            refreshGui();
+            else if(toExecute.getParam1().equals("A")) {
+                try {
+                    if(registers.containsKey(toExecute.getParam2())) {
+                        int intNumberToAdd = registers.get(toExecute.getParam2());
+                        registers.put("A", intNumberToAdd);
+                    }
+                    else if(ports.containsKey(toExecute.getParam2())) {
+                        int intNumberToAdd = ports.get(toExecute.getParam2());
+                        registers.put("A", intNumberToAdd);
+                    }
+
+                } catch (Exception e) {
+                    throw new InstructionException();
+                }
+            }
+            else if(toExecute.getParam2().equals("A")) {
+                try {
+                    int intNumberToAdd = registers.get("A");
+                    if(registers.containsKey(toExecute.getParam1())) {
+                        registers.put(toExecute.getParam1(), intNumberToAdd);
+                    }
+                    else if(ports.containsKey(toExecute.getParam1())) {
+                        ports.put(toExecute.getParam1(),intNumberToAdd);
+                    }
+                } catch (Exception e) {
+                    throw new InstructionException();
+                }
+            }
+            else {
+                throw new InstructionException();
+            }
+            int mnemonicSize = Main.cpu.getMnemonicSize("MOV");
+            linePointer = linePointer + mnemonicSize;
         }
+
+        int machineCyclesNumber = Main.cpu.getMnemonicTime(toExecute.getMnemonic().toUpperCase());
+        for (;machineCyclesNumber>0;machineCyclesNumber--) {
+            machineCycle();
+        }
+
+        refreshGui();
     }
 
     public Cpu(){
-        knownMnemonics.add(new Pair<>("MOV",2));
-        knownMnemonics.add(new Pair<>("DJNZ",2));
-        knownMnemonics.add(new Pair<>("LJMP",1));//OK
-        linePointer = 0;
+        knownMnemonics.add(new Mnemonic("MOV",2,2,2));//OK
+        knownMnemonics.add(new Mnemonic("DJNZ",2,2,2));
+        knownMnemonics.add(new Mnemonic("LJMP",1,2,3));//OK
+        resetCpu();
+
     }
     public int isMnemonic(String name) {
-        for (Pair pair : knownMnemonics) {
-            if(pair.getKey().toString().toUpperCase().equals(name))
-                return (int) pair.getValue();
+        for(Mnemonic mnemonic : knownMnemonics) {
+            if(mnemonic.getName().toUpperCase().equals(name))
+                return (int) mnemonic.getParamsNumber();
         }
         return -1;
     }
+    public int getMnemonicTime(String name) {
+        for(Mnemonic mnemonic : knownMnemonics) {
+            if(mnemonic.getName().toUpperCase().equals(name))
+                return (int) mnemonic.getTime();
+        }
+        return 0;
+    }
+    public int getMnemonicSize(String name) {
+        for(Mnemonic mnemonic : knownMnemonics) {
+            if(mnemonic.getName().toUpperCase().equals(name))
+                return (int) mnemonic.getSize();
+        }
+        return 0;
+    }
     private int linePointer;
 
-    private int acc = 0;
 
-    private int r0 = 0;
-    private int r1 = 0;
-    private int r2 = 0;
-    private int r3 = 0;
-    private int r4 = 0;
-    private int r5 = 0;
-    private int r6 = 0;
-    private int r7 = 0;
+    private Map<String,Integer> registers = new HashMap<>();
 
     public CodeMemory codeMemory = new CodeMemory();
 
@@ -150,19 +185,33 @@ public class Cpu {
         this.linePointer = linePointer;
     }
 
-    private ArrayList<Pair<String,Integer>> knownMnemonics = new ArrayList<>();
+    private Map<String,Integer> ports = new HashMap<>();
 
+    private ArrayList<Mnemonic> knownMnemonics = new ArrayList<>();
     public void refreshGui(){
-        Main.stage.r0TextField.setText(Integer.toHexString(r0).toUpperCase()+"h");
-        Main.stage.r1TextField.setText(Integer.toHexString(r1).toUpperCase()+"h");
-        Main.stage.r2TextField.setText(Integer.toHexString(r2).toUpperCase()+"h");
-        Main.stage.r3TextField.setText(Integer.toHexString(r3).toUpperCase()+"h");
-        Main.stage.r4TextField.setText(Integer.toHexString(r4).toUpperCase()+"h");
-        Main.stage.r5TextField.setText(Integer.toHexString(r5).toUpperCase()+"h");
-        Main.stage.r6TextField.setText(Integer.toHexString(r6).toUpperCase()+"h");
-        Main.stage.r7TextField.setText(Integer.toHexString(r7).toUpperCase()+"h");
+        Main.stage.r0TextField.setText(Integer.toHexString(registers.get("R0")).toUpperCase()+"h");
+        Main.stage.r1TextField.setText(Integer.toHexString(registers.get("R1")).toUpperCase()+"h");
+        Main.stage.r2TextField.setText(Integer.toHexString(registers.get("R2")).toUpperCase()+"h");
+        Main.stage.r3TextField.setText(Integer.toHexString(registers.get("R3")).toUpperCase()+"h");
+        Main.stage.r4TextField.setText(Integer.toHexString(registers.get("R4")).toUpperCase()+"h");
+        Main.stage.r5TextField.setText(Integer.toHexString(registers.get("R5")).toUpperCase()+"h");
+        Main.stage.r6TextField.setText(Integer.toHexString(registers.get("R6")).toUpperCase()+"h");
+        Main.stage.r7TextField.setText(Integer.toHexString(registers.get("R7")).toUpperCase()+"h");
 
-        Main.stage.accumulatorTextField.setText(Integer.toHexString(acc).toUpperCase()+"h");
+        Main.stage.p0TextField.setText(expandTo8Digits(Integer.toBinaryString(ports.get("P0"))) + "b");
+        Main.stage.p1TextField.setText(expandTo8Digits(Integer.toBinaryString(ports.get("P1"))) + "b");
+        Main.stage.p2TextField.setText(expandTo8Digits(Integer.toBinaryString(ports.get("P2"))) + "b");
+        Main.stage.p3TextField.setText(expandTo8Digits(Integer.toBinaryString(ports.get("P3"))) + "b");
 
+        Main.stage.accumulatorTextField.setText(Integer.toHexString(registers.get("A")).toUpperCase()+"h");
+
+    }
+
+    public static String expandTo8Digits(String number) {
+        int howMany = 8 - number.length();
+        for(;howMany>0;howMany--) {
+            number = "0"+number;
+        }
+        return number;
     }
 }
