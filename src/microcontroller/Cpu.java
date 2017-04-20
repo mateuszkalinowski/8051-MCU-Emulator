@@ -18,6 +18,15 @@ import java.util.TreeMap;
  */
 public class Cpu {
 
+    public Cpu(){
+        knownMnemonics.add(new Mnemonic("MOV",2,2,2));//OK
+        knownMnemonics.add(new Mnemonic("DJNZ",2,2,2));//OK
+        knownMnemonics.add(new Mnemonic("LJMP",1,2,3));//OK
+        knownMnemonics.add(new Mnemonic("RL",1,1,1));//OK
+        knownMnemonics.add(new Mnemonic("RR",1,1,1));//OK
+        resetCpu();
+    }
+
     public void resetCpu(){
         linePointer=0;
         registers.clear();
@@ -111,6 +120,7 @@ public class Cpu {
                     }
 
                 } catch (Exception e) {
+                    System.out.println("Błąd w mov");
                     throw new InstructionException();
                 }
             }
@@ -124,14 +134,79 @@ public class Cpu {
                         ports.put(toExecute.getParam1(),intNumberToAdd);
                     }
                 } catch (Exception e) {
+                    System.out.println("Błąd w mov");
                     throw new InstructionException();
                 }
             }
             else {
+                System.out.println("Błąd w mov");
                 throw new InstructionException();
             }
             int mnemonicSize = Main.cpu.getMnemonicSize("MOV");
             linePointer = linePointer + mnemonicSize;
+        }
+        else if(toExecute.getMnemonic().equals("DJNZ")) {
+            try {
+                int wartosc = registers.get(toExecute.getParam1());
+                wartosc--;
+                if(wartosc==-1)
+                    wartosc=255;
+
+                registers.put(toExecute.getParam1(),wartosc);
+
+                if(wartosc!=0) {
+                    linePointer = codeMemory.getLineFromLabel(toExecute.getParam2());
+                }
+                if(wartosc==0) {
+                    int mnemonicSize = Main.cpu.getMnemonicSize("DJNZ");
+                    linePointer += mnemonicSize;
+                }
+            }
+            catch (Exception e) {
+                throw new InstructionException();
+            }
+        }
+        else if(toExecute.getMnemonic().equals("RL")) {
+            if(toExecute.getParam1().equals("A")) {
+                int wartosc = registers.get(toExecute.getParam1());
+                String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
+                String wynik = "";
+                char tmp = stringWartosc.charAt(0);
+                for (int i = 1; i < 8; i++) {
+                    wynik += stringWartosc.charAt(i);
+                }
+                wynik += tmp;
+
+                registers.put(toExecute.getParam1(),Integer.parseInt(wynik,2));
+
+                int mnemonicSize = Main.cpu.getMnemonicSize("RL");
+                linePointer += mnemonicSize;
+            }
+            else {
+                System.out.println("Błąd w RL");
+                throw new InstructionException();
+            }
+        }
+        else if(toExecute.getMnemonic().equals("RR")) {
+            if(toExecute.getParam1().equals("A")) {
+                int wartosc = registers.get(toExecute.getParam1());
+                String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
+                String wynik = "";
+                char tmp = stringWartosc.charAt(7);
+                for (int i = 0; i < 7; i++) {
+                    wynik += stringWartosc.charAt(i);
+                }
+                wynik = tmp + wynik;
+
+                registers.put(toExecute.getParam1(),Integer.parseInt(wynik,2));
+
+                int mnemonicSize = Main.cpu.getMnemonicSize("RL");
+                linePointer += mnemonicSize;
+            }
+            else {
+                System.out.println("Błąd w RL");
+                throw new InstructionException();
+            }
         }
 
         int machineCyclesNumber = Main.cpu.getMnemonicTime(toExecute.getMnemonic().toUpperCase());
@@ -142,13 +217,6 @@ public class Cpu {
         refreshGui();
     }
 
-    public Cpu(){
-        knownMnemonics.add(new Mnemonic("MOV",2,2,2));//OK
-        knownMnemonics.add(new Mnemonic("DJNZ",2,2,2));
-        knownMnemonics.add(new Mnemonic("LJMP",1,2,3));//OK
-        resetCpu();
-
-    }
     public int isMnemonic(String name) {
         for(Mnemonic mnemonic : knownMnemonics) {
             if(mnemonic.getName().toUpperCase().equals(name))
