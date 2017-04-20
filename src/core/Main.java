@@ -15,6 +15,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         stage = new MainStage(initialWidth,initialHeight);
         stage.start(primaryStage);
+
     }
 
     public static void main(String[] args) {

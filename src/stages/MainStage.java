@@ -15,9 +15,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.swing.border.LineBorder;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Scanner;
 
 /**
  * Created by Mateusz on 19.04.2017.
@@ -90,6 +95,19 @@ public class MainStage extends Application {
         accumulatorTextField.setFont(new Font("Arial",11));
         accumulatorTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(accumulatorTextField,10,8);
+
+        bLabel = new Label("B");
+        bLabel.setMaxWidth(Double.MAX_VALUE);
+        bLabel.setAlignment(Pos.CENTER);
+        bLabel.setFont(new Font("Arial",11));
+        simulatorGridPane.add(bLabel,11,7);
+
+        bTextField = new Label("00h");
+        bTextField.setMaxWidth(Double.MAX_VALUE);
+        bTextField.setAlignment(Pos.CENTER);
+        bTextField.setFont(new Font("Arial",11));
+        bTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(bTextField,11,8);
 
         r0Label = new Label("R0");
         r0Label.setMaxWidth(Double.MAX_VALUE);
@@ -195,6 +213,97 @@ public class MainStage extends Application {
         r7TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(r7TextField,8,8);
 
+        cLabel = new Label("C");
+        cLabel.setMaxWidth(Double.MAX_VALUE);
+        cLabel.setAlignment(Pos.CENTER);
+        cLabel.setFont(new Font("Arial",11));
+        simulatorGridPane.add(cLabel,2,5);
+
+        cTextField = new Label("00h");
+        cTextField.setMaxWidth(Double.MAX_VALUE);
+        cTextField.setAlignment(Pos.CENTER);
+        cTextField.setFont(new Font("Arial",11));
+        cTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(cTextField,2,6);
+
+        acLabel = new Label("AC");
+        acLabel.setMaxWidth(Double.MAX_VALUE);
+        acLabel.setAlignment(Pos.CENTER);
+        acLabel.setFont(new Font("Arial",11));
+        simulatorGridPane.add(acLabel,3,5);
+
+        acTextField = new Label("00h");
+        acTextField.setMaxWidth(Double.MAX_VALUE);
+        acTextField.setAlignment(Pos.CENTER);
+        acTextField.setFont(new Font("Arial",11));
+        acTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(acTextField,3,6);
+
+        f0Label = new Label("F0");
+        f0Label.setMaxWidth(Double.MAX_VALUE);
+        f0Label.setAlignment(Pos.CENTER);
+        f0Label.setFont(new Font("Arial",11));
+        simulatorGridPane.add(f0Label,4,5);
+
+        f0TextField = new Label("00h");
+        f0TextField.setMaxWidth(Double.MAX_VALUE);
+        f0TextField.setAlignment(Pos.CENTER);
+        f0TextField.setFont(new Font("Arial",11));
+        f0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(f0TextField,4,6);
+
+        rs1Label = new Label("RS1");
+        rs1Label.setMaxWidth(Double.MAX_VALUE);
+        rs1Label.setAlignment(Pos.CENTER);
+        rs1Label.setFont(new Font("Arial",11));
+        simulatorGridPane.add(rs1Label,5,5);
+
+        rs1TextField = new Label("00h");
+        rs1TextField.setMaxWidth(Double.MAX_VALUE);
+        rs1TextField.setAlignment(Pos.CENTER);
+        rs1TextField.setFont(new Font("Arial",11));
+        rs1TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(rs1TextField,5,6);
+
+        rs0Label = new Label("RS0");
+        rs0Label.setMaxWidth(Double.MAX_VALUE);
+        rs0Label.setAlignment(Pos.CENTER);
+        rs0Label.setFont(new Font("Arial",11));
+        simulatorGridPane.add(rs0Label,6,5);
+
+        rs0TextField = new Label("00h");
+        rs0TextField.setMaxWidth(Double.MAX_VALUE);
+        rs0TextField.setAlignment(Pos.CENTER);
+        rs0TextField.setFont(new Font("Arial",11));
+        rs0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(rs0TextField,6,6);
+
+        ovLabel = new Label("OV");
+        ovLabel.setMaxWidth(Double.MAX_VALUE);
+        ovLabel.setAlignment(Pos.CENTER);
+        ovLabel.setFont(new Font("Arial",11));
+        simulatorGridPane.add(ovLabel,7,5);
+
+        ovTextField = new Label("00h");
+        ovTextField.setMaxWidth(Double.MAX_VALUE);
+        ovTextField.setAlignment(Pos.CENTER);
+        ovTextField.setFont(new Font("Arial",11));
+        ovTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(ovTextField,7,6);
+
+        pLabel = new Label("P");
+        pLabel.setMaxWidth(Double.MAX_VALUE);
+        pLabel.setAlignment(Pos.CENTER);
+        pLabel.setFont(new Font("Arial",11));
+        simulatorGridPane.add(pLabel,8,5);
+
+        pTextField = new Label("00h");
+        pTextField.setMaxWidth(Double.MAX_VALUE);
+        pTextField.setAlignment(Pos.CENTER);
+        pTextField.setFont(new Font("Arial",11));
+        pTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(pTextField,8,6);
+
         p0Label = new Label("P0");
         p0Label.setMaxWidth(Double.MAX_VALUE);
         p0Label.setAlignment(Pos.CENTER);
@@ -212,40 +321,46 @@ public class MainStage extends Application {
         p1Label.setMaxWidth(Double.MAX_VALUE);
         p1Label.setAlignment(Pos.CENTER);
         p1Label.setFont(new Font("Arial",11));
-        simulatorGridPane.add(p1Label,13,3);
+        simulatorGridPane.add(p1Label,13,2);
 
         p1TextField = new Label("11111111");
         p1TextField.setMaxWidth(Double.MAX_VALUE);
         p1TextField.setAlignment(Pos.CENTER);
         p1TextField.setFont(new Font("Arial",11));
         p1TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p1TextField,14,3,2,1);
+        simulatorGridPane.add(p1TextField,14,2,2,1);
 
         p2Label = new Label("P2");
         p2Label.setMaxWidth(Double.MAX_VALUE);
         p2Label.setAlignment(Pos.CENTER);
         p2Label.setFont(new Font("Arial",11));
-        simulatorGridPane.add(p2Label,13,5);
+        simulatorGridPane.add(p2Label,13,3);
 
         p2TextField = new Label("11111111");
         p2TextField.setMaxWidth(Double.MAX_VALUE);
         p2TextField.setAlignment(Pos.CENTER);
         p2TextField.setFont(new Font("Arial",11));
         p2TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p2TextField,14,5,2,1);
+        simulatorGridPane.add(p2TextField,14,3,2,1);
 
         p3Label = new Label("P3");
         p3Label.setMaxWidth(Double.MAX_VALUE);
         p3Label.setAlignment(Pos.CENTER);
         p3Label.setFont(new Font("Arial",11));
-        simulatorGridPane.add(p3Label,13,7);
+        simulatorGridPane.add(p3Label,13,4);
 
         p3TextField = new Label("11111111");
         p3TextField.setMaxWidth(Double.MAX_VALUE);
         p3TextField.setAlignment(Pos.CENTER);
         p3TextField.setFont(new Font("Arial",11));
         p3TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p3TextField,14,7,2,1);
+        simulatorGridPane.add(p3TextField,14,4,2,1);
+
+        Label pswLabel = new Label("REG\nPSW:");
+        pswLabel.setMaxWidth(Double.MAX_VALUE);
+        pswLabel.setAlignment(Pos.CENTER);
+        pswLabel.setFont(new Font("Arial",11));
+        simulatorGridPane.add(pswLabel,1,5,1,2);
 
         translateToMemoryButton = new Button("Uruchom");
         translateToMemoryButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -331,18 +446,46 @@ public class MainStage extends Application {
         exitMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
         menuFile.getItems().add(exitMenuItem);
 
-        MenuItem importFileMenuItem = new MenuItem("Importuj kod");
+        MenuItem importFileMenuItem = new MenuItem("Importuj");
         importFileMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //TODO
+
+                FileChooser chooseFile = new FileChooser();
+                chooseFile.setTitle("Wybierz plik z posiadanymi składnikami");
+                File openFile = chooseFile.showOpenDialog(primaryStage);
+                if (openFile != null) {
+                    String textToSet ="";
+                    try {
+                        Scanner in = new Scanner(openFile);
+                        while (in.hasNextLine())
+                            textToSet+=in.nextLine() + "\n";
+                    } catch (FileNotFoundException ignored) {
+                    }
+                    editorTextArea.setText(textToSet.substring(0,textToSet.length()-1));
+                }
             }
+
         });
-        MenuItem exportFileMenuItem = new MenuItem("Eksportuj kod");
+        MenuItem exportFileMenuItem = new MenuItem("Eksportuj");
         exportFileMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //TODO
+                FileChooser chooseFile = new FileChooser();
+                chooseFile.setTitle("Wybierz lokalizację zapisu");
+                chooseFile.setInitialFileName("file.txt");
+                chooseFile.setInitialDirectory(new File(System.getProperty("user.home")));
+                File saveFile = chooseFile.showSaveDialog(primaryStage);
+                if(saveFile!=null) {
+                    try {
+                        PrintWriter in = new PrintWriter(saveFile);
+                        String text = editorTextArea.getText();
+                        in.println(text);
+                        in.close();
+                    } catch (FileNotFoundException e) {
+                        System.out.println("File error");
+                    }
+                }
             }
         });
         editorFile.getItems().addAll(importFileMenuItem,exportFileMenuItem);
@@ -376,6 +519,9 @@ public class MainStage extends Application {
 
     public Label accumulatorLabel;
     public Label accumulatorTextField;
+
+    public Label bLabel;
+    public Label bTextField;
 
     public Label r0Label;
     public Label r0TextField;
@@ -412,6 +558,28 @@ public class MainStage extends Application {
 
     public Label p3Label;
     public Label p3TextField;
+
+    public Label pLabel;
+    public Label pTextField;
+
+    public Label ovLabel;
+    public Label ovTextField;
+
+    public Label rs0Label;
+    public Label rs0TextField;
+
+    public Label rs1Label;
+    public Label rs1TextField;
+
+    public Label f0Label;
+    public Label f0TextField;
+
+    public Label acLabel;
+    public Label acTextField;
+
+    public Label cLabel;
+    public Label cTextField;
+
 
     private Button translateToMemoryButton;
     private Button stopSimulationButton;

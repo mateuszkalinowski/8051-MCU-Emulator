@@ -5,12 +5,10 @@ import core.Main;
 import elements.Instruction;
 import elements.Mnemonic;
 import exceptions.InstructionException;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Created by Mateusz on 18.04.2017.
@@ -24,6 +22,8 @@ public class Cpu {
         knownMnemonics.add(new Mnemonic("LJMP",1,2,3));//OK
         knownMnemonics.add(new Mnemonic("RL",1,1,1));//OK
         knownMnemonics.add(new Mnemonic("RR",1,1,1));//OK
+        knownMnemonics.add(new Mnemonic("RLC",1,1,1));
+        knownMnemonics.add(new Mnemonic("RRC",1,1,1));
         resetCpu();
     }
 
@@ -39,16 +39,26 @@ public class Cpu {
         registers.put("R6",0);
         registers.put("R7",0);
         registers.put("A",0);
+        registers.put("B",0);
         ports.clear();
         ports.put("P0",255);
         ports.put("P1",255);
         ports.put("P2",255);
         ports.put("P3",255);
 
+        psw.put("P",true);
+        psw.put("OV",false);
+        psw.put("RS0",false);
+        psw.put("RS1",false);
+        psw.put("F0",false);
+        psw.put("AC",false);
+        psw.put("C",false);
+
+
     }
 
     private void machineCycle(){
-
+        refreshStatusRegister();
     }
 
     public void executeInstruction() throws InstructionException{
@@ -187,6 +197,34 @@ public class Cpu {
                 throw new InstructionException();
             }
         }
+        else if(toExecute.getMnemonic().equals("RLC")) {
+            if(toExecute.getParam1().equals("A")) {
+                int wartosc = registers.get(toExecute.getParam1());
+                String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
+                String wynik = "";
+                char tmp = stringWartosc.charAt(0);
+                for (int i = 1; i < 8; i++) {
+                    wynik += stringWartosc.charAt(i);
+                }
+                if(psw.get("C"))
+                    wynik += "1";
+                else
+                    wynik += "0";
+                if(tmp=='1')
+                    psw.put("C",true);
+                else
+                    psw.put("C",false);
+
+                registers.put(toExecute.getParam1(),Integer.parseInt(wynik,2));
+
+                int mnemonicSize = Main.cpu.getMnemonicSize("RL");
+                linePointer += mnemonicSize;
+            }
+            else {
+                System.out.println("Błąd w RL");
+                throw new InstructionException();
+            }
+        }
         else if(toExecute.getMnemonic().equals("RR")) {
             if(toExecute.getParam1().equals("A")) {
                 int wartosc = registers.get(toExecute.getParam1());
@@ -197,6 +235,34 @@ public class Cpu {
                     wynik += stringWartosc.charAt(i);
                 }
                 wynik = tmp + wynik;
+
+                registers.put(toExecute.getParam1(),Integer.parseInt(wynik,2));
+
+                int mnemonicSize = Main.cpu.getMnemonicSize("RL");
+                linePointer += mnemonicSize;
+            }
+            else {
+                System.out.println("Błąd w RL");
+                throw new InstructionException();
+            }
+        }
+        else if(toExecute.getMnemonic().equals("RRC")) {
+            if(toExecute.getParam1().equals("A")) {
+                int wartosc = registers.get(toExecute.getParam1());
+                String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
+                String wynik = "";
+                char tmp = stringWartosc.charAt(7);
+                for (int i = 0; i < 7; i++) {
+                    wynik += stringWartosc.charAt(i);
+                }
+                if(psw.get("C"))
+                    wynik = "1" + wynik;
+                else
+                    wynik = "0" + wynik;
+                if(tmp=='1')
+                    psw.put("C",true);
+                else
+                    psw.put("C",false);
 
                 registers.put(toExecute.getParam1(),Integer.parseInt(wynik,2));
 
@@ -243,6 +309,8 @@ public class Cpu {
 
     private Map<String,Integer> registers = new HashMap<>();
 
+    private Map<String,Boolean> psw = new HashMap<>();
+
     public CodeMemory codeMemory = new CodeMemory();
 
     public int getLinePointer() {
@@ -256,6 +324,23 @@ public class Cpu {
     private Map<String,Integer> ports = new HashMap<>();
 
     private ArrayList<Mnemonic> knownMnemonics = new ArrayList<>();
+
+    public void refreshStatusRegister(){
+        String acc = Integer.toBinaryString(registers.get("A"));
+        if(acc.length()>4)
+            psw.put("AC",true);
+        else
+            psw.put("AC",false);
+        int jedynek = 0;
+        for(int i = 0; i < acc.length();i++) {
+            if(acc.charAt(i) == '1')
+                jedynek++;
+        }
+        if(jedynek%2==0)
+            psw.put("P",true);
+        else
+            psw.put("P",false);
+    }
     public void refreshGui(){
         Main.stage.r0TextField.setText(Integer.toHexString(registers.get("R0")).toUpperCase()+"h");
         Main.stage.r1TextField.setText(Integer.toHexString(registers.get("R1")).toUpperCase()+"h");
@@ -272,6 +357,15 @@ public class Cpu {
         Main.stage.p3TextField.setText(expandTo8Digits(Integer.toBinaryString(ports.get("P3"))) + "b");
 
         Main.stage.accumulatorTextField.setText(Integer.toHexString(registers.get("A")).toUpperCase()+"h");
+        Main.stage.bTextField.setText(Integer.toHexString(registers.get("B")).toUpperCase()+"h");
+
+        Main.stage.cTextField.setText((psw.get("C")).toString());
+        Main.stage.acTextField.setText((psw.get("AC")).toString());
+        Main.stage.f0TextField.setText((psw.get("F0")).toString());
+        Main.stage.rs1TextField.setText((psw.get("RS1")).toString());
+        Main.stage.rs0TextField.setText((psw.get("RS0")).toString());
+        Main.stage.ovTextField.setText((psw.get("OV")).toString());
+        Main.stage.pTextField.setText((psw.get("P")).toString());
 
     }
 
