@@ -5,6 +5,8 @@ import core.Main;
 import elements.Instruction;
 import elements.Mnemonic;
 import exceptions.InstructionException;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -359,13 +361,75 @@ public class Cpu {
         Main.stage.accumulatorTextField.setText(Integer.toHexString(registers.get("A")).toUpperCase()+"h");
         Main.stage.bTextField.setText(Integer.toHexString(registers.get("B")).toUpperCase()+"h");
 
-        Main.stage.cTextField.setText((psw.get("C")).toString());
-        Main.stage.acTextField.setText((psw.get("AC")).toString());
-        Main.stage.f0TextField.setText((psw.get("F0")).toString());
-        Main.stage.rs1TextField.setText((psw.get("RS1")).toString());
-        Main.stage.rs0TextField.setText((psw.get("RS0")).toString());
-        Main.stage.ovTextField.setText((psw.get("OV")).toString());
-        Main.stage.pTextField.setText((psw.get("P")).toString());
+        boolean value = psw.get("C");
+        if(value) {
+            Main.stage.cTextField.setText("1");
+            Main.stage.cTextField.setTextFill(Color.GREEN);
+        }
+        else {
+            Main.stage.cTextField.setText("0");
+            Main.stage.cTextField.setTextFill(Color.RED);
+        }
+
+        value = psw.get("AC");
+        if(value) {
+            Main.stage.acTextField.setText("1");
+            Main.stage.acTextField.setTextFill(Color.GREEN);
+        }
+        else {
+            Main.stage.acTextField.setText("0");
+            Main.stage.acTextField.setTextFill(Color.RED);
+        }
+
+        value = psw.get("F0");
+        if(value) {
+            Main.stage.f0TextField.setText("1");
+            Main.stage.f0TextField.setTextFill(Color.GREEN);
+        }
+        else {
+            Main.stage.f0TextField.setText("0");
+            Main.stage.f0TextField.setTextFill(Color.RED);
+        }
+
+        value = psw.get("RS1");
+        if(value) {
+            Main.stage.rs1TextField.setText("1");
+            Main.stage.rs1TextField.setTextFill(Color.GREEN);
+        }
+        else {
+            Main.stage.rs1TextField.setText("0");
+            Main.stage.rs1TextField.setTextFill(Color.RED);
+        }
+
+        value = psw.get("RS0");
+        if(value) {
+            Main.stage.rs0TextField.setText("1");
+            Main.stage.rs0TextField.setTextFill(Color.GREEN);
+        }
+        else {
+            Main.stage.rs0TextField.setText("0");
+            Main.stage.rs0TextField.setTextFill(Color.RED);
+        }
+
+        value = psw.get("OV");
+        if(value) {
+            Main.stage.ovTextField.setText("1");
+            Main.stage.ovTextField.setTextFill(Color.GREEN);
+        }
+        else {
+            Main.stage.ovTextField.setText("0");
+            Main.stage.ovTextField.setTextFill(Color.RED);
+        }
+
+        value = psw.get("P");
+        if(value) {
+            Main.stage.pTextField.setText("1");
+            Main.stage.pTextField.setTextFill(Color.GREEN);
+        }
+        else {
+            Main.stage.pTextField.setText("0");
+            Main.stage.pTextField.setTextFill(Color.RED);
+        }
 
     }
 

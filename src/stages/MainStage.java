@@ -436,17 +436,14 @@ public class MainStage extends Application {
         mainBorderPane.setTop(mainMenuBar);
 
         Menu menuFile = new Menu("Plik");
-        Menu editorFile = new Menu("Edytor");
         mainMenuBar.getMenus().add(menuFile);
-        mainMenuBar.getMenus().add(editorFile);
 
 
         MenuItem exitMenuItem = new MenuItem("Zamknij");
         exitMenuItem.setOnAction(event -> System.exit(0));
         exitMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
-        menuFile.getItems().add(exitMenuItem);
 
-        MenuItem importFileMenuItem = new MenuItem("Importuj");
+        MenuItem importFileMenuItem = new MenuItem("Otwórz");
         importFileMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -467,7 +464,7 @@ public class MainStage extends Application {
             }
 
         });
-        MenuItem exportFileMenuItem = new MenuItem("Eksportuj");
+        MenuItem exportFileMenuItem = new MenuItem("Zapisz jako");
         exportFileMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -488,7 +485,16 @@ public class MainStage extends Application {
                 }
             }
         });
-        editorFile.getItems().addAll(importFileMenuItem,exportFileMenuItem);
+        menuFile.getItems().addAll(importFileMenuItem,exportFileMenuItem,new SeparatorMenuItem(),exitMenuItem);
+
+
+        //PRAWY OBSZAR
+        TabPane elementsTabPane = new TabPane();
+        Tab diodesPane = new Tab("Diody");
+        diodesPane.setClosable(false);
+        elementsTabPane.getTabs().add(diodesPane);
+
+        editorElementsGridPane.add(elementsTabPane,1,0);
 
         mainStage = primaryStage;
         mainStage.setTitle("8051 MCU Emulator");
