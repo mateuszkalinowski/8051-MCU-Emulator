@@ -404,12 +404,15 @@ public class MainStage extends Application {
                     editorTextArea.setEditable(false);
                 }
                 catch (CompilingException e) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    /*Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Błąd Kompilacji");
                     alert.setHeaderText("Kompilacja przebiegła nieudanie");
                     alert.setContentText("Sprawdź kod jeszcze raz, informacja gdzie wystąpił błąd zostanie" +
                             "dodana w jednej z kolejnych wersji programu");
-                    alert.showAndWait();
+                    alert.showAndWait();*/
+                    Main.stage.compilationErrorsLabel.setText("Błąd: " + e.getMessage());
+                    Main.stage.compilationErrorsLabel.setStyle("-fx-background-color: red; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
+
                 }
             }
         });

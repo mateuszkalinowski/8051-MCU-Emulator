@@ -8,4 +8,7 @@ public class CompilingException extends Exception {
     public CompilingException(){
         super();
     }
+    public CompilingException(String message) {
+        super(message);
+    }
 }

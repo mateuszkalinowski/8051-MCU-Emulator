@@ -50,7 +50,7 @@ public class CodeMemory {
         }
         labels.clear();
         for(String line : lines) {
-            try {
+                String backupLinii = line;
                 int komentarz = -1;
                 for(int i = 0; i < line.length();i++) {
                     if(line.charAt(i) == '%') {
@@ -103,20 +103,23 @@ public class CodeMemory {
                         else if(splittedLine[0].toUpperCase().equals("DJNZ")) {
                             if(splittedLine[1].toUpperCase().equals("R0"))
                                 emulatedCodeMemory.set(pointer,"11011000");
-                            if(splittedLine[1].toUpperCase().equals("R1"))
+                            else if(splittedLine[1].toUpperCase().equals("R1"))
                                 emulatedCodeMemory.set(pointer,"11011001");
-                            if(splittedLine[1].toUpperCase().equals("R2"))
+                            else if(splittedLine[1].toUpperCase().equals("R2"))
                                 emulatedCodeMemory.set(pointer,"11011010");
-                            if(splittedLine[1].toUpperCase().equals("R3"))
+                            else if(splittedLine[1].toUpperCase().equals("R3"))
                                 emulatedCodeMemory.set(pointer,"11011011");
-                            if(splittedLine[1].toUpperCase().equals("R4"))
+                            else if(splittedLine[1].toUpperCase().equals("R4"))
                                 emulatedCodeMemory.set(pointer,"11011100");
-                            if(splittedLine[1].toUpperCase().equals("R5"))
+                            else if(splittedLine[1].toUpperCase().equals("R5"))
                                 emulatedCodeMemory.set(pointer,"11011101");
-                            if(splittedLine[1].toUpperCase().equals("R6"))
+                            else if(splittedLine[1].toUpperCase().equals("R6"))
                                 emulatedCodeMemory.set(pointer,"11011110");
-                            if(splittedLine[1].toUpperCase().equals("R7"))
+                            else if(splittedLine[1].toUpperCase().equals("R7"))
                                 emulatedCodeMemory.set(pointer,"11011111");
+                            else {
+                                throw new CompilingException("Nieznany Rejestr: '" + splittedLine[1] + "', linia: '" + backupLinii+"'");
+                            }
 
                             emulatedCodeMemory.set(pointer+1,splittedLine[2].toUpperCase());
                             pointer+=2;
@@ -393,29 +396,27 @@ public class CodeMemory {
                         }
                     }
                 }
-
-
-            } catch (Exception e) {
-                throw new CompilingException();
-            }
         }
         for(int i = 0; i < 8192;i++) {
             String s = emulatedCodeMemory.get(i);
             if(s.charAt(s.length()-1)!='0' && s.charAt(s.length()-1)!='1') {
                 int numer = getLineFromLabel(s);
-                if(emulatedCodeMemory.get(i-1).equals("00000010")) {
-                    emulatedCodeMemory.set(i,make16DigitsStringFromNumber(Integer.toString(numer)+"d").substring(0,8));
-                    emulatedCodeMemory.set(i+1,make16DigitsStringFromNumber(Integer.toString(numer)+"d").substring(8,16));
+                if(numer != -1) {
+                    if (emulatedCodeMemory.get(i - 1).equals("00000010")) {
+                        emulatedCodeMemory.set(i, make16DigitsStringFromNumber(Integer.toString(numer) + "d").substring(0, 8));
+                        emulatedCodeMemory.set(i + 1, make16DigitsStringFromNumber(Integer.toString(numer) + "d").substring(8, 16));
+                    } else {
+                        emulatedCodeMemory.set(i, make8DigitsStringFromNumber(Integer.toString(numer) + "d"));
+                    }
                 }
                 else {
-                    emulatedCodeMemory.set(i,make8DigitsStringFromNumber(Integer.toString(numer)+"d"));
+                    throw new CompilingException("Nieznana Etykieta: '" + s + "'");
                 }
             }
         }
 
         Main.stage.compilationErrorsLabel.setText("Kompilacja przebiegła pomyślnie");
         Main.stage.compilationErrorsLabel.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
-
         //show();
     }
 
