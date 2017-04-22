@@ -63,8 +63,28 @@ public class MainStage extends Application {
         simulatorTabPane.getTabs().add(mainSimulatorTab);
         mainGridPane.add(simulatorTabPane,0,1);
 
+
+        GridPane infoEditorAndButtonGridPane = new GridPane();
+        ColumnConstraints columnFullSize = new ColumnConstraints();
+        columnFullSize.setPercentWidth(100);
+        infoEditorAndButtonGridPane.getColumnConstraints().add(columnFullSize);
+        RowConstraints rowTenPercent = new RowConstraints();
+        rowTenPercent.setPercentHeight(5);
+        for(int i = 0; i < 20;i++)
+            infoEditorAndButtonGridPane.getRowConstraints().add(rowTenPercent);
+
+
+        compilationErrorsLabel = new Label("");
+        compilationErrorsLabel.setPadding(new Insets(0,22,0,22));
+        compilationErrorsLabel.setMaxWidth(Double.MAX_VALUE);
+        compilationErrorsLabel.setAlignment(Pos.CENTER_LEFT);
+        compilationErrorsLabel.setFont(new Font("Arial",11));
+        compilationErrorsLabel.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
+        infoEditorAndButtonGridPane.add(compilationErrorsLabel,0,0,1,1);
+
         editorTextArea = new TextArea();
-        editorElementsGridPane.add(editorTextArea,0,0);
+        infoEditorAndButtonGridPane.add(editorTextArea,0,1,1,17);
+        editorElementsGridPane.add(infoEditorAndButtonGridPane,0,0);
 
         simulatorGridPane = new GridPane();
         //simulatorGridPane.setGridLinesVisible(true);
@@ -79,6 +99,7 @@ public class MainStage extends Application {
             simulatorGridPane.getColumnConstraints().add(columnInSimulator);
         }
         mainSimulatorTab.setContent(simulatorGridPane);
+        //simulatorGridPane.setGridLinesVisible(true);
         //KOMPONENTY PANELU SYMULATORA
 
         //AKUMULATOR
@@ -308,53 +329,59 @@ public class MainStage extends Application {
         p0Label.setMaxWidth(Double.MAX_VALUE);
         p0Label.setAlignment(Pos.CENTER);
         p0Label.setFont(new Font("Arial",11));
-        simulatorGridPane.add(p0Label,13,1);
+        simulatorGridPane.add(p0Label,16,2);
 
         p0TextField = new Label("11111111");
         p0TextField.setMaxWidth(Double.MAX_VALUE);
         p0TextField.setAlignment(Pos.CENTER);
         p0TextField.setFont(new Font("Arial",11));
         p0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p0TextField,14,1,2,1);
+        simulatorGridPane.add(p0TextField,17,2,2,1);
 
         p1Label = new Label("P1");
         p1Label.setMaxWidth(Double.MAX_VALUE);
         p1Label.setAlignment(Pos.CENTER);
         p1Label.setFont(new Font("Arial",11));
-        simulatorGridPane.add(p1Label,13,3);
+        simulatorGridPane.add(p1Label,16,4);
 
         p1TextField = new Label("11111111");
         p1TextField.setMaxWidth(Double.MAX_VALUE);
         p1TextField.setAlignment(Pos.CENTER);
         p1TextField.setFont(new Font("Arial",11));
         p1TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p1TextField,14,3,2,1);
+        simulatorGridPane.add(p1TextField,17,4,2,1);
 
         p2Label = new Label("P2");
         p2Label.setMaxWidth(Double.MAX_VALUE);
         p2Label.setAlignment(Pos.CENTER);
         p2Label.setFont(new Font("Arial",11));
-        simulatorGridPane.add(p2Label,13,5);
+        simulatorGridPane.add(p2Label,16,6);
 
         p2TextField = new Label("11111111");
         p2TextField.setMaxWidth(Double.MAX_VALUE);
         p2TextField.setAlignment(Pos.CENTER);
         p2TextField.setFont(new Font("Arial",11));
         p2TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p2TextField,14,5,2,1);
+        simulatorGridPane.add(p2TextField,17,6,2,1);
 
         p3Label = new Label("P3");
         p3Label.setMaxWidth(Double.MAX_VALUE);
         p3Label.setAlignment(Pos.CENTER);
         p3Label.setFont(new Font("Arial",11));
-        simulatorGridPane.add(p3Label,13,7);
+        simulatorGridPane.add(p3Label,16,8);
 
         p3TextField = new Label("11111111");
         p3TextField.setMaxWidth(Double.MAX_VALUE);
         p3TextField.setAlignment(Pos.CENTER);
         p3TextField.setFont(new Font("Arial",11));
         p3TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p3TextField,14,7,2,1);
+        simulatorGridPane.add(p3TextField,17,8,2,1);
+
+        Label portsDesc = new Label("Porty We/Wy:");
+        portsDesc.setMaxWidth(Double.MAX_VALUE);
+        portsDesc.setAlignment(Pos.CENTER);
+        portsDesc.setFont(new Font("Arial",11));
+        simulatorGridPane.add(portsDesc,16,0,3,2);
 
         Label pswLabel = new Label("REG\nPSW:");
         pswLabel.setMaxWidth(Double.MAX_VALUE);
@@ -403,6 +430,8 @@ public class MainStage extends Application {
                 editorTextArea.setText(textToSet.substring(0,textToSet.length()-1));
                 Main.cpu.resetCpu();
                 Main.cpu.refreshGui();
+                compilationErrorsLabel.setText("");
+                compilationErrorsLabel.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
             }
         });
 
@@ -424,14 +453,28 @@ public class MainStage extends Application {
             }
         });
 
-        translateToMemoryButton.setPrefWidth(Double.MAX_VALUE);
-        stopSimulationButton.setPrefWidth(Double.MAX_VALUE);
+
+        translateToMemoryButton.setMaxWidth(Double.MAX_VALUE);
+        stopSimulationButton.setMaxWidth(Double.MAX_VALUE);
         stopSimulationButton.setDisable(true);
-        oneStepButton.setPrefWidth(Double.MAX_VALUE);
+        oneStepButton.setMaxWidth(Double.MAX_VALUE);
         oneStepButton.setDisable(true);
-        simulatorGridPane.add(translateToMemoryButton,17,1,2,2);
-        simulatorGridPane.add(stopSimulationButton,17,3,2,2);
-        simulatorGridPane.add(oneStepButton,17,5,2,2);
+
+
+        HBox buttonBox = new HBox();
+        buttonBox.setPadding(new Insets(0,10,0,10));
+        buttonBox.setAlignment(Pos.CENTER);
+        HBox.setHgrow(translateToMemoryButton,Priority.ALWAYS);
+        HBox.setHgrow(stopSimulationButton,Priority.ALWAYS);
+        HBox.setHgrow(oneStepButton,Priority.ALWAYS);
+        buttonBox.setSpacing(5);
+
+        buttonBox.getChildren().addAll(translateToMemoryButton,stopSimulationButton,oneStepButton);
+        infoEditorAndButtonGridPane.add(buttonBox,0,18,1,2);
+
+        //simulatorGridPane.add(translateToMemoryButton,17,1,2,2);
+        //simulatorGridPane.add(stopSimulationButton,17,3,2,2);
+        //simulatorGridPane.add(oneStepButton,17,5,2,2);
         MenuBar mainMenuBar = new MenuBar();
         mainBorderPane.setTop(mainMenuBar);
 
@@ -497,7 +540,7 @@ public class MainStage extends Application {
         editorElementsGridPane.add(elementsTabPane,1,0);
 
         mainStage = primaryStage;
-        mainStage.setTitle("8051 MCU Emulator");
+        mainStage.setTitle("8051 MCU Emulator - 0.1 Alpha");
         mainBorderPane.setCenter(mainGridPane);
         mainScene = new Scene(mainBorderPane,width,height);
         mainStage.setScene(mainScene);
@@ -585,6 +628,8 @@ public class MainStage extends Application {
 
     public Label cLabel;
     public Label cTextField;
+
+    public Label compilationErrorsLabel;
 
 
     private Button translateToMemoryButton;

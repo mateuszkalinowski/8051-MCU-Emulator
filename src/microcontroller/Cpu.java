@@ -2,8 +2,6 @@ package microcontroller;
 
 import components.CodeMemory;
 import core.Main;
-import elements.Instruction;
-import elements.Mnemonic;
 import exceptions.InstructionException;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
