@@ -53,31 +53,35 @@ public class Cpu {
     }
 
     private void machineCycle(){
-        refreshStatusRegister();
+
     }
 
     public void executeInstruction() throws InstructionException{
 
         String toExecute = codeMemory.getFromAddress(linePointer);
+        //System.out.println(linePointer + " " + toExecute);
         if(toExecute.equals("00000010")) { //LJMP
             machineCycle();
             machineCycle();
-            linePointer = Integer.parseInt(codeMemory.getFromAddress(linePointer+1) + codeMemory.getFromAddress(linePointer+2));
+            linePointer = Integer.parseInt(codeMemory.getFromAddress(linePointer+1) + codeMemory.getFromAddress(linePointer+2),2);
         }
         else if(toExecute.substring(0,5).equals("11011")) { //DJNZ Rx,label/adres (ale na wartosci a nie offsecie)
             machineCycle();
             machineCycle();
-            int rejestr = Integer.parseInt(toExecute.substring(5,7),2);
+            int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
             String rejestrString = "R" + rejestr;
             int wartosc = registers.get(rejestrString);
             wartosc--;
             if(wartosc==-1)
                 wartosc=255;
+
+            registers.put(rejestrString,wartosc);
+
             if(wartosc>0) {
                 linePointer = Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
             }
             if(wartosc==0) {
-                linePointer+=3;
+                linePointer+=2;
             }
         }
         else if(toExecute.equals("01110100")) { // MOV A,#01h
@@ -87,7 +91,7 @@ public class Cpu {
         }
         else if(toExecute.substring(0,5).equals("11101")) { //MOV A,Rx
             machineCycle();
-            int rejestr = Integer.parseInt(toExecute.substring(5,7),2);
+            int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
             String rejestrString = "R" + rejestr;
             int wartosc = registers.get(rejestrString);
             registers.put("A",wartosc);
@@ -112,7 +116,7 @@ public class Cpu {
         }
         else if(toExecute.substring(0,5).equals("01111")) {
             machineCycle();
-            int rejestr = Integer.parseInt(toExecute.substring(5,7),2);
+            int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
             String rejestrString = "R" + rejestr;
             int wartosc = Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
             registers.put(rejestrString,wartosc);
@@ -120,7 +124,7 @@ public class Cpu {
         }
         else if(toExecute.substring(0,5).equals("11111")) {
             machineCycle();
-            int rejestr = Integer.parseInt(toExecute.substring(5,7),2);
+            int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
             String rejestrString = "R" + rejestr;
             registers.put(rejestrString,registers.get("A"));
             linePointer+=1;
@@ -141,247 +145,280 @@ public class Cpu {
             }
             linePointer+=2;
         }
-        /*
-        else if(toExecute.getMnemonic().equals("RL")) {
-            if(toExecute.getParam1().equals("A")) {
-                int wartosc = registers.get(toExecute.getParam1());
-                String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
-                String wynik = "";
-                char tmp = stringWartosc.charAt(0);
-                for (int i = 1; i < 8; i++) {
-                    wynik += stringWartosc.charAt(i);
-                }
-                wynik += tmp;
-
-                registers.put(toExecute.getParam1(),Integer.parseInt(wynik,2));
-
-                int mnemonicSize = Main.cpu.getMnemonicSize("RL");
-                linePointer += mnemonicSize;
-            }
-            else {
-                System.out.println("Błąd w RL");
-                throw new InstructionException();
-            }
-        }
-        else if(toExecute.getMnemonic().equals("RLC")) {
-            if(toExecute.getParam1().equals("A")) {
-                int wartosc = registers.get(toExecute.getParam1());
-                String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
-                String wynik = "";
-                char tmp = stringWartosc.charAt(0);
-                for (int i = 1; i < 8; i++) {
-                    wynik += stringWartosc.charAt(i);
-                }
-                if(psw.get("C"))
-                    wynik += "1";
-                else
-                    wynik += "0";
-                if(tmp=='1')
-                    psw.put("C",true);
-                else
-                    psw.put("C",false);
-
-                registers.put(toExecute.getParam1(),Integer.parseInt(wynik,2));
-
-                int mnemonicSize = Main.cpu.getMnemonicSize("RL");
-                linePointer += mnemonicSize;
-            }
-            else {
-                System.out.println("Błąd w RL");
-                throw new InstructionException();
-            }
-        }
-        else if(toExecute.getMnemonic().equals("RR")) {
-            if(toExecute.getParam1().equals("A")) {
-                int wartosc = registers.get(toExecute.getParam1());
-                String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
-                String wynik = "";
-                char tmp = stringWartosc.charAt(7);
-                for (int i = 0; i < 7; i++) {
-                    wynik += stringWartosc.charAt(i);
-                }
-                wynik = tmp + wynik;
-
-                registers.put(toExecute.getParam1(),Integer.parseInt(wynik,2));
-
-                int mnemonicSize = Main.cpu.getMnemonicSize("RL");
-                linePointer += mnemonicSize;
-            }
-            else {
-                System.out.println("Błąd w RL");
-                throw new InstructionException();
-            }
-        }
-        else if(toExecute.getMnemonic().equals("RRC")) {
-            if(toExecute.getParam1().equals("A")) {
-                int wartosc = registers.get(toExecute.getParam1());
-                String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
-                String wynik = "";
-                char tmp = stringWartosc.charAt(7);
-                for (int i = 0; i < 7; i++) {
-                    wynik += stringWartosc.charAt(i);
-                }
-                if(psw.get("C"))
-                    wynik = "1" + wynik;
-                else
-                    wynik = "0" + wynik;
-                if(tmp=='1')
-                    psw.put("C",true);
-                else
-                    psw.put("C",false);
-
-                registers.put(toExecute.getParam1(),Integer.parseInt(wynik,2));
-
-                int mnemonicSize = Main.cpu.getMnemonicSize("RL");
-                linePointer += mnemonicSize;
-            }
-            else {
-                System.out.println("Błąd w RL");
-                throw new InstructionException();
-            }
-        }
-        else if(toExecute.getMnemonic().equals("ADD")) {
-            if(toExecute.getParam1().equals("A")) {
-                if(toExecute.getParam2().charAt(0) == '#') {
-                    String numberToAdd = toExecute.getParam2();
-                    int numberToAddLength = numberToAdd.length();
-                    int intNumberToAdd =-1;
-                    if(numberToAdd.charAt(numberToAddLength-1)=='D') {
-                        intNumberToAdd = Integer.parseInt(numberToAdd.substring(1,numberToAddLength-1));
-                    }
-                    else if(numberToAdd.charAt(numberToAddLength-1)=='H') {
-                        intNumberToAdd = Integer.parseInt(numberToAdd.substring(1,numberToAddLength-1),16);
-                    }
-                    else if(numberToAdd.charAt(numberToAddLength-1)=='B') {
-                        intNumberToAdd = Integer.parseInt(numberToAdd.substring(1,numberToAddLength-1),2);
-                    }
-                    else {
-                        System.out.println("Niepomyślne analizowanie liczby");
-                        throw new InstructionException();
-                    }
-                    if(intNumberToAdd!=-1) {
-                        int akumulator = registers.get("A");
-                        int wynik = akumulator + intNumberToAdd;
-                        if(wynik>255) {
-                            wynik-=255;
-                            psw.put("C",true);
-                        }
-                        else {
-                            psw.put("C",false);
-                        }
-                        registers.put("A",wynik);
-
-                    }
-                    else {
-                        throw new InstructionException();
-                    }
-                }
-                else {
-                    int toAdd = -1;
-                    if(registers.containsKey(toExecute.getParam2())) {
-                        toAdd = registers.get(toExecute.getParam2());
-                    }
-                    else if(ports.containsKey(toExecute.getParam2())) {
-                        toAdd = ports.get(toExecute.getParam2());
-                    }
-                    else {
-                        throw new InstructionException();
-                    }
-                    int accInt = registers.get("A");
-                    int wynik = accInt+toAdd;
-
-                    if(wynik>255) {
-                        wynik-=255;
-                        psw.put("C",true);
-                    }
-                    else {
-                        psw.put("C",false);
-                    }
-                    registers.put("A",wynik);
-
-                }
-            } else {
-                throw new InstructionException();
-            }
-
-            int mnemonicSize = Main.cpu.getMnemonicSize("ADD");
-            linePointer += mnemonicSize;
-
-        } else if(toExecute.getMnemonic().equals("ADDC")) {
-            int bitC = psw.get("C") ? 1 : 0;
-            if(toExecute.getParam1().equals("A")) {
-                if(toExecute.getParam2().charAt(0) == '#') {
-                    String numberToAdd = toExecute.getParam2();
-                    int numberToAddLength = numberToAdd.length();
-                    int intNumberToAdd =-1;
-                    if(numberToAdd.charAt(numberToAddLength-1)=='D') {
-                        intNumberToAdd = Integer.parseInt(numberToAdd.substring(1,numberToAddLength-1));
-                    }
-                    else if(numberToAdd.charAt(numberToAddLength-1)=='H') {
-                        intNumberToAdd = Integer.parseInt(numberToAdd.substring(1,numberToAddLength-1),16);
-                    }
-                    else if(numberToAdd.charAt(numberToAddLength-1)=='B') {
-                        intNumberToAdd = Integer.parseInt(numberToAdd.substring(1,numberToAddLength-1),2);
-                    }
-                    else {
-                        System.out.println("Niepomyślne analizowanie liczby");
-                        throw new InstructionException();
-                    }
-                    if(intNumberToAdd!=-1) {
-                        int akumulator = registers.get("A");
-                        int wynik = akumulator + intNumberToAdd + bitC;
-                        if(wynik>255) {
-                            wynik-=255;
-                            psw.put("C",true);
-                        }
-                        else {
-                            psw.put("C",false);
-                        }
-                        registers.put("A",wynik);
-
-                    }
-                    else {
-                        throw new InstructionException();
-                    }
-                }
-                else {
-                    int toAdd = -1;
-                    if(registers.containsKey(toExecute.getParam2())) {
-                        toAdd = registers.get(toExecute.getParam2());
-                    }
-                    else if(ports.containsKey(toExecute.getParam2())) {
-                        toAdd = ports.get(toExecute.getParam2());
-                    }
-                    else {
-                        throw new InstructionException();
-                    }
-                    int accInt = registers.get("A");
-                    int wynik = accInt+toAdd + bitC;
-
-                    if(wynik>255) {
-                        wynik-=255;
-                        psw.put("C",true);
-                    }
-                    else {
-                        psw.put("C",false);
-                    }
-                    registers.put("A",wynik);
-
-                }
-            } else {
-                throw new InstructionException();
-            }
-
-            int mnemonicSize = Main.cpu.getMnemonicSize("ADD");
-            linePointer += mnemonicSize;
-
-        }
-
-        int machineCyclesNumber = Main.cpu.getMnemonicTime(toExecute.getMnemonic().toUpperCase());
-        for (;machineCyclesNumber>0;machineCyclesNumber--) {
+        else if(toExecute.equals("00100011")) { //RL A
             machineCycle();
+            int wartosc = registers.get("A");
+            String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
+            String wynik = "";
+            char tmp = stringWartosc.charAt(0);
+            for (int i = 1; i < 8; i++) {
+                wynik += stringWartosc.charAt(i);
+            }
+            wynik += tmp;
+            registers.put("A",Integer.parseInt(wynik,2));
+            linePointer+=1;
         }
-*/
+        else if(toExecute.equals("00000011")) { //RR A
+            machineCycle();
+            int wartosc = registers.get("A");
+            String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
+            String wynik = "";
+            char tmp = stringWartosc.charAt(7);
+            for (int i = 0; i < 7; i++) {
+                wynik += stringWartosc.charAt(i);
+            }
+            wynik = tmp + wynik;
+            registers.put("A",Integer.parseInt(wynik,2));
+            linePointer+=1;
+        }
+        else if(toExecute.equals("00110011")) { //RLC
+            machineCycle();
+            int wartosc = registers.get("A");
+            String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
+            String wynik = "";
+            char tmp = stringWartosc.charAt(0);
+            for (int i = 1; i < 8; i++) {
+                wynik += stringWartosc.charAt(i);
+            }
+            if(psw.get("C"))
+                wynik += "1";
+            else
+                wynik += "0";
+            if(tmp=='1')
+                psw.put("C",true);
+            else
+                psw.put("C",false);
+
+            registers.put("A",Integer.parseInt(wynik,2));
+            linePointer+=1;
+        }
+
+        else if(toExecute.equals("00010011")) { // RRC
+            machineCycle();
+            int wartosc = registers.get("A");
+            String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
+            String wynik = "";
+            char tmp = stringWartosc.charAt(7);
+            for (int i = 0; i < 7; i++) {
+                wynik += stringWartosc.charAt(i);
+            }
+            if(psw.get("C"))
+                wynik = "1" + wynik;
+            else
+                wynik = "0" + wynik;
+            if(tmp=='1')
+                psw.put("C",true);
+            else
+                psw.put("C",false);
+
+            registers.put("A",Integer.parseInt(wynik,2));
+            linePointer+=1;
+        }
+        else if(toExecute.equals("00100100")) { //ADD A,#01h
+            machineCycle();
+            int obecnaWartosc = registers.get("A");
+            int doDodania = Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
+            int wynik = obecnaWartosc + doDodania;
+            if(wynik>255) {
+                wynik -=256;
+                psw.put("C",true);
+            }
+            else {
+                psw.put("C",false);
+            }
+            registers.put("A",wynik);
+            linePointer+=2;
+        }
+
+        else if(toExecute.equals("00110100")) { //ADDC A,#01h
+            machineCycle();
+            int obecnaWartosc = registers.get("A");
+            int doDodania = Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
+            int wynik = obecnaWartosc + doDodania;
+            if(psw.get("C"))
+                wynik+=1;
+            if(wynik>255) {
+                wynik -=256;
+                psw.put("C",true);
+            }
+            else {
+                psw.put("C",false);
+            }
+            registers.put("A",wynik);
+            linePointer+=2;
+        }
+
+        else if(toExecute.substring(0,5).equals("00101")) {
+            machineCycle();
+            int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
+            String rejestrString = "R" + rejestr;
+            int doDodania = registers.get(rejestrString);
+            int obecnaWartosc = registers.get("A");
+            int wynik = obecnaWartosc + doDodania;
+            if(wynik>255) {
+                wynik -=256;
+                psw.put("C",true);
+            }
+            else {
+                psw.put("C",false);
+            }
+            registers.put("A",wynik);
+            linePointer+=1;
+        }
+        else if(toExecute.substring(0,5).equals("00111")) {
+            machineCycle();
+            int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
+            String rejestrString = "R" + rejestr;
+            int doDodania = registers.get(rejestrString);
+            int obecnaWartosc = registers.get("A");
+            int wynik = obecnaWartosc + doDodania;
+            if(psw.get("C"))
+                wynik+=1;
+            if(wynik>255) {
+                wynik -=256;
+                psw.put("C",true);
+            }
+            else {
+                psw.put("C",false);
+            }
+            registers.put("A",wynik);
+            linePointer+=1;
+        }
+        else if(toExecute.equals("00100101")) {
+            int doDodania = 0;
+            if(codeMemory.getFromAddress(linePointer+1).equals("10000000")) {
+                doDodania = ports.get("P0");
+            }
+            if(codeMemory.getFromAddress(linePointer+1).equals("10010000")) {
+                doDodania = ports.get("P1");
+            }
+            if(codeMemory.getFromAddress(linePointer+1).equals("10100000")) {
+                doDodania = ports.get("P2");
+            }
+            if(codeMemory.getFromAddress(linePointer+1).equals("10110000")) {
+                doDodania = ports.get("P3");
+            }
+
+            int obecnaWartosc = registers.get("A");
+            int wynik = obecnaWartosc + doDodania;
+            if(wynik>255) {
+                wynik -=256;
+                psw.put("C",true);
+            }
+            else {
+                psw.put("C",false);
+            }
+            registers.put("A",wynik);
+            linePointer+=2;
+        }
+        else if(toExecute.equals("00110101")) {
+            int doDodania = 0;
+            if(codeMemory.getFromAddress(linePointer+1).equals("10000000")) {
+                doDodania = ports.get("P0");
+            }
+            if(codeMemory.getFromAddress(linePointer+1).equals("10010000")) {
+                doDodania = ports.get("P1");
+            }
+            if(codeMemory.getFromAddress(linePointer+1).equals("10100000")) {
+                doDodania = ports.get("P2");
+            }
+            if(codeMemory.getFromAddress(linePointer+1).equals("10110000")) {
+                doDodania = ports.get("P3");
+            }
+
+            int obecnaWartosc = registers.get("A");
+            int wynik = obecnaWartosc + doDodania;
+            if(psw.get("C"))
+                wynik+=1;
+            if(wynik>255) {
+                wynik -=256;
+                psw.put("C",true);
+            }
+            else {
+                psw.put("C",false);
+            }
+            registers.put("A",wynik);
+            linePointer+=2;
+        }
+        else if(toExecute.equals("10010100")) { //SUBB A,#01h
+            machineCycle();
+            int c = psw.get("C") ? 1 : 0;
+            int obecnaWartosc = registers.get("A");
+            int doOdjecia = Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
+            int wynik = obecnaWartosc - c - doOdjecia;
+            if(wynik<0) {
+                wynik +=256;
+                psw.put("C",true);
+            }
+            else {
+                psw.put("C",false);
+            }
+            registers.put("A",wynik);
+            linePointer+=2;
+        }
+
+        else if(toExecute.substring(0,5).equals("10011")) { //SUBB A,Rx
+            machineCycle();
+            int c = psw.get("C") ? 1 : 0;
+            int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
+            String rejestrString = "R" + rejestr;
+            int doOdjecia = registers.get(rejestrString);
+            int obecnaWartosc = registers.get("A");
+            int wynik = obecnaWartosc - c - doOdjecia;
+            if(wynik<0) {
+                wynik +=256;
+                psw.put("C",true);
+            }
+            else {
+                psw.put("C",false);
+            }
+            registers.put("A",wynik);
+            linePointer+=1;
+        }
+        else if(toExecute.equals("10010101")) { //SUBB A,Px
+            int doOdjecia = 0;
+            int c = psw.get("C") ? 1 : 0;
+            if(codeMemory.getFromAddress(linePointer+1).equals("10000000")) {
+                doOdjecia = ports.get("P0");
+            }
+            if(codeMemory.getFromAddress(linePointer+1).equals("10010000")) {
+                doOdjecia = ports.get("P1");
+            }
+            if(codeMemory.getFromAddress(linePointer+1).equals("10100000")) {
+                doOdjecia = ports.get("P2");
+            }
+            if(codeMemory.getFromAddress(linePointer+1).equals("10110000")) {
+                doOdjecia = ports.get("P3");
+            }
+
+            int obecnaWartosc = registers.get("A");
+            int wynik = obecnaWartosc - c - doOdjecia;
+            if(wynik<0) {
+                wynik +=256;
+                psw.put("C",true);
+            }
+            else {
+                psw.put("C",false);
+            }
+            registers.put("A",wynik);
+            linePointer+=2;
+        }
+        else if(toExecute.equals("11010011")) { //SETB C
+            machineCycle();
+            psw.put("C",true);
+            linePointer++;
+        }
+        else if(toExecute.equals("11100100")) { //CLR A
+            machineCycle();
+            registers.put("A",0);
+            linePointer++;
+        }
+        else if(toExecute.equals("11000011")) { //CLR C
+            machineCycle();
+            psw.put("C",false);
+            linePointer++;
+        }
+        refreshStatusRegister();
         refreshGui();
     }
 

@@ -220,6 +220,179 @@ public class CodeMemory {
                             }
 
                         }
+                        else if(splittedLine[0].toUpperCase().equals("RL")) {
+                            if(splittedLine[1].toUpperCase().equals("A")) {
+                                emulatedCodeMemory.set(pointer,"00100011");
+                                pointer+=1;
+                            }
+                        }
+
+                        else if(splittedLine[0].toUpperCase().equals("RLC")) {
+                            if(splittedLine[1].toUpperCase().equals("A")) {
+                                emulatedCodeMemory.set(pointer,"00110011");
+                                pointer+=1;
+                            }
+                        }
+
+                        else if(splittedLine[0].toUpperCase().equals("RR")) {
+                            if(splittedLine[1].toUpperCase().equals("A")) {
+                                emulatedCodeMemory.set(pointer,"00000011");
+                                pointer+=1;
+                            }
+                        }
+
+                        else if(splittedLine[0].toUpperCase().equals("RRC")) {
+                            if(splittedLine[1].toUpperCase().equals("A")) {
+                                emulatedCodeMemory.set(pointer,"00010011");
+                                pointer+=1;
+                            }
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("ADD")) {
+                            if(splittedLine[1].toUpperCase().equals("A")) {
+
+                                if(splittedLine[1].toUpperCase().equals("A")) {
+                                    if(splittedLine[2].charAt(0)=='#') {
+                                        emulatedCodeMemory.set(pointer,"00100100");
+                                        emulatedCodeMemory.set(pointer+1,make8DigitsStringFromNumber(splittedLine[2].substring(1)));
+                                        pointer+=2;
+                                    }
+                                    else if(splittedLine[2].toUpperCase().charAt(0)=='R') {
+                                        if(splittedLine[2].toUpperCase().equals("R0"))
+                                            emulatedCodeMemory.set(pointer,"00101000");
+                                        if(splittedLine[2].toUpperCase().equals("R1"))
+                                            emulatedCodeMemory.set(pointer,"00101001");
+                                        if(splittedLine[2].toUpperCase().equals("R2"))
+                                            emulatedCodeMemory.set(pointer,"00101010");
+                                        if(splittedLine[2].toUpperCase().equals("R3"))
+                                            emulatedCodeMemory.set(pointer,"00101011");
+                                        if(splittedLine[2].toUpperCase().equals("R4"))
+                                            emulatedCodeMemory.set(pointer,"00101100");
+                                        if(splittedLine[2].toUpperCase().equals("R5"))
+                                            emulatedCodeMemory.set(pointer,"00101101");
+                                        if(splittedLine[2].toUpperCase().equals("R6"))
+                                            emulatedCodeMemory.set(pointer,"00101110");
+                                        if(splittedLine[2].toUpperCase().equals("R7"))
+                                            emulatedCodeMemory.set(pointer,"00101111");
+                                        pointer+=1;
+                                    }
+                                    else if(splittedLine[2].toUpperCase().charAt(0)=='P') {
+                                        emulatedCodeMemory.set(pointer,"00100101");
+                                        if(splittedLine[2].toUpperCase().equals("P0"))
+                                            emulatedCodeMemory.set(pointer+1,"10000000");
+                                        if(splittedLine[2].toUpperCase().equals("P1"))
+                                            emulatedCodeMemory.set(pointer+1,"10010000");
+                                        if(splittedLine[2].toUpperCase().equals("P2"))
+                                            emulatedCodeMemory.set(pointer+1,"10100000");
+                                        if(splittedLine[2].toUpperCase().equals("P3"))
+                                            emulatedCodeMemory.set(pointer+1,"10110000");
+                                        pointer+=2;
+                                    }
+
+                                }
+
+                            }
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("ADDC")) {
+                            if(splittedLine[1].toUpperCase().equals("A")) {
+
+                                if(splittedLine[1].toUpperCase().equals("A")) {
+                                    if(splittedLine[2].charAt(0)=='#') {
+                                        emulatedCodeMemory.set(pointer,"00110100");
+                                        emulatedCodeMemory.set(pointer+1,make8DigitsStringFromNumber(splittedLine[2].substring(1)));
+                                        pointer+=2;
+                                    }
+                                    else if(splittedLine[2].toUpperCase().charAt(0)=='R') {
+                                        if(splittedLine[2].toUpperCase().equals("R0"))
+                                            emulatedCodeMemory.set(pointer,"00111000");
+                                        if(splittedLine[2].toUpperCase().equals("R1"))
+                                            emulatedCodeMemory.set(pointer,"00111001");
+                                        if(splittedLine[2].toUpperCase().equals("R2"))
+                                            emulatedCodeMemory.set(pointer,"00111010");
+                                        if(splittedLine[2].toUpperCase().equals("R3"))
+                                            emulatedCodeMemory.set(pointer,"00111011");
+                                        if(splittedLine[2].toUpperCase().equals("R4"))
+                                            emulatedCodeMemory.set(pointer,"00111100");
+                                        if(splittedLine[2].toUpperCase().equals("R5"))
+                                            emulatedCodeMemory.set(pointer,"00111101");
+                                        if(splittedLine[2].toUpperCase().equals("R6"))
+                                            emulatedCodeMemory.set(pointer,"00111110");
+                                        if(splittedLine[2].toUpperCase().equals("R7"))
+                                            emulatedCodeMemory.set(pointer,"00111111");
+                                        pointer+=1;
+                                    }
+                                    else if(splittedLine[2].toUpperCase().charAt(0)=='P') {
+                                        emulatedCodeMemory.set(pointer,"00110101");
+                                        if(splittedLine[2].toUpperCase().equals("P0"))
+                                            emulatedCodeMemory.set(pointer+1,"10000000");
+                                        if(splittedLine[2].toUpperCase().equals("P1"))
+                                            emulatedCodeMemory.set(pointer+1,"10010000");
+                                        if(splittedLine[2].toUpperCase().equals("P2"))
+                                            emulatedCodeMemory.set(pointer+1,"10100000");
+                                        if(splittedLine[2].toUpperCase().equals("P3"))
+                                            emulatedCodeMemory.set(pointer+1,"10110000");
+                                        pointer+=2;
+                                    }
+
+                                }
+
+                            }
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("SUBB")) {
+                            if(splittedLine[1].toUpperCase().equals("A")) {
+                                if(splittedLine[2].charAt(0)=='#') {
+                                    emulatedCodeMemory.set(pointer,"10010100");
+                                    emulatedCodeMemory.set(pointer+1,make8DigitsStringFromNumber(splittedLine[2].substring(1)));
+                                    pointer+=2;
+                                }
+                                else if(splittedLine[2].toUpperCase().charAt(0)=='R') {
+                                    if(splittedLine[2].toUpperCase().equals("R0"))
+                                        emulatedCodeMemory.set(pointer,"10011000");
+                                    if(splittedLine[2].toUpperCase().equals("R1"))
+                                        emulatedCodeMemory.set(pointer,"10011001");
+                                    if(splittedLine[2].toUpperCase().equals("R2"))
+                                        emulatedCodeMemory.set(pointer,"10011010");
+                                    if(splittedLine[2].toUpperCase().equals("R3"))
+                                        emulatedCodeMemory.set(pointer,"10011011");
+                                    if(splittedLine[2].toUpperCase().equals("R4"))
+                                        emulatedCodeMemory.set(pointer,"10011100");
+                                    if(splittedLine[2].toUpperCase().equals("R5"))
+                                        emulatedCodeMemory.set(pointer,"10011101");
+                                    if(splittedLine[2].toUpperCase().equals("R6"))
+                                        emulatedCodeMemory.set(pointer,"10011110");
+                                    if(splittedLine[2].toUpperCase().equals("R7"))
+                                        emulatedCodeMemory.set(pointer,"10011111");
+                                    pointer+=1;
+                                }
+                                else if(splittedLine[2].toUpperCase().charAt(0)=='P') {
+                                    emulatedCodeMemory.set(pointer,"10010101");
+                                    if(splittedLine[2].toUpperCase().equals("P0"))
+                                        emulatedCodeMemory.set(pointer+1,"10000000");
+                                    if(splittedLine[2].toUpperCase().equals("P1"))
+                                        emulatedCodeMemory.set(pointer+1,"10010000");
+                                    if(splittedLine[2].toUpperCase().equals("P2"))
+                                        emulatedCodeMemory.set(pointer+1,"10100000");
+                                    if(splittedLine[2].toUpperCase().equals("P3"))
+                                        emulatedCodeMemory.set(pointer+1,"10110000");
+                                    pointer+=2;
+                                }
+
+                            }
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("SETB")) {
+                            if(splittedLine[1].toUpperCase().equals("C")) {
+                                emulatedCodeMemory.set(pointer,"11010011");
+                                pointer+=1;
+                            }
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("CLR")) {
+                            if(splittedLine[1].toUpperCase().equals("C")) {
+                                emulatedCodeMemory.set(pointer,"11000011");
+                                pointer+=1;
+                            }
+                            else if(splittedLine[1].toUpperCase().equals("A")) {
+                                emulatedCodeMemory.set(pointer,"11100100");
+                            }
+                        }
                     }
                 }
 
@@ -241,7 +414,7 @@ public class CodeMemory {
                 }
             }
         }
-        show();
+        //show();
     }
 
     private ArrayList<String> emulatedCodeMemory;
