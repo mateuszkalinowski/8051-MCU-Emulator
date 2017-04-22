@@ -321,40 +321,40 @@ public class MainStage extends Application {
         p1Label.setMaxWidth(Double.MAX_VALUE);
         p1Label.setAlignment(Pos.CENTER);
         p1Label.setFont(new Font("Arial",11));
-        simulatorGridPane.add(p1Label,13,2);
+        simulatorGridPane.add(p1Label,13,3);
 
         p1TextField = new Label("11111111");
         p1TextField.setMaxWidth(Double.MAX_VALUE);
         p1TextField.setAlignment(Pos.CENTER);
         p1TextField.setFont(new Font("Arial",11));
         p1TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p1TextField,14,2,2,1);
+        simulatorGridPane.add(p1TextField,14,3,2,1);
 
         p2Label = new Label("P2");
         p2Label.setMaxWidth(Double.MAX_VALUE);
         p2Label.setAlignment(Pos.CENTER);
         p2Label.setFont(new Font("Arial",11));
-        simulatorGridPane.add(p2Label,13,3);
+        simulatorGridPane.add(p2Label,13,5);
 
         p2TextField = new Label("11111111");
         p2TextField.setMaxWidth(Double.MAX_VALUE);
         p2TextField.setAlignment(Pos.CENTER);
         p2TextField.setFont(new Font("Arial",11));
         p2TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p2TextField,14,3,2,1);
+        simulatorGridPane.add(p2TextField,14,5,2,1);
 
         p3Label = new Label("P3");
         p3Label.setMaxWidth(Double.MAX_VALUE);
         p3Label.setAlignment(Pos.CENTER);
         p3Label.setFont(new Font("Arial",11));
-        simulatorGridPane.add(p3Label,13,4);
+        simulatorGridPane.add(p3Label,13,7);
 
         p3TextField = new Label("11111111");
         p3TextField.setMaxWidth(Double.MAX_VALUE);
         p3TextField.setAlignment(Pos.CENTER);
         p3TextField.setFont(new Font("Arial",11));
         p3TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p3TextField,14,4,2,1);
+        simulatorGridPane.add(p3TextField,14,7,2,1);
 
         Label pswLabel = new Label("REG\nPSW:");
         pswLabel.setMaxWidth(Double.MAX_VALUE);
