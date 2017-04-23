@@ -123,7 +123,40 @@ public class CodeMemory {
 
                             emulatedCodeMemory.set(pointer+1,splittedLine[2].toUpperCase());
                             pointer+=2;
-                        } else if(splittedLine[0].toUpperCase().equals("JC")) {
+                        } else if (splittedLine[0].toUpperCase().equals("ANL")) {
+                            if(splittedLine[1].toUpperCase().equals("A")) {
+                                   if(splittedLine[2].charAt(0) == '#') {
+                                       emulatedCodeMemory.set(pointer,"01010100");
+                                       try {
+                                           emulatedCodeMemory.set(pointer + 1, make8DigitsStringFromNumber(splittedLine[2].substring(1)));
+                                       }
+                                       catch (NumberFormatException e) {
+                                           throw new CompilingException("Nieznana Wartosc: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
+
+                                       }
+                                       pointer+=2;
+                                   }
+                            }
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("CPL")) {
+                            if(splittedLine[1].toUpperCase().equals("A")) {
+                                emulatedCodeMemory.set(pointer,"11110100");
+                                pointer++;
+                            }
+                            else if(splittedLine[1].toUpperCase().equals("C")) {
+                                emulatedCodeMemory.set(pointer,"10110011");
+                                pointer++;
+                            }
+                            else if(Main.cpu.bitMap.containsKey(splittedLine[1].toUpperCase())) {
+                                emulatedCodeMemory.set(pointer,"10110010");
+                                emulatedCodeMemory.set(pointer+1,Main.cpu.bitMap.get(splittedLine[1].toUpperCase()));
+                                pointer+=2;
+                            }
+                            else
+                                throw new CompilingException("Nieznany argument: '" + splittedLine[1] + "'");
+
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("JC")) {
                             if(splittedLine.length!=2) {
                                 throw new CompilingException("Niepoprawna ilosć argumentów: '" + backupLinii + "'" );
                             }

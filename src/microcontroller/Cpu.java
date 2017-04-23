@@ -64,7 +64,6 @@ public class Cpu {
     }
 
     public void executeInstruction() throws InstructionException{
-        System.out.println(linePointer);
         String toExecute = codeMemory.getFromAddress(linePointer);
         //System.out.println(linePointer + " " + toExecute);
         if(toExecute.equals("00000010")) { //LJMP
@@ -85,7 +84,6 @@ public class Cpu {
             registers.put(rejestrString,wartosc);
 
             if(wartosc>0) {
-
                 int wynik = linePointer+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
                 if(wynik>255)
                     wynik-=256;
@@ -94,6 +92,59 @@ public class Cpu {
             if(wartosc==0) {
                 linePointer+=2;
             }
+        }
+        else if(toExecute.equals("01010100")) { //ANL a,#01h
+            machineCycle();
+            int wartosc = Integer.parseInt(codeMemory.getFromAddress(linePointer+1));
+            int wynik = wartosc & registers.get("A");
+            registers.put("A",wynik);
+            linePointer+=2;
+        }
+        else if(toExecute.equals("11110100")) { //CPL A
+            machineCycle();
+            int wartosc = registers.get("A");
+            wartosc = ~wartosc;
+            if(wartosc<0)
+                wartosc+=256;
+            if(wartosc>255)
+                wartosc-=256;
+            System.out.println(wartosc);
+            registers.put("A",wartosc);
+            linePointer+=1;
+        }
+        else if(toExecute.equals("10110011")) { //CPL C
+            machineCycle();
+            if(psw.get("C"))
+                psw.put("C",false);
+            else
+                psw.put("C",true);
+
+            linePointer+=1;
+        }
+        else if(toExecute.equals("10110010")) { //CPL Bit
+            machineCycle();
+            String rejestr = getKeyFromBitMap(codeMemory.getFromAddress(linePointer+1));
+            String podzielone[] = rejestr.split("\\.");
+            int wartosc = registers.get(podzielone[0]);
+            String wartoscString = expandTo8Digits(Integer.toBinaryString(wartosc));
+            int index = Integer.parseInt(podzielone[1]);
+            index = 7-index;
+            String wynik = wartoscString.charAt(index) + "";
+            if(wynik.equals("1"))
+                wynik = "0";
+            else
+                wynik = "1";
+            if(index==0)
+                wartoscString = wynik + wartoscString.substring(1,8);
+            else if(index==7)
+                wartoscString = wartoscString.substring(0,7) + wynik;
+            else {
+                wartoscString = wartoscString.substring(0,index) + wynik + wartoscString.substring(index+1,8);
+            }
+            registers.put("A",Integer.parseInt(wartoscString,2));
+            linePointer+=2;
+
+
         }
         else if(toExecute.equals("01000000")) { //JC
             machineCycle();
