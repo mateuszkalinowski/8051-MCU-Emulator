@@ -8,6 +8,10 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.ScatterChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
@@ -402,14 +406,9 @@ public class MainStage extends Application {
                     stopSimulationButton.setDisable(false);
                     oneStepButton.setDisable(false);
                     editorTextArea.setEditable(false);
+                    rysujRunButton.setDisable(true);
                 }
                 catch (CompilingException e) {
-                    /*Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Błąd Kompilacji");
-                    alert.setHeaderText("Kompilacja przebiegła nieudanie");
-                    alert.setContentText("Sprawdź kod jeszcze raz, informacja gdzie wystąpił błąd zostanie" +
-                            "dodana w jednej z kolejnych wersji programu");
-                    alert.showAndWait();*/
                     Main.stage.compilationErrorsLabel.setText("Błąd: " + e.getMessage());
                     Main.stage.compilationErrorsLabel.setStyle("-fx-background-color: red; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
 
@@ -426,6 +425,7 @@ public class MainStage extends Application {
                 oneStepButton.setDisable(true);
                 editorTextArea.setEditable(true);
                 editorTextArea.setText("");
+                rysujRunButton.setDisable(false);
                 String textToSet = "";
                 for(String line : lines) {
                     textToSet = textToSet + line + "\n";
@@ -538,14 +538,89 @@ public class MainStage extends Application {
         TabPane elementsTabPane = new TabPane();
         Tab diodesPane = new Tab("Diody");
         diodesPane.setClosable(false);
+        Tab chartPane = new Tab("Przebieg");
+        chartPane.setClosable(false);
+        elementsTabPane.getTabs().add(chartPane);
         elementsTabPane.getTabs().add(diodesPane);
 
+        BorderPane chartBorderPane = new BorderPane();
+
+        final NumberAxis xAxis = new NumberAxis(0,255,64);
+        final NumberAxis yAxis = new NumberAxis(0,255,64);
+        //creating the chart
+        final ScatterChart<Number,Number> lineChart =
+                new ScatterChart<Number,Number>(xAxis,yAxis);
+        lineChart.setLegendVisible(false);
+        lineChart.setTitle("Przebieg - p1(p0)");
+        XYChart.Series series = new XYChart.Series();
+        lineChart.getData().add(series);
+        chartPane.setContent(chartBorderPane);
+
+        chartBorderPane.setCenter(lineChart);
+
+
         editorElementsGridPane.add(elementsTabPane,1,0);
+
+        rysujRunButton = new Button("Generuj Przebieg");
+        rysujRunButton.setDisable(false);
+        rysujRunButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                lines = editorTextArea.getText().split("\n");
+                try {
+                    Main.cpu.codeMemory.setMemory(lines);
+                    Main.cpu.resetCpu();
+                    Main.cpu.refreshGui();
+                }
+                catch (CompilingException e) {
+                    Main.stage.compilationErrorsLabel.setText("Błąd: " + e.getMessage());
+                    Main.stage.compilationErrorsLabel.setStyle("-fx-background-color: red; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
+                    return;
+
+                }
+
+
+
+                series.getData().clear();
+                Main.cpu.resetCounter();
+                for(int i = 0; i < 255;i++){
+                    Main.cpu.ports.put("P0",i);
+                    while(true) {
+                        try {
+                            Main.cpu.executeInstruction();
+                        }
+                        catch (Exception e) {
+
+                        }
+                        if(Main.cpu.ports.get("P3")==0) {
+                            int wartoscp1 = Main.cpu.ports.get("P1");
+                            series.getData().add(new XYChart.Data(i,wartoscp1));
+                            Main.cpu.resetCpu();
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+
+        HBox generateButtonBox = new HBox();
+        generateButtonBox.setPadding(new Insets(10,10,10,10));
+        generateButtonBox.setAlignment(Pos.CENTER);
+        HBox.setHgrow(rysujRunButton,Priority.ALWAYS);
+        generateButtonBox.setSpacing(5);
+
+        generateButtonBox.getChildren().addAll(rysujRunButton);
+
+        chartBorderPane.setBottom(generateButtonBox);
+        //simulatorGridPane.add(rysujPrzebiegButton,1,1,3,2);
+
 
         mainStage = primaryStage;
         mainStage.setTitle("8051 MCU Emulator - 0.1 Alpha");
         mainBorderPane.setCenter(mainGridPane);
         mainScene = new Scene(mainBorderPane,width,height);
+        mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
         mainStage.setScene(mainScene);
         mainStage.show();
         Main.cpu.refreshGui();
@@ -645,4 +720,6 @@ public class MainStage extends Application {
     Scene mainScene;
 
     private String lines[];
+
+    private Button rysujRunButton;
 }

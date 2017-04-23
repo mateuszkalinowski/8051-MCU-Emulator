@@ -38,6 +38,15 @@ public class Cpu {
         ports.put("P1",255);
         ports.put("P2",255);
         ports.put("P3",255);
+        bitMap.clear();
+        bitMap.put("A.0","11100000");
+        bitMap.put("A.1","11100001");
+        bitMap.put("A.2","11100010");
+        bitMap.put("A.3","11100011");
+        bitMap.put("A.4","11100100");
+        bitMap.put("A.5","11100101");
+        bitMap.put("A.6","11100110");
+        bitMap.put("A.7","11100111");
 
         psw.put("P",true);
         psw.put("OV",false);
@@ -55,7 +64,7 @@ public class Cpu {
     }
 
     public void executeInstruction() throws InstructionException{
-
+        System.out.println(linePointer);
         String toExecute = codeMemory.getFromAddress(linePointer);
         //System.out.println(linePointer + " " + toExecute);
         if(toExecute.equals("00000010")) { //LJMP
@@ -76,10 +85,45 @@ public class Cpu {
             registers.put(rejestrString,wartosc);
 
             if(wartosc>0) {
-                linePointer = Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
+
+                int wynik = linePointer+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
+                if(wynik>255)
+                    wynik-=256;
+                linePointer = wynik;
             }
             if(wartosc==0) {
                 linePointer+=2;
+            }
+        }
+        else if(toExecute.equals("01000000")) { //JC
+            machineCycle();
+            machineCycle();
+            if(psw.get("C")) {
+                int wynik = linePointer + 1 + 1 + Integer.parseInt(codeMemory.getFromAddress(linePointer + 1), 2);
+                if (wynik > 255)
+                    wynik -= 256;
+                linePointer = wynik;
+            }
+            else
+                linePointer+=2;
+        }
+        else if(toExecute.equals("00100000")) { //JB
+            machineCycle();
+            machineCycle();
+            String rejestr = getKeyFromBitMap(codeMemory.getFromAddress(linePointer+1));
+            String podzielone[] = rejestr.split("\\.");
+            int wartosc = registers.get(podzielone[0]);
+            String wartoscString = expandTo8Digits(Integer.toBinaryString(wartosc));
+            int index = Integer.parseInt(podzielone[1]);
+            if(wartoscString.charAt(7-index)=='1') {
+                int wynik = linePointer+1+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
+                if(wynik>255)
+                    wynik-=256;
+                linePointer = wynik;
+                System.out.println("tak");
+            }
+            else {
+                linePointer+=3;
             }
         }
         else if(toExecute.equals("01110100")) { // MOV A,#01h
@@ -127,7 +171,7 @@ public class Cpu {
             registers.put(rejestrString,registers.get("A"));
             linePointer+=1;
         }
-        else if(toExecute.equals("11110101")) {
+        else if(toExecute.equals("11110101")) { // Px, a
             machineCycle();
             if(codeMemory.getFromAddress(linePointer+1).equals("10000000")) {
                 ports.put("P0",registers.get("A"));
@@ -142,6 +186,59 @@ public class Cpu {
                 ports.put("P3",registers.get("A"));
             }
             linePointer+=2;
+        }
+        else if(toExecute.equals("10000101")) { //Px,Px
+            machineCycle();
+            machineCycle();
+            String port1 = "";
+            String port2 = "";
+            if(codeMemory.getFromAddress(linePointer+1).equals("10000000")) {
+                port1="P0";
+            }
+            if(codeMemory.getFromAddress(linePointer+1).equals("10010000")) {
+                port1="P1";
+            }
+            if(codeMemory.getFromAddress(linePointer+1).equals("10100000")) {
+                port1="P2";
+            }
+            if(codeMemory.getFromAddress(linePointer+1).equals("10110000")) {
+                port1="P3";
+            }
+
+            if(codeMemory.getFromAddress(linePointer+2).equals("10000000")) {
+                port2="P0";
+            }
+            if(codeMemory.getFromAddress(linePointer+2).equals("10010000")) {
+                port2="P1";
+            }
+            if(codeMemory.getFromAddress(linePointer+2).equals("10100000")) {
+                port2="P2";
+            }
+            if(codeMemory.getFromAddress(linePointer+2).equals("10110000")) {
+                port2="P3";
+            }
+            ports.put(port1,ports.get(port2));
+            linePointer+=3;
+
+        }
+        else if(toExecute.equals("01110101")) { //Px, #liczba
+            machineCycle();
+            machineCycle();
+            String port1 = "";
+            if(codeMemory.getFromAddress(linePointer+1).equals("10000000")) {
+                port1="P0";
+            }
+            if(codeMemory.getFromAddress(linePointer+1).equals("10010000")) {
+                port1="P1";
+            }
+            if(codeMemory.getFromAddress(linePointer+1).equals("10100000")) {
+                port1="P2";
+            }
+            if(codeMemory.getFromAddress(linePointer+1).equals("10110000")) {
+                port1="P3";
+            }
+            ports.put(port1,Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2));
+            linePointer+=3;
         }
         else if(toExecute.equals("00100011")) { //RL A
             machineCycle();
@@ -534,9 +631,23 @@ public class Cpu {
         return number;
     }
 
+    public void resetCounter(){
+        linePointer = 0;
+    }
+
     private int linePointer;
     private Map<String,Integer> registers = new HashMap<>();
     private Map<String,Boolean> psw = new HashMap<>();
     public CodeMemory codeMemory = new CodeMemory();
-    private Map<String,Integer> ports = new HashMap<>();
+    public Map<String,Integer> ports = new HashMap<>();
+
+    public Map<String,String> bitMap = new HashMap<>();
+
+    public String getKeyFromBitMap(String toFind){
+        for(String s:bitMap.keySet()) {
+            if(bitMap.get(s).equals(toFind))
+                return s;
+        }
+        return "";
+    }
 }
