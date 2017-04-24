@@ -475,9 +475,6 @@ public class MainStage extends Application {
         buttonBox.getChildren().addAll(translateToMemoryButton,stopSimulationButton,oneStepButton);
         infoEditorAndButtonGridPane.add(buttonBox,0,18,1,2);
 
-        //simulatorGridPane.add(translateToMemoryButton,17,1,2,2);
-        //simulatorGridPane.add(stopSimulationButton,17,3,2,2);
-        //simulatorGridPane.add(oneStepButton,17,5,2,2);
         MenuBar mainMenuBar = new MenuBar();
         mainBorderPane.setTop(mainMenuBar);
 
@@ -579,25 +576,35 @@ public class MainStage extends Application {
                     return;
 
                 }
-
-
-
                 series.getData().clear();
                 Main.cpu.resetCounter();
                 for(int i = 0; i < 255;i++){
-                    Main.cpu.ports.put("P0",i);
+                    int counter = 0;
+                    //Main.cpu.ports.put("P0",i);
+                    Main.cpu.mainMemory.put("P0",i);
                     while(true) {
+                        counter++;
                         try {
                             Main.cpu.executeInstruction();
                         }
                         catch (Exception e) {
 
                         }
-                        if(Main.cpu.ports.get("P3")==0) {
-                            int wartoscp1 = Main.cpu.ports.get("P1");
+                        if(Main.cpu.mainMemory.get("P3")==0) {
+                            int wartoscp1 = Main.cpu.mainMemory.get("P1");
                             series.getData().add(new XYChart.Data(i,wartoscp1));
                             Main.cpu.resetCpu();
                             break;
+                        }
+                        if(counter>100) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Błąd Generacji Przebiegu");
+                            alert.setHeaderText("Nie wykryto stanu aktywującego zapis przebiegu");
+                            alert.setContentText("Aby rejestrator przebiegów zapisał parę (P0,P1) ustaw wartość" +
+                                    " '00h' na porcie trzecim. Rejestrator podaje na p0 kolejne wartości i czeka na ten " +
+                                    "stan, aby zapisać pomiar.");
+                            alert.showAndWait();
+                            return;
                         }
                     }
                 }
@@ -613,8 +620,6 @@ public class MainStage extends Application {
         generateButtonBox.getChildren().addAll(rysujRunButton);
 
         chartBorderPane.setBottom(generateButtonBox);
-        //simulatorGridPane.add(rysujPrzebiegButton,1,1,3,2);
-
 
         mainStage = primaryStage;
         mainStage.setTitle("8051 MCU Emulator - 0.1 Alpha");

@@ -1,5 +1,6 @@
 package core;
 
+import components.Memory;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,6 +16,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         stage = new MainStage(initialWidth,initialHeight);
         stage.start(primaryStage);
+
+        Memory mainMemory = new Memory();
     }
 
     public static void main(String[] args) {
