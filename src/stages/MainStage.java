@@ -112,27 +112,55 @@ public class MainStage extends Application {
         accumulatorLabel.setMaxWidth(Double.MAX_VALUE);
         accumulatorLabel.setAlignment(Pos.CENTER);
         accumulatorLabel.setFont(new Font("Arial",11));
-        simulatorGridPane.add(accumulatorLabel,10,7);
+        simulatorGridPane.add(accumulatorLabel,10,5);
 
-        accumulatorTextField = new Label("00h");
-        accumulatorTextField.setMaxWidth(Double.MAX_VALUE);
-        accumulatorTextField.setAlignment(Pos.CENTER);
-        accumulatorTextField.setFont(new Font("Arial",11));
-        accumulatorTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(accumulatorTextField,10,8);
+        accumulatorTextFieldHex = new Label("00h");
+        accumulatorTextFieldHex.setMaxWidth(Double.MAX_VALUE);
+        accumulatorTextFieldHex.setAlignment(Pos.CENTER);
+        accumulatorTextFieldHex.setFont(new Font("Arial",11));
+        accumulatorTextFieldHex.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(accumulatorTextFieldHex,10,6);
+
+        accumulatorTextFieldBin = new Label("00000000b");
+        accumulatorTextFieldBin.setMaxWidth(Double.MAX_VALUE);
+        accumulatorTextFieldBin.setAlignment(Pos.CENTER);
+        accumulatorTextFieldBin.setFont(new Font("Arial",11));
+        accumulatorTextFieldBin.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(accumulatorTextFieldBin,11,6,2,1);
+
+        accumulatorTextFieldDec = new Label("000d");
+        accumulatorTextFieldDec.setMaxWidth(Double.MAX_VALUE);
+        accumulatorTextFieldDec.setAlignment(Pos.CENTER);
+        accumulatorTextFieldDec.setFont(new Font("Arial",11));
+        accumulatorTextFieldDec.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(accumulatorTextFieldDec,13,6);
 
         bLabel = new Label("B");
         bLabel.setMaxWidth(Double.MAX_VALUE);
         bLabel.setAlignment(Pos.CENTER);
         bLabel.setFont(new Font("Arial",11));
-        simulatorGridPane.add(bLabel,11,7);
+        simulatorGridPane.add(bLabel,10,7);
 
-        bTextField = new Label("00h");
-        bTextField.setMaxWidth(Double.MAX_VALUE);
-        bTextField.setAlignment(Pos.CENTER);
-        bTextField.setFont(new Font("Arial",11));
-        bTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(bTextField,11,8);
+        bTextFieldHex = new Label("00h");
+        bTextFieldHex.setMaxWidth(Double.MAX_VALUE);
+        bTextFieldHex.setAlignment(Pos.CENTER);
+        bTextFieldHex.setFont(new Font("Arial",11));
+        bTextFieldHex.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(bTextFieldHex,10,8);
+
+        bTextFieldBin = new Label("00h");
+        bTextFieldBin.setMaxWidth(Double.MAX_VALUE);
+        bTextFieldBin.setAlignment(Pos.CENTER);
+        bTextFieldBin.setFont(new Font("Arial",11));
+        bTextFieldBin.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(bTextFieldBin,11,8,2,1);
+
+        bTextFieldDec = new Label("000d");
+        bTextFieldDec.setMaxWidth(Double.MAX_VALUE);
+        bTextFieldDec.setAlignment(Pos.CENTER);
+        bTextFieldDec.setFont(new Font("Arial",11));
+        bTextFieldDec.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(bTextFieldDec,13,8);
 
         r0Label = new Label("R0");
         r0Label.setMaxWidth(Double.MAX_VALUE);
@@ -407,6 +435,7 @@ public class MainStage extends Application {
                     oneStepButton.setDisable(false);
                     editorTextArea.setEditable(false);
                     rysujRunButton.setDisable(true);
+                    running = true;
                 }
                 catch (CompilingException e) {
                     Main.stage.compilationErrorsLabel.setText("Błąd: " + e.getMessage());
@@ -426,6 +455,7 @@ public class MainStage extends Application {
                 editorTextArea.setEditable(true);
                 editorTextArea.setText("");
                 rysujRunButton.setDisable(false);
+                running = false;
                 String textToSet = "";
                 for(String line : lines) {
                     textToSet = textToSet + line + "\n";
@@ -464,7 +494,7 @@ public class MainStage extends Application {
         oneStepButton.setDisable(true);
 
 
-        HBox buttonBox = new HBox();
+       /* HBox buttonBox = new HBox();
         buttonBox.setPadding(new Insets(0,10,0,10));
         buttonBox.setAlignment(Pos.CENTER);
         HBox.setHgrow(translateToMemoryButton,Priority.ALWAYS);
@@ -473,7 +503,7 @@ public class MainStage extends Application {
         buttonBox.setSpacing(5);
 
         buttonBox.getChildren().addAll(translateToMemoryButton,stopSimulationButton,oneStepButton);
-        infoEditorAndButtonGridPane.add(buttonBox,0,18,1,2);
+        infoEditorAndButtonGridPane.add(buttonBox,0,18,1,2);*/
 
         MenuBar mainMenuBar = new MenuBar();
         mainBorderPane.setTop(mainMenuBar);
@@ -490,19 +520,27 @@ public class MainStage extends Application {
         importFileMenuItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
-                FileChooser chooseFile = new FileChooser();
-                chooseFile.setTitle("Wybierz plik z posiadanymi składnikami");
-                File openFile = chooseFile.showOpenDialog(primaryStage);
-                if (openFile != null) {
-                    String textToSet ="";
-                    try {
-                        Scanner in = new Scanner(openFile);
-                        while (in.hasNextLine())
-                            textToSet+=in.nextLine() + "\n";
-                    } catch (FileNotFoundException ignored) {
+                if(!running) {
+                    FileChooser chooseFile = new FileChooser();
+                    chooseFile.setTitle("Wybierz plik z posiadanymi składnikami");
+                    File openFile = chooseFile.showOpenDialog(primaryStage);
+                    if (openFile != null) {
+                        String textToSet = "";
+                        try {
+                            Scanner in = new Scanner(openFile);
+                            while (in.hasNextLine())
+                                textToSet += in.nextLine() + "\n";
+                        } catch (FileNotFoundException ignored) {
+                        }
+                        editorTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
                     }
-                    editorTextArea.setText(textToSet.substring(0,textToSet.length()-1));
+                }
+                else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Nie można otworzyć pliku");
+                    alert.setHeaderText("Aby wczytać plik zatrzymaj symulacja");
+                    alert.setContentText("Nie można wczytywać plików podczas pracy emulatora.");
+                    alert.showAndWait();
                 }
             }
 
@@ -533,12 +571,52 @@ public class MainStage extends Application {
 
         //PRAWY OBSZAR
         TabPane elementsTabPane = new TabPane();
-        Tab diodesPane = new Tab("Diody");
+        Tab diodesPane = new Tab("Panel");
         diodesPane.setClosable(false);
         Tab chartPane = new Tab("Przebieg");
         chartPane.setClosable(false);
         elementsTabPane.getTabs().add(chartPane);
         elementsTabPane.getTabs().add(diodesPane);
+
+
+        GridPane diodesPaneGridPane = new GridPane();
+        ColumnConstraints columnInDiodesPane = new ColumnConstraints();
+        columnInDiodesPane.setPercentWidth(100/8);
+        for (int i = 0; i < 8;i++) {
+            diodesPaneGridPane.getColumnConstraints().add(columnInDiodesPane);
+        }
+        RowConstraints rowInDiodesPane = new RowConstraints();
+        rowInDiodesPane.setPercentHeight(10);
+        for(int i = 0; i < 10; i++)
+            diodesPaneGridPane.getRowConstraints().add(rowInDiodesPane);
+
+
+
+        portButton0 = new ToggleButton("0");
+        //diodesPaneGridPane.add(portButton0,7,8);
+        portButton1 = new ToggleButton("1");
+        //diodesPaneGridPane.add(portButton1,6,8);
+        portButton2 = new ToggleButton("2");
+        //diodesPaneGridPane.add(portButton2,5,8);
+        portButton3 = new ToggleButton("3");
+        //diodesPaneGridPane.add(portButton3,4,8);
+        portButton4 = new ToggleButton("4");
+       // diodesPaneGridPane.add(portButton4,3,8);
+        portButton5 = new ToggleButton("5");
+       // diodesPaneGridPane.add(portButton5,2,8);
+        portButton6 = new ToggleButton("6");
+       // diodesPaneGridPane.add(portButton6,1,8);
+        portButton7 = new ToggleButton("7");
+     //   diodesPaneGridPane.add(portButton7,0,8);
+
+        HBox portsButtonsHBox = new HBox();
+        portsButtonsHBox.setPadding(new Insets(10,10,10,10));
+        portsButtonsHBox.setAlignment(Pos.CENTER);
+        HBox.setHgrow(portButton0,Priority.ALWAYS);
+        portsButtonsHBox.setSpacing(5);
+        portsButtonsHBox.getChildren().addAll(portButton0,portButton1);
+        diodesPaneGridPane.add(portsButtonsHBox,0,7,7,1);
+        diodesPane.setContent(diodesPaneGridPane);
 
         BorderPane chartBorderPane = new BorderPane();
 
@@ -650,10 +728,14 @@ public class MainStage extends Application {
     double width;
 
     public Label accumulatorLabel;
-    public Label accumulatorTextField;
+    public Label accumulatorTextFieldHex;
+    public Label accumulatorTextFieldBin;
+    public Label accumulatorTextFieldDec;
 
     public Label bLabel;
-    public Label bTextField;
+    public Label bTextFieldHex;
+    public Label bTextFieldBin;
+    public Label bTextFieldDec;
 
     public Label r0Label;
     public Label r0TextField;
@@ -712,6 +794,14 @@ public class MainStage extends Application {
     public Label cLabel;
     public Label cTextField;
 
+    public ToggleButton portButton0;
+    public ToggleButton portButton1;
+    public ToggleButton portButton2;
+    public ToggleButton portButton3;
+    public ToggleButton portButton4;
+    public ToggleButton portButton5;
+    public ToggleButton portButton6;
+    public ToggleButton portButton7;
     public Label compilationErrorsLabel;
 
 
@@ -727,4 +817,6 @@ public class MainStage extends Application {
     private String lines[];
 
     private Button rysujRunButton;
+
+    public boolean running;
 }

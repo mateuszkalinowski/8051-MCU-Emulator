@@ -518,8 +518,12 @@ public class Cpu {
         Main.stage.p2TextField.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("P2"))) + "b");
         Main.stage.p3TextField.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("P3"))) + "b");
 
-        Main.stage.accumulatorTextField.setText(Integer.toHexString(mainMemory.get("A")).toUpperCase()+"h");
-        Main.stage.bTextField.setText(Integer.toHexString(mainMemory.get("B")).toUpperCase()+"h");
+        Main.stage.accumulatorTextFieldHex.setText(Integer.toHexString(mainMemory.get("A")).toUpperCase()+"h");
+        Main.stage.accumulatorTextFieldBin.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("A")).toUpperCase()+"b"));
+        Main.stage.accumulatorTextFieldDec.setText(Integer.toString(mainMemory.get("A")).toUpperCase()+"d");
+        Main.stage.bTextFieldHex.setText(Integer.toHexString(mainMemory.get("B")).toUpperCase()+"h");
+        Main.stage.bTextFieldBin.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("B")).toUpperCase()+"b"));
+        Main.stage.bTextFieldDec.setText(Integer.toString(mainMemory.get("B")).toUpperCase()+"d");
 
         boolean value = psw.get("C");
         if(value) {
@@ -600,6 +604,7 @@ public class Cpu {
         }
         return number;
     }
+
 
     public void resetCounter(){
         linePointer = 0;
