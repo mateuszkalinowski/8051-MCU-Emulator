@@ -440,31 +440,33 @@ public class CodeMemory {
                                     }
                                     else if(splittedLine[2].toUpperCase().charAt(0)=='R') {
 
-                                        String numer = getRAddress(splittedLine[1].toUpperCase());
+                                        String numer = getRAddress(splittedLine[2].toUpperCase());
 
                                         if(numer.equals(""))
-                                            throw new CompilingException("Nieznany Rejestr: '" + splittedLine[1] + "', linia: '" + backupLinii+"'");
+                                            throw new CompilingException("Nieznany Rejestr: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
 
                                         emulatedCodeMemory.set(pointer,"00101" + numer);
                                         pointer+=1;
                                     }
-                                    else if(splittedLine[2].toUpperCase().charAt(0)=='P') {
-                                        emulatedCodeMemory.set(pointer,"00100101");
-                                        if(splittedLine[2].toUpperCase().equals("P0"))
-                                            emulatedCodeMemory.set(pointer+1,"10000000");
-                                        else if(splittedLine[2].toUpperCase().equals("P1"))
-                                            emulatedCodeMemory.set(pointer+1,"10010000");
-                                        else if(splittedLine[2].toUpperCase().equals("P2"))
-                                            emulatedCodeMemory.set(pointer+1,"10100000");
-                                        else if(splittedLine[2].toUpperCase().equals("P3"))
-                                            emulatedCodeMemory.set(pointer+1,"10110000");
-                                        else
-                                            throw new CompilingException("Nierozpoznany Port: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
-
-                                        pointer+=2;
-                                    } else {
-                                        throw new CompilingException("Nierozpoznana wartosc: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
-
+                                    else {
+                                        String address;
+                                        try {
+                                            address = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
+                                            emulatedCodeMemory.set(pointer,"00100101");
+                                            emulatedCodeMemory.set(pointer+1,address);
+                                            pointer+=2;
+                                        }
+                                        catch (Exception e) {
+                                            try {
+                                                address = make8DigitsStringFromNumber(splittedLine[2]);
+                                                emulatedCodeMemory.set(pointer,"00100101");
+                                                emulatedCodeMemory.set(pointer+1,address);
+                                                pointer+=2;
+                                            }
+                                            catch (Exception e1) {
+                                                throw new CompilingException("Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii+"'");
+                                            }
+                                        }
                                     }
                                 }
                                 else
@@ -490,27 +492,33 @@ public class CodeMemory {
                                     }
                                     else if(splittedLine[2].toUpperCase().charAt(0)=='R') {
 
-                                        String numer = getRAddress(splittedLine[1].toUpperCase());
+                                        String numer = getRAddress(splittedLine[2].toUpperCase());
 
                                         if(numer.equals(""))
-                                            throw new CompilingException("Nieznany Rejestr: '" + splittedLine[1] + "', linia: '" + backupLinii+"'");
+                                            throw new CompilingException("Nieznany Rejestr: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
 
                                         emulatedCodeMemory.set(pointer,"00111" + numer);
                                         pointer+=1;
                                     }
-                                    else if(splittedLine[2].toUpperCase().charAt(0)=='P') {
-                                        emulatedCodeMemory.set(pointer,"00110101");
-                                        if(splittedLine[2].toUpperCase().equals("P0"))
-                                            emulatedCodeMemory.set(pointer+1,"10000000");
-                                        else if(splittedLine[2].toUpperCase().equals("P1"))
-                                            emulatedCodeMemory.set(pointer+1,"10010000");
-                                        else if(splittedLine[2].toUpperCase().equals("P2"))
-                                            emulatedCodeMemory.set(pointer+1,"10100000");
-                                        else if(splittedLine[2].toUpperCase().equals("P3"))
-                                            emulatedCodeMemory.set(pointer+1,"10110000");
-                                        else
-                                            throw new CompilingException("Nierozpoznany Port: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
-                                        pointer+=2;
+                                    else {
+                                        String address;
+                                        try {
+                                            address = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
+                                            emulatedCodeMemory.set(pointer,"00100101");
+                                            emulatedCodeMemory.set(pointer+1,address);
+                                            pointer+=2;
+                                        }
+                                        catch (Exception e) {
+                                            try {
+                                                address = make8DigitsStringFromNumber(splittedLine[2]);
+                                                emulatedCodeMemory.set(pointer,"00100101");
+                                                emulatedCodeMemory.set(pointer+1,address);
+                                                pointer+=2;
+                                            }
+                                            catch (Exception e1) {
+                                                throw new CompilingException("Nierozpoznany Adres: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -536,27 +544,33 @@ public class CodeMemory {
                                 }
                                 else if(splittedLine[2].toUpperCase().charAt(0)=='R') {
 
-                                    String numer = getRAddress(splittedLine[1].toUpperCase());
+                                    String numer = getRAddress(splittedLine[2].toUpperCase());
 
                                     if(numer.equals(""))
-                                        throw new CompilingException("Nieznany Rejestr: '" + splittedLine[1] + "', linia: '" + backupLinii+"'");
+                                        throw new CompilingException("Nieznany Rejestr: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
 
                                     emulatedCodeMemory.set(pointer,"10011" + numer);
                                     pointer+=1;
                                 }
-                                else if(splittedLine[2].toUpperCase().charAt(0)=='P') {
-                                    emulatedCodeMemory.set(pointer,"10010101");
-                                    if(splittedLine[2].toUpperCase().equals("P0"))
-                                        emulatedCodeMemory.set(pointer+1,"10000000");
-                                    else if(splittedLine[2].toUpperCase().equals("P1"))
-                                        emulatedCodeMemory.set(pointer+1,"10010000");
-                                    else if(splittedLine[2].toUpperCase().equals("P2"))
-                                        emulatedCodeMemory.set(pointer+1,"10100000");
-                                    else if(splittedLine[2].toUpperCase().equals("P3"))
-                                        emulatedCodeMemory.set(pointer+1,"10110000");
-                                    else
-                                        throw new CompilingException("Nierozpoznany Port: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
-                                    pointer+=2;
+                                else {
+                                    String address;
+                                    try {
+                                        address = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
+                                        emulatedCodeMemory.set(pointer,"10010101");
+                                        emulatedCodeMemory.set(pointer+1,address);
+                                        pointer+=2;
+                                    }
+                                    catch (Exception e) {
+                                        try {
+                                            address = make8DigitsStringFromNumber(splittedLine[2]);
+                                            emulatedCodeMemory.set(pointer,"10010101");
+                                            emulatedCodeMemory.set(pointer+1,address);
+                                            pointer+=2;
+                                        }
+                                        catch (Exception e1) {
+                                            throw new CompilingException("Nierozpoznany Adres: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -617,7 +631,7 @@ public class CodeMemory {
 
         Main.stage.compilationErrorsLabel.setText("Kompilacja przebiegła pomyślnie");
         Main.stage.compilationErrorsLabel.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
-        show();
+        //show();
     }
 
     private ArrayList<String> emulatedCodeMemory;
