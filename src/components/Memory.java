@@ -1,8 +1,11 @@
 package components;
 
+import core.Main;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * Created by Mateusz on 24.04.2017.
@@ -36,6 +39,22 @@ public class Memory {
     }
 
 
+    public String get8BitAddress(String label) throws NoSuchElementException{
+        try {
+            if(!memoryCellsNames.containsKey(label))
+             throw new NoSuchElementException();
+            int wartosc = memoryCellsNames.get(label);
+            String result = Integer.toBinaryString(wartosc);
+
+            for (int i = result.length(); i < 8; i++) {
+                result = "0" + result;
+            }
+            return result;
+        }
+        catch (Exception e) {
+            throw new NoSuchElementException();
+        }
+    }
 
     public void put(String label,int wartosc) {
         int index = memoryCellsNames.get(label);
@@ -68,6 +87,35 @@ public class Memory {
     public int get(String label) {
         int index = memoryCellsNames.get(label);
         return Integer.parseInt(String.valueOf(mainMemory[index]),2);
+    }
+    public int getDirect(String number) throws NumberFormatException {
+        int index = -1;
+        try {
+            index = Integer.parseInt(number,2);
+        } catch (Exception e) {
+            throw new NumberFormatException();
+        }
+        return Integer.parseInt(String.valueOf(mainMemory[index]),2);
+
+    }
+    public void putDirect(String number,int wartosc) throws NumberFormatException{
+        try {
+            int index = Integer.parseInt(number,2);
+            String binaryValue = Integer.toBinaryString(wartosc);
+            char[] toPut = {'0','0','0','0','0','0','0','0'};
+            int i = 7;
+            int j = binaryValue.length()-1;
+
+            while(j>=0) {
+                toPut[i] = binaryValue.charAt(j);
+                i--;
+                j--;
+            }
+            mainMemory[index] = toPut;
+
+        }catch (Exception e) {
+            throw new NumberFormatException();
+        }
     }
 
     public int get(int wartosc) {

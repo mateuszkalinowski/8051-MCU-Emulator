@@ -57,7 +57,7 @@ public class Cpu {
             machineCycle();
             linePointer = Integer.parseInt(codeMemory.getFromAddress(linePointer+1) + codeMemory.getFromAddress(linePointer+2),2);
         }
-        else if(toExecute.substring(0,5).equals("11011")) { //DJNZ Rx,label/adres (ale na wartosci a nie offsecie)
+        else if(toExecute.substring(0,5).equals("11011")) { //DJNZ Rx,label/adres (offset)
             machineCycle();
             machineCycle();
             int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
@@ -77,6 +77,25 @@ public class Cpu {
             }
             if(wartosc==0) {
                 linePointer+=2;
+            }
+        } else if(toExecute.equals("11010101")) { //DJNZ direct,offset
+            machineCycle();
+            machineCycle();
+            int wartosc = mainMemory.getDirect(codeMemory.getFromAddress(linePointer+1));
+            wartosc--;
+            if(wartosc==-1)
+                wartosc=255;
+
+            mainMemory.putDirect(codeMemory.getFromAddress(linePointer+1),wartosc);
+
+            if(wartosc>0) {
+                int wynik = linePointer+1+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
+                if(wynik>255)
+                    wynik-=256;
+                linePointer = wynik;
+            }
+            if(wartosc==0) {
+                linePointer+=3;
             }
         }
         else if(toExecute.equals("01010100")) { //ANL a,#01h
@@ -176,13 +195,13 @@ public class Cpu {
             mainMemory.put("A",wartosc);
             linePointer+=1;
         }
-        else if(toExecute.equals("11100101")) { //MOV A,Px
+        else if(toExecute.equals("11100101")) { //MOV A,direct
             machineCycle();
             mainMemory.put("A",mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2)));
 
             linePointer+=2;
         }
-        else if(toExecute.substring(0,5).equals("01111")) {
+        else if(toExecute.substring(0,5).equals("01111")) { //MOV R,#01
             machineCycle();
             int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
             String rejestrString = "R" + rejestr;
@@ -190,14 +209,22 @@ public class Cpu {
             mainMemory.put(rejestrString,wartosc);
             linePointer+=2;
         }
-        else if(toExecute.substring(0,5).equals("11111")) {
+        else if(toExecute.substring(0,5).equals("11111")) { //MOV R,A
             machineCycle();
             int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
             String rejestrString = "R" + rejestr;
             mainMemory.put(rejestrString,mainMemory.get("A"));
             linePointer+=1;
         }
-        else if(toExecute.equals("11110101")) { // Px, a
+        else if(toExecute.substring(0,5).equals("10101")) { //MOV R,direct
+            machineCycle();
+            machineCycle();
+            int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
+            String rejestrString = "R" + rejestr;
+            mainMemory.put(rejestrString,Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            linePointer+=2;
+        }
+        else if(toExecute.equals("11110101")) { // direct, a
             machineCycle();
             mainMemory.put(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2),mainMemory.get("A"));
 
@@ -213,20 +240,6 @@ public class Cpu {
         else if(toExecute.equals("01110101")) { //Px, #liczba
             machineCycle();
             machineCycle();
-            String port1 = "";
-            if(codeMemory.getFromAddress(linePointer+1).equals("10000000")) {
-                port1="P0";
-            }
-            if(codeMemory.getFromAddress(linePointer+1).equals("10010000")) {
-                port1="P1";
-            }
-            if(codeMemory.getFromAddress(linePointer+1).equals("10100000")) {
-                port1="P2";
-            }
-            if(codeMemory.getFromAddress(linePointer+1).equals("10110000")) {
-                port1="P3";
-            }
-            //ports.put(port1,Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2));
             mainMemory.put( Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2)  ,Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2));
             linePointer+=3;
         }
