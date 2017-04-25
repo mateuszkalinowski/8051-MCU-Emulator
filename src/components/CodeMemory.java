@@ -642,6 +642,8 @@ public class CodeMemory {
     public String make8DigitsStringFromNumber(String number) throws NumberFormatException {
         String result = "";
             char lastSymbol = number.charAt(number.length()-1);
+            if (lastSymbol == 'd' || lastSymbol == 'D')
+                number = number.substring(0,number.length()-1);
             int wartosc = -1;
             if (lastSymbol == 'b' || lastSymbol == 'B') {
                 try {
@@ -680,10 +682,12 @@ public class CodeMemory {
     public String make16DigitsStringFromNumber(String number) throws CompilingException {
         String result = "";
             char lastSymbol = number.charAt(number.length()-1);
-            number = number.substring(0,number.length()-1);
+            if (lastSymbol == 'd' || lastSymbol == 'D')
+                number = number.substring(0,number.length()-1);
             int wartosc = -1;
             if (lastSymbol == 'b' || lastSymbol == 'B') {
                 try {
+                    number = number.substring(0,number.length()-1);
                     wartosc = Integer.parseInt(number, 2);
                 }
                 catch (Exception e) {
@@ -692,6 +696,7 @@ public class CodeMemory {
             }
             else if(lastSymbol == 'h' || lastSymbol == 'H') {
                 try {
+                    number = number.substring(0,number.length()-1);
                     wartosc = Integer.parseInt(number, 16);
                 } catch (Exception e) {
                     throw new NumberFormatException();
