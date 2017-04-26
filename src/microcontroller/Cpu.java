@@ -95,6 +95,24 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=2;
         }
+        else if(toExecute.substring(0,5).equals("01011")) {
+            machineCycle();
+            int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
+            String rejestrString = "R" + rejestr;
+            int wartosc1 = mainMemory.get(rejestrString);
+            int wartosc2 = mainMemory.get("A");
+            int wynik = wartosc1&wartosc2;
+            mainMemory.put("A",wynik);
+            linePointer+=1;
+        }
+        else if(toExecute.equals("01010101")) {
+            machineCycle();
+            int wartosc1 = mainMemory.get("A");
+            int warotsc2 = mainMemory.getDirect(codeMemory.getFromAddress(linePointer+1));
+            int wynik = wartosc1&warotsc2;
+            mainMemory.put("A",wynik);
+            linePointer+=2;
+        }
         /*
             CPL:
                 CPL AND A
@@ -145,32 +163,32 @@ public class Cpu {
         else if(toExecute.equals("00100000")) { //JB
             machineCycle();
             machineCycle();
-            /*String rejestr = getKeyFromBitMap(codeMemory.getFromAddress(linePointer+1));
-            String podzielone[] = rejestr.split("\\.");
-            int wartosc = mainMemory.get(podzielone[0]);
-            String wartoscString = expandTo8Digits(Integer.toBinaryString(wartosc));
-            int index = Integer.parseInt(podzielone[1]);
-            if(wartoscString.charAt(7-index)=='1') {
-                int wynik = linePointer+1+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
-                if(wynik>255)
-                    wynik-=256;
-                linePointer = wynik;
-                System.out.println("tak");
-            }
-            else {
-                linePointer+=3;
-            }*/
-            /*
-            if(mainMemory.getBit(codeMemory.getFromAddress(linePointer+1))) {
-                int wynik = linePointer+1+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
-                if(wynik>255)
-                    wynik-=256;
-                linePointer = wynik;
-            }
-            else {
-                linePointer+=3;
-            }*/
 
+            boolean bit = mainMemory.getBit(codeMemory.getFromAddress(linePointer+1));
+            if(bit) {
+                int wynik = linePointer+1+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
+                if(wynik>255)
+                    wynik-=256;
+                linePointer = wynik;
+            }
+            else {
+                linePointer+=3;
+            }
+        }
+        else if(toExecute.equals("00110000")) { //JNB
+            machineCycle();
+            machineCycle();
+
+            boolean bit = mainMemory.getBit(codeMemory.getFromAddress(linePointer+1));
+            if(!bit) {
+                int wynik = linePointer+1+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
+                if(wynik>255)
+                    wynik-=256;
+                linePointer = wynik;
+            }
+            else {
+                linePointer+=3;
+            }
         }
         else if(toExecute.equals("01110100")) { // MOV A,#01h
             machineCycle();
