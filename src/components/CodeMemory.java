@@ -234,7 +234,7 @@ public class CodeMemory {
 
                                        }
                                        pointer+=2;
-                                   } //TODO
+                                   }
                             }
                         }
                         else if(splittedLine[0].toUpperCase().equals("CPL")) {
@@ -246,13 +246,25 @@ public class CodeMemory {
                                 emulatedCodeMemory.set(pointer,"10110011");
                                 pointer++;
                             }
-                            else if(Main.cpu.bitMap.containsKey(splittedLine[1].toUpperCase())) {
-                                emulatedCodeMemory.set(pointer,"10110010");
-                                emulatedCodeMemory.set(pointer+1,Main.cpu.bitMap.get(splittedLine[1].toUpperCase()));
-                                pointer+=2;
+                            else {
+                                if(bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
+                                    emulatedCodeMemory.set(pointer,"10110010");
+                                    emulatedCodeMemory.set(pointer+1,bitAddresses.get(splittedLine[1].toUpperCase()));
+                                    pointer+=2;
+                                }
+                                else {
+                                    try {
+                                        int numer = Integer.parseInt(make8DigitsStringFromNumber(splittedLine[1]), 2);
+                                        emulatedCodeMemory.set(pointer,"10110010");
+                                        emulatedCodeMemory.set(pointer+1,make8DigitsStringFromNumber(splittedLine[1]));
+                                        pointer+=2;
+                                    }
+                                    catch (Exception e){
+                                        throw new CompilingException("Nierozpoznany Bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
+                                    }
+                                }
                             }
-                            else
-                                throw new CompilingException("Nieznany argument: '" + splittedLine[1] + "'");
+
 
                         }
                         else if(splittedLine[0].toUpperCase().equals("JC")) {

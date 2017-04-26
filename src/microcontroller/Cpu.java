@@ -33,16 +33,6 @@ public class Cpu {
         bitMap.put("ACC.5","11100101");
         bitMap.put("ACC.6","11100110");
         bitMap.put("ACC.7","11100111");
-
-       /* psw.put("P",true);
-        psw.put("OV",false);
-        psw.put("RS0",false);
-        psw.put("RS1",false);
-        psw.put("F0",false);
-        psw.put("AC",false);
-        psw.put("C",false);
-*/
-
     }
 
     private void machineCycle(){
@@ -105,6 +95,12 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=2;
         }
+        /*
+            CPL:
+                CPL AND A
+                CPL AND C
+                CPL AND BIT
+         */
         else if(toExecute.equals("11110100")) { //CPL A
             machineCycle();
             int wartosc = mainMemory.get("A");
@@ -113,7 +109,6 @@ public class Cpu {
                 wartosc+=256;
             if(wartosc>255)
                 wartosc-=256;
-            System.out.println(wartosc);
             mainMemory.put("A",wartosc);
             linePointer+=1;
         }
@@ -127,29 +122,14 @@ public class Cpu {
         }
         else if(toExecute.equals("10110010")) { //CPL Bit
             machineCycle();
-            String rejestr = getKeyFromBitMap(codeMemory.getFromAddress(linePointer+1));
-            String podzielone[] = rejestr.split("\\.");
-            int wartosc = mainMemory.get(podzielone[0]);
-            String wartoscString = expandTo8Digits(Integer.toBinaryString(wartosc));
-            int index = Integer.parseInt(podzielone[1]);
-            index = 7-index;
-            String wynik = wartoscString.charAt(index) + "";
-            if(wynik.equals("1"))
-                wynik = "0";
-            else
-                wynik = "1";
-            if(index==0)
-                wartoscString = wynik + wartoscString.substring(1,8);
-            else if(index==7)
-                wartoscString = wartoscString.substring(0,7) + wynik;
-            else {
-                wartoscString = wartoscString.substring(0,index) + wynik + wartoscString.substring(index+1,8);
-            }
-            mainMemory.put("A",Integer.parseInt(wartoscString,2));
+            boolean bit = mainMemory.getBit(codeMemory.getFromAddress(linePointer+1));
+            bit = !bit;
+            mainMemory.setBit(codeMemory.getFromAddress(linePointer+1),bit);
             linePointer+=2;
-
-
         }
+        /*
+            END OF CPL
+         */
         else if(toExecute.equals("01000000")) { //JC
             machineCycle();
             machineCycle();
@@ -257,7 +237,6 @@ public class Cpu {
             machineCycle();
             int wartosc = mainMemory.get("A");
             String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
-            System.out.println(stringWartosc);
             String wynik = "";
             char tmp = stringWartosc.charAt(0);
             for (int i = 1; i < 8; i++) {
