@@ -1,6 +1,7 @@
 package components;
 
 import core.Main;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +37,80 @@ public class Memory {
         put("P1",255);
         put("P2",255);
         put("P3",255);
+
+        bitAddressableBegginings = new int[]{128,136,144,152,160,168,176,184,208,224,240};
+    }
+
+    public int[] getBitAddress(int numer) {
+        int[] toReturn = new int[2];
+        toReturn[0] = -1;
+        toReturn[1] = -1;
+        if(numer == 224) {
+            toReturn[0] = 224;
+            toReturn[1] = 0;
+        }
+        return toReturn;
+    }
+    public boolean getBit(String address) throws NoSuchElementException {
+        try {
+                int numer = Integer.parseInt(address, 2);
+                if (numer >=0 && numer <=127) {
+
+                    int bajt = numer / 8 + 32;
+                    int bit = numer % 8;
+                    return mainMemory[bajt][bit] == '1';
+                }
+                else {
+                    for(int i = 0; i < bitAddressableBegginings.length;i++) {
+                        if(numer-bitAddressableBegginings[i]>=0 && numer-bitAddressableBegginings[i]<=7) {
+                            int index = numer - bitAddressableBegginings[i];
+                            index = 7 - index;
+                            return mainMemory[bitAddressableBegginings[i]][index] == '1';
+                        }
+                    }
+                    throw new NoSuchElementException();
+                }
+
+        }
+        catch (Exception e) {
+            throw new NoSuchElementException();
+        }
+    }
+
+    public void setBit(String address,boolean value) throws NoSuchElementException {
+        try {
+            int numer = Integer.parseInt(address, 2);
+            if (numer >=0 && numer <=127) {
+
+                int bajt = numer / 8 + 32;
+                int bit = numer % 8;
+                if(value)
+                    mainMemory[bajt][bit] = '1';
+                else
+                    mainMemory[bajt][bit] = '0';
+            }
+            else {
+                for(int i = 0; i < bitAddressableBegginings.length;i++) {
+                    if(numer-bitAddressableBegginings[i]>=0 && numer-bitAddressableBegginings[i]<=7) {
+                        int index = numer - bitAddressableBegginings[i];
+                        index = 7 - index;
+                        if(value) {
+                            mainMemory[bitAddressableBegginings[i]][index] = '1';
+                            return;
+                        }
+                        else {
+                            mainMemory[bitAddressableBegginings[i]][index] = '0';
+                            return;
+                        }
+                    }
+                }
+                throw new NoSuchElementException();
+            }
+
+        }
+        catch (Exception e) {
+            throw new NoSuchElementException();
+        }
     }
 
 
@@ -124,5 +199,10 @@ public class Memory {
 
     private Map<String,Integer> memoryCellsNames = new HashMap<>();
 
+    private int[] bitAddressableBegginings;
+
+
     char[][] mainMemory;
+
+
 }

@@ -25,23 +25,23 @@ public class Cpu {
         linePointer=0;
         mainMemory = new Memory();
         bitMap.clear();
-        bitMap.put("A.0","11100000");
-        bitMap.put("A.1","11100001");
-        bitMap.put("A.2","11100010");
-        bitMap.put("A.3","11100011");
-        bitMap.put("A.4","11100100");
-        bitMap.put("A.5","11100101");
-        bitMap.put("A.6","11100110");
-        bitMap.put("A.7","11100111");
+        bitMap.put("ACC.0","11100000");
+        bitMap.put("ACC.1","11100001");
+        bitMap.put("ACC.2","11100010");
+        bitMap.put("ACC.3","11100011");
+        bitMap.put("ACC.4","11100100");
+        bitMap.put("ACC.5","11100101");
+        bitMap.put("ACC.6","11100110");
+        bitMap.put("ACC.7","11100111");
 
-        psw.put("P",true);
+       /* psw.put("P",true);
         psw.put("OV",false);
         psw.put("RS0",false);
         psw.put("RS1",false);
         psw.put("F0",false);
         psw.put("AC",false);
         psw.put("C",false);
-
+*/
 
     }
 
@@ -119,11 +119,10 @@ public class Cpu {
         }
         else if(toExecute.equals("10110011")) { //CPL C
             machineCycle();
-            if(psw.get("C"))
-                psw.put("C",false);
+            if(mainMemory.getBit(codeMemory.bitAddresses.get("CY")))
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
             else
-                psw.put("C",true);
-
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
             linePointer+=1;
         }
         else if(toExecute.equals("10110010")) { //CPL Bit
@@ -154,7 +153,7 @@ public class Cpu {
         else if(toExecute.equals("01000000")) { //JC
             machineCycle();
             machineCycle();
-            if(psw.get("C")) {
+            if(mainMemory.getBit(codeMemory.bitAddresses.get("CY"))) {
                 int wynik = linePointer + 1 + 1 + Integer.parseInt(codeMemory.getFromAddress(linePointer + 1), 2);
                 if (wynik > 255)
                     wynik -= 256;
@@ -166,7 +165,7 @@ public class Cpu {
         else if(toExecute.equals("00100000")) { //JB
             machineCycle();
             machineCycle();
-            String rejestr = getKeyFromBitMap(codeMemory.getFromAddress(linePointer+1));
+            /*String rejestr = getKeyFromBitMap(codeMemory.getFromAddress(linePointer+1));
             String podzielone[] = rejestr.split("\\.");
             int wartosc = mainMemory.get(podzielone[0]);
             String wartoscString = expandTo8Digits(Integer.toBinaryString(wartosc));
@@ -180,7 +179,18 @@ public class Cpu {
             }
             else {
                 linePointer+=3;
+            }*/
+            /*
+            if(mainMemory.getBit(codeMemory.getFromAddress(linePointer+1))) {
+                int wynik = linePointer+1+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
+                if(wynik>255)
+                    wynik-=256;
+                linePointer = wynik;
             }
+            else {
+                linePointer+=3;
+            }*/
+
         }
         else if(toExecute.equals("01110100")) { // MOV A,#01h
             machineCycle();
@@ -247,6 +257,7 @@ public class Cpu {
             machineCycle();
             int wartosc = mainMemory.get("A");
             String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
+            System.out.println(stringWartosc);
             String wynik = "";
             char tmp = stringWartosc.charAt(0);
             for (int i = 1; i < 8; i++) {
@@ -278,14 +289,14 @@ public class Cpu {
             for (int i = 1; i < 8; i++) {
                 wynik += stringWartosc.charAt(i);
             }
-            if(psw.get("C"))
+            if(mainMemory.getBit(codeMemory.bitAddresses.get("CY")))
                 wynik += "1";
             else
                 wynik += "0";
             if(tmp=='1')
-                psw.put("C",true);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
             else
-                psw.put("C",false);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
 
             mainMemory.put("A",Integer.parseInt(wynik,2));
             linePointer+=1;
@@ -300,14 +311,14 @@ public class Cpu {
             for (int i = 0; i < 7; i++) {
                 wynik += stringWartosc.charAt(i);
             }
-            if(psw.get("C"))
+            if(mainMemory.getBit(codeMemory.bitAddresses.get("CY")))
                 wynik = "1" + wynik;
             else
                 wynik = "0" + wynik;
             if(tmp=='1')
-                psw.put("C",true);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
             else
-                psw.put("C",false);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
 
             mainMemory.put("A",Integer.parseInt(wynik,2));
             linePointer+=1;
@@ -319,10 +330,10 @@ public class Cpu {
             int wynik = obecnaWartosc + doDodania;
             if(wynik>255) {
                 wynik -=256;
-                psw.put("C",true);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
             }
             else {
-                psw.put("C",false);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
             }
             mainMemory.put("A",wynik);
             linePointer+=2;
@@ -333,14 +344,14 @@ public class Cpu {
             int obecnaWartosc = mainMemory.get("A");
             int doDodania = Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
             int wynik = obecnaWartosc + doDodania;
-            if(psw.get("C"))
+            if(mainMemory.getBit(codeMemory.bitAddresses.get("CY")))
                 wynik+=1;
             if(wynik>255) {
                 wynik -=256;
-                psw.put("C",true);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
             }
             else {
-                psw.put("C",false);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
             }
             mainMemory.put("A",wynik);
             linePointer+=2;
@@ -355,10 +366,10 @@ public class Cpu {
             int wynik = obecnaWartosc + doDodania;
             if(wynik>255) {
                 wynik -=256;
-                psw.put("C",true);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
             }
             else {
-                psw.put("C",false);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
             }
             mainMemory.put("A",wynik);
             linePointer+=1;
@@ -370,14 +381,14 @@ public class Cpu {
             int doDodania = mainMemory.get(rejestrString);
             int obecnaWartosc = mainMemory.get("A");
             int wynik = obecnaWartosc + doDodania;
-            if(psw.get("C"))
+            if(mainMemory.getBit(codeMemory.bitAddresses.get("CY")))
                 wynik+=1;
             if(wynik>255) {
                 wynik -=256;
-                psw.put("C",true);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
             }
             else {
-                psw.put("C",false);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
             }
             mainMemory.put("A",wynik);
             linePointer+=1;
@@ -391,10 +402,10 @@ public class Cpu {
             int wynik = obecnaWartosc + doDodania;
             if(wynik>255) {
                 wynik -=256;
-                psw.put("C",true);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
             }
             else {
-                psw.put("C",false);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
             }
             mainMemory.put("A",wynik);
             linePointer+=2;
@@ -404,30 +415,30 @@ public class Cpu {
             doDodania = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
             int obecnaWartosc = mainMemory.get("A");
             int wynik = obecnaWartosc + doDodania;
-            if(psw.get("C"))
+            if(mainMemory.getBit(codeMemory.bitAddresses.get("CY")))
                 wynik+=1;
             if(wynik>255) {
                 wynik -=256;
-                psw.put("C",true);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
             }
             else {
-                psw.put("C",false);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
             }
             mainMemory.put("A",wynik);
             linePointer+=2;
         }
         else if(toExecute.equals("10010100")) { //SUBB A,#01h
             machineCycle();
-            int c = psw.get("C") ? 1 : 0;
+            int c = mainMemory.getBit(codeMemory.bitAddresses.get("CY")) ? 1 : 0;
             int obecnaWartosc = mainMemory.get("A");
             int doOdjecia = Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
             int wynik = obecnaWartosc - c - doOdjecia;
             if(wynik<0) {
                 wynik +=256;
-                psw.put("C",true);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
             }
             else {
-                psw.put("C",false);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
             }
             mainMemory.put("A",wynik);
             linePointer+=2;
@@ -435,7 +446,7 @@ public class Cpu {
 
         else if(toExecute.substring(0,5).equals("10011")) { //SUBB A,Rx
             machineCycle();
-            int c = psw.get("C") ? 1 : 0;
+            int c = mainMemory.getBit(codeMemory.bitAddresses.get("CY")) ? 1 : 0;
             int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
             String rejestrString = "R" + rejestr;
             int doOdjecia = mainMemory.get(rejestrString);
@@ -443,35 +454,47 @@ public class Cpu {
             int wynik = obecnaWartosc - c - doOdjecia;
             if(wynik<0) {
                 wynik +=256;
-                psw.put("C",true);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
             }
             else {
-                psw.put("C",false);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
             }
             mainMemory.put("A",wynik);
             linePointer+=1;
         }
         else if(toExecute.equals("10010101")) { //SUBB A,Px
             int doOdjecia = 0;
-            int c = psw.get("C") ? 1 : 0;
+            int c = mainMemory.getBit(codeMemory.bitAddresses.get("CY")) ? 1 : 0;
             doOdjecia = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
 
             int obecnaWartosc = mainMemory.get("A");
             int wynik = obecnaWartosc - c - doOdjecia;
             if(wynik<0) {
                 wynik +=256;
-                psw.put("C",true);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
             }
             else {
-                psw.put("C",false);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
             }
             mainMemory.put("A",wynik);
             linePointer+=2;
         }
         else if(toExecute.equals("11010011")) { //SETB C
             machineCycle();
-            psw.put("C",true);
+            //psw.put("C",true);
+            mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
             linePointer++;
+        }
+        else if(toExecute.equals("11010010")) { //SETB BIT
+            machineCycle();
+            mainMemory.setBit(codeMemory.getFromAddress(linePointer+1),true);
+            linePointer+=2;
+        }
+
+        else if(toExecute.equals("11000010")) { //CLR BIT
+            machineCycle();
+            mainMemory.setBit(codeMemory.getFromAddress(linePointer+1),false);
+            linePointer+=2;
         }
         else if(toExecute.equals("11100100")) { //CLR A
             machineCycle();
@@ -480,7 +503,8 @@ public class Cpu {
         }
         else if(toExecute.equals("11000011")) { //CLR C
             machineCycle();
-            psw.put("C",false);
+            //psw.put("C",false);
+            mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
             linePointer++;
         }
         refreshStatusRegister();
@@ -490,18 +514,18 @@ public class Cpu {
     private void refreshStatusRegister(){
         String acc = Integer.toBinaryString(mainMemory.get("A"));
         if(acc.length()>4)
-            psw.put("AC",true);
+            mainMemory.setBit(codeMemory.bitAddresses.get("AC"),true);
         else
-            psw.put("AC",false);
+            mainMemory.setBit(codeMemory.bitAddresses.get("AC"),false);
         int jedynek = 0;
         for(int i = 0; i < acc.length();i++) {
             if(acc.charAt(i) == '1')
                 jedynek++;
         }
         if(jedynek%2==0)
-            psw.put("P",true);
+            mainMemory.setBit(codeMemory.bitAddresses.get("P"),true);
         else
-            psw.put("P",false);
+            mainMemory.setBit(codeMemory.bitAddresses.get("P"),false);
     }
     public void refreshGui(){
         Main.stage.r0TextField.setText(Integer.toHexString(mainMemory.get("R0")).toUpperCase()+"h");
@@ -519,13 +543,13 @@ public class Cpu {
         Main.stage.p3TextField.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("P3"))) + "b");
 
         Main.stage.accumulatorTextFieldHex.setText(Integer.toHexString(mainMemory.get("A")).toUpperCase()+"h");
-        Main.stage.accumulatorTextFieldBin.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("A")).toUpperCase()+"b"));
+        Main.stage.accumulatorTextFieldBin.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("A")).toUpperCase()) + "b");
         Main.stage.accumulatorTextFieldDec.setText(Integer.toString(mainMemory.get("A")).toUpperCase()+"d");
         Main.stage.bTextFieldHex.setText(Integer.toHexString(mainMemory.get("B")).toUpperCase()+"h");
-        Main.stage.bTextFieldBin.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("B")).toUpperCase()+"b"));
+        Main.stage.bTextFieldBin.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("B")).toUpperCase()) + "b");
         Main.stage.bTextFieldDec.setText(Integer.toString(mainMemory.get("B")).toUpperCase()+"d");
 
-        boolean value = psw.get("C");
+        boolean value = mainMemory.getBit(codeMemory.bitAddresses.get("CY"));
         if(value) {
             Main.stage.cTextField.setText("1");
             Main.stage.cTextField.setTextFill(Color.GREEN);
@@ -535,7 +559,7 @@ public class Cpu {
             Main.stage.cTextField.setTextFill(Color.RED);
         }
 
-        value = psw.get("AC");
+        value = mainMemory.getBit(codeMemory.bitAddresses.get("AC"));
         if(value) {
             Main.stage.acTextField.setText("1");
             Main.stage.acTextField.setTextFill(Color.GREEN);
@@ -545,7 +569,7 @@ public class Cpu {
             Main.stage.acTextField.setTextFill(Color.RED);
         }
 
-        value = psw.get("F0");
+        value = mainMemory.getBit(codeMemory.bitAddresses.get("FO"));
         if(value) {
             Main.stage.f0TextField.setText("1");
             Main.stage.f0TextField.setTextFill(Color.GREEN);
@@ -555,7 +579,7 @@ public class Cpu {
             Main.stage.f0TextField.setTextFill(Color.RED);
         }
 
-        value = psw.get("RS1");
+        value = mainMemory.getBit(codeMemory.bitAddresses.get("RS1"));
         if(value) {
             Main.stage.rs1TextField.setText("1");
             Main.stage.rs1TextField.setTextFill(Color.GREEN);
@@ -565,7 +589,7 @@ public class Cpu {
             Main.stage.rs1TextField.setTextFill(Color.RED);
         }
 
-        value = psw.get("RS0");
+        value = mainMemory.getBit(codeMemory.bitAddresses.get("RS0"));
         if(value) {
             Main.stage.rs0TextField.setText("1");
             Main.stage.rs0TextField.setTextFill(Color.GREEN);
@@ -575,7 +599,7 @@ public class Cpu {
             Main.stage.rs0TextField.setTextFill(Color.RED);
         }
 
-        value = psw.get("OV");
+        value = mainMemory.getBit(codeMemory.bitAddresses.get("OV"));
         if(value) {
             Main.stage.ovTextField.setText("1");
             Main.stage.ovTextField.setTextFill(Color.GREEN);
@@ -585,7 +609,7 @@ public class Cpu {
             Main.stage.ovTextField.setTextFill(Color.RED);
         }
 
-        value = psw.get("P");
+        value = mainMemory.getBit(codeMemory.bitAddresses.get("P"));
         if(value) {
             Main.stage.pTextField.setText("1");
             Main.stage.pTextField.setTextFill(Color.GREEN);
@@ -612,7 +636,7 @@ public class Cpu {
 
     private int linePointer;
     public Memory mainMemory;
-    private Map<String,Boolean> psw = new HashMap<>();
+    //private Map<String,Boolean> psw = new HashMap<>();
     public CodeMemory codeMemory = new CodeMemory();
 
     public Map<String,String> bitMap = new HashMap<>();

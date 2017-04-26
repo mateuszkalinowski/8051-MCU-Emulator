@@ -112,7 +112,7 @@ public class MainStage extends Application {
         accumulatorLabel.setMaxWidth(Double.MAX_VALUE);
         accumulatorLabel.setAlignment(Pos.CENTER);
         accumulatorLabel.setFont(new Font("Arial",11));
-        simulatorGridPane.add(accumulatorLabel,10,5);
+        simulatorGridPane.add(accumulatorLabel,11,5,2,1);
 
         accumulatorTextFieldHex = new Label("00h");
         accumulatorTextFieldHex.setMaxWidth(Double.MAX_VALUE);
@@ -139,7 +139,7 @@ public class MainStage extends Application {
         bLabel.setMaxWidth(Double.MAX_VALUE);
         bLabel.setAlignment(Pos.CENTER);
         bLabel.setFont(new Font("Arial",11));
-        simulatorGridPane.add(bLabel,10,7);
+        simulatorGridPane.add(bLabel,11,7,2,1);
 
         bTextFieldHex = new Label("00h");
         bTextFieldHex.setMaxWidth(Double.MAX_VALUE);
@@ -494,7 +494,7 @@ public class MainStage extends Application {
         oneStepButton.setDisable(true);
 
 
-       /* HBox buttonBox = new HBox();
+        HBox buttonBox = new HBox();
         buttonBox.setPadding(new Insets(0,10,0,10));
         buttonBox.setAlignment(Pos.CENTER);
         HBox.setHgrow(translateToMemoryButton,Priority.ALWAYS);
@@ -503,7 +503,7 @@ public class MainStage extends Application {
         buttonBox.setSpacing(5);
 
         buttonBox.getChildren().addAll(translateToMemoryButton,stopSimulationButton,oneStepButton);
-        infoEditorAndButtonGridPane.add(buttonBox,0,18,1,2);*/
+        infoEditorAndButtonGridPane.add(buttonBox,0,18,1,2);
 
         MenuBar mainMenuBar = new MenuBar();
         mainBorderPane.setTop(mainMenuBar);
