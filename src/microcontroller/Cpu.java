@@ -162,6 +162,82 @@ public class Cpu {
 
             linePointer+=3;
         }
+
+        /*
+            ORG:
+                wszystko bez Ri
+         */
+        else if(toExecute.equals("01000100")) { //ORL a,#01h
+            machineCycle();
+            int wartosc = Integer.parseInt(codeMemory.getFromAddress(linePointer+1));
+            int wynik = wartosc | mainMemory.get("A");
+            mainMemory.put("A",wynik);
+            linePointer+=2;
+        }
+        else if(toExecute.substring(0,5).equals("01001")) { //ORL a,Rx
+            machineCycle();
+            int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
+            String rejestrString = "R" + rejestr;
+            int wartosc1 = mainMemory.get(rejestrString);
+            int wartosc2 = mainMemory.get("A");
+            int wynik = wartosc1|wartosc2;
+            mainMemory.put("A",wynik);
+            linePointer+=1;
+        }
+        else if(toExecute.equals("01000101")) {
+            machineCycle();
+            int wartosc1 = mainMemory.get("A");
+            int warotsc2 = mainMemory.getDirect(codeMemory.getFromAddress(linePointer+1));
+            int wynik = wartosc1|warotsc2;
+            mainMemory.put("A",wynik);
+            linePointer+=2;
+        }
+        else if(toExecute.equals("10100000")) { // ANL C,/00h
+            machineCycle();
+            boolean firstValue = mainMemory.getBit(codeMemory.bitAddresses.get("CY"));
+            boolean secondValue = !mainMemory.getBit(codeMemory.getFromAddress(linePointer+1));
+            if(firstValue || secondValue) {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
+            }
+            else {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
+            }
+            linePointer+=2;
+        }
+        else if(toExecute.equals("01110010")) { // ANL C,00h
+            machineCycle();
+            boolean firstValue = mainMemory.getBit(codeMemory.bitAddresses.get("CY"));
+            boolean secondValue = mainMemory.getBit(codeMemory.getFromAddress(linePointer+1));
+            if(firstValue||secondValue) {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
+            }
+            else {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
+            }
+            linePointer+=2;
+        }
+        else if(toExecute.equals("01000010")) { //ANL direct,A
+            machineCycle();
+            int wartosc1 = mainMemory.get("A");
+            int wartosc2 = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer + 1),2));
+
+            int wynik = wartosc1 | wartosc2;
+
+            mainMemory.put((Integer.parseInt(codeMemory.getFromAddress(linePointer + 1),2)), wynik);
+            linePointer+=2;
+        }
+        else if(toExecute.equals("01000011")) { //ANL direct,#01
+            machineCycle();
+            machineCycle();
+            int wartosc1 = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            int wartosc2 = Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
+            int wynik = wartosc1|wartosc2;
+
+            mainMemory.put(Integer.parseInt(codeMemory.getFromAddress(linePointer+1)),wynik);
+
+            linePointer+=3;
+        }
+
         /*
             CPL:
                 CPL AND A
