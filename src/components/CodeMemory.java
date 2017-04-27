@@ -356,7 +356,8 @@ public class CodeMemory {
                                     }
                                 }
                             }
-                        } else if (splittedLine[0].toUpperCase().equals("ORL")) {
+                        }
+                        else if (splittedLine[0].toUpperCase().equals("ORL")) {
                             if(splittedLine[1].toUpperCase().equals("A")) {
                                 if(splittedLine[2].charAt(0) == '#') {
                                     emulatedCodeMemory.set(pointer,"01000100");
@@ -491,6 +492,104 @@ public class CodeMemory {
                                 }
                             }
                         }
+
+                        /*
+                            XRL
+                         */
+
+                        else if (splittedLine[0].toUpperCase().equals("XRL")) {
+                            if(splittedLine[1].toUpperCase().equals("A")) {
+                                if(splittedLine[2].charAt(0) == '#') {
+                                    emulatedCodeMemory.set(pointer,"01100100");
+                                    try {
+                                        emulatedCodeMemory.set(pointer + 1, make8DigitsStringFromNumber(splittedLine[2].substring(1)));
+                                    }
+                                    catch (NumberFormatException e) {
+                                        throw new CompilingException("Nieznana Wartosc: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
+
+                                    }
+                                    pointer+=2;
+                                }
+                                else if(splittedLine[2].toUpperCase().charAt(0) == 'R') {
+                                    String numer = getRAddress(splittedLine[2].toUpperCase());
+                                    if(numer.equals("")) {
+                                        throw new CompilingException("Nieznany Rejestr: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
+                                    }
+                                    emulatedCodeMemory.set(pointer,"01101" + numer);
+                                    pointer+=1;
+                                }
+                                else {
+                                    if(bitAddresses.containsKey(splittedLine[2].toUpperCase())) {
+                                        emulatedCodeMemory.set(pointer,"01100101");
+                                        emulatedCodeMemory.set(pointer+1,bitAddresses.get(splittedLine[2].toUpperCase()));
+                                        pointer+=2;
+                                    }
+                                    else {
+                                        try {
+                                            int numer = Integer.parseInt(make8DigitsStringFromNumber(splittedLine[2]), 2);
+                                            emulatedCodeMemory.set(pointer,"01100101");
+                                            emulatedCodeMemory.set(pointer+1,make8DigitsStringFromNumber(splittedLine[2]));
+                                            pointer+=2;
+                                        }
+                                        catch (Exception e){
+                                            throw new CompilingException("Nierozpoznany Bit: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
+                                        }
+                                    }
+                                }
+                            }
+                            else {
+                                if(splittedLine[2].toUpperCase().equals("A")) {
+
+                                    if(bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
+                                        emulatedCodeMemory.set(pointer,"01100010");
+                                        emulatedCodeMemory.set(pointer+1,bitAddresses.get(splittedLine[1].toUpperCase()));
+                                        pointer+=2;
+                                    }
+                                    else {
+                                        try {
+                                            String liczba = make8DigitsStringFromNumber(splittedLine[1]);
+                                            emulatedCodeMemory.set(pointer,"01100010");
+                                            emulatedCodeMemory.set(pointer+1,liczba);
+                                            pointer+=2;
+                                        }
+                                        catch (Exception e) {
+                                            throw new CompilingException("Błędny bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
+                                        }
+                                    }
+                                }
+                                else {
+
+                                    if(splittedLine[2].charAt(0) == '#') {
+                                        try {
+                                            if(bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
+                                                emulatedCodeMemory.set(pointer,"01100011");
+                                                emulatedCodeMemory.set(pointer+1,bitAddresses.get(splittedLine[1].toUpperCase()));
+                                                emulatedCodeMemory.set(pointer + 2, make8DigitsStringFromNumber(splittedLine[2].substring(1)));
+                                                pointer+=3;
+                                            }
+                                            else {
+                                                try {
+                                                    String liczba = make8DigitsStringFromNumber(splittedLine[1]);
+                                                    emulatedCodeMemory.set(pointer,"01100011");
+                                                    emulatedCodeMemory.set(pointer+1,liczba);
+                                                    emulatedCodeMemory.set(pointer + 2, make8DigitsStringFromNumber(splittedLine[2].substring(1)));
+                                                    pointer+=3;
+                                                }
+                                                catch (Exception e) {
+                                                    throw new CompilingException("Błędny bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
+                                                }
+                                            }
+
+
+                                        } catch (NumberFormatException e) {
+                                            throw new CompilingException("Nieznana Wartosc: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                         else if(splittedLine[0].toUpperCase().equals("CPL")) {
                             if(splittedLine[1].toUpperCase().equals("A")) {
                                 emulatedCodeMemory.set(pointer,"11110100");
@@ -526,7 +625,16 @@ public class CodeMemory {
                             emulatedCodeMemory.set(pointer,"01000000");
                             emulatedCodeMemory.set(pointer+1,splittedLine[1].toUpperCase());
                             pointer+=2;
-                        } else if(splittedLine[0].toUpperCase().equals("JB")) {
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("JCN")) {
+                            if(splittedLine.length!=2) {
+                                throw new CompilingException("Niepoprawna ilosć argumentów: '" + backupLinii + "'" );
+                            }
+                            emulatedCodeMemory.set(pointer,"01010000");
+                            emulatedCodeMemory.set(pointer+1,splittedLine[1].toUpperCase());
+                            pointer+=2;
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("JB")) {
                             if(splittedLine.length!=3) {
                                 throw new CompilingException("Niepoprawna ilosć argumentów: '" + backupLinii + "'" );
                             }
@@ -573,6 +681,20 @@ public class CodeMemory {
                                 }
                             }
 
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("JZ")) {
+                            if(splittedLine.length!=2)
+                                throw new CompilingException("Niepoprawna ilosć argumentów: '" + backupLinii + "'" );
+                            emulatedCodeMemory.set(pointer,"01100000");
+                            emulatedCodeMemory.set(pointer+1,splittedLine[1].toUpperCase());
+                            pointer+=2;
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("JNZ")) {
+                            if(splittedLine.length!=2)
+                                throw new CompilingException("Niepoprawna ilosć argumentów: '" + backupLinii + "'" );
+                            emulatedCodeMemory.set(pointer,"01110000");
+                            emulatedCodeMemory.set(pointer+1,splittedLine[1].toUpperCase());
+                            pointer+=2;
                         }
                         else if(splittedLine[0].toUpperCase().equals("MOV")) {
                             if(splittedLine.length!=3)
@@ -1021,6 +1143,19 @@ public class CodeMemory {
                             }
 
                         }
+                        else if(splittedLine[0].toUpperCase().equals("SWAP")) {
+                            if(splittedLine[1].toUpperCase().equals("A")) {
+                                emulatedCodeMemory.set(pointer,"11000100");
+                                pointer+=1;
+                            }
+                            else {
+                                throw new CompilingException("Komenda swap wymaga akumulatora parametru, linia: '" + backupLinii + "'");
+                            }
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("NOP")) {
+                            emulatedCodeMemory.set(pointer,"00000000");
+                            pointer+=1;
+                        }
                     }
                 }
         }
@@ -1054,7 +1189,7 @@ public class CodeMemory {
 
         Main.stage.compilationErrorsLabel.setText("Kompilacja przebiegła pomyślnie");
         Main.stage.compilationErrorsLabel.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
-        //show();
+       // show();
     }
 
     private ArrayList<String> emulatedCodeMemory;
