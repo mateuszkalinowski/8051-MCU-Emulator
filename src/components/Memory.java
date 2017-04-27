@@ -58,6 +58,7 @@ public class Memory {
 
                     int bajt = numer / 8 + 32;
                     int bit = numer % 8;
+                    bit = 7 - bit;
                     return mainMemory[bajt][bit] == '1';
                 }
                 else {
@@ -84,6 +85,7 @@ public class Memory {
 
                 int bajt = numer / 8 + 32;
                 int bit = numer % 8;
+                bit = 7 - bit;
                 if(value)
                     mainMemory[bajt][bit] = '1';
                 else

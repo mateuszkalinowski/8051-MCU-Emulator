@@ -88,6 +88,10 @@ public class Cpu {
                 linePointer+=3;
             }
         }
+        /*
+            ANL:
+                wszystko bez Ri
+         */
         else if(toExecute.equals("01010100")) { //ANL a,#01h
             machineCycle();
             int wartosc = Integer.parseInt(codeMemory.getFromAddress(linePointer+1));
@@ -112,6 +116,51 @@ public class Cpu {
             int wynik = wartosc1&warotsc2;
             mainMemory.put("A",wynik);
             linePointer+=2;
+        }
+        else if(toExecute.equals("10110000")) { // ANL C,/00h
+            machineCycle();
+            boolean firstValue = mainMemory.getBit(codeMemory.bitAddresses.get("CY"));
+            boolean secondValue = !mainMemory.getBit(codeMemory.getFromAddress(linePointer+1));
+            if(firstValue==secondValue) {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
+            }
+            else {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
+            }
+            linePointer+=2;
+        }
+        else if(toExecute.equals("10000010")) { // ANL C,00h
+            machineCycle();
+            boolean firstValue = mainMemory.getBit(codeMemory.bitAddresses.get("CY"));
+            boolean secondValue = mainMemory.getBit(codeMemory.getFromAddress(linePointer+1));
+            if(firstValue==secondValue) {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
+            }
+            else {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
+            }
+            linePointer+=2;
+        }
+        else if(toExecute.equals("01010010")) { //ANL direct,A
+            machineCycle();
+            int wartosc1 = mainMemory.get("A");
+            int wartosc2 = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer + 1),2));
+
+            int wynik = wartosc1 & wartosc2;
+
+            mainMemory.put((Integer.parseInt(codeMemory.getFromAddress(linePointer + 1),2)), wynik);
+            linePointer+=2;
+        }
+        else if(toExecute.equals("01010011")) { //ANL direct,#01
+            machineCycle();
+            machineCycle();
+            int wartosc1 = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            int wartosc2 = Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
+            int wynik = wartosc1&wartosc2;
+
+            mainMemory.put(Integer.parseInt(codeMemory.getFromAddress(linePointer+1)),wynik);
+
+            linePointer+=3;
         }
         /*
             CPL:

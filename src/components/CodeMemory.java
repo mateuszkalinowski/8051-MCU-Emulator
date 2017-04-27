@@ -262,6 +262,100 @@ public class CodeMemory {
                                        }
                                    }
                             }
+                            else if (splittedLine[1].toUpperCase().equals("C") || splittedLine[1].toUpperCase().equals("CY")) {
+                                if(splittedLine[2].charAt(0) == '/') {
+                                    String value = splittedLine[2].substring(1,splittedLine[2].length()).toUpperCase();
+                                    if(bitAddresses.containsKey(value)) {
+                                        emulatedCodeMemory.set(pointer,"10110000");
+                                        emulatedCodeMemory.set(pointer+1,bitAddresses.get(value));
+                                        pointer+=2;
+                                    }
+                                    else {
+                                        try {
+                                            int numer = Integer.parseInt(make8DigitsStringFromNumber(value), 2);
+                                            emulatedCodeMemory.set(pointer,"10110000");
+                                            emulatedCodeMemory.set(pointer+1,make8DigitsStringFromNumber(value));
+                                            pointer+=2;
+                                        }
+                                        catch (Exception e){
+                                            throw new CompilingException("Nierozpoznany Bit: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
+                                        }
+                                    }
+                                }
+                                else {
+                                    String value = splittedLine[2].toUpperCase();
+                                    if(bitAddresses.containsKey(value)) {
+                                        emulatedCodeMemory.set(pointer,"10000010");
+                                        emulatedCodeMemory.set(pointer+1,bitAddresses.get(value));
+                                        pointer+=2;
+                                    }
+                                    else {
+                                        try {
+                                            int numer = Integer.parseInt(make8DigitsStringFromNumber(value), 2);
+                                            emulatedCodeMemory.set(pointer,"10000010");
+                                            emulatedCodeMemory.set(pointer+1,make8DigitsStringFromNumber(value));
+                                            pointer+=2;
+                                        }
+                                        catch (Exception e){
+                                            throw new CompilingException("Nierozpoznany Bit: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
+                                        }
+                                    }
+                                }
+                            }
+                            else {
+                                if(splittedLine[2].toUpperCase().equals("A")) {
+
+                                    if(bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
+                                        emulatedCodeMemory.set(pointer,"01010010");
+                                        emulatedCodeMemory.set(pointer+1,bitAddresses.get(splittedLine[1].toUpperCase()));
+                                        pointer+=2;
+                                    }
+                                    else {
+                                        try {
+                                            String liczba = make8DigitsStringFromNumber(splittedLine[1]);
+                                            emulatedCodeMemory.set(pointer,"01010010");
+                                            emulatedCodeMemory.set(pointer+1,liczba);
+                                            pointer+=2;
+                                        }
+                                        catch (Exception e) {
+                                            throw new CompilingException("Błędny bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
+                                        }
+                                    }
+
+
+
+                                }
+                                else {
+
+                                    if(splittedLine[2].charAt(0) == '#') {
+                                        try {
+                                            if(bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
+                                                emulatedCodeMemory.set(pointer,"01010011");
+                                                emulatedCodeMemory.set(pointer+1,bitAddresses.get(splittedLine[1].toUpperCase()));
+                                                emulatedCodeMemory.set(pointer + 2, make8DigitsStringFromNumber(splittedLine[2].substring(1)));
+                                                pointer+=3;
+                                            }
+                                            else {
+                                                try {
+                                                    String liczba = make8DigitsStringFromNumber(splittedLine[1]);
+                                                    emulatedCodeMemory.set(pointer,"01010011");
+                                                    emulatedCodeMemory.set(pointer+1,liczba);
+                                                    emulatedCodeMemory.set(pointer + 2, make8DigitsStringFromNumber(splittedLine[2].substring(1)));
+                                                    pointer+=3;
+                                                }
+                                                catch (Exception e) {
+                                                    throw new CompilingException("Błędny bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
+                                                }
+                                            }
+
+
+                                        } catch (NumberFormatException e) {
+                                            throw new CompilingException("Nieznana Wartosc: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
+
+                                        }
+                                    }
+                                }
+                            }
                         }
                         else if(splittedLine[0].toUpperCase().equals("CPL")) {
                             if(splittedLine[1].toUpperCase().equals("A")) {
@@ -311,7 +405,6 @@ public class CodeMemory {
                             else {
                                 try {
                                     String liczba = make8DigitsStringFromNumber(splittedLine[1]);
-                                    if(Integer.parseInt(liczba,2)>=0 && Integer.parseInt(liczba,2)<=127)
                                     emulatedCodeMemory.set(pointer,"00100000");
                                     emulatedCodeMemory.set(pointer+1,liczba);
                                     emulatedCodeMemory.set(pointer+2,splittedLine[2].toUpperCase());
