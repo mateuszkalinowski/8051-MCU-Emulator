@@ -872,6 +872,8 @@ public class Cpu {
             Main.stage.pTextField.setTextFill(Color.RED);
         }
 
+        Main.stage.drawFrame();
+
     }
 
     public static String expandTo8Digits(String number) {

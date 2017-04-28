@@ -3,12 +3,15 @@ package stages;
 import core.Main;
 import exceptions.CompilingException;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
@@ -16,13 +19,11 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import javax.swing.border.LineBorder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -36,7 +37,7 @@ public class MainStage extends Application {
     public void start(Stage primaryStage) {
         mainGridPane = new GridPane();
         mainBorderPane = new BorderPane();
-        mainGridPane.setGridLinesVisible(true);
+        mainGridPane.setGridLinesVisible(false);
         RowConstraints upperRow = new RowConstraints();
         upperRow.setPercentHeight(62.5);
         RowConstraints lowerRow = new RowConstraints();
@@ -48,7 +49,7 @@ public class MainStage extends Application {
         mainGridPane.getRowConstraints().add(lowerRow);
 
         editorElementsGridPane = new GridPane();
-        editorElementsGridPane.setGridLinesVisible(true);
+        editorElementsGridPane.setGridLinesVisible(false);
         RowConstraints rowInEditorElementsGridPane = new RowConstraints();
         rowInEditorElementsGridPane.setPercentHeight(100);
         editorElementsGridPane.getRowConstraints().add(rowInEditorElementsGridPane);
@@ -575,14 +576,14 @@ public class MainStage extends Application {
         diodesPane.setClosable(false);
         Tab chartPane = new Tab("Przebieg");
         chartPane.setClosable(false);
-        elementsTabPane.getTabs().add(chartPane);
         elementsTabPane.getTabs().add(diodesPane);
+        elementsTabPane.getTabs().add(chartPane);
 
 
-        GridPane diodesPaneGridPane = new GridPane();
+        diodesPaneGridPane = new GridPane();
         ColumnConstraints columnInDiodesPane = new ColumnConstraints();
-        columnInDiodesPane.setPercentWidth(100/8);
-        for (int i = 0; i < 8;i++) {
+        columnInDiodesPane.setPercentWidth(100/5);
+        for (int i = 0; i < 5;i++) {
             diodesPaneGridPane.getColumnConstraints().add(columnInDiodesPane);
         }
         RowConstraints rowInDiodesPane = new RowConstraints();
@@ -593,35 +594,36 @@ public class MainStage extends Application {
 
 
         portButton0 = new ToggleButton("0");
-        //diodesPaneGridPane.add(portButton0,7,8);
         portButton1 = new ToggleButton("1");
-        //diodesPaneGridPane.add(portButton1,6,8);
         portButton2 = new ToggleButton("2");
-        //diodesPaneGridPane.add(portButton2,5,8);
         portButton3 = new ToggleButton("3");
-        //diodesPaneGridPane.add(portButton3,4,8);
         portButton4 = new ToggleButton("4");
-       // diodesPaneGridPane.add(portButton4,3,8);
         portButton5 = new ToggleButton("5");
-       // diodesPaneGridPane.add(portButton5,2,8);
         portButton6 = new ToggleButton("6");
-       // diodesPaneGridPane.add(portButton6,1,8);
         portButton7 = new ToggleButton("7");
-     //   diodesPaneGridPane.add(portButton7,0,8);
 
-        HBox portsButtonsHBox = new HBox();
-        portsButtonsHBox.setPadding(new Insets(10,10,10,10));
-        portsButtonsHBox.setAlignment(Pos.CENTER);
+        HBox userButtonsHBox = new HBox();
+        userButtonsHBox.setPadding(new Insets(1,2,1,2));
+        userButtonsHBox.setAlignment(Pos.CENTER);
         HBox.setHgrow(portButton0,Priority.ALWAYS);
-        portsButtonsHBox.setSpacing(5);
-        portsButtonsHBox.getChildren().addAll(portButton0,portButton1);
-        diodesPaneGridPane.add(portsButtonsHBox,0,7,7,1);
-        diodesPane.setContent(diodesPaneGridPane);
+        HBox.setHgrow(portButton1,Priority.ALWAYS);
+        HBox.setHgrow(portButton2,Priority.ALWAYS);
+        HBox.setHgrow(portButton3,Priority.ALWAYS);
+        HBox.setHgrow(portButton4,Priority.ALWAYS);
+        HBox.setHgrow(portButton5,Priority.ALWAYS);
+        HBox.setHgrow(portButton6,Priority.ALWAYS);
+        HBox.setHgrow(portButton7,Priority.ALWAYS);
+        userButtonsHBox.setSpacing(1);
 
-        BorderPane chartBorderPane = new BorderPane();
+        userButtonsHBox.getChildren().addAll(portButton7,portButton6,portButton5,portButton4,portButton3,portButton2,portButton1,portButton0);
+        diodesPaneGridPane.add(ledCanvas,0,0,8,2);
+        diodesPaneGridPane.add(userButtonsHBox,0,8,8,2);
+        diodesPaneGridPane.setGridLinesVisible(false);
+        diodesPane.setContent(diodesPaneGridPane);
 
         final NumberAxis xAxis = new NumberAxis(0,255,64);
         final NumberAxis yAxis = new NumberAxis(0,255,64);
+        BorderPane chartBorderPane = new BorderPane();
         //creating the chart
         final ScatterChart<Number,Number> lineChart =
                 new ScatterChart<Number,Number>(xAxis,yAxis);
@@ -632,6 +634,8 @@ public class MainStage extends Application {
         chartPane.setContent(chartBorderPane);
 
         chartBorderPane.setCenter(lineChart);
+
+        chartPane.setContent(chartBorderPane);
 
 
         editorElementsGridPane.add(elementsTabPane,1,0);
@@ -700,19 +704,77 @@ public class MainStage extends Application {
         chartBorderPane.setBottom(generateButtonBox);
 
         mainStage = primaryStage;
-        mainStage.setTitle("8051 MCU Emulator - 0.1 Alpha");
+        mainStage.setTitle("8051 MCU Emulator - 0.2 Alpha");
         mainBorderPane.setCenter(mainGridPane);
         mainScene = new Scene(mainBorderPane,width,height);
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
         mainStage.setScene(mainScene);
         mainStage.show();
+        mainStage.setMinHeight(600);
+        mainStage.setMinWidth(800);
         Main.cpu.refreshGui();
+
+        mainStage.fullScreenProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                drawFrame();
+            }
+        });
+
+        mainScene.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                drawFrame();
+            }
+        });
+        mainScene.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                drawFrame();
+            }
+        });
+        drawFrame();
     }
+
 
     public MainStage(double width,double height) {
         this.height = height;
         this.width = width;
     }
+
+    public void drawFrame(){
+        double width = mainStage.getWidth() * 3.0/10.0;
+        double height = mainScene.getHeight()*1.0/10.0;
+
+        ledCanvas.setWidth(width);
+        ledCanvas.setHeight(height);
+
+        double oneLedWidth = width/8.0;
+
+        GraphicsContext gc = ledCanvas.getGraphicsContext2D();
+        gc.clearRect(0,0,width,height);
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(2);
+        gc.strokeRect(0,0,width,height);
+        gc.setFill(Color.RED);
+
+        for(int i = 0; i<8;i++) {
+            String portName = "P0." + (7 - i);
+            if(Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(portName)))
+                gc.setFill(Color.RED);
+            else
+                gc.setFill(Color.BLACK);
+
+            double centerX = i*oneLedWidth+oneLedWidth/2.0;
+            double centerY = height/2.0;
+            double radius = (oneLedWidth >= height ? height : oneLedWidth)/2.0;
+
+            gc.fillOval(centerX-radius,centerY-radius,radius*2,radius*2);
+        }
+    }
+
+
+    private Canvas ledCanvas = new Canvas();
 
     public void setEditorText(String text) {
         editorTextArea.setText(text);
@@ -819,4 +881,6 @@ public class MainStage extends Application {
     private Button rysujRunButton;
 
     public boolean running;
+
+    private GridPane diodesPaneGridPane;
 }
