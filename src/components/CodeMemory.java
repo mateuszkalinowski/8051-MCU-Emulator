@@ -1189,7 +1189,7 @@ public class CodeMemory {
 
         Main.stage.compilationErrorsLabel.setText("Kompilacja przebiegła pomyślnie");
         Main.stage.compilationErrorsLabel.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
-       // show();
+        //show();
     }
 
     private ArrayList<String> emulatedCodeMemory;

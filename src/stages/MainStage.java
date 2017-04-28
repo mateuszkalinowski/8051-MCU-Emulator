@@ -1,10 +1,13 @@
 package stages;
 
+import converters.Converters;
 import core.Main;
 import exceptions.CompilingException;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -436,6 +439,7 @@ public class MainStage extends Application {
                     oneStepButton.setDisable(false);
                     editorTextArea.setEditable(false);
                     rysujRunButton.setDisable(true);
+                    continuousRunButton.setDisable(false);
                     running = true;
                 }
                 catch (CompilingException e) {
@@ -456,6 +460,9 @@ public class MainStage extends Application {
                 editorTextArea.setEditable(true);
                 editorTextArea.setText("");
                 rysujRunButton.setDisable(false);
+                continuousRunFlag = false;
+                continuousRunButton.setDisable(true);
+                continuousRunButton.setText("Praca Ciągła");
                 running = false;
                 String textToSet = "";
                 for(String line : lines) {
@@ -475,6 +482,7 @@ public class MainStage extends Application {
             public void handle(ActionEvent event) {
                 try {
                     Main.cpu.executeInstruction();
+                    Main.cpu.refreshGui();
                 }
                 catch (Exception e){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -487,10 +495,51 @@ public class MainStage extends Application {
             }
         });
 
+        continuousRunButton = new Button("Praca Ciągła");
+        continuousRunButton.setDisable(true);
+        continuousRunButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(continuousRunButton.getText().equals("Praca Ciągła")) {
+                    continuousRunButton.setText("Stop");
+                    oneStepButton.setDisable(true);
+                    autoRun = new Task<Void>() {
+                        @Override
+                        protected Void call() throws Exception {
+                            continuousRunFlag=true;
+                            long time = System.currentTimeMillis();
+                            while(continuousRunFlag) {
+                                if(System.currentTimeMillis()-time>100) {
+                                    Main.cpu.executeInstruction();
+                                    time = System.currentTimeMillis();
+                                    Platform.runLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Main.cpu.refreshGui();
+                                        }
+                                    });
+                                }
+                            }
+                            return null;
+                        }
+                    };
+                    Thread continuousRunThread = new Thread(autoRun);
+                    continuousRunThread.start();
+                }
+                else {
+                    continuousRunFlag = false;
+                    oneStepButton.setDisable(false);
+                    continuousRunButton.setText("Praca Ciągła");
+                }
+            }
+        });
+
+
 
         translateToMemoryButton.setMaxWidth(Double.MAX_VALUE);
         stopSimulationButton.setMaxWidth(Double.MAX_VALUE);
         stopSimulationButton.setDisable(true);
+        continuousRunButton.setMaxWidth(Double.MAX_VALUE);
         oneStepButton.setMaxWidth(Double.MAX_VALUE);
         oneStepButton.setDisable(true);
 
@@ -501,9 +550,10 @@ public class MainStage extends Application {
         HBox.setHgrow(translateToMemoryButton,Priority.ALWAYS);
         HBox.setHgrow(stopSimulationButton,Priority.ALWAYS);
         HBox.setHgrow(oneStepButton,Priority.ALWAYS);
+        HBox.setHgrow(continuousRunButton,Priority.ALWAYS);
         buttonBox.setSpacing(5);
 
-        buttonBox.getChildren().addAll(translateToMemoryButton,stopSimulationButton,oneStepButton);
+        buttonBox.getChildren().addAll(translateToMemoryButton,stopSimulationButton,oneStepButton,continuousRunButton);
         infoEditorAndButtonGridPane.add(buttonBox,0,18,1,2);
 
         MenuBar mainMenuBar = new MenuBar();
@@ -617,6 +667,7 @@ public class MainStage extends Application {
 
         userButtonsHBox.getChildren().addAll(portButton7,portButton6,portButton5,portButton4,portButton3,portButton2,portButton1,portButton0);
         diodesPaneGridPane.add(ledCanvas,0,0,8,2);
+        diodesPaneGridPane.add(seg7Canvas,0,2,8,4);
         diodesPaneGridPane.add(userButtonsHBox,0,8,8,2);
         diodesPaneGridPane.setGridLinesVisible(false);
         diodesPane.setContent(diodesPaneGridPane);
@@ -755,7 +806,7 @@ public class MainStage extends Application {
         gc.clearRect(0,0,width,height);
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(2);
-        gc.strokeRect(0,0,width,height);
+        //gc.strokeRect(0,0,width,height);
         gc.setFill(Color.RED);
 
         for(int i = 0; i<8;i++) {
@@ -767,14 +818,131 @@ public class MainStage extends Application {
 
             double centerX = i*oneLedWidth+oneLedWidth/2.0;
             double centerY = height/2.0;
-            double radius = (oneLedWidth >= height ? height : oneLedWidth)/2.0;
+            double radius = (oneLedWidth >= height ? height-2 : oneLedWidth)/2.0-2;
 
             gc.fillOval(centerX-radius,centerY-radius,radius*2,radius*2);
         }
+
+        height = mainScene.getHeight()*2.5/10;
+
+        seg7Canvas.setWidth(width);
+        seg7Canvas.setHeight(height);
+
+        gc = seg7Canvas.getGraphicsContext2D();
+
+        double marginX = 10;
+        double marginY = 20;
+
+        gc.clearRect(0,0,width,height);
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(2);
+        //gc.strokeRect(0,0,width,height);
+        double shorter = 10;
+        double longer = (height-2*marginY-4*shorter)/2.0;
+
+        gc.setFill(Color.BLACK);
+
+        //LICZBA PIERWSZA
+        String wartosc = Main.cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get("P1")));
+        int[] wartosci = Converters.bcdto7seg(wartosc.substring(0,4));
+
+
+
+
+        if(wartosci[0] == 1)
+            gc.setFill(Color.RED);
+        else
+            gc.setFill(Color.GREY);
+        gc.fillRoundRect(width/2.0-longer-shorter-marginX,marginY,longer,shorter,10,10);//a
+        if(wartosci[6] == 1)
+            gc.setFill(Color.RED);
+        else
+            gc.setFill(Color.GREY);
+        gc.fillRoundRect(width/2.0-longer-shorter-marginX,marginY+longer+shorter,longer,shorter,10,10);//g
+        if(wartosci[3] == 1)
+            gc.setFill(Color.RED);
+        else
+            gc.setFill(Color.GREY);
+        gc.fillRoundRect(width/2.0-longer-shorter-marginX,marginY+2.0*longer+2.0*shorter,longer,shorter,10,10);//d
+
+        if(wartosci[5] == 1)
+            gc.setFill(Color.RED);
+        else
+            gc.setFill(Color.GREY);
+        gc.fillRoundRect(width/2.0-longer-shorter-marginX-shorter,marginY+shorter,shorter,longer,10,10);//f
+        if(wartosci[4] == 1)
+            gc.setFill(Color.RED);
+        else
+            gc.setFill(Color.GREY);
+        gc.fillRoundRect(width/2.0-longer-shorter-marginX-shorter,marginY+shorter+longer+shorter,shorter,longer,10,10);//e
+
+        if(wartosci[1] == 1)
+            gc.setFill(Color.RED);
+        else
+            gc.setFill(Color.GREY);
+        gc.fillRoundRect(width/2.0-marginX-shorter,marginY+shorter,shorter,longer,10,10);//b
+        if(wartosci[2] == 1)
+            gc.setFill(Color.RED);
+        else
+            gc.setFill(Color.GREY);
+        gc.fillRoundRect(width/2.0-marginX-shorter,marginY+shorter+longer+shorter,shorter,longer,10,10);//c
+
+
+
+
+
+
+        wartosci = Converters.bcdto7seg(wartosc.substring(4,8));
+
+        //LICZBA DRUGA
+        if(wartosci[0] == 1)
+            gc.setFill(Color.RED);
+        else
+            gc.setFill(Color.GREY);
+        gc.fillRoundRect(width/2.0+shorter+marginX,marginY,longer,shorter,10,10);//a
+
+        if(wartosci[6] == 1)
+            gc.setFill(Color.RED);
+        else
+            gc.setFill(Color.GREY);
+        gc.fillRoundRect(width/2.0+shorter+marginX,marginY+longer+shorter,longer,shorter,10,10);//g
+
+        if(wartosci[3] == 1)
+            gc.setFill(Color.RED);
+        else
+            gc.setFill(Color.GREY);
+        gc.fillRoundRect(width/2.0+shorter+marginX,marginY+2.0*longer+2.0*shorter,longer,shorter,10,10);//d
+
+
+        if(wartosci[1] == 1)
+            gc.setFill(Color.RED);
+        else
+            gc.setFill(Color.GREY);
+        gc.fillRoundRect(width/2.0+longer+shorter+marginX,marginY+shorter,shorter,longer,10,10);//b
+
+        if(wartosci[2] == 1)
+            gc.setFill(Color.RED);
+        else
+            gc.setFill(Color.GREY);
+        gc.fillRoundRect(width/2.0+longer+shorter+marginX,marginY+shorter+longer+shorter,shorter,longer,10,10);//c
+
+
+        if(wartosci[5] == 1)
+            gc.setFill(Color.RED);
+        else
+            gc.setFill(Color.GREY);
+        gc.fillRoundRect(width/2.0+marginX,marginY+shorter,shorter,longer,10,10);//f
+
+        if(wartosci[4] == 1)
+            gc.setFill(Color.RED);
+        else
+            gc.setFill(Color.GREY);
+        gc.fillRoundRect(width/2.0+marginX,marginY+shorter+longer+shorter,shorter,longer,10,10);//e
     }
 
 
     private Canvas ledCanvas = new Canvas();
+    private Canvas seg7Canvas =  new Canvas();
 
     public void setEditorText(String text) {
         editorTextArea.setText(text);
@@ -870,11 +1038,16 @@ public class MainStage extends Application {
     private Button translateToMemoryButton;
     private Button stopSimulationButton;
     private Button oneStepButton;
+    private Button continuousRunButton;
 
     private TextArea editorTextArea;
 
     Stage mainStage;
     Scene mainScene;
+
+    private boolean continuousRunFlag;
+
+    private Task<Void> autoRun;
 
     private String lines[];
 

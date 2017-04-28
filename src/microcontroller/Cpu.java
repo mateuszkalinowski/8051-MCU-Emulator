@@ -41,6 +41,7 @@ public class Cpu {
 
     public void executeInstruction() throws InstructionException{
         String toExecute = codeMemory.getFromAddress(linePointer);
+        //System.out.println(linePointer);
         //System.out.println(linePointer + " " + toExecute);
         if(toExecute.equals("00000010")) { //LJMP
             machineCycle();
@@ -752,7 +753,7 @@ public class Cpu {
             linePointer+=1;
         }
         refreshStatusRegister();
-        refreshGui();
+        //refreshGui();
     }
 
     private void refreshStatusRegister(){
