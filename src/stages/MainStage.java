@@ -1079,6 +1079,49 @@ public class MainStage extends Application {
 
         chartBorderPane.setBottom(generateButtonBox);
 
+
+        Tab memoryInfoTab = new Tab("Pamięć");
+        memoryInfoTab.setClosable(false);
+        simulatorTabPane.getTabs().addAll(memoryInfoTab);
+
+        GridPane mainMemoryGridPane = new GridPane();
+        RowConstraints firstRow = new RowConstraints();
+        firstRow.setPercentHeight(15);
+        RowConstraints secondRow = new RowConstraints();
+        secondRow.setPercentHeight(85);
+        mainMemoryGridPane.getRowConstraints().addAll(firstRow,secondRow);
+
+        ColumnConstraints columnInMemoryTab = new ColumnConstraints();
+        columnInMemoryTab.setPercentWidth(5);
+        for(int i = 0; i < 20; i++)
+            mainMemoryGridPane.getColumnConstraints().addAll(columnInMemoryTab);
+
+        lowerRamTextArea = new TextArea();
+        lowerRamTextArea.setFont(new Font("Arial",12));
+        lowerRamTextArea.setEditable(false);
+        mainMemoryGridPane.add(lowerRamTextArea,0,1,9,1);
+
+        upperRawTextArea = new TextArea();
+        upperRawTextArea.setFont(new Font("Arial",12));
+        upperRawTextArea.setEditable(false);
+        mainMemoryGridPane.add(upperRawTextArea,11,1,9,1);
+
+        Label lowerRamLabel = new Label("Ram 00-7F");
+        lowerRamLabel.setAlignment(Pos.CENTER);
+        lowerRamLabel.setMaxWidth(Double.MAX_VALUE);
+
+        Label upperRamLabel = new Label("Ram 80-FF");
+        upperRamLabel.setAlignment(Pos.CENTER);
+        upperRamLabel.setMaxWidth(Double.MAX_VALUE);
+
+        mainMemoryGridPane.add(lowerRamLabel,0,0,9,1);
+        mainMemoryGridPane.add(upperRamLabel,11,0,9,1);
+
+
+        memoryInfoTab.setContent(mainMemoryGridPane);
+
+
+
         mainStage = primaryStage;
         mainStage.setTitle("8051 MCU Emulator - 0.2 Alpha");
         mainBorderPane.setCenter(mainGridPane);
@@ -1143,7 +1186,7 @@ public class MainStage extends Application {
 
             double centerX = i*oneLedWidth+oneLedWidth/2.0;
             double centerY = height/2.0;
-            double radius = (oneLedWidth >= height ? height-2 : oneLedWidth)/2.0-2;
+            double radius = (oneLedWidth >= height ? height-2 : oneLedWidth)/2.0-5;
 
             gc.fillOval(centerX-radius,centerY-radius,radius*2,radius*2);
         }
@@ -1369,6 +1412,9 @@ public class MainStage extends Application {
     public Button portButton5;
     public Button portButton6;
     public Button portButton7;
+
+    public TextArea lowerRamTextArea;
+    public TextArea upperRawTextArea;
 
     public Label compilationErrorsLabel;
 

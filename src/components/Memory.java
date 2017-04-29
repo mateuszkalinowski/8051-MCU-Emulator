@@ -14,8 +14,8 @@ import java.util.NoSuchElementException;
  */
 public class Memory {
     public Memory(){
-        mainMemory = new char[255][8];
-        for(int i = 0; i < 255; i++) {
+        mainMemory = new char[256][8];
+        for(int i = 0; i < 256; i++) {
             mainMemory[i] = "00000000".toCharArray();
         }
         memoryCellsNames.put("R0",0);

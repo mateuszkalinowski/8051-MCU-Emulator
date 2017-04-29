@@ -787,6 +787,83 @@ public class Cpu {
 
         Main.stage.pcTextField.setText( hexLinePointer+ "h");
 
+        String content = "";
+        content +="\t 0\t";
+        content +=" 1\t";
+        content +=" 2\t";
+        content +=" 3\t";
+        content +=" 4\t";
+        content +=" 5\t";
+        content +=" 6\t";
+        content +=" 7\t";
+        content +=" 8\t";
+        content +=" 9\t";
+        content +=" A\t";
+        content +=" B\t";
+        content +=" C\t";
+        content +=" D\t";
+        content +=" E\t";
+        content +=" F\t";
+        content +="\n";
+
+        for(int i = 0; i < 8;i++) {
+            content+=i+"\t";
+            for(int j = 0; j < 16;j++) {
+                if(Integer.toHexString(mainMemory.get(i*16+j)).length()==1) {
+                    content+=" " + "0" + Integer.toHexString(mainMemory.get(i*16+j)).toUpperCase() + " ";
+                }
+                else
+                    content+=" " + Integer.toHexString(mainMemory.get(i*16+j)).toUpperCase() + " ";
+                content+="\t";
+            }
+            if(i!=7)
+                content+="\n";
+        }
+        double pos = Main.stage.lowerRamTextArea.getScrollTop();
+        double pos2 = Main.stage.lowerRamTextArea.getScrollLeft();
+        Main.stage.lowerRamTextArea.setText(content);
+        Main.stage.lowerRamTextArea.setScrollTop(pos);
+        Main.stage.lowerRamTextArea.setScrollLeft(pos2);
+
+        content = "";
+        content +="\t 0\t";
+        content +=" 1\t";
+        content +=" 2\t";
+        content +=" 3\t";
+        content +=" 4\t";
+        content +=" 5\t";
+        content +=" 6\t";
+        content +=" 7\t";
+        content +=" 8\t";
+        content +=" 9\t";
+        content +=" A\t";
+        content +=" B\t";
+        content +=" C\t";
+        content +=" D\t";
+        content +=" E\t";
+        content +=" F\t";
+        content +="\n";
+
+        for(int i = 8; i < 16;i++) {
+            content+=i+"\t";
+            for(int j = 0; j < 16;j++) {
+                if(Integer.toHexString(mainMemory.get(i*16+j)).length()==1) {
+                    content+=" " + "0" + Integer.toHexString(mainMemory.get(i*16+j)).toUpperCase() + " ";
+                }
+                else
+                    content+=" " + Integer.toHexString(mainMemory.get(i*16+j)).toUpperCase() + " ";
+                content+="\t";
+            }
+            if(i!=15)
+                content+="\n";
+        }
+
+        pos = Main.stage.upperRawTextArea.getScrollTop();
+        pos2 = Main.stage.upperRawTextArea.getScrollLeft();
+        Main.stage.upperRawTextArea.setText(content);
+        Main.stage.upperRawTextArea.setScrollTop(pos);
+        Main.stage.upperRawTextArea.setScrollLeft(pos2);
+
         Main.stage.r0TextField.setText(Integer.toHexString(mainMemory.get("R0")).toUpperCase()+"h");
         Main.stage.r1TextField.setText(Integer.toHexString(mainMemory.get("R1")).toUpperCase()+"h");
         Main.stage.r2TextField.setText(Integer.toHexString(mainMemory.get("R2")).toUpperCase()+"h");

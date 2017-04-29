@@ -85,9 +85,7 @@ public class PaneConfigStage extends Application {
         mainStage.setScene(mainScene);
         mainStage.setTitle("Konfiguracja Panelu");
         mainStage.setResizable(false);
-        //mainStage.initModality(Modality.APPLICATION_MODAL);
         mainStage.setResizable(false);
-        // mainScene.getStylesheets().add(MainStage.class.getResource("css/style.css").toExternalForm());
         mainStage.show();
     }
 }
