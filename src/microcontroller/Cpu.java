@@ -778,6 +778,15 @@ public class Cpu {
 
         Main.stage.timePassedTextField.setText(timePassed + " mkS");
 
+        String hexLinePointer = Integer.toHexString(linePointer);
+
+        int howMany = 4 - hexLinePointer.length();
+        for(;howMany>0;howMany--) {
+            hexLinePointer = "0"+hexLinePointer;
+        }
+
+        Main.stage.pcTextField.setText( hexLinePointer+ "h");
+
         Main.stage.r0TextField.setText(Integer.toHexString(mainMemory.get("R0")).toUpperCase()+"h");
         Main.stage.r1TextField.setText(Integer.toHexString(mainMemory.get("R1")).toUpperCase()+"h");
         Main.stage.r2TextField.setText(Integer.toHexString(mainMemory.get("R2")).toUpperCase()+"h");
