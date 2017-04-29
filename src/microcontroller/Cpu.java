@@ -23,20 +23,12 @@ public class Cpu {
 
     public void resetCpu(){
         linePointer=0;
+        timePassed = 0;
         mainMemory = new Memory();
-        bitMap.clear();
-        bitMap.put("ACC.0","11100000");
-        bitMap.put("ACC.1","11100001");
-        bitMap.put("ACC.2","11100010");
-        bitMap.put("ACC.3","11100011");
-        bitMap.put("ACC.4","11100100");
-        bitMap.put("ACC.5","11100101");
-        bitMap.put("ACC.6","11100110");
-        bitMap.put("ACC.7","11100111");
     }
 
     private void machineCycle(){
-
+        timePassed++;
     }
 
     public void executeInstruction() throws InstructionException{
@@ -783,6 +775,9 @@ public class Cpu {
 
 
     public void refreshGui(){
+
+        Main.stage.timePassedTextField.setText(timePassed + " mkS");
+
         Main.stage.r0TextField.setText(Integer.toHexString(mainMemory.get("R0")).toUpperCase()+"h");
         Main.stage.r1TextField.setText(Integer.toHexString(mainMemory.get("R1")).toUpperCase()+"h");
         Main.stage.r2TextField.setText(Integer.toHexString(mainMemory.get("R2")).toUpperCase()+"h");
@@ -891,18 +886,9 @@ public class Cpu {
         linePointer = 0;
     }
 
+    public long timePassed;
     private int linePointer;
     public Memory mainMemory;
-    //private Map<String,Boolean> psw = new HashMap<>();
     public CodeMemory codeMemory = new CodeMemory();
 
-    public Map<String,String> bitMap = new HashMap<>();
-
-    public String getKeyFromBitMap(String toFind){
-        for(String s:bitMap.keySet()) {
-            if(bitMap.get(s).equals(toFind))
-                return s;
-        }
-        return "";
-    }
 }

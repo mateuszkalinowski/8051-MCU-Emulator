@@ -20,6 +20,7 @@ import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -425,6 +426,19 @@ public class MainStage extends Application {
         pswLabel.setFont(new Font("Arial",11));
         simulatorGridPane.add(pswLabel,1,5,1,2);
 
+        timePassedLabel = new Label("Czas Symulacji:");
+        timePassedLabel.setMaxWidth(Double.MAX_VALUE);
+        timePassedLabel.setAlignment(Pos.CENTER);
+        timePassedLabel.setFont(new Font("Arial",11));
+        simulatorGridPane.add(timePassedLabel,1,1,2,1);
+
+        timePassedTextField = new Label("0 mkS");
+        timePassedTextField.setMaxWidth(Double.MAX_VALUE);
+        timePassedTextField.setAlignment(Pos.CENTER);
+        timePassedTextField.setFont(new Font("Arial",11));
+        timePassedTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(timePassedTextField,1,2,2,1);
+
         translateToMemoryButton = new Button("Uruchom");
         translateToMemoryButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -441,6 +455,43 @@ public class MainStage extends Application {
                     rysujRunButton.setDisable(true);
                     continuousRunButton.setDisable(false);
                     running = true;
+
+                    if(portButton7.isSelected())
+                        Main.cpu.mainMemory.buttonsState[0] = '0';
+                    else
+                        Main.cpu.mainMemory.buttonsState[0] = '1';
+                    if(portButton6.isSelected())
+                        Main.cpu.mainMemory.buttonsState[1] = '0';
+                    else
+                        Main.cpu.mainMemory.buttonsState[1] = '1';
+                    if(portButton5.isSelected())
+                        Main.cpu.mainMemory.buttonsState[2] = '0';
+                    else
+                        Main.cpu.mainMemory.buttonsState[2] = '1';
+                    if(portButton4.isSelected())
+                        Main.cpu.mainMemory.buttonsState[3] = '0';
+                    else
+                        Main.cpu.mainMemory.buttonsState[3] = '1';
+                    if(portButton3.isSelected())
+                        Main.cpu.mainMemory.buttonsState[4] = '0';
+                    else
+                        Main.cpu.mainMemory.buttonsState[4] = '1';
+                    if(portButton2.isSelected())
+                        Main.cpu.mainMemory.buttonsState[5] = '0';
+                    else
+                        Main.cpu.mainMemory.buttonsState[5] = '1';
+                    if(portButton1.isSelected())
+                        Main.cpu.mainMemory.buttonsState[6] = '0';
+                    else
+                        Main.cpu.mainMemory.buttonsState[6] = '1';
+                    if(portButton0.isSelected())
+                        Main.cpu.mainMemory.buttonsState[7] = '0';
+                    else
+                        Main.cpu.mainMemory.buttonsState[7] = '1';
+
+                    Main.cpu.mainMemory.putFromExternal(160);
+                    Main.cpu.refreshGui();
+
                 }
                 catch (CompilingException e) {
                     Main.stage.compilationErrorsLabel.setText("Błąd: " + e.getMessage());
@@ -450,7 +501,7 @@ public class MainStage extends Application {
             }
         });
 
-        stopSimulationButton = new Button("Zatrzymaj");
+        stopSimulationButton = new Button("Reset");
         stopSimulationButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -677,6 +728,71 @@ public class MainStage extends Application {
         HBox.setHgrow(portButton6,Priority.ALWAYS);
         HBox.setHgrow(portButton7,Priority.ALWAYS);
         userButtonsHBox.setSpacing(1);
+
+        portButton7.setOnAction(event -> {
+            if(portButton7.isSelected())
+                Main.cpu.mainMemory.buttonsState[0] = '0';
+            else
+                Main.cpu.mainMemory.buttonsState[0] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
+        });
+        portButton6.setOnAction(event -> {
+            if(portButton6.isSelected())
+                Main.cpu.mainMemory.buttonsState[1] = '0';
+            else
+                Main.cpu.mainMemory.buttonsState[1] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
+        });
+        portButton5.setOnAction(event -> {
+            if(portButton5.isSelected())
+                Main.cpu.mainMemory.buttonsState[2] = '0';
+            else
+                Main.cpu.mainMemory.buttonsState[2] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
+        });
+        portButton4.setOnAction(event -> {
+            if(portButton4.isSelected())
+                Main.cpu.mainMemory.buttonsState[3] = '0';
+            else
+                Main.cpu.mainMemory.buttonsState[3] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
+        });
+        portButton3.setOnAction(event -> {
+            if(portButton3.isSelected())
+                Main.cpu.mainMemory.buttonsState[4] = '0';
+            else
+                Main.cpu.mainMemory.buttonsState[4] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
+        });
+        portButton2.setOnAction(event -> {
+            if(portButton2.isSelected())
+                Main.cpu.mainMemory.buttonsState[5] = '0';
+            else
+                Main.cpu.mainMemory.buttonsState[5] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
+        });
+        portButton1.setOnAction(event -> {
+            if(portButton1.isSelected())
+                Main.cpu.mainMemory.buttonsState[6] = '0';
+            else
+                Main.cpu.mainMemory.buttonsState[6] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
+        });
+        portButton0.setOnAction(event -> {
+            if(portButton0.isSelected())
+                Main.cpu.mainMemory.buttonsState[7] = '0';
+            else
+                Main.cpu.mainMemory.buttonsState[7] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
+        });
 
         userButtonsHBox.getChildren().addAll(portButton7,portButton6,portButton5,portButton4,portButton3,portButton2,portButton1,portButton0);
         diodesPaneGridPane.add(ledCanvas,0,0,8,2);
@@ -1037,6 +1153,9 @@ public class MainStage extends Application {
     public Label cLabel;
     public Label cTextField;
 
+    public Label timePassedLabel;
+    public Label timePassedTextField;
+
     public ToggleButton portButton0;
     public ToggleButton portButton1;
     public ToggleButton portButton2;
@@ -1073,4 +1192,5 @@ public class MainStage extends Application {
     public boolean running;
 
     private GridPane diodesPaneGridPane;
+
 }

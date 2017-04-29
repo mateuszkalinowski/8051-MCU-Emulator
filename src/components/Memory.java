@@ -135,18 +135,19 @@ public class Memory {
 
     public void put(String label,int wartosc) {
         int index = memoryCellsNames.get(label);
-        String binaryValue = Integer.toBinaryString(wartosc);
-        char[] toPut = {'0','0','0','0','0','0','0','0'};
-        int i = 7;
-        int j = binaryValue.length()-1;
+            String binaryValue = Integer.toBinaryString(wartosc);
+            char[] toPut = { '0', '0', '0', '0', '0', '0', '0', '0' };
+            int i = 7;
+            int j = binaryValue.length() - 1;
 
-        while(j>=0) {
-            toPut[i] = binaryValue.charAt(j);
-            i--;
-            j--;
-        }
+            while (j >= 0) {
+                toPut[i] = binaryValue.charAt(j);
+                i--;
+                j--;
+            }
 
-        mainMemory[index] = toPut;
+            mainMemory[index] = toPut;
+
     }
     public void put(int index,int wartosc) {
         String binaryValue = Integer.toBinaryString(wartosc);
@@ -159,7 +160,28 @@ public class Memory {
             i--;
             j--;
         }
-        mainMemory[index] = toPut;
+        if(index!=160)
+            mainMemory[index] = toPut;
+        else if(index==160) {
+            latcherP2 = String.valueOf(toPut);
+            for(int k = 0; k < 8;k++) {
+                if(latcherP2.charAt(k)=='0')
+                    toPut[k] = '0';
+                else
+                    toPut[k] = buttonsState[k];
+            }
+            mainMemory[index] = toPut;
+        }
+    }
+    public void putFromExternal(int index) {
+        char value[] = buttonsState;
+        for(int k = 0; k < 8;k++) {
+            if(latcherP2.charAt(k)=='0')
+                value[k] = '0';
+            else
+                value[k] = buttonsState[k];
+        }
+        mainMemory[index] = value;
     }
     public int get(String label) {
         int index = memoryCellsNames.get(label);
@@ -205,6 +227,13 @@ public class Memory {
 
 
     char[][] mainMemory;
+
+    String latcherP0 = "11111111";
+    String latcherP1 = "11111111";
+    String latcherP2 = "11111111";
+    String latcherP3 = "11111111";
+
+    public char[] buttonsState = {'1','1','1','1','1','1','1','1'};
 
 
 }
