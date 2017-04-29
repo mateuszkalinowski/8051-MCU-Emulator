@@ -639,6 +639,24 @@ public class MainStage extends Application {
         Menu menuFile = new Menu("Plik");
         mainMenuBar.getMenus().add(menuFile);
 
+        Menu menuOptions = new Menu("Konfiguracja");
+        mainMenuBar.getMenus().add(menuOptions);
+
+
+        MenuItem paneConfigurationMenuItem = new MenuItem("Panel");
+        menuOptions.getItems().add(paneConfigurationMenuItem);
+        paneConfigurationMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                PaneConfigStage paneConfigStage = new PaneConfigStage();
+                try {
+                    paneConfigStage.start(primaryStage);
+                }
+                catch (Exception e) {
+
+                }
+            }
+        });
 
         MenuItem exitMenuItem = new MenuItem("Zamknij");
         exitMenuItem.setOnAction(event -> System.exit(0));
@@ -1117,7 +1135,7 @@ public class MainStage extends Application {
         gc.setFill(Color.RED);
 
         for(int i = 0; i<8;i++) {
-            String portName = "P0." + (7 - i);
+            String portName = ledsPort+"." + (7 - i);
             if(Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(portName)))
                 gc.setFill(Color.RED);
             else
@@ -1150,7 +1168,7 @@ public class MainStage extends Application {
         gc.setFill(Color.BLACK);
 
         //LICZBA PIERWSZA
-        String wartosc = Main.cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get("P1")));
+        String wartosc = Main.cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get(seg7displayPort)));
         int[] wartosci = Converters.bcdto7seg(wartosc.substring(0,4));
 
 
@@ -1193,9 +1211,6 @@ public class MainStage extends Application {
         else
             gc.setFill(Color.LIGHTGREY);
         gc.fillRoundRect(width/2.0-marginX-shorter,marginY+shorter+longer+shorter,shorter,longer,10,10);//c
-
-
-
 
 
 
@@ -1383,5 +1398,8 @@ public class MainStage extends Application {
     public boolean running;
 
     private GridPane diodesPaneGridPane;
+
+    public String ledsPort = "P0";
+    public String seg7displayPort = "P1";
 
 }
