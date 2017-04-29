@@ -177,7 +177,7 @@ public class CodeMemory {
                         else
                             throw new CompilingException();
                     }
-                    else if(splittedLine[0].equals("ORG") && splittedLine.length==2) {
+                    else if(splittedLine[0].toUpperCase().equals("ORG") && splittedLine.length==2) {
                         if(splittedLine[1].toUpperCase().charAt(splittedLine[1].length()-1)=='D') {
                             pointer = Integer.parseInt(splittedLine[1].substring(0,splittedLine[1].length()-1));
                         }
@@ -1155,6 +1155,9 @@ public class CodeMemory {
                         else if(splittedLine[0].toUpperCase().equals("NOP")) {
                             emulatedCodeMemory.set(pointer,"00000000");
                             pointer+=1;
+                        }
+                        else {
+                            throw new CompilingException("Nierozpoznana komenda, linia: '" + backupLinii + "'");
                         }
                     }
                 }

@@ -748,6 +748,7 @@ public class Cpu {
             }
             int intWynik = Integer.parseInt(wynik,2);
             mainMemory.put("A",intWynik);
+            linePointer+=1;
         }
         else if(toExecute.equals("00000000")) { //NOP
             linePointer+=1;

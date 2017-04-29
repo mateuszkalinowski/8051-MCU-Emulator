@@ -502,6 +502,7 @@ public class MainStage extends Application {
             public void handle(ActionEvent event) {
                 if(continuousRunButton.getText().equals("Praca Ciągła")) {
                     continuousRunButton.setText("Stop");
+
                     oneStepButton.setDisable(true);
                     autoRun = new Task<Void>() {
                         @Override
@@ -509,7 +510,7 @@ public class MainStage extends Application {
                             continuousRunFlag=true;
                             long time = System.currentTimeMillis();
                             while(continuousRunFlag) {
-                                if(System.currentTimeMillis()-time>100) {
+                                if(System.currentTimeMillis()-time>(100/speedSelectComboBox.getSelectionModel().getSelectedItem())) {
                                     Main.cpu.executeInstruction();
                                     time = System.currentTimeMillis();
                                     Platform.runLater(new Runnable() {
@@ -543,6 +544,18 @@ public class MainStage extends Application {
         oneStepButton.setMaxWidth(Double.MAX_VALUE);
         oneStepButton.setDisable(true);
 
+        speedSelectComboBox = new ComboBox<>();
+        speedSelectComboBox.getItems().addAll(1,10,100);
+        speedSelectComboBox.setMaxWidth(Double.MAX_VALUE);
+        speedSelectComboBox.getSelectionModel().selectFirst();
+
+        speedSelectLabel = new Label("Prędkość Symulacji:");
+        speedSelectLabel.setMaxWidth(Double.MAX_VALUE);
+        speedSelectLabel.setAlignment(Pos.CENTER);
+        speedSelectLabel.setFont(new Font("Arial",11));
+
+
+
 
         HBox buttonBox = new HBox();
         buttonBox.setPadding(new Insets(0,10,0,10));
@@ -553,7 +566,7 @@ public class MainStage extends Application {
         HBox.setHgrow(continuousRunButton,Priority.ALWAYS);
         buttonBox.setSpacing(5);
 
-        buttonBox.getChildren().addAll(translateToMemoryButton,stopSimulationButton,oneStepButton,continuousRunButton);
+        buttonBox.getChildren().addAll(translateToMemoryButton,stopSimulationButton,oneStepButton,speedSelectLabel,speedSelectComboBox,continuousRunButton);
         infoEditorAndButtonGridPane.add(buttonBox,0,18,1,2);
 
         MenuBar mainMenuBar = new MenuBar();
@@ -814,7 +827,7 @@ public class MainStage extends Application {
             if(Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(portName)))
                 gc.setFill(Color.RED);
             else
-                gc.setFill(Color.BLACK);
+                gc.setFill(Color.LIGHTGRAY);
 
             double centerX = i*oneLedWidth+oneLedWidth/2.0;
             double centerY = height/2.0;
@@ -852,39 +865,39 @@ public class MainStage extends Application {
         if(wartosci[0] == 1)
             gc.setFill(Color.RED);
         else
-            gc.setFill(Color.GREY);
+            gc.setFill(Color.LIGHTGREY);
         gc.fillRoundRect(width/2.0-longer-shorter-marginX,marginY,longer,shorter,10,10);//a
         if(wartosci[6] == 1)
             gc.setFill(Color.RED);
         else
-            gc.setFill(Color.GREY);
+            gc.setFill(Color.LIGHTGREY);
         gc.fillRoundRect(width/2.0-longer-shorter-marginX,marginY+longer+shorter,longer,shorter,10,10);//g
         if(wartosci[3] == 1)
             gc.setFill(Color.RED);
         else
-            gc.setFill(Color.GREY);
+            gc.setFill(Color.LIGHTGREY);
         gc.fillRoundRect(width/2.0-longer-shorter-marginX,marginY+2.0*longer+2.0*shorter,longer,shorter,10,10);//d
 
         if(wartosci[5] == 1)
             gc.setFill(Color.RED);
         else
-            gc.setFill(Color.GREY);
+            gc.setFill(Color.LIGHTGREY);
         gc.fillRoundRect(width/2.0-longer-shorter-marginX-shorter,marginY+shorter,shorter,longer,10,10);//f
         if(wartosci[4] == 1)
             gc.setFill(Color.RED);
         else
-            gc.setFill(Color.GREY);
+            gc.setFill(Color.LIGHTGREY);
         gc.fillRoundRect(width/2.0-longer-shorter-marginX-shorter,marginY+shorter+longer+shorter,shorter,longer,10,10);//e
 
         if(wartosci[1] == 1)
             gc.setFill(Color.RED);
         else
-            gc.setFill(Color.GREY);
+            gc.setFill(Color.LIGHTGREY);
         gc.fillRoundRect(width/2.0-marginX-shorter,marginY+shorter,shorter,longer,10,10);//b
         if(wartosci[2] == 1)
             gc.setFill(Color.RED);
         else
-            gc.setFill(Color.GREY);
+            gc.setFill(Color.LIGHTGREY);
         gc.fillRoundRect(width/2.0-marginX-shorter,marginY+shorter+longer+shorter,shorter,longer,10,10);//c
 
 
@@ -898,45 +911,45 @@ public class MainStage extends Application {
         if(wartosci[0] == 1)
             gc.setFill(Color.RED);
         else
-            gc.setFill(Color.GREY);
+            gc.setFill(Color.LIGHTGREY);
         gc.fillRoundRect(width/2.0+shorter+marginX,marginY,longer,shorter,10,10);//a
 
         if(wartosci[6] == 1)
             gc.setFill(Color.RED);
         else
-            gc.setFill(Color.GREY);
+            gc.setFill(Color.LIGHTGRAY);
         gc.fillRoundRect(width/2.0+shorter+marginX,marginY+longer+shorter,longer,shorter,10,10);//g
 
         if(wartosci[3] == 1)
             gc.setFill(Color.RED);
         else
-            gc.setFill(Color.GREY);
+            gc.setFill(Color.LIGHTGREY);
         gc.fillRoundRect(width/2.0+shorter+marginX,marginY+2.0*longer+2.0*shorter,longer,shorter,10,10);//d
 
 
         if(wartosci[1] == 1)
             gc.setFill(Color.RED);
         else
-            gc.setFill(Color.GREY);
+            gc.setFill(Color.LIGHTGREY);
         gc.fillRoundRect(width/2.0+longer+shorter+marginX,marginY+shorter,shorter,longer,10,10);//b
 
         if(wartosci[2] == 1)
             gc.setFill(Color.RED);
         else
-            gc.setFill(Color.GREY);
+            gc.setFill(Color.LIGHTGREY);
         gc.fillRoundRect(width/2.0+longer+shorter+marginX,marginY+shorter+longer+shorter,shorter,longer,10,10);//c
 
 
         if(wartosci[5] == 1)
             gc.setFill(Color.RED);
         else
-            gc.setFill(Color.GREY);
+            gc.setFill(Color.LIGHTGREY);
         gc.fillRoundRect(width/2.0+marginX,marginY+shorter,shorter,longer,10,10);//f
 
         if(wartosci[4] == 1)
             gc.setFill(Color.RED);
         else
-            gc.setFill(Color.GREY);
+            gc.setFill(Color.LIGHTGREY);
         gc.fillRoundRect(width/2.0+marginX,marginY+shorter+longer+shorter,shorter,longer,10,10);//e
     }
 
@@ -1034,6 +1047,8 @@ public class MainStage extends Application {
     public ToggleButton portButton7;
     public Label compilationErrorsLabel;
 
+    private ComboBox<Integer> speedSelectComboBox;
+
 
     private Button translateToMemoryButton;
     private Button stopSimulationButton;
@@ -1041,6 +1056,8 @@ public class MainStage extends Application {
     private Button continuousRunButton;
 
     private TextArea editorTextArea;
+
+    private Label speedSelectLabel;
 
     Stage mainStage;
     Scene mainScene;
