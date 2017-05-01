@@ -29,14 +29,24 @@ public class Memory {
         memoryCellsNames.put("A",224);
         memoryCellsNames.put("B",240);
         memoryCellsNames.put("P0",128);
+        memoryCellsNames.put("SP",129);
         memoryCellsNames.put("P1",144);
         memoryCellsNames.put("P2",160);
         memoryCellsNames.put("P3",176);
+        memoryCellsNames.put("TCON",136);
+        memoryCellsNames.put("TMOD",137);
+        memoryCellsNames.put("TL0",138);
+        memoryCellsNames.put("TL1",139);
+        memoryCellsNames.put("TH0",140);
+        memoryCellsNames.put("TH1",141);
+        memoryCellsNames.put("IE",168);
 
         put("P0",255);
         put("P1",255);
         put("P2",255);
         put("P3",255);
+
+        put("SP",7);
 
         bitAddressableBegginings = new int[]{128,136,144,152,160,168,176,184,208,224,240};
     }

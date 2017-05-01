@@ -37,6 +37,15 @@ public class CodeMemory {
         bitAddresses.put("TCON.6","10001110");
         bitAddresses.put("TCON.7","10001111");
 
+        bitAddresses.put("IT0","10001000");
+        bitAddresses.put("IE0","10001001");
+        bitAddresses.put("IT1","10001010");
+        bitAddresses.put("IE1","10001011");
+        bitAddresses.put("TR0","10001100");
+        bitAddresses.put("TF0","10001101");
+        bitAddresses.put("TR1","10001110");
+        bitAddresses.put("TF1","10001111");
+
         bitAddresses.put("P1.0","10010000");
         bitAddresses.put("P1.1","10010001");
         bitAddresses.put("P1.2","10010010");
@@ -109,7 +118,19 @@ public class CodeMemory {
         bitAddresses.put("B.6","11110110");
         bitAddresses.put("B.7","11110111");
 
+        bitAddresses.put("IE.0","10101000");
+        bitAddresses.put("IE.1","10101001");
+        bitAddresses.put("IE.2","10101010");
+        bitAddresses.put("IE.3","10101011");
+        bitAddresses.put("IE.4","10101100");
+        bitAddresses.put("IE.7","10101111");
 
+        bitAddresses.put("EX0","10101000");
+        bitAddresses.put("ET0","10101001");
+        bitAddresses.put("EX1","10101010");
+        bitAddresses.put("ET1","10101011");
+        bitAddresses.put("ES","10101100");
+        bitAddresses.put("EA","10101111");
 
     }
     public String getFromAddress(int line) {
@@ -163,6 +184,7 @@ public class CodeMemory {
                 if(line.length()>0) {
 
                     line = line.replace(',', ' ');
+                    line = line.trim();
                     String[] splittedLine = line.split(" +");
                     if(splittedLine.length==1 && splittedLine[0].charAt(splittedLine[0].length()-1)==':') {
                         if(getLineFromLabel(splittedLine[0].toUpperCase().substring(0,splittedLine[0].length()-1))==-1) {
@@ -1156,7 +1178,50 @@ public class CodeMemory {
                             emulatedCodeMemory.set(pointer,"00000000");
                             pointer+=1;
                         }
-                        else {
+                        else if(splittedLine[0].toUpperCase().equals("PUSH")) {
+                            try {
+                                String address = Main.cpu.mainMemory.get8BitAddress(splittedLine[1].toUpperCase());
+                                emulatedCodeMemory.set(pointer,"11000000");
+                                emulatedCodeMemory.set(pointer+1,address);
+                                pointer+=2;
+                            }
+                            catch (Exception e) {
+                                try {
+                                    String number = make8DigitsStringFromNumber(splittedLine[1]);
+                                    emulatedCodeMemory.set(pointer,"11000000");
+                                    emulatedCodeMemory.set(pointer+1,number);
+                                    pointer+=2;
+                                }
+                                catch (Exception e1) {
+                                    throw new CompilingException("Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii+"'");
+
+                                }
+                            }
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("POP")) {
+                            try {
+                                String address = Main.cpu.mainMemory.get8BitAddress(splittedLine[1].toUpperCase());
+                                emulatedCodeMemory.set(pointer,"11010000");
+                                emulatedCodeMemory.set(pointer+1,address);
+                                pointer+=2;
+                            }
+                            catch (Exception e) {
+                                try {
+                                    String number = make8DigitsStringFromNumber(splittedLine[1]);
+                                    emulatedCodeMemory.set(pointer,"11010000");
+                                    emulatedCodeMemory.set(pointer+1,number);
+                                    pointer+=2;
+                                }
+                                catch (Exception e1) {
+                                    throw new CompilingException("Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii+"'");
+
+                                }
+                            }
+
+
+
+                        }
+                         else {
                             throw new CompilingException("Nierozpoznana komenda, linia: '" + backupLinii + "'");
                         }
                     }

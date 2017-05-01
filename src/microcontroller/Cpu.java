@@ -745,6 +745,26 @@ public class Cpu {
         else if(toExecute.equals("00000000")) { //NOP
             linePointer+=1;
         }
+        else if(toExecute.equals("11000000")) {
+            int pointer = mainMemory.get("SP");
+            pointer+=1;
+            if(pointer==256)
+                pointer=0;
+            int wartosc = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            mainMemory.put(pointer,wartosc);
+            mainMemory.put("SP",pointer);
+            linePointer+=2;
+        }
+        else if(toExecute.equals("11010000")) {
+            int pointer = mainMemory.get("SP");
+            int wartosc = mainMemory.get(pointer);
+            mainMemory.put(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2),wartosc);
+            pointer-=1;
+            if(pointer==-1)
+                pointer=255;
+            mainMemory.put("SP",pointer);
+            linePointer+=2;
+        }
         refreshStatusRegister();
         //refreshGui();
     }
@@ -885,6 +905,13 @@ public class Cpu {
         Main.stage.bTextFieldBin.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("B")).toUpperCase()) + "b");
         Main.stage.bTextFieldDec.setText(Integer.toString(mainMemory.get("B")).toUpperCase()+"d");
 
+        Main.stage.TMODTextField.setText(Integer.toHexString(mainMemory.get("TMOD"))+"h");
+        Main.stage.TCONTextField.setText(Integer.toHexString(mainMemory.get("TCON"))+"h");
+        Main.stage.T0LTextField.setText(Integer.toHexString(mainMemory.get("TL0"))+"h");
+        Main.stage.T1LTtextField.setText(Integer.toHexString(mainMemory.get("TL1"))+"h");
+        Main.stage.T0HTextField.setText(Integer.toHexString(mainMemory.get("TH0"))+"h");
+        Main.stage.T1HTextField.setText(Integer.toHexString(mainMemory.get("TL1"))+"h");
+
         boolean value = mainMemory.getBit(codeMemory.bitAddresses.get("CY"));
         if(value) {
             Main.stage.cTextField.setText("1");
@@ -913,6 +940,15 @@ public class Cpu {
         else {
             Main.stage.f0TextField.setText("0");
             Main.stage.f0TextField.setTextFill(Color.RED);
+        }
+        value = mainMemory.getBit(codeMemory.bitAddresses.get("F1"));
+        if(value) {
+            Main.stage.f1TextField.setText("1");
+            Main.stage.f1TextField.setTextFill(Color.GREEN);
+        }
+        else {
+            Main.stage.f1TextField.setText("0");
+            Main.stage.f1TextField.setTextFill(Color.RED);
         }
 
         value = mainMemory.getBit(codeMemory.bitAddresses.get("RS1"));
@@ -955,6 +991,62 @@ public class Cpu {
             Main.stage.pTextField.setTextFill(Color.RED);
         }
 
+        value = mainMemory.getBit(codeMemory.bitAddresses.get("EX0"));
+        if(value) {
+            Main.stage.EX0TextField.setText("1");
+            Main.stage.EX0TextField.setTextFill(Color.GREEN);
+        }
+        else {
+            Main.stage.EX0TextField.setText("0");
+            Main.stage.EX0TextField.setTextFill(Color.RED);
+        }
+        value = mainMemory.getBit(codeMemory.bitAddresses.get("EX1"));
+        if(value) {
+            Main.stage.EX1TextField.setText("1");
+            Main.stage.EX1TextField.setTextFill(Color.GREEN);
+        }
+        else {
+            Main.stage.EX1TextField.setText("0");
+            Main.stage.EX1TextField.setTextFill(Color.RED);
+        }
+        value = mainMemory.getBit(codeMemory.bitAddresses.get("ET0"));
+        if(value) {
+            Main.stage.ET0TextField.setText("1");
+            Main.stage.ET0TextField.setTextFill(Color.GREEN);
+        }
+        else {
+            Main.stage.ET0TextField.setText("0");
+            Main.stage.ET0TextField.setTextFill(Color.RED);
+        }
+        value = mainMemory.getBit(codeMemory.bitAddresses.get("ET1"));
+        if(value) {
+            Main.stage.ET1TextField.setText("1");
+            Main.stage.ET1TextField.setTextFill(Color.GREEN);
+        }
+        else {
+            Main.stage.ET1TextField.setText("0");
+            Main.stage.ET1TextField.setTextFill(Color.RED);
+        }
+        value = mainMemory.getBit(codeMemory.bitAddresses.get("ES"));
+        if(value) {
+            Main.stage.ESTextField.setText("1");
+            Main.stage.ESTextField.setTextFill(Color.GREEN);
+        }
+        else {
+            Main.stage.ESTextField.setText("0");
+            Main.stage.ESTextField.setTextFill(Color.RED);
+        }
+        value = mainMemory.getBit(codeMemory.bitAddresses.get("EA"));
+        if(value) {
+            Main.stage.EATextField.setText("1");
+            Main.stage.EATextField.setTextFill(Color.GREEN);
+        }
+        else {
+            Main.stage.EATextField.setText("0");
+            Main.stage.EATextField.setTextFill(Color.RED);
+        }
+
+
         Main.stage.drawFrame();
 
     }
@@ -966,7 +1058,6 @@ public class Cpu {
         }
         return number;
     }
-
 
     public void resetCounter(){
         linePointer = 0;

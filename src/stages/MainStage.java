@@ -27,6 +27,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -275,79 +276,92 @@ public class MainStage extends Application {
         cLabel.setMaxWidth(Double.MAX_VALUE);
         cLabel.setAlignment(Pos.CENTER);
         cLabel.setFont(new Font("Arial",11));
-        simulatorGridPane.add(cLabel,2,5);
+        simulatorGridPane.add(cLabel,1,5);
 
         cTextField = new Label("00h");
         cTextField.setMaxWidth(Double.MAX_VALUE);
         cTextField.setAlignment(Pos.CENTER);
         cTextField.setFont(new Font("Arial",11));
         cTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(cTextField,2,6);
+        simulatorGridPane.add(cTextField,1,6);
 
         acLabel = new Label("AC");
         acLabel.setMaxWidth(Double.MAX_VALUE);
         acLabel.setAlignment(Pos.CENTER);
         acLabel.setFont(new Font("Arial",11));
-        simulatorGridPane.add(acLabel,3,5);
+        simulatorGridPane.add(acLabel,2,5);
 
         acTextField = new Label("00h");
         acTextField.setMaxWidth(Double.MAX_VALUE);
         acTextField.setAlignment(Pos.CENTER);
         acTextField.setFont(new Font("Arial",11));
         acTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(acTextField,3,6);
+        simulatorGridPane.add(acTextField,2,6);
 
         f0Label = new Label("F0");
         f0Label.setMaxWidth(Double.MAX_VALUE);
         f0Label.setAlignment(Pos.CENTER);
         f0Label.setFont(new Font("Arial",11));
-        simulatorGridPane.add(f0Label,4,5);
+        simulatorGridPane.add(f0Label,3,5);
 
         f0TextField = new Label("00h");
         f0TextField.setMaxWidth(Double.MAX_VALUE);
         f0TextField.setAlignment(Pos.CENTER);
         f0TextField.setFont(new Font("Arial",11));
         f0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(f0TextField,4,6);
+        simulatorGridPane.add(f0TextField,3,6);
+
+        f1Label = new Label("F0");
+        f1Label.setMaxWidth(Double.MAX_VALUE);
+        f1Label.setAlignment(Pos.CENTER);
+        f1Label.setFont(new Font("Arial",11));
+        simulatorGridPane.add(f1Label,7,5);
+
+        f1TextField = new Label("00h");
+        f1TextField.setMaxWidth(Double.MAX_VALUE);
+        f1TextField.setAlignment(Pos.CENTER);
+        f1TextField.setFont(new Font("Arial",11));
+        f1TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(f1TextField,7,6);
 
         rs1Label = new Label("RS1");
         rs1Label.setMaxWidth(Double.MAX_VALUE);
         rs1Label.setAlignment(Pos.CENTER);
         rs1Label.setFont(new Font("Arial",11));
-        simulatorGridPane.add(rs1Label,5,5);
+        simulatorGridPane.add(rs1Label,4,5);
 
         rs1TextField = new Label("00h");
         rs1TextField.setMaxWidth(Double.MAX_VALUE);
         rs1TextField.setAlignment(Pos.CENTER);
         rs1TextField.setFont(new Font("Arial",11));
         rs1TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(rs1TextField,5,6);
+        simulatorGridPane.add(rs1TextField,4,6);
 
         rs0Label = new Label("RS0");
         rs0Label.setMaxWidth(Double.MAX_VALUE);
         rs0Label.setAlignment(Pos.CENTER);
         rs0Label.setFont(new Font("Arial",11));
-        simulatorGridPane.add(rs0Label,6,5);
+        simulatorGridPane.add(rs0Label,5,5);
 
         rs0TextField = new Label("00h");
         rs0TextField.setMaxWidth(Double.MAX_VALUE);
         rs0TextField.setAlignment(Pos.CENTER);
         rs0TextField.setFont(new Font("Arial",11));
         rs0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(rs0TextField,6,6);
+        simulatorGridPane.add(rs0TextField,5,6);
 
         ovLabel = new Label("OV");
         ovLabel.setMaxWidth(Double.MAX_VALUE);
         ovLabel.setAlignment(Pos.CENTER);
         ovLabel.setFont(new Font("Arial",11));
-        simulatorGridPane.add(ovLabel,7,5);
+        simulatorGridPane.add(ovLabel,6,5);
 
         ovTextField = new Label("00h");
         ovTextField.setMaxWidth(Double.MAX_VALUE);
         ovTextField.setAlignment(Pos.CENTER);
         ovTextField.setFont(new Font("Arial",11));
         ovTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(ovTextField,7,6);
+        simulatorGridPane.add(ovTextField,6,6);
 
         pLabel = new Label("P");
         pLabel.setMaxWidth(Double.MAX_VALUE);
@@ -420,11 +434,11 @@ public class MainStage extends Application {
         portsDesc.setFont(new Font("Arial",11));
         simulatorGridPane.add(portsDesc,16,0,3,2);
 
-        Label pswLabel = new Label("REG\nPSW:");
+        /*Label pswLabel = new Label("REG\nPSW:");
         pswLabel.setMaxWidth(Double.MAX_VALUE);
         pswLabel.setAlignment(Pos.CENTER);
         pswLabel.setFont(new Font("Arial",11));
-        simulatorGridPane.add(pswLabel,1,5,1,2);
+        simulatorGridPane.add(pswLabel,1,5,1,2);*/
 
         timePassedLabel = new Label("Czas Symulacji:");
         timePassedLabel.setMaxWidth(Double.MAX_VALUE);
@@ -451,6 +465,167 @@ public class MainStage extends Application {
         pcTextField.setFont(new Font("Arial",11));
         pcTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(pcTextField,1,4,2,1);
+
+        T0LLabel = new Label("TL0");
+        T0LLabel.setMaxWidth(Double.MAX_VALUE);
+        T0LLabel.setAlignment(Pos.CENTER);
+        T0LLabel.setFont(new Font("Arial",11));
+        simulatorGridPane.add(T0LLabel,13,1);
+
+        T0LTextField = new Label("0h");
+        T0LTextField.setMaxWidth(Double.MAX_VALUE);
+        T0LTextField.setAlignment(Pos.CENTER);
+        T0LTextField.setFont(new Font("Arial",11));
+        T0LTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(T0LTextField,13,2);
+
+        T0HLabel = new Label("TH0");
+        T0HLabel.setMaxWidth(Double.MAX_VALUE);
+        T0HLabel.setAlignment(Pos.CENTER);
+        T0HLabel.setFont(new Font("Arial",11));
+        simulatorGridPane.add(T0HLabel,12,1);
+
+        T0HTextField = new Label("0h");
+        T0HTextField.setMaxWidth(Double.MAX_VALUE);
+        T0HTextField.setAlignment(Pos.CENTER);
+        T0HTextField.setFont(new Font("Arial",11));
+        T0HTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(T0HTextField,12,2);
+
+        T1LLabel = new Label("TL1");
+        T1LLabel.setMaxWidth(Double.MAX_VALUE);
+        T1LLabel.setAlignment(Pos.CENTER);
+        T1LLabel.setFont(new Font("Arial",11));
+        simulatorGridPane.add(T1LLabel,11,1);
+
+        T1LTtextField = new Label("0h");
+        T1LTtextField.setMaxWidth(Double.MAX_VALUE);
+        T1LTtextField.setAlignment(Pos.CENTER);
+        T1LTtextField.setFont(new Font("Arial",11));
+        T1LTtextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(T1LTtextField,11,2);
+
+        T1HLabel = new Label("TH1");
+        T1HLabel.setMaxWidth(Double.MAX_VALUE);
+        T1HLabel.setAlignment(Pos.CENTER);
+        T1HLabel.setFont(new Font("Arial",11));
+        simulatorGridPane.add(T1HLabel,10,1);
+
+        T1HTextField = new Label("0h");
+        T1HTextField.setMaxWidth(Double.MAX_VALUE);
+        T1HTextField.setAlignment(Pos.CENTER);
+        T1HTextField.setFont(new Font("Arial",11));
+        T1HTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(T1HTextField,10,2);
+
+        TMODLabel = new Label("TMOD:");
+        TMODLabel.setMaxWidth(Double.MAX_VALUE);
+        TMODLabel.setAlignment(Pos.CENTER);
+        TMODLabel.setFont(new Font("Arial",11));
+        simulatorGridPane.add(TMODLabel,10,3,1,2);
+
+        TMODTextField = new Label("0h");
+        TMODTextField.setMaxWidth(Double.MAX_VALUE);
+        TMODTextField.setAlignment(Pos.CENTER);
+        TMODTextField.setFont(new Font("Arial",11));
+        TMODTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(TMODTextField,11,3,1,2);
+
+
+        TCONLabel = new Label("TCON:");
+        TCONLabel.setMaxWidth(Double.MAX_VALUE);
+        TCONLabel.setAlignment(Pos.CENTER);
+        TCONLabel.setFont(new Font("Arial",11));
+        simulatorGridPane.add(TCONLabel,12,3,1,2);
+
+        TCONTextField = new Label("0h");
+        TCONTextField.setMaxWidth(Double.MAX_VALUE);
+        TCONTextField.setAlignment(Pos.CENTER);
+        TCONTextField.setFont(new Font("Arial",11));
+        TCONTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(TCONTextField,13,3,1,2);
+
+        EX0Label = new Label("EX0");
+        EX0Label.setMaxWidth(Double.MAX_VALUE);
+        EX0Label.setAlignment(Pos.CENTER);
+        EX0Label.setFont(new Font("Arial",11));
+        simulatorGridPane.add(EX0Label,8,2);
+
+        EX0TextField = new Label("0");
+        EX0TextField.setMaxWidth(Double.MAX_VALUE);
+        EX0TextField.setAlignment(Pos.CENTER);
+        EX0TextField.setFont(new Font("Arial",11));
+        EX0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(EX0TextField,8,3);
+
+        ET0Label = new Label("ET0");
+        ET0Label.setMaxWidth(Double.MAX_VALUE);
+        ET0Label.setAlignment(Pos.CENTER);
+        ET0Label.setFont(new Font("Arial",11));
+        simulatorGridPane.add(ET0Label,7,2);
+
+        ET0TextField = new Label("0");
+        ET0TextField.setMaxWidth(Double.MAX_VALUE);
+        ET0TextField.setAlignment(Pos.CENTER);
+        ET0TextField.setFont(new Font("Arial",11));
+        ET0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(ET0TextField,7,3);
+
+        EX1Label = new Label("EX1");
+        EX1Label.setMaxWidth(Double.MAX_VALUE);
+        EX1Label.setAlignment(Pos.CENTER);
+        EX1Label.setFont(new Font("Arial",11));
+        simulatorGridPane.add(EX1Label,6,2);
+
+        EX1TextField = new Label("0");
+        EX1TextField.setMaxWidth(Double.MAX_VALUE);
+        EX1TextField.setAlignment(Pos.CENTER);
+        EX1TextField.setFont(new Font("Arial",11));
+        EX1TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(EX1TextField,6,3);
+
+        ET1Label = new Label("ET1");
+        ET1Label.setMaxWidth(Double.MAX_VALUE);
+        ET1Label.setAlignment(Pos.CENTER);
+        ET1Label.setFont(new Font("Arial",11));
+        simulatorGridPane.add(ET1Label,5,2);
+
+        ET1TextField = new Label("0");
+        ET1TextField.setMaxWidth(Double.MAX_VALUE);
+        ET1TextField.setAlignment(Pos.CENTER);
+        ET1TextField.setFont(new Font("Arial",11));
+        ET1TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(ET1TextField,5,3);
+
+        ESLabel = new Label("ES");
+        ESLabel.setMaxWidth(Double.MAX_VALUE);
+        ESLabel.setAlignment(Pos.CENTER);
+        ESLabel.setFont(new Font("Arial",11));
+        simulatorGridPane.add(ESLabel,4,2);
+
+        ESTextField = new Label("0");
+        ESTextField.setMaxWidth(Double.MAX_VALUE);
+        ESTextField.setAlignment(Pos.CENTER);
+        ESTextField.setFont(new Font("Arial",11));
+        ESTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(ESTextField,4,3);
+
+        EALabel = new Label("EA");
+        EALabel.setMaxWidth(Double.MAX_VALUE);
+        EALabel.setAlignment(Pos.CENTER);
+        EALabel.setFont(new Font("Arial",11));
+        simulatorGridPane.add(EALabel,3,2);
+
+        EATextField = new Label("0");
+        EATextField.setMaxWidth(Double.MAX_VALUE);
+        EATextField.setAlignment(Pos.CENTER);
+        EATextField.setFont(new Font("Arial",11));
+        EATextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(EATextField,3,3);
+
+
+
+
 
         translateToMemoryButton = new Button("Uruchom");
         translateToMemoryButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -1097,12 +1272,12 @@ public class MainStage extends Application {
             mainMemoryGridPane.getColumnConstraints().addAll(columnInMemoryTab);
 
         lowerRamTextArea = new TextArea();
-        lowerRamTextArea.setFont(new Font("Arial",12));
+        lowerRamTextArea.setFont(new Font("Arial",13));
         lowerRamTextArea.setEditable(false);
         mainMemoryGridPane.add(lowerRamTextArea,0,1,9,1);
 
         upperRawTextArea = new TextArea();
-        upperRawTextArea.setFont(new Font("Arial",12));
+        upperRawTextArea.setFont(new Font("Arial",13));
         upperRawTextArea.setEditable(false);
         mainMemoryGridPane.add(upperRawTextArea,11,1,9,1);
 
@@ -1110,7 +1285,7 @@ public class MainStage extends Application {
         lowerRamLabel.setAlignment(Pos.CENTER);
         lowerRamLabel.setMaxWidth(Double.MAX_VALUE);
 
-        Label upperRamLabel = new Label("Ram 80-FF");
+        Label upperRamLabel = new Label("Ram 80-FF (Obszar SFR)");
         upperRamLabel.setAlignment(Pos.CENTER);
         upperRamLabel.setMaxWidth(Double.MAX_VALUE);
 
@@ -1150,6 +1325,14 @@ public class MainStage extends Application {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 drawFrame();
+                lowerRamTextArea.setFont(new Font("Arial",newValue.doubleValue()/60));
+                upperRawTextArea.setFont(new Font("Arial",newValue.doubleValue()/60));
+            }
+        });
+        mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                continuousRunFlag=false;
             }
         });
         drawFrame();
@@ -1204,7 +1387,6 @@ public class MainStage extends Application {
         gc.clearRect(0,0,width,height);
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(2);
-        //gc.strokeRect(0,0,width,height);
         double shorter = 10;
         double longer = (height-2*marginY-4*shorter)/2.0;
 
@@ -1383,6 +1565,9 @@ public class MainStage extends Application {
     public Label f0Label;
     public Label f0TextField;
 
+    public Label f1Label;
+    public Label f1TextField;
+
     public Label acLabel;
     public Label acTextField;
 
@@ -1394,6 +1579,40 @@ public class MainStage extends Application {
 
     public Label pcLabel;
     public Label pcTextField;
+
+    public Label T0LLabel;
+    public Label T0LTextField;
+    public Label T0HLabel;
+    public Label T0HTextField;
+
+    public Label T1LLabel;
+    public Label T1LTtextField;
+    public Label T1HLabel;
+    public Label T1HTextField;
+
+    public Label TMODLabel;
+    public Label TMODTextField;
+
+    public Label TCONLabel;
+    public Label TCONTextField;
+
+    public Label EX0Label;
+    public Label EX0TextField;
+
+    public Label ET0Label;
+    public Label ET0TextField;
+
+    public Label EX1Label;
+    public Label EX1TextField;
+
+    public Label ET1Label;
+    public Label ET1TextField;
+
+    public Label ESLabel;
+    public Label ESTextField;
+
+    public Label EALabel;
+    public Label EATextField;
 
     public ToggleButton portToggle0;
     public ToggleButton portToggle1;
