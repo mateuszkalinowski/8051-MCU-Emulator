@@ -114,7 +114,7 @@ public class Cpu {
             if (mainMemory.getBit(codeMemory.bitAddresses.get("TF0")) && mainMemory.getBit(codeMemory.bitAddresses.get("ET0")) && higherInterrupt>=2)
                 interrupts.set(1, true);
             if (mainMemory.getBit(codeMemory.bitAddresses.get("TF1")) && mainMemory.getBit(codeMemory.bitAddresses.get("ET1")) && higherInterrupt>=4)
-                interrupts.set(2, true);
+                interrupts.set(3, true);
 
         }
 
