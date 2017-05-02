@@ -1221,6 +1221,14 @@ public class CodeMemory {
 
 
                         }
+                        else if(splittedLine[0].toUpperCase().equals("RETI")) {
+                            if(splittedLine.length!=1)
+                                throw new CompilingException("'RETI' nie ma żadnych argumentów, linia: '" + backupLinii + "'");
+                            else {
+                                emulatedCodeMemory.set(pointer, "00110010");
+                                pointer+=1;
+                            }
+                        }
                          else {
                             throw new CompilingException("Nierozpoznana komenda, linia: '" + backupLinii + "'");
                         }

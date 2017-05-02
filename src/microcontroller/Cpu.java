@@ -25,10 +25,99 @@ public class Cpu {
         linePointer=0;
         timePassed = 0;
         mainMemory = new Memory();
+        interrupts.clear();
+        interrupts.add(false);
+        interrupts.add(false);
+        interrupts.add(false);
+        interrupts.add(false);
+        interrupts.add(false);
+        higherInterrupt=5;
     }
 
     private void machineCycle(){
         timePassed++;
+        int tmod = mainMemory.get("TMOD");
+        String tmodString = expandTo8Digits(Integer.toBinaryString(tmod));
+
+        if(mainMemory.getBit(codeMemory.bitAddresses.get("TR0")) && tmodString.charAt(4)=='0' && tmodString.charAt(5)=='0') {
+            int TL0int = mainMemory.get("TL0");
+            int TH0int = mainMemory.get("TH0");
+            TL0int+=1;
+            if(tmodString.charAt(7) == '0' && tmodString.charAt(6) == '0') {
+                if(TL0int==33) {
+                    TL0int = 0;
+                    TH0int += 1;
+                }
+                if(TH0int==256) {
+                    TH0int=0;
+                    mainMemory.setBit(codeMemory.bitAddresses.get("TF0"),true);
+                }
+            }
+            if(tmodString.charAt(7) == '1' && tmodString.charAt(6) == '0') {
+                if(TL0int==256) {
+                    TL0int = 0;
+                    TH0int += 1;
+                }
+                if(TH0int==256) {
+                    TH0int=0;
+                    mainMemory.setBit(codeMemory.bitAddresses.get("TF0"),true);
+                }
+            }
+            if(tmodString.charAt(7) == '0' && tmodString.charAt(6) == '1') {
+                if(TL0int==256) {
+                    TL0int = TH0int;
+                    mainMemory.setBit(codeMemory.bitAddresses.get("TF0"),true);
+                }
+            }
+
+            mainMemory.put("TL0",TL0int);
+            mainMemory.put("TH0",TH0int);
+        }
+
+        if(mainMemory.getBit(codeMemory.bitAddresses.get("TR1")) && tmodString.charAt(0)=='0' && tmodString.charAt(1)=='0') {
+            int TL1int = mainMemory.get("TL1");
+            int TH1int = mainMemory.get("TH1");
+            TL1int+=1;
+            if(tmodString.charAt(3) == '0' && tmodString.charAt(2) == '0') {
+                if(TL1int==33) {
+                    TL1int = 0;
+                    TH1int += 1;
+                }
+                if(TH1int==256) {
+                    TH1int=0;
+                    mainMemory.setBit(codeMemory.bitAddresses.get("TF1"),true);
+                }
+            }
+            if(tmodString.charAt(3) == '1' && tmodString.charAt(2) == '0') {
+                if(TL1int==256) {
+                    TL1int = 0;
+                    TH1int += 1;
+                }
+                if(TH1int==256) {
+                    TH1int=0;
+                    mainMemory.setBit(codeMemory.bitAddresses.get("TF1"),true);
+                }
+            }
+            if(tmodString.charAt(3) == '0' && tmodString.charAt(2) == '1') {
+                if(TL1int==256) {
+                    TL1int = TH1int;
+                    mainMemory.setBit(codeMemory.bitAddresses.get("TF1"),true);
+                }
+            }
+
+            mainMemory.put("TL1",TL1int);
+            mainMemory.put("TH1",TH1int);
+        }
+
+        if(mainMemory.getBit(codeMemory.bitAddresses.get("EA"))) {
+
+            if (mainMemory.getBit(codeMemory.bitAddresses.get("TF0")) && mainMemory.getBit(codeMemory.bitAddresses.get("ET0")) && higherInterrupt>=2)
+                interrupts.set(1, true);
+            if (mainMemory.getBit(codeMemory.bitAddresses.get("TF1")) && mainMemory.getBit(codeMemory.bitAddresses.get("ET1")) && higherInterrupt>=4)
+                interrupts.set(2, true);
+
+        }
+
     }
 
     public void executeInstruction() throws InstructionException{
@@ -316,7 +405,7 @@ public class Cpu {
         }
         /*
             END OF CPL
-         */
+        */
         else if(toExecute.equals("01000000")) { //JC
             machineCycle();
             machineCycle();
@@ -745,7 +834,7 @@ public class Cpu {
         else if(toExecute.equals("00000000")) { //NOP
             linePointer+=1;
         }
-        else if(toExecute.equals("11000000")) {
+        else if(toExecute.equals("11000000")) { //PUSH
             int pointer = mainMemory.get("SP");
             pointer+=1;
             if(pointer==256)
@@ -755,7 +844,7 @@ public class Cpu {
             mainMemory.put("SP",pointer);
             linePointer+=2;
         }
-        else if(toExecute.equals("11010000")) {
+        else if(toExecute.equals("11010000")) { //POP
             int pointer = mainMemory.get("SP");
             int wartosc = mainMemory.get(pointer);
             mainMemory.put(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2),wartosc);
@@ -765,9 +854,69 @@ public class Cpu {
             mainMemory.put("SP",pointer);
             linePointer+=2;
         }
+        else if(toExecute.equals("00110010")) {//RETI
+            int stackPointer = mainMemory.get("SP");
+            int upperAddress = mainMemory.get(stackPointer);
+            stackPointer-=1;
+            if(stackPointer==-1)
+                stackPointer=255;
+            int lowerAddress = mainMemory.get(stackPointer);
+            stackPointer-=1;
+            if(stackPointer==-1)
+                stackPointer=255;
+            mainMemory.put("SP",stackPointer);
+            String upperAddressString = expandTo8Digits(Integer.toBinaryString(upperAddress));
+            String lowerAddressString = expandTo8Digits(Integer.toBinaryString(lowerAddress));
+            higherInterrupt = 5;
+            linePointer = Integer.parseInt(upperAddressString + lowerAddressString,2);
+        }
+
+
+            if (interrupts.get(1)) {
+                int stackPointer = mainMemory.get("SP");
+                try {
+                    String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer)+"B");
+                    stackPointer += 1;
+                    if (stackPointer == 256)
+                        stackPointer = 0;
+                    mainMemory.put(stackPointer, Integer.parseInt(address.substring(8, 16), 2));
+                    stackPointer += 1;
+                    if (stackPointer == 256)
+                        stackPointer = 0;
+                    mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
+                    mainMemory.put("SP",stackPointer);
+                    mainMemory.setBit(codeMemory.bitAddresses.get("TF0"), false);
+                    interrupts.set(1,false);
+                    higherInterrupt=1;
+                    linePointer = 11;
+                } catch (Exception ignored) {
+                }
+
+            } else if (interrupts.get(3)) {
+                int stackPointer = mainMemory.get("SP");
+                try {
+                    String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer)+"B");
+                    stackPointer += 1;
+                    if (stackPointer == 256)
+                        stackPointer = 0;
+                    mainMemory.put(stackPointer, Integer.parseInt(address.substring(8, 16), 2));
+                    stackPointer += 1;
+                    if (stackPointer == 256)
+                        stackPointer = 0;
+                    mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
+                    mainMemory.put("SP",stackPointer);
+                    mainMemory.setBit(codeMemory.bitAddresses.get("TF1"), false);
+                    interrupts.set(3,false);
+                    higherInterrupt=3;
+                    linePointer = 27;
+                } catch (Exception ignored) {
+                }
+            }
         refreshStatusRegister();
         //refreshGui();
     }
+
+    private int higherInterrupt = 5;
 
     private void refreshStatusRegister(){
         checkP();
@@ -796,7 +945,7 @@ public class Cpu {
 
     public void refreshGui(){
 
-        Main.stage.timePassedTextField.setText(timePassed + " mkS");
+        Main.stage.timePassedTextField.setText(timePassed + " mks");
 
         String hexLinePointer = Integer.toHexString(linePointer);
 
@@ -910,7 +1059,7 @@ public class Cpu {
         Main.stage.T0LTextField.setText(Integer.toHexString(mainMemory.get("TL0"))+"h");
         Main.stage.T1LTtextField.setText(Integer.toHexString(mainMemory.get("TL1"))+"h");
         Main.stage.T0HTextField.setText(Integer.toHexString(mainMemory.get("TH0"))+"h");
-        Main.stage.T1HTextField.setText(Integer.toHexString(mainMemory.get("TL1"))+"h");
+        Main.stage.T1HTextField.setText(Integer.toHexString(mainMemory.get("TH1"))+"h");
 
         boolean value = mainMemory.getBit(codeMemory.bitAddresses.get("CY"));
         if(value) {
@@ -1062,6 +1211,8 @@ public class Cpu {
     public void resetCounter(){
         linePointer = 0;
     }
+
+    private ArrayList<Boolean> interrupts = new ArrayList<>();
 
     public long timePassed;
     private int linePointer;

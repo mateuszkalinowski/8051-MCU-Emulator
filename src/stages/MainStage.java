@@ -1325,8 +1325,8 @@ public class MainStage extends Application {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 drawFrame();
-                lowerRamTextArea.setFont(new Font("Arial",newValue.doubleValue()/60));
-                upperRawTextArea.setFont(new Font("Arial",newValue.doubleValue()/60));
+                    lowerRamTextArea.setFont(new Font("Arial", newValue.doubleValue() / 60));
+                    upperRawTextArea.setFont(new Font("Arial", newValue.doubleValue() / 60));
             }
         });
         mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
