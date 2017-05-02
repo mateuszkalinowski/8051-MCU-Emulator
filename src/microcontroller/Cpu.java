@@ -129,6 +129,89 @@ public class Cpu {
             machineCycle();
             linePointer = Integer.parseInt(codeMemory.getFromAddress(linePointer+1) + codeMemory.getFromAddress(linePointer+2),2);
         }
+        else if(toExecute.equals("00000100")) {//INC A
+            machineCycle();
+            int wartosc = mainMemory.get("A");
+            wartosc+=1;
+            if(wartosc==256)
+                wartosc=0;
+            mainMemory.put("A",wartosc);
+            linePointer+=1;
+        }
+        else if(toExecute.substring(0,5).equals("00001")) { //INC Rx
+            machineCycle();
+            int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
+            String rejestrString = "R" + rejestr;
+            int wartosc = mainMemory.get(rejestrString);
+            wartosc+=1;
+            if(wartosc==256)
+                wartosc=0;
+            mainMemory.put(rejestrString,wartosc);
+            linePointer+=1;
+        }
+        else if(toExecute.equals("00000101")) { //INC Direct
+            machineCycle();
+            int wartosc = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            wartosc+=1;
+            if(wartosc==256)
+                wartosc=0;
+            mainMemory.put(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2),wartosc);
+            linePointer+=2;
+        }
+        else if(toExecute.substring(0,7).equals("0000011")) { //INC Ri
+            int wartosc = mainMemory.get(mainMemory.get("R" + toExecute.charAt(7)));
+            wartosc+=1;
+            if(wartosc==256)
+                wartosc=0;
+            mainMemory.put(mainMemory.get("R" + toExecute.charAt(7)),wartosc);
+            linePointer+=1;
+        }
+
+
+        else if(toExecute.equals("00010100")) {//DEC A
+            machineCycle();
+            int wartosc = mainMemory.get("A");
+            wartosc-=1;
+            if(wartosc==-1)
+                wartosc=255;
+            mainMemory.put("A",wartosc);
+            linePointer+=1;
+        }
+        else if(toExecute.substring(0,5).equals("00011")) { //DEC Rx
+            machineCycle();
+            int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
+            String rejestrString = "R" + rejestr;
+            int wartosc = mainMemory.get(rejestrString);
+            wartosc-=1;
+            if(wartosc==-1)
+                wartosc=255;
+            mainMemory.put(rejestrString,wartosc);
+            linePointer+=1;
+        }
+        else if(toExecute.equals("00010101")) { //DEC Direct
+            machineCycle();
+            int wartosc = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            wartosc-=1;
+            if(wartosc==-1)
+                wartosc=255;
+            mainMemory.put(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2),wartosc);
+            linePointer+=2;
+        }
+        else if(toExecute.substring(0,7).equals("0001011")) { //DEC Ri
+            int wartosc = mainMemory.get(mainMemory.get("R" + toExecute.charAt(7)));
+            wartosc-=1;
+            if(wartosc==-1)
+                wartosc=255;
+            mainMemory.put(mainMemory.get("R" + toExecute.charAt(7)),wartosc);
+            linePointer+=1;
+        }
+
+
+
+
+
+
+
         else if(toExecute.substring(0,5).equals("11011")) { //DJNZ Rx,label/adres (offset)
             machineCycle();
             machineCycle();
@@ -157,7 +240,6 @@ public class Cpu {
             wartosc--;
             if(wartosc==-1)
                 wartosc=255;
-
             mainMemory.putDirect(codeMemory.getFromAddress(linePointer+1),wartosc);
 
             if(wartosc>0) {
@@ -246,7 +328,7 @@ public class Cpu {
         }
 
         /*
-            ORG:
+            ORL:
                 wszystko bez Ri
          */
         else if(toExecute.equals("01000100")) { //ORL a,#01h
