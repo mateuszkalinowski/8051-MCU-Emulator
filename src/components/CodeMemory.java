@@ -726,8 +726,45 @@ public class CodeMemory {
                         else if(splittedLine[0].toUpperCase().equals("MOV")) {
                             if(splittedLine.length!=3)
                                 throw new CompilingException("Niepoprawna ilość argumentow, linia: '" + backupLinii+"'");
+                            if(splittedLine[1].toUpperCase().equals("@R0") || splittedLine[1].toUpperCase().equals("@R1")) {
+                                if(splittedLine[2].charAt(0)=='#') {
+                                    emulatedCodeMemory.set(pointer,"0111011" + splittedLine[1].charAt(2));
+                                    try {
+                                        emulatedCodeMemory.set(pointer + 1, make8DigitsStringFromNumber(splittedLine[2].substring(1)));
+                                    }
+                                    catch (NumberFormatException e) {
+                                        throw new CompilingException("Nieznana Wartosc: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
 
-                            if(splittedLine[1].toUpperCase().equals("A")) {
+                                    }
+                                    pointer+=2;
+                                }
+                                else if(splittedLine[2].equals("A")) {
+                                    emulatedCodeMemory.set(pointer,"1111011" + splittedLine[1].charAt(2));
+                                    pointer+=1;
+                                }
+                                else {
+                                    try {
+                                        String address = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
+                                        emulatedCodeMemory.set(pointer,"1010011" + splittedLine[1].charAt(2));
+                                        emulatedCodeMemory.set(pointer+1,address);
+                                        pointer+=2;
+                                    }
+                                    catch (Exception e) {
+                                        try {
+                                            String number = make8DigitsStringFromNumber(splittedLine[2]);
+                                            emulatedCodeMemory.set(pointer,"1010011" + splittedLine[1].charAt(2));
+                                            emulatedCodeMemory.set(pointer+1,number);
+                                            pointer+=2;
+                                        }
+                                        catch (Exception e1) {
+                                            throw new CompilingException("Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii+"'");
+
+                                        }
+                                    }
+
+                                }
+                            }
+                            else if(splittedLine[1].toUpperCase().equals("A")) {
                                 if(splittedLine[2].charAt(0)=='#') {
                                     emulatedCodeMemory.set(pointer,"01110100");
                                     try {
@@ -738,6 +775,10 @@ public class CodeMemory {
 
                                     }
                                     pointer+=2;
+                                }
+                                else if(splittedLine[2].toUpperCase().equals("@R1") || splittedLine[2].toUpperCase().equals("@R0")) {
+                                    emulatedCodeMemory.set(pointer,"1110011"+splittedLine[2].charAt(2));
+                                    pointer+=1;
                                 }
                                 else if(splittedLine[2].toUpperCase().charAt(0)=='R') {
 
@@ -847,7 +888,27 @@ public class CodeMemory {
 
                                         }
                                     }
-                                } else if(splittedLine[2].charAt(0)=='#') {
+                                } else if(splittedLine[2].toUpperCase().equals("@R0") || splittedLine[2].toUpperCase().equals("@R1")) {
+                                    try {
+                                        String address = Main.cpu.mainMemory.get8BitAddress(splittedLine[1].toUpperCase());
+                                        emulatedCodeMemory.set(pointer,"1000011" + splittedLine[2].charAt(2));
+                                        emulatedCodeMemory.set(pointer+1,address);
+                                        pointer+=2;
+                                    }
+                                    catch (Exception e) {
+                                        try {
+                                            String number = make8DigitsStringFromNumber(splittedLine[1]);
+                                            emulatedCodeMemory.set(pointer,"1000011" + splittedLine[2].charAt(2));
+                                            emulatedCodeMemory.set(pointer+1,number);
+                                            pointer+=2;
+                                        }
+                                        catch (Exception e1) {
+                                            throw new CompilingException("Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii+"'");
+
+                                        }
+                                    }
+                                }
+                                else if(splittedLine[2].charAt(0)=='#') {
                                     try {
                                         String address = Main.cpu.mainMemory.get8BitAddress(splittedLine[1].toUpperCase());
                                         emulatedCodeMemory.set(pointer,"01110101");
@@ -968,8 +1029,6 @@ public class CodeMemory {
                             if(splittedLine.length!=3)
                                 throw new CompilingException("Niepoprawna ilość argumentow, linia: '" + backupLinii+"'");
                             if(splittedLine[1].toUpperCase().equals("A")) {
-
-                                if(splittedLine[1].toUpperCase().equals("A")) {
                                     if(splittedLine[2].charAt(0)=='#') {
                                         emulatedCodeMemory.set(pointer,"00100100");
                                         try {
@@ -987,6 +1046,10 @@ public class CodeMemory {
                                             throw new CompilingException("Nieznany Rejestr: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
 
                                         emulatedCodeMemory.set(pointer,"00101" + numer);
+                                        pointer+=1;
+                                    }
+                                    else if(splittedLine[2].toUpperCase().equals("@R0") || splittedLine[2].toUpperCase().equals("@R1")) {
+                                        emulatedCodeMemory.set(pointer,"0010011" + splittedLine[2].charAt(2));
                                         pointer+=1;
                                     }
                                     else {
@@ -1010,16 +1073,14 @@ public class CodeMemory {
                                         }
                                     }
                                 }
-                                else
-                                    throw new CompilingException("Nierozpoznana etykieta: '" + splittedLine[1] + "', linia: '" + backupLinii+"'");
-                            }
+                            else
+                                throw new CompilingException("Dodawać można tylko do akumulatora, linia: '" + backupLinii + "'");
                         }
                         else if(splittedLine[0].toUpperCase().equals("ADDC")) {
                             if(splittedLine.length!=3)
                                 throw new CompilingException("Niepoprawna ilość argumentow, linia: '" + backupLinii+"'");
                             if(splittedLine[1].toUpperCase().equals("A")) {
 
-                                if(splittedLine[1].toUpperCase().equals("A")) {
                                     if(splittedLine[2].charAt(0)=='#') {
                                         emulatedCodeMemory.set(pointer,"00110100");
                                         try {
@@ -1041,6 +1102,10 @@ public class CodeMemory {
                                         emulatedCodeMemory.set(pointer,"00111" + numer);
                                         pointer+=1;
                                     }
+                                    else if(splittedLine[2].toUpperCase().equals("@R0") || splittedLine[2].toUpperCase().equals("@R1")) {
+                                        emulatedCodeMemory.set(pointer,"0011011" + splittedLine[2].charAt(2));
+                                        pointer+=1;
+                                    }
                                     else {
                                         String address;
                                         try {
@@ -1057,11 +1122,10 @@ public class CodeMemory {
                                                 pointer+=2;
                                             }
                                             catch (Exception e1) {
-                                                throw new CompilingException("Nierozpoznany Adres: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
+                                                throw new CompilingException("Dodawać można tylko do akumulatora, linia: '" + backupLinii+"'");
                                             }
                                         }
                                     }
-                                }
                             }
                             else
                                 throw new CompilingException("Nierozpoznana etykieta: '" + splittedLine[1] + "', linia: '" + backupLinii+"'");
@@ -1093,6 +1157,10 @@ public class CodeMemory {
                                     emulatedCodeMemory.set(pointer,"10011" + numer);
                                     pointer+=1;
                                 }
+                                else if(splittedLine[2].toUpperCase().equals("@R0") || splittedLine[2].toUpperCase().equals("@R1")) {
+                                    emulatedCodeMemory.set(pointer,"1001011" + splittedLine[2].charAt(2));
+                                    pointer+=1;
+                                }
                                 else {
                                     String address;
                                     try {
@@ -1113,6 +1181,9 @@ public class CodeMemory {
                                         }
                                     }
                                 }
+                            }
+                            else {
+                                throw new CompilingException("Odejmować można tylko od akumulatora, linia: '" + backupLinii + "'");
                             }
                         }
                         else if(splittedLine[0].toUpperCase().equals("SETB")) {

@@ -1452,12 +1452,12 @@ public class MainStage extends Application {
         portToggle6.setFont(new Font("Arial", smaller/1.5));
         portToggle7.setFont(new Font("Arial", smaller/1.5));
 
-        translateToMemoryButton.setFont(new Font("Arial", smaller/2.0));
+       /* translateToMemoryButton.setFont(new Font("Arial", smaller/2.0));
         continuousRunButton.setFont(new Font("Arial", smaller/2.0));
         oneStepButton.setFont(new Font("Arial", smaller/2.0));
         stopSimulationButton.setFont(new Font("Arial", smaller/2.0));
 
-        speedSelectLabel.setFont(new Font("Arial",smaller/2.0));
+        speedSelectLabel.setFont(new Font("Arial",smaller/2.0));*/
 
 
         compilationErrorsLabel.setFont(new Font("Arial",smaller/2.0));
