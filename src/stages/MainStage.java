@@ -311,7 +311,7 @@ public class MainStage extends Application {
         f0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(f0TextField,3,6);
 
-        f1Label = new Label("F0");
+        f1Label = new Label("F1");
         f1Label.setMaxWidth(Double.MAX_VALUE);
         f1Label.setAlignment(Pos.CENTER);
         f1Label.setFont(new Font("Arial",11));
@@ -428,7 +428,7 @@ public class MainStage extends Application {
         p3TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(p3TextField,17,8,2,1);
 
-        Label portsDesc = new Label("Porty We/Wy:");
+        portsDesc = new Label("Porty We/Wy:");
         portsDesc.setMaxWidth(Double.MAX_VALUE);
         portsDesc.setAlignment(Pos.CENTER);
         portsDesc.setFont(new Font("Arial",11));
@@ -1307,11 +1307,13 @@ public class MainStage extends Application {
         mainStage.setMinHeight(600);
         mainStage.setMinWidth(800);
         Main.cpu.refreshGui();
+        resizeComponents();
 
         mainStage.fullScreenProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 drawFrame();
+                resizeComponents();
             }
         });
 
@@ -1319,14 +1321,14 @@ public class MainStage extends Application {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 drawFrame();
+                resizeComponents();
             }
         });
         mainScene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
                 drawFrame();
-                    lowerRamTextArea.setFont(new Font("Arial", newValue.doubleValue() / 60));
-                    upperRawTextArea.setFont(new Font("Arial", newValue.doubleValue() / 60));
+                resizeComponents();
             }
         });
         mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -1338,6 +1340,122 @@ public class MainStage extends Application {
         drawFrame();
     }
 
+
+    public void resizeComponents(){
+        double oneWidth =simulatorGridPane.getWidth()/20.0;
+        double oneHeight = mainStage.getHeight()/3.0/10.0;
+        double smaller = oneWidth < oneHeight ? oneWidth : oneHeight;
+        lowerRamTextArea.setFont(new Font("Arial", smaller/1.5));
+        upperRawTextArea.setFont(new Font("Arial", smaller/1.5));
+        r0Label.setFont(new Font("Arial", smaller/2.0));
+        r0TextField.setFont(new Font("Arial",smaller/2.0));
+        r1Label.setFont(new Font("Arial", smaller/2.0));
+        r1TextField.setFont(new Font("Arial",smaller/2.0));
+        r2Label.setFont(new Font("Arial", smaller/2.0));
+        r2TextField.setFont(new Font("Arial",smaller/2.0));
+        r3Label.setFont(new Font("Arial", smaller/2.0));
+        r3TextField.setFont(new Font("Arial",smaller/2.0));
+        r4Label.setFont(new Font("Arial", smaller/2.0));
+        r4TextField.setFont(new Font("Arial",smaller/2.0));
+        r5Label.setFont(new Font("Arial", smaller/2.0));
+        r5TextField.setFont(new Font("Arial",smaller/2.0));
+        r6Label.setFont(new Font("Arial", smaller/2.0));
+        r6TextField.setFont(new Font("Arial",smaller/2.0));
+        r7Label.setFont(new Font("Arial", smaller/2.0));
+        r7TextField.setFont(new Font("Arial",smaller/2.0));
+
+        accumulatorLabel.setFont(new Font("Arial", smaller/2.0));
+        accumulatorTextFieldBin.setFont(new Font("Arial",smaller/2.0));
+        accumulatorTextFieldDec.setFont(new Font("Arial",smaller/2.0));
+        accumulatorTextFieldHex.setFont(new Font("Arial",smaller/2.0));
+
+        bLabel.setFont(new Font("Arial", smaller/2.0));
+        bTextFieldBin.setFont(new Font("Arial",smaller/2.0));
+        bTextFieldDec.setFont(new Font("Arial",smaller/2.0));
+        bTextFieldHex.setFont(new Font("Arial",smaller/2.0));
+
+        cLabel.setFont(new Font("Arial", smaller/2.0));
+        cTextField.setFont(new Font("Arial",smaller/2.0));
+        acLabel.setFont(new Font("Arial", smaller/2.0));
+        acTextField.setFont(new Font("Arial",smaller/2.0));
+        f0Label.setFont(new Font("Arial", smaller/2.0));
+        f0TextField.setFont(new Font("Arial",smaller/2.0));
+        rs1Label.setFont(new Font("Arial", smaller/2.0));
+        rs1TextField.setFont(new Font("Arial",smaller/2.0));
+        rs0Label.setFont(new Font("Arial", smaller/2.0));
+        rs0TextField.setFont(new Font("Arial",smaller/2.0));
+        ovLabel.setFont(new Font("Arial", smaller/2.0));
+        ovTextField.setFont(new Font("Arial",smaller/2.0));
+        f1Label.setFont(new Font("Arial", smaller/2.0));
+        f1TextField.setFont(new Font("Arial",smaller/2.0));
+        pLabel.setFont(new Font("Arial", smaller/2.0));
+        pTextField.setFont(new Font("Arial",smaller/2.0));
+
+        p0Label.setFont(new Font("Arial", smaller/2.0));
+        p0TextField.setFont(new Font("Arial",smaller/2.0));
+        p1Label.setFont(new Font("Arial", smaller/2.0));
+        p1TextField.setFont(new Font("Arial",smaller/2.0));
+        p2Label.setFont(new Font("Arial", smaller/2.0));
+        p2TextField.setFont(new Font("Arial",smaller/2.0));
+        p3Label.setFont(new Font("Arial", smaller/2.0));
+        p3TextField.setFont(new Font("Arial",smaller/2.0));
+
+        timePassedLabel.setFont(new Font("Arial", smaller/2.0));
+        timePassedTextField.setFont(new Font("Arial",smaller/2.0));
+        pcLabel.setFont(new Font("Arial", smaller/2.0));
+        pcTextField.setFont(new Font("Arial",smaller/2.0));
+
+        EALabel.setFont(new Font("Arial", smaller/2.0));
+        EATextField.setFont(new Font("Arial",smaller/2.0));
+        ESLabel.setFont(new Font("Arial", smaller/2.0));
+        ESTextField.setFont(new Font("Arial",smaller/2.0));
+        ET1Label.setFont(new Font("Arial", smaller/2.0));
+        ET1TextField.setFont(new Font("Arial",smaller/2.0));
+        EX1Label.setFont(new Font("Arial", smaller/2.0));
+        EX1TextField.setFont(new Font("Arial",smaller/2.0));
+        ET0Label.setFont(new Font("Arial", smaller/2.0));
+        ET0TextField.setFont(new Font("Arial",smaller/2.0));
+        EX0Label.setFont(new Font("Arial", smaller/2.0));
+        EX0TextField.setFont(new Font("Arial",smaller/2.0));
+
+        T0HLabel.setFont(new Font("Arial", smaller/2.0));
+        T0HTextField.setFont(new Font("Arial",smaller/2.0));
+        T1HLabel.setFont(new Font("Arial", smaller/2.0));
+        T1HTextField.setFont(new Font("Arial",smaller/2.0));
+        T0LLabel.setFont(new Font("Arial", smaller/2.0));
+        T0LTextField.setFont(new Font("Arial",smaller/2.0));
+        T1LLabel.setFont(new Font("Arial", smaller/2.0));
+        T1LTtextField.setFont(new Font("Arial",smaller/2.0));
+        TMODLabel.setFont(new Font("Arial", smaller/2.0));
+        TMODTextField.setFont(new Font("Arial",smaller/2.0));
+        TCONLabel.setFont(new Font("Arial", smaller/2.0));
+        TCONTextField.setFont(new Font("Arial",smaller/2.0));
+
+        portsDesc.setFont(new Font("Arial", smaller/2.0));
+        portsDesc.setFont(new Font("Arial",smaller/2.0));
+
+        portButton0.setFont(new Font("Arial", smaller/1.5));
+        portButton1.setFont(new Font("Arial", smaller/1.5));
+        portButton2.setFont(new Font("Arial", smaller/1.5));
+        portButton3.setFont(new Font("Arial", smaller/1.5));
+        portButton4.setFont(new Font("Arial", smaller/1.5));
+        portButton5.setFont(new Font("Arial", smaller/1.5));
+        portButton6.setFont(new Font("Arial", smaller/1.5));
+        portButton7.setFont(new Font("Arial", smaller/1.5));
+
+        portToggle0.setFont(new Font("Arial", smaller/1.5));
+        portToggle1.setFont(new Font("Arial", smaller/1.5));
+        portToggle2.setFont(new Font("Arial", smaller/1.5));
+        portToggle3.setFont(new Font("Arial", smaller/1.5));
+        portToggle4.setFont(new Font("Arial", smaller/1.5));
+        portToggle5.setFont(new Font("Arial", smaller/1.5));
+        portToggle6.setFont(new Font("Arial", smaller/1.5));
+        portToggle7.setFont(new Font("Arial", smaller/1.5));
+
+
+        compilationErrorsLabel.setFont(new Font("Arial",smaller/2.0));
+
+    }
 
     public MainStage(double width,double height) {
         this.height = height;
@@ -1638,6 +1756,8 @@ public class MainStage extends Application {
     public Label compilationErrorsLabel;
 
     private ComboBox<Integer> speedSelectComboBox;
+
+    private Label portsDesc;
 
 
     private Button translateToMemoryButton;
