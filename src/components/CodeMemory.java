@@ -186,7 +186,7 @@ public class CodeMemory {
                     line = line.replace(',', ' ');
                     line = line.trim();
                     String[] splittedLine = line.split(" +");
-                    if(splittedLine.length==1 && splittedLine[0].charAt(splittedLine[0].length()-1)==':') {
+                    if(splittedLine[0].charAt(splittedLine[0].length()-1)==':') {
                         if(getLineFromLabel(splittedLine[0].toUpperCase().substring(0,splittedLine[0].length()-1))==-1) {
                             try {
                                 make8DigitsStringFromNumber(splittedLine[0].toUpperCase().substring(0, splittedLine[0].length() - 1));
@@ -194,12 +194,17 @@ public class CodeMemory {
                             }
                             catch (NumberFormatException e){
                                 labels.add(new Pair<>(splittedLine[0].toUpperCase().substring(0, splittedLine[0].length() - 1), pointer));
+                                String[] splittedLine2 = new String[splittedLine.length-1];
+                                for(int i = 1;i<splittedLine.length;i++) {
+                                    splittedLine2[i-1] = splittedLine[i];
+                                }
+                                splittedLine = splittedLine2;
                             }
                         }
                         else
                             throw new CompilingException();
                     }
-                    else if(splittedLine[0].toUpperCase().equals("ORG") && splittedLine.length==2) {
+                    if(splittedLine[0].toUpperCase().equals("ORG") && splittedLine.length==2) {
                         if(splittedLine[1].toUpperCase().charAt(splittedLine[1].length()-1)=='D') {
                             pointer = Integer.parseInt(splittedLine[1].substring(0,splittedLine[1].length()-1));
                         }
