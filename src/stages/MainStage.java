@@ -1298,7 +1298,7 @@ public class MainStage extends Application {
 
 
         mainStage = primaryStage;
-        mainStage.setTitle("8051 MCU Emulator - 0.2 Alpha");
+        mainStage.setTitle("8051 MCU Emulator - 0.3 Alpha");
         mainBorderPane.setCenter(mainGridPane);
         mainScene = new Scene(mainBorderPane,width,height);
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
@@ -1451,6 +1451,13 @@ public class MainStage extends Application {
         portToggle5.setFont(new Font("Arial", smaller/1.5));
         portToggle6.setFont(new Font("Arial", smaller/1.5));
         portToggle7.setFont(new Font("Arial", smaller/1.5));
+
+        translateToMemoryButton.setFont(new Font("Arial", smaller/2.0));
+        continuousRunButton.setFont(new Font("Arial", smaller/2.0));
+        oneStepButton.setFont(new Font("Arial", smaller/2.0));
+        stopSimulationButton.setFont(new Font("Arial", smaller/2.0));
+
+        speedSelectLabel.setFont(new Font("Arial",smaller/2.0));
 
 
         compilationErrorsLabel.setFont(new Font("Arial",smaller/2.0));
