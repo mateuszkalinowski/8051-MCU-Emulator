@@ -32,6 +32,7 @@ import javafx.stage.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -633,7 +634,7 @@ public class MainStage extends Application {
             public void handle(ActionEvent event) {
                 lines = editorTextArea.getText().split("\n");
                 try {
-                    Main.cpu.codeMemory.setMemory(lines);
+                    ArrayList<String> compilatedText = Main.cpu.codeMemory.setMemory(lines);
                     Main.cpu.resetCpu();
                     Main.cpu.refreshGui();
                     translateToMemoryButton.setDisable(true);
@@ -643,6 +644,7 @@ public class MainStage extends Application {
                     rysujRunButton.setDisable(true);
                     continuousRunButton.setDisable(false);
                     running = true;
+                    setEditorText(compilatedText);
 
                     if(portToggle7.isSelected())
                         Main.cpu.mainMemory.buttonsState[0] = '0';
@@ -676,6 +678,42 @@ public class MainStage extends Application {
                         Main.cpu.mainMemory.buttonsState[7] = '0';
                     else
                         Main.cpu.mainMemory.buttonsState[7] = '1';
+
+
+                    String content = "";
+                    content +="\t 0\t";
+                    content +=" 1\t";
+                    content +=" 2\t";
+                    content +=" 3\t";
+                    content +=" 4\t";
+                    content +=" 5\t";
+                    content +=" 6\t";
+                    content +=" 7\t";
+                    content +=" 8\t";
+                    content +=" 9\t";
+                    content +=" A\t";
+                    content +=" B\t";
+                    content +=" C\t";
+                    content +=" D\t";
+                    content +=" E\t";
+                    content +=" F\t";
+                    content +="\n";
+
+                    for(int i = 0; i < 128;i++) {
+                        content+=i+"\t";
+                        for(int j = 0; j < 16;j++) {
+                            if(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).length()==1) {
+                                content+=" " + "0" + Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).toUpperCase() + " ";
+                            }
+                            else
+                                content+=" " + Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).toUpperCase() + " ";
+                            content+="\t";
+                        }
+                        if(i!=127)
+                            content+="\n";
+                    }
+
+                    programMemoryTextArea.setText(content);
 
                     Main.cpu.mainMemory.putFromExternal(160);
                     Main.cpu.refreshGui();
@@ -1255,9 +1293,73 @@ public class MainStage extends Application {
         chartBorderPane.setBottom(generateButtonBox);
 
 
-        Tab memoryInfoTab = new Tab("Pamięć");
+        Tab programMemoryInfoTab = new Tab("Pamięć Programu");
+        programMemoryInfoTab.setClosable(false);
+
+        GridPane programMemoryGridPane = new GridPane();
+        RowConstraints firstRowInProgramMemory = new RowConstraints();
+        firstRowInProgramMemory.setPercentHeight(15);
+        RowConstraints secondRowInProgramMemory = new RowConstraints();
+        secondRowInProgramMemory.setPercentHeight(85);
+        programMemoryGridPane.getRowConstraints().addAll(firstRowInProgramMemory,secondRowInProgramMemory);
+
+        ColumnConstraints columnInProgramMemoryTab = new ColumnConstraints();
+        columnInProgramMemoryTab.setPercentWidth(5);
+        for(int i = 0; i < 20; i++)
+            programMemoryGridPane.getColumnConstraints().addAll(columnInProgramMemoryTab);
+
+        programMemoryTextArea = new TextArea();
+        programMemoryTextArea.setFont(new Font("Arial",13));
+        programMemoryTextArea.setEditable(false);
+        programMemoryGridPane.add(programMemoryTextArea,4,1,12,1);
+
+        progrmMemoryLabel = new Label("Pamięć Programu");
+        progrmMemoryLabel.setAlignment(Pos.CENTER);
+        progrmMemoryLabel.setMaxWidth(Double.MAX_VALUE);
+        programMemoryGridPane.add(progrmMemoryLabel,4,0,12,1);
+
+        programMemoryInfoTab.setContent(programMemoryGridPane);
+
+        String content = "";
+        content +="\t 0\t";
+        content +=" 1\t";
+        content +=" 2\t";
+        content +=" 3\t";
+        content +=" 4\t";
+        content +=" 5\t";
+        content +=" 6\t";
+        content +=" 7\t";
+        content +=" 8\t";
+        content +=" 9\t";
+        content +=" A\t";
+        content +=" B\t";
+        content +=" C\t";
+        content +=" D\t";
+        content +=" E\t";
+        content +=" F\t";
+        content +="\n";
+
+        for(int i = 0; i < 128;i++) {
+            content+=i+"\t";
+            for(int j = 0; j < 16;j++) {
+                if(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).length()==1) {
+                    content+=" " + "0" + Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).toUpperCase() + " ";
+                }
+                else
+                    content+=" " + Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).toUpperCase() + " ";
+                content+="\t";
+            }
+            if(i!=127)
+                content+="\n";
+        }
+
+        programMemoryTextArea.setText(content);
+
+
+        Tab memoryInfoTab = new Tab("Pamięć RAM");
         memoryInfoTab.setClosable(false);
         simulatorTabPane.getTabs().addAll(memoryInfoTab);
+        simulatorTabPane.getTabs().addAll(programMemoryInfoTab);
 
         GridPane mainMemoryGridPane = new GridPane();
         RowConstraints firstRow = new RowConstraints();
@@ -1274,12 +1376,12 @@ public class MainStage extends Application {
         lowerRamTextArea = new TextArea();
         lowerRamTextArea.setFont(new Font("Arial",13));
         lowerRamTextArea.setEditable(false);
-        mainMemoryGridPane.add(lowerRamTextArea,0,1,9,1);
+        mainMemoryGridPane.add(lowerRamTextArea,1,1,8,1);
 
         upperRawTextArea = new TextArea();
         upperRawTextArea.setFont(new Font("Arial",13));
         upperRawTextArea.setEditable(false);
-        mainMemoryGridPane.add(upperRawTextArea,11,1,9,1);
+        mainMemoryGridPane.add(upperRawTextArea,11,1,8,1);
 
        /* Text text1 = new Text("Big italic red text\n");
         text1.setFill(Color.RED);
@@ -1298,13 +1400,11 @@ public class MainStage extends Application {
         upperRamLabel.setAlignment(Pos.CENTER);
         upperRamLabel.setMaxWidth(Double.MAX_VALUE);
 
-        mainMemoryGridPane.add(lowerRamLabel,0,0,9,1);
-        mainMemoryGridPane.add(upperRamLabel,11,0,9,1);
+        mainMemoryGridPane.add(lowerRamLabel,1,0,8,1);
+        mainMemoryGridPane.add(upperRamLabel,11,0,8,1);
 
 
         memoryInfoTab.setContent(mainMemoryGridPane);
-
-
 
         mainStage = primaryStage;
         mainStage.setTitle("8051 MCU Emulator - 0.4 Alpha");
@@ -1356,6 +1456,7 @@ public class MainStage extends Application {
         double smaller = oneWidth < oneHeight ? oneWidth : oneHeight;
         lowerRamTextArea.setFont(new Font("Arial", smaller/1.5));
         upperRawTextArea.setFont(new Font("Arial", smaller/1.5));
+        programMemoryTextArea.setFont(new Font("Arial",smaller/1.5));
         r0Label.setFont(new Font("Arial", smaller/2.0));
         r0TextField.setFont(new Font("Arial",smaller/2.0));
         r1Label.setFont(new Font("Arial", smaller/2.0));
@@ -1628,6 +1729,15 @@ public class MainStage extends Application {
     public void setEditorText(String text) {
         editorTextArea.setText(text);
     }
+    public void setEditorText(ArrayList<String> toSet) {
+        String textToSet = "";
+        for(int i = 0; i < toSet.size();i++) {
+            textToSet += toSet.get(i);
+            if(i!=toSet.size()-1)
+                textToSet+="\n";
+        }
+        editorTextArea.setText(textToSet);
+    }
 
     GridPane mainGridPane;
     GridPane editorElementsGridPane;
@@ -1768,12 +1878,14 @@ public class MainStage extends Application {
 
     public TextArea lowerRamTextArea;
     public TextArea upperRawTextArea;
+    public TextArea programMemoryTextArea;
 
     public Label compilationErrorsLabel;
 
     private ComboBox<Integer> speedSelectComboBox;
 
     private Label portsDesc;
+    private Label progrmMemoryLabel;
 
 
     private Button translateToMemoryButton;

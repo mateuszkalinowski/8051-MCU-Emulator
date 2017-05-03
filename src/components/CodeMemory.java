@@ -158,7 +158,7 @@ public class CodeMemory {
         }
     }
 
-    public void setMemory(String[] lines) throws CompilingException {
+    public ArrayList<String> setMemory(String[] lines) throws CompilingException {
         String newEditorText="";
         int pointer = 0;
         emulatedCodeMemory = new ArrayList<>();
@@ -166,9 +166,10 @@ public class CodeMemory {
             emulatedCodeMemory.add("00000000");
         }
         labels.clear();
+        ArrayList<String> linieZNumerami = new ArrayList<>();
         for(String line : lines) {
-                line = line.trim();
                 String backupLinii = line;
+                line = line.trim();
                 int komentarz = -1;
                 for(int i = 0; i < line.length();i++) {
                     if(line.charAt(i) == ';') {
@@ -181,6 +182,7 @@ public class CodeMemory {
                 }
                 if(komentarz == 0) {
                     line = "";
+                    linieZNumerami.add(backupLinii.trim());
                 }
                 if(line.length()>0) {
 
@@ -210,12 +212,15 @@ public class CodeMemory {
                     if(splittedLine[0].toUpperCase().equals("ORG") && splittedLine.length==2) {
                         if(splittedLine[1].toUpperCase().charAt(splittedLine[1].length()-1)=='D') {
                             pointer = Integer.parseInt(splittedLine[1].substring(0,splittedLine[1].length()-1));
+                            linieZNumerami.add(backupLinii);
                         }
                         if(splittedLine[1].toUpperCase().charAt(splittedLine[1].length()-1)=='H') {
                             pointer = Integer.parseInt(splittedLine[1].substring(0,splittedLine[1].length()-1),16);
+                            linieZNumerami.add(backupLinii);
                         }
                         if(splittedLine[1].toUpperCase().charAt(splittedLine[1].length()-1)=='B') {
                             pointer = Integer.parseInt(splittedLine[1].substring(0,splittedLine[1].length()-1),2);
+                            linieZNumerami.add(backupLinii);
                         }
                     }
                     else {
@@ -1478,6 +1483,10 @@ public class CodeMemory {
                          else {
                             throw new CompilingException("Nierozpoznana komenda, linia: '" + backupLinii + "'");
                         }
+                        String hexPointer = Integer.toHexString(pointer);
+                        while(hexPointer.length()<4)
+                            hexPointer = "0" + hexPointer;
+                        linieZNumerami.add(hexPointer + "\t\t" + String.valueOf(backupLinii));
                     }
                 }
         }
@@ -1512,6 +1521,7 @@ public class CodeMemory {
         Main.stage.compilationErrorsLabel.setText("Kompilacja przebiegła pomyślnie");
         Main.stage.compilationErrorsLabel.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
         //show();
+        return linieZNumerami;
     }
 
     private ArrayList<String> emulatedCodeMemory;
