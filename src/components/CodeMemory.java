@@ -219,9 +219,19 @@ public class CodeMemory {
                         }
                     }
                     else {
-                        if(splittedLine[0].toUpperCase().equals("LJMP")) {
+                        if(splittedLine[0].toUpperCase().equals("LCALL")) {
+                            emulatedCodeMemory.set(pointer,"00010010");
+                            try {
+                                String destination = make16DigitsStringFromNumber(splittedLine[1]);
+                                emulatedCodeMemory.set(pointer+1,destination.substring(0,8));
+                                emulatedCodeMemory.set(pointer+2,destination.substring(8,16));
+                            } catch (Exception e) {
+                                emulatedCodeMemory.set(pointer+1,splittedLine[1].toUpperCase());
+                            }
+                            pointer+=3;
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("LJMP")) {
                             emulatedCodeMemory.set(pointer,"00000010");
-
                             try {
                                  String destination = make16DigitsStringFromNumber(splittedLine[1]);
                                 emulatedCodeMemory.set(pointer+1,destination.substring(0,8));
@@ -845,7 +855,7 @@ public class CodeMemory {
                                             pointer+=2;
                                         }
                                         catch (Exception e1) {
-                                            throw new CompilingException("Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii+"'");
+                                            throw new CompilingException("Nierozpoznany Adres: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
 
                                         }
                                     }
@@ -1372,18 +1382,22 @@ public class CodeMemory {
                             catch (Exception e) {
                                 try {
                                     String number = make8DigitsStringFromNumber(splittedLine[1]);
-                                    emulatedCodeMemory.set(pointer,"11010000");
-                                    emulatedCodeMemory.set(pointer+1,number);
-                                    pointer+=2;
-                                }
-                                catch (Exception e1) {
-                                    throw new CompilingException("Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii+"'");
+                                    emulatedCodeMemory.set(pointer, "11010000");
+                                    emulatedCodeMemory.set(pointer + 1, number);
+                                    pointer += 2;
+                                } catch (Exception e1) {
+                                    throw new CompilingException("Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
 
                                 }
                             }
-
-
-
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("RET")) {
+                            if(splittedLine.length!=1)
+                                throw new CompilingException("'RET' nie ma żadnych argumentów, linia: '" + backupLinii + "'");
+                            else {
+                                emulatedCodeMemory.set(pointer, "00100010");
+                                pointer+=1;
+                            }
                         }
                         else if(splittedLine[0].toUpperCase().equals("RETI")) {
                             if(splittedLine.length!=1)
@@ -1392,6 +1406,74 @@ public class CodeMemory {
                                 emulatedCodeMemory.set(pointer, "00110010");
                                 pointer+=1;
                             }
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("MUL")) {
+                            if(splittedLine[1].toUpperCase().equals("AB")) {
+                                emulatedCodeMemory.set(pointer,"10100100");
+                                pointer+=1;
+                            }
+                            else
+                                throw new CompilingException("Niepoprawny argument mnożenia: '" + backupLinii + "'");
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("DIV")) {
+                            if(splittedLine[1].toUpperCase().equals("AB")) {
+                                emulatedCodeMemory.set(pointer,"10000100");
+                                pointer+=1;
+                            }
+                            else
+                                throw new CompilingException("Niepoprawny argument dzielenia: '" + backupLinii + "'");
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("XCHD")) {
+                            if((splittedLine[1].toUpperCase().equals("A")) && ((splittedLine[2].toUpperCase().equals("@R0")) || (splittedLine[2].toUpperCase().equals("@R1")))) {
+                                 emulatedCodeMemory.set(pointer,"1101011" + splittedLine[2].charAt(2));
+                                 pointer+=1;
+                            }
+                            else
+                                throw new CompilingException("Błędne użycie instrukcji, linia: '" + backupLinii + "'");
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("XCH")) {
+                            if(splittedLine[1].toUpperCase().equals("A")) {
+                                if(splittedLine[2].toUpperCase().equals("@R0") || splittedLine[2].toUpperCase().equals("@R1")) {
+                                    emulatedCodeMemory.set(pointer,"1100011" + splittedLine[2].charAt(2));
+                                    pointer+=1;
+                                }
+                                else if(splittedLine[2].toUpperCase().charAt(0) == 'R') {
+                                    String numer = getRAddress(splittedLine[2].toUpperCase());
+
+                                    if(numer.equals(""))
+                                        throw new CompilingException("Nieznany Rejestr: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
+                                    emulatedCodeMemory.set(pointer,"11001" + numer);
+                                    pointer+=1;
+                                }
+                                else {
+                                    String address;
+                                    try {
+                                        address = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
+                                        emulatedCodeMemory.set(pointer,"11000101");
+                                        emulatedCodeMemory.set(pointer+1,address);
+                                        pointer+=2;
+                                    }
+                                    catch (Exception e) {
+                                        try {
+                                            address = make8DigitsStringFromNumber(splittedLine[2]);
+                                            emulatedCodeMemory.set(pointer,"11000101");
+                                            emulatedCodeMemory.set(pointer+1,address);
+                                            pointer+=2;
+                                        }
+                                        catch (Exception e1) {
+                                            throw new CompilingException("Nierozpoznany Adres: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                                throw new CompilingException("Pierwszy argumentem powinien być akumulator: '" + backupLinii +"'");
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("SJMP")) {
+                            emulatedCodeMemory.set(pointer,"10000000");
+                            emulatedCodeMemory.set(pointer+1,splittedLine[1].toUpperCase());
+                            pointer+=2;
+
                         }
                          else {
                             throw new CompilingException("Nierozpoznana komenda, linia: '" + backupLinii + "'");
@@ -1404,7 +1486,7 @@ public class CodeMemory {
             if(s.charAt(s.length()-1)!='0' && s.charAt(s.length()-1)!='1') {
                 int numer = getLineFromLabel(s);
                 if(numer != -1) {
-                    if (emulatedCodeMemory.get(i - 1).equals("00000010")) {
+                    if (emulatedCodeMemory.get(i - 1).equals("00000010") || emulatedCodeMemory.get(i - 1).equals("00010010")) {
                         emulatedCodeMemory.set(i, make16DigitsStringFromNumber(Integer.toString(numer) + "d").substring(0, 8));
                         emulatedCodeMemory.set(i + 1, make16DigitsStringFromNumber(Integer.toString(numer) + "d").substring(8, 16));
                     } else {

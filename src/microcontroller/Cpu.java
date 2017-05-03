@@ -130,6 +130,26 @@ public class Cpu {
             machineCycle();
             linePointer = Integer.parseInt(codeMemory.getFromAddress(linePointer+1) + codeMemory.getFromAddress(linePointer+2),2);
         }
+        else if(toExecute.equals("00010010")) { //JCALL
+            int stackPointer = mainMemory.get("SP");
+            try {
+                String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer+3)+"B");
+                stackPointer += 1;
+                if (stackPointer == 256)
+                    stackPointer = 0;
+                mainMemory.put(stackPointer, Integer.parseInt(address.substring(8, 16), 2));
+                stackPointer += 1;
+                if (stackPointer == 256)
+                    stackPointer = 0;
+                mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
+                mainMemory.put("SP",stackPointer);
+                mainMemory.setBit(codeMemory.bitAddresses.get("TF0"), false);
+                interrupts.set(1,false);
+                higherInterrupt=1;
+                linePointer = Integer.parseInt(codeMemory.getFromAddress(linePointer+1) + codeMemory.getFromAddress(linePointer+2),2);
+            } catch (Exception ignored) {
+            }
+        }
         else if(toExecute.equals("00000100")) {//INC A
             machineCycle();
             int wartosc = mainMemory.get("A");
@@ -204,13 +224,6 @@ public class Cpu {
             mainMemory.put(mainMemory.get("R" + toExecute.charAt(7)),wartosc);
             linePointer+=1;
         }
-
-
-
-
-
-
-
         else if(toExecute.substring(0,5).equals("11011")) { //DJNZ Rx,label/adres (offset)
             machineCycle();
             machineCycle();
@@ -1041,6 +1054,49 @@ public class Cpu {
             mainMemory.put("A",intWynik);
             linePointer+=1;
         }
+        else if(toExecute.equals("10100100")) { //MUL AB
+            machineCycle();
+            machineCycle();
+            machineCycle();
+            machineCycle();
+            int wartosc1 = mainMemory.get("A");
+            int wartosc2 = mainMemory.get("B");
+            int wynik = wartosc1*wartosc2;
+            String wynikString = Integer.toBinaryString(wynik);
+            mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
+                if(wynik>255)
+                    mainMemory.setBit(codeMemory.bitAddresses.get("OV"),true);
+                else
+                    mainMemory.setBit(codeMemory.bitAddresses.get("OV"),false);
+                wynikString = expandTo16Digits(wynikString);
+                wartosc1 = Integer.parseInt(wynikString.substring(8,16),2);
+                wartosc2 = Integer.parseInt(wynikString.substring(0,8),2);
+                mainMemory.put("A",wartosc1);
+                mainMemory.put("B",wartosc2);
+            linePointer+=1;
+        }
+        else if(toExecute.equals("10000100")) { //DIV AB
+            machineCycle();
+            machineCycle();
+            machineCycle();
+            machineCycle();
+            int wartosc1 = mainMemory.get("A");
+            int wartosc2 = mainMemory.get("B");
+            if(wartosc2!=0) {
+                mainMemory.setBit(codeMemory.bitAddresses.get("OV"),false);
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
+                int wynik = wartosc1/wartosc2;
+                int reszta = wartosc1 - wartosc2*wynik;
+
+                mainMemory.put("A", wynik);
+                mainMemory.put("B", reszta);
+                linePointer += 1;
+            }
+            else {
+                mainMemory.setBit(codeMemory.bitAddresses.get("OV"),true);
+                linePointer +=1;
+            }
+        }
         else if(toExecute.equals("00000000")) { //NOP
             linePointer+=1;
         }
@@ -1064,6 +1120,21 @@ public class Cpu {
             mainMemory.put("SP",pointer);
             linePointer+=2;
         }
+        else if(toExecute.equals("00100010")) {//RET
+            int stackPointer = mainMemory.get("SP");
+            int upperAddress = mainMemory.get(stackPointer);
+            stackPointer-=1;
+            if(stackPointer==-1)
+                stackPointer=255;
+            int lowerAddress = mainMemory.get(stackPointer);
+            stackPointer-=1;
+            if(stackPointer==-1)
+                stackPointer=255;
+            mainMemory.put("SP",stackPointer);
+            String upperAddressString = expandTo8Digits(Integer.toBinaryString(upperAddress));
+            String lowerAddressString = expandTo8Digits(Integer.toBinaryString(lowerAddress));
+            linePointer = Integer.parseInt(upperAddressString + lowerAddressString,2);
+        }
         else if(toExecute.equals("00110010")) {//RETI
             int stackPointer = mainMemory.get("SP");
             int upperAddress = mainMemory.get(stackPointer);
@@ -1080,7 +1151,61 @@ public class Cpu {
             higherInterrupt = 5;
             linePointer = Integer.parseInt(upperAddressString + lowerAddressString,2);
         }
+        else if(toExecute.substring(0,7).equals("1101011")) {
+            machineCycle();
+            int wartoscA = mainMemory.get("A");
+            int wartoscB = mainMemory.get(mainMemory.get("R" + toExecute.charAt(7)));
+            String wartoscAString = expandTo8Digits(Integer.toBinaryString(wartoscA));
+            String wartoscBString = expandTo8Digits(Integer.toBinaryString(wartoscB));
+            char[] wartoscAchar = wartoscAString.toCharArray();
+            char[] wartoscBchar = wartoscBString.toCharArray();
+            for(int i = 4; i <8;i++) {
+                char tmp = wartoscAchar[i];
+                wartoscAchar[i] = wartoscBchar[i];
+                wartoscBchar[i] = tmp;
+            }
+            wartoscA = Integer.parseInt(String.valueOf(wartoscAchar),2);
+            wartoscB = Integer.parseInt(String.valueOf(wartoscBchar),2);
 
+            mainMemory.put("A",wartoscA);
+            mainMemory.put(mainMemory.get("R" + toExecute.charAt(7)),wartoscB);
+            linePointer+=1;
+
+        }
+        else if(toExecute.substring(0,7).equals("1100011")) { //XCH Ri
+            machineCycle();
+            int wartoscA = mainMemory.get("A");
+            int wartoscB = mainMemory.get(mainMemory.get("R" + toExecute.charAt(7)));
+            mainMemory.put("A",wartoscB);
+            mainMemory.put(mainMemory.get("R" + toExecute.charAt(7)),wartoscA);
+            linePointer+=1;
+        }
+        else if(toExecute.substring(0,5).equals("11001")) { //XCH Rn
+            machineCycle();
+            int wartoscA = mainMemory.get("A");
+            int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
+            String rejestrString = "R" + rejestr;
+            int wartoscB = mainMemory.get(rejestrString);
+            mainMemory.put("A",wartoscB);
+            mainMemory.put(rejestrString,wartoscA);
+            linePointer+=1;
+        }
+        else if(toExecute.equals("11000101")) {
+            machineCycle();
+            int wartoscA = mainMemory.get("A");
+            int wartoscB = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            mainMemory.put("A",wartoscB);
+            mainMemory.put(mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2)),wartoscA);
+            linePointer+=2;
+        }
+        else if(toExecute.equals("10000000")) {
+            machineCycle();
+            machineCycle();
+            int wynik = linePointer+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
+            if(wynik>255)
+                wynik-=256;
+            linePointer = wynik;
+        }
 
             if (interrupts.get(1)) {
                 int stackPointer = mainMemory.get("SP");
@@ -1122,16 +1247,12 @@ public class Cpu {
                 } catch (Exception ignored) {
                 }
             }
-        refreshStatusRegister();
+        checkP();
         //refreshGui();
     }
 
     private int higherInterrupt = 5;
 
-    private void refreshStatusRegister(){
-        checkP();
-        checkAC();
-    }
     private void checkAC(){
         String acc = Integer.toBinaryString(mainMemory.get("A"));
         if(acc.length()>4)
@@ -1433,7 +1554,13 @@ public class Cpu {
         }
         return number;
     }
-
+    public static String expandTo16Digits(String number) {
+        int howMany = 16 - number.length();
+        for(;howMany>0;howMany--) {
+            number = "0"+number;
+        }
+        return number;
+    }
     public void resetCounter(){
         linePointer = 0;
     }
