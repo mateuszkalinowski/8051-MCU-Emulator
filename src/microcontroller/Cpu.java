@@ -4,6 +4,7 @@ import components.CodeMemory;
 import components.Memory;
 import core.Main;
 import exceptions.InstructionException;
+import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
@@ -166,8 +167,6 @@ public class Cpu {
             mainMemory.put(mainMemory.get("R" + toExecute.charAt(7)),wartosc);
             linePointer+=1;
         }
-
-
         else if(toExecute.equals("00010100")) {//DEC A
             machineCycle();
             int wartosc = mainMemory.get("A");
@@ -273,6 +272,14 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=1;
         }
+        else if(toExecute.substring(0,7).equals("0101011")) {
+            machineCycle();
+            int wartosc1 = mainMemory.get(mainMemory.get("R" + toExecute.charAt(7)));
+            int wartosc2 = mainMemory.get("A");
+            int wynik = wartosc1&wartosc2;
+            mainMemory.put("A",wynik);
+            linePointer+=1;
+        }
         else if(toExecute.equals("01010101")) {
             machineCycle();
             int wartosc1 = mainMemory.get("A");
@@ -348,6 +355,14 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=1;
         }
+        else if(toExecute.substring(0,7).equals("0100011")) {
+            machineCycle();
+            int wartosc1 = mainMemory.get(mainMemory.get("R" + toExecute.charAt(7)));
+            int wartosc2 = mainMemory.get("A");
+            int wynik = wartosc1|wartosc2;
+            mainMemory.put("A",wynik);
+            linePointer+=1;
+        }
         else if(toExecute.equals("01000101")) {
             machineCycle();
             int wartosc1 = mainMemory.get("A");
@@ -418,6 +433,14 @@ public class Cpu {
             int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
             String rejestrString = "R" + rejestr;
             int wartosc1 = mainMemory.get(rejestrString);
+            int wartosc2 = mainMemory.get("A");
+            int wynik = wartosc1^wartosc2;
+            mainMemory.put("A",wynik);
+            linePointer+=1;
+        }
+        else if(toExecute.substring(0,7).equals("0110011")) {
+            machineCycle();
+            int wartosc1 = mainMemory.get(mainMemory.get("R" + toExecute.charAt(7)));
             int wartosc2 = mainMemory.get("A");
             int wynik = wartosc1^wartosc2;
             mainMemory.put("A",wynik);

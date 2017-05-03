@@ -204,6 +204,8 @@ public class CodeMemory {
                         else
                             throw new CompilingException();
                     }
+                    if(splittedLine.length==0)
+                        continue;
                     if(splittedLine[0].toUpperCase().equals("ORG") && splittedLine.length==2) {
                         if(splittedLine[1].toUpperCase().charAt(splittedLine[1].length()-1)=='D') {
                             pointer = Integer.parseInt(splittedLine[1].substring(0,splittedLine[1].length()-1));
@@ -342,6 +344,10 @@ public class CodeMemory {
                                        emulatedCodeMemory.set(pointer,"01011" + numer);
                                        pointer+=1;
                                    }
+                                   else if(splittedLine[2].toUpperCase().equals("@R1") || splittedLine[2].toUpperCase().equals("@R0")) {
+                                       emulatedCodeMemory.set(pointer,"0101011" + splittedLine[2].charAt(2));
+                                       pointer+=1;
+                                   }
                                    else {
                                        if(bitAddresses.containsKey(splittedLine[2].toUpperCase())) {
                                            emulatedCodeMemory.set(pointer,"01010101");
@@ -356,6 +362,7 @@ public class CodeMemory {
                                                pointer+=2;
                                            }
                                            catch (Exception e){
+
                                                throw new CompilingException("Nierozpoznany Bit: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                                            }
                                        }
@@ -475,6 +482,10 @@ public class CodeMemory {
                                         throw new CompilingException("Nieznany Rejestr: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                                     }
                                     emulatedCodeMemory.set(pointer,"01001" + numer);
+                                    pointer+=1;
+                                }
+                                else if(splittedLine[2].toUpperCase().equals("@R1") || splittedLine[2].toUpperCase().equals("@R0")) {
+                                    emulatedCodeMemory.set(pointer,"0100011" + splittedLine[2].charAt(2));
                                     pointer+=1;
                                 }
                                 else {
@@ -615,6 +626,10 @@ public class CodeMemory {
                                         throw new CompilingException("Nieznany Rejestr: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                                     }
                                     emulatedCodeMemory.set(pointer,"01101" + numer);
+                                    pointer+=1;
+                                }
+                                else if(splittedLine[2].toUpperCase().equals("@R1") || splittedLine[2].toUpperCase().equals("@R0")) {
+                                    emulatedCodeMemory.set(pointer,"0110011" + splittedLine[2].charAt(2));
                                     pointer+=1;
                                 }
                                 else {
