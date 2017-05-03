@@ -45,7 +45,7 @@ public class Cpu {
             int TH0int = mainMemory.get("TH0");
             TL0int+=1;
             if(tmodString.charAt(7) == '0' && tmodString.charAt(6) == '0') {
-                if(TL0int==33) {
+                if(TL0int>32) {
                     TL0int = 0;
                     TH0int += 1;
                 }
@@ -773,6 +773,7 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=2;
             checkAC();
+            checkOVAdding(expandTo8Digits(Integer.toBinaryString(obecnaWartosc)));
             checkP();
         }
         else if(toExecute.substring(0,7).equals("0010011")) { // ADD Ri
@@ -790,6 +791,7 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=1;
             checkAC();
+            checkOVAdding(expandTo8Digits(Integer.toBinaryString(obecnaWartosc)));
             checkP();
         }
 
@@ -810,6 +812,7 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=2;
             checkAC();
+            checkOVAdding(expandTo8Digits(Integer.toBinaryString(obecnaWartosc)));
             checkP();
         }
         else if(toExecute.substring(0,7).equals("0011011")) { //addc Ri
@@ -829,6 +832,7 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=1;
             checkAC();
+            checkOVAdding(expandTo8Digits(Integer.toBinaryString(obecnaWartosc)));
             checkP();
         }
 
@@ -849,6 +853,7 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=1;
             checkAC();
+            checkOVAdding(expandTo8Digits(Integer.toBinaryString(obecnaWartosc)));
             checkP();
         }
         else if(toExecute.substring(0,5).equals("00111")) {
@@ -870,6 +875,7 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=1;
             checkAC();
+            checkOVAdding(expandTo8Digits(Integer.toBinaryString(obecnaWartosc)));
             checkP();
         }
         else if(toExecute.equals("00100101")) {
@@ -889,6 +895,7 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=2;
             checkAC();
+            checkOVAdding(expandTo8Digits(Integer.toBinaryString(obecnaWartosc)));
             checkP();
         }
         else if(toExecute.equals("00110101")) {
@@ -908,6 +915,7 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=2;
             checkAC();
+            checkOVAdding(expandTo8Digits(Integer.toBinaryString(obecnaWartosc)));
             checkP();
         }
         else if(toExecute.equals("10010100")) { //SUBB A,#01h
@@ -926,6 +934,7 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=2;
             checkAC();
+            checkOVSubtraction(expandTo8Digits(Integer.toBinaryString(obecnaWartosc)));
             checkP();
         }
 
@@ -947,6 +956,7 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=1;
             checkAC();
+            checkOVSubtraction(expandTo8Digits(Integer.toBinaryString(obecnaWartosc)));
             checkP();
         }
         else if(toExecute.substring(0,7).equals("1001011")) { //SUBB A,Ri
@@ -965,6 +975,7 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=1;
             checkAC();
+            checkOVSubtraction(expandTo8Digits(Integer.toBinaryString(obecnaWartosc)));
             checkP();
         }
         else if(toExecute.equals("10010101")) { //SUBB A,Px
@@ -984,6 +995,7 @@ public class Cpu {
             mainMemory.put("A",wynik);
             linePointer+=2;
             checkAC();
+            checkOVSubtraction(expandTo8Digits(Integer.toBinaryString(obecnaWartosc)));
             checkP();
         }
         else if(toExecute.equals("11010011")) { //SETB C
@@ -1124,6 +1136,22 @@ public class Cpu {
             mainMemory.setBit(codeMemory.bitAddresses.get("AC"),true);
         else
             mainMemory.setBit(codeMemory.bitAddresses.get("AC"),false);
+    }
+    private void checkOVAdding(String lastValue){
+        String acc = Integer.toBinaryString(mainMemory.get("A"));
+        acc = expandTo8Digits(acc);
+        if(lastValue.charAt(0)=='0' && acc.charAt(0)=='1')
+                mainMemory.setBit(codeMemory.bitAddresses.get("OV"), true);
+            else
+                mainMemory.setBit(codeMemory.bitAddresses.get("OV"), false);
+    }
+    private void checkOVSubtraction(String lastValue){
+        String acc = Integer.toBinaryString(mainMemory.get("A"));
+        acc = expandTo8Digits(acc);
+        if(lastValue.charAt(0)=='1' && acc.charAt(0)=='0')
+            mainMemory.setBit(codeMemory.bitAddresses.get("OV"), true);
+        else
+            mainMemory.setBit(codeMemory.bitAddresses.get("OV"), false);
     }
     private void checkP(){
         String acc = Integer.toBinaryString(mainMemory.get("A"));

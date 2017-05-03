@@ -167,6 +167,7 @@ public class CodeMemory {
         }
         labels.clear();
         for(String line : lines) {
+                line = line.trim();
                 String backupLinii = line;
                 int komentarz = -1;
                 for(int i = 0; i < line.length();i++) {
@@ -184,7 +185,7 @@ public class CodeMemory {
                 if(line.length()>0) {
 
                     line = line.replace(',', ' ');
-                    line = line.trim();
+                    //line = line.trim();
                     String[] splittedLine = line.split(" +");
                     if(splittedLine[0].charAt(splittedLine[0].length()-1)==':') {
                         if(getLineFromLabel(splittedLine[0].toUpperCase().substring(0,splittedLine[0].length()-1))==-1) {
