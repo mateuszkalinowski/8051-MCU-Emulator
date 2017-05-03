@@ -1198,14 +1198,14 @@ public class CodeMemory {
                                         String address;
                                         try {
                                             address = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
-                                            emulatedCodeMemory.set(pointer,"00100101");
+                                            emulatedCodeMemory.set(pointer,"00110101");
                                             emulatedCodeMemory.set(pointer+1,address);
                                             pointer+=2;
                                         }
                                         catch (Exception e) {
                                             try {
                                                 address = make8DigitsStringFromNumber(splittedLine[2]);
-                                                emulatedCodeMemory.set(pointer,"00100101");
+                                                emulatedCodeMemory.set(pointer,"00110101");
                                                 emulatedCodeMemory.set(pointer+1,address);
                                                 pointer+=2;
                                             }

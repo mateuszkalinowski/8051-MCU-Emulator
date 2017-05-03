@@ -822,6 +822,8 @@ public class Cpu {
             int wynik = obecnaWartosc + doDodania;
             if(mainMemory.getBit(codeMemory.bitAddresses.get("CY")))
                 wynik+=1;
+            if(mainMemory.getBit(codeMemory.bitAddresses.get("CY")))
+                wynik+=1;
             if(wynik>255) {
                 wynik -=256;
                 mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
@@ -898,7 +900,7 @@ public class Cpu {
             checkOV(expandTo8Digits(Integer.toBinaryString(obecnaWartosc)),expandTo8Digits(Integer.toBinaryString(doDodania)));
             checkP();
         }
-        else if(toExecute.equals("00110101")) {
+        else if(toExecute.equals("00110101")) { //ADDC direct
             int doDodania = 0;
             doDodania = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
             int obecnaWartosc = mainMemory.get("A");
