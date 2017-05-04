@@ -628,7 +628,7 @@ public class MainStage extends Application {
 
 
 
-        translateToMemoryButton = new Button("Uruchom");
+        translateToMemoryButton = new Button("Asemblacja");
         translateToMemoryButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

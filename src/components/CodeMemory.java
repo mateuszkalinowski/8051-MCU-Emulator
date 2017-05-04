@@ -224,6 +224,7 @@ public class CodeMemory {
                         }
                     }
                     else {
+                        int backupPointer = pointer;
                         if(splittedLine[0].toUpperCase().equals("LCALL")) {
                             emulatedCodeMemory.set(pointer,"00010010");
                             try {
@@ -1483,7 +1484,7 @@ public class CodeMemory {
                          else {
                             throw new CompilingException("Nierozpoznana komenda, linia: '" + backupLinii + "'");
                         }
-                        String hexPointer = Integer.toHexString(pointer);
+                        String hexPointer = Integer.toHexString(backupPointer);
                         while(hexPointer.length()<4)
                             hexPointer = "0" + hexPointer;
                         linieZNumerami.add(hexPointer + "\t\t" + String.valueOf(backupLinii));
