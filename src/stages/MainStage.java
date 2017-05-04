@@ -644,6 +644,7 @@ public class MainStage extends Application {
                     rysujRunButton.setDisable(true);
                     continuousRunButton.setDisable(false);
                     running = true;
+                    changeValueInChangeValueButton.setDisable(false);
                     setEditorText(compilatedText);
 
                     if(portToggle7.isSelected())
@@ -741,6 +742,7 @@ public class MainStage extends Application {
                 continuousRunButton.setDisable(true);
                 continuousRunButton.setText("Praca Ciągła");
                 running = false;
+                changeValueInChangeValueButton.setDisable(true);
                 String textToSet = "";
                 for(String line : lines) {
                     textToSet = textToSet + line + "\n";
@@ -779,6 +781,7 @@ public class MainStage extends Application {
             public void handle(ActionEvent event) {
                 if(continuousRunButton.getText().equals("Praca Ciągła")) {
                     continuousRunButton.setText("Stop");
+                    changeValueInChangeValueButton.setDisable(true);
 
                     oneStepButton.setDisable(true);
                     autoRun = new Task<Void>() {
@@ -808,6 +811,7 @@ public class MainStage extends Application {
                     continuousRunFlag = false;
                     oneStepButton.setDisable(false);
                     continuousRunButton.setText("Praca Ciągła");
+                    changeValueInChangeValueButton.setDisable(false);
                 }
             }
         });
@@ -960,8 +964,18 @@ public class MainStage extends Application {
         portToggle6 = new ToggleButton("6");
         portToggle7 = new ToggleButton("7");
 
+        portToggle0.setMaxWidth(Double.MAX_VALUE);
+        portToggle1.setMaxWidth(Double.MAX_VALUE);
+        portToggle2.setMaxWidth(Double.MAX_VALUE);
+        portToggle3.setMaxWidth(Double.MAX_VALUE);
+        portToggle4.setMaxWidth(Double.MAX_VALUE);
+        portToggle5.setMaxWidth(Double.MAX_VALUE);
+        portToggle6.setMaxWidth(Double.MAX_VALUE);
+        portToggle7.setMaxWidth(Double.MAX_VALUE);
+
+
         HBox userTogglesHBox = new HBox();
-        userTogglesHBox.setPadding(new Insets(1,2,1,2));
+        //userTogglesHBox.setPadding();
         userTogglesHBox.setAlignment(Pos.CENTER);
         HBox.setHgrow(portToggle0,Priority.ALWAYS);
         HBox.setHgrow(portToggle1,Priority.ALWAYS);
@@ -971,7 +985,6 @@ public class MainStage extends Application {
         HBox.setHgrow(portToggle5,Priority.ALWAYS);
         HBox.setHgrow(portToggle6,Priority.ALWAYS);
         HBox.setHgrow(portToggle7,Priority.ALWAYS);
-        userTogglesHBox.setSpacing(1);
 
         portButton0 = new Button("0");
         portButton1 = new Button("1");
@@ -981,6 +994,15 @@ public class MainStage extends Application {
         portButton5 = new Button("5");
         portButton6 = new Button("6");
         portButton7 = new Button("7");
+
+        portButton0.setMaxWidth(Double.MAX_VALUE);
+        portButton1.setMaxWidth(Double.MAX_VALUE);
+        portButton2.setMaxWidth(Double.MAX_VALUE);
+        portButton3.setMaxWidth(Double.MAX_VALUE);
+        portButton4.setMaxWidth(Double.MAX_VALUE);
+        portButton5.setMaxWidth(Double.MAX_VALUE);
+        portButton6.setMaxWidth(Double.MAX_VALUE);
+        portButton7.setMaxWidth(Double.MAX_VALUE);
 
         HBox userButtonsHBox = new HBox();
         userButtonsHBox.setPadding(new Insets(1,2,1,2));
@@ -1402,6 +1424,57 @@ public class MainStage extends Application {
 
         mainMemoryGridPane.add(lowerRamLabel,1,0,8,1);
         mainMemoryGridPane.add(upperRamLabel,11,0,8,1);
+
+
+        Label addressLabelInChangeMenu = new Label("Adres:");
+        addressLabelInChangeMenu.setMaxWidth(Double.MAX_VALUE);
+        addressLabelInChangeMenu.setAlignment(Pos.CENTER);
+        Label valueLabelInChangeMenu = new Label("Wartość:");
+        valueLabelInChangeMenu.setMaxWidth(Double.MAX_VALUE);
+        valueLabelInChangeMenu.setAlignment(Pos.CENTER);
+
+
+
+        addressInChangeValueTextField = new TextField();
+        valueInChangeValueTextField = new TextField();
+
+        addressInChangeValueTextField.setMaxWidth(Double.MAX_VALUE);
+        addressInChangeValueTextField.setAlignment(Pos.CENTER);
+        valueInChangeValueTextField.setMaxWidth(Double.MAX_VALUE);
+        valueInChangeValueTextField.setAlignment(Pos.CENTER);
+
+        changeValueInChangeValueButton = new Button("Ustaw");
+        changeValueInChangeValueButton.setMaxWidth(Double.MAX_VALUE);
+        changeValueInChangeValueButton.setDisable(true);
+
+        changeValueInChangeValueButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                int adres = -1;
+                int wartosc = -1;
+                try {
+                    adres = Integer.parseInt(Main.cpu.codeMemory.make8DigitsStringFromNumber(addressInChangeValueTextField.getText()), 2);
+                }
+                catch (Exception e){}
+                try {
+                    wartosc = Integer.parseInt(Main.cpu.codeMemory.make8DigitsStringFromNumber(valueInChangeValueTextField.getText()), 2);
+                }
+                catch (Exception e){}
+                if(adres!=-1 && wartosc!=-1) {
+                    Main.cpu.mainMemory.put(adres,wartosc);
+                    Main.cpu.refreshGui();
+                }
+            }
+        });
+
+
+        VBox changeValueInRamVBox = new VBox();
+        VBox.setVgrow(addressLabelInChangeMenu,Priority.ALWAYS);
+        VBox.setVgrow(valueLabelInChangeMenu,Priority.ALWAYS);
+        changeValueInRamVBox.getChildren().addAll(addressLabelInChangeMenu,addressInChangeValueTextField,valueLabelInChangeMenu,valueInChangeValueTextField,changeValueInChangeValueButton);
+
+        mainMemoryGridPane.add(changeValueInRamVBox,9,1,2,1);
+
 
 
         memoryInfoTab.setContent(mainMemoryGridPane);
@@ -1914,5 +1987,10 @@ public class MainStage extends Application {
 
     public String ledsPort = "P0";
     public String seg7displayPort = "P1";
+
+    private TextField addressInChangeValueTextField;
+    private TextField valueInChangeValueTextField;
+
+    Button changeValueInChangeValueButton;
 
 }
