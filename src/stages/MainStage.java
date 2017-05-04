@@ -1447,23 +1447,20 @@ public class MainStage extends Application {
         changeValueInChangeValueButton.setMaxWidth(Double.MAX_VALUE);
         changeValueInChangeValueButton.setDisable(true);
 
-        changeValueInChangeValueButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                int adres = -1;
-                int wartosc = -1;
-                try {
-                    adres = Integer.parseInt(Main.cpu.codeMemory.make8DigitsStringFromNumber(addressInChangeValueTextField.getText()), 2);
-                }
-                catch (Exception e){}
-                try {
-                    wartosc = Integer.parseInt(Main.cpu.codeMemory.make8DigitsStringFromNumber(valueInChangeValueTextField.getText()), 2);
-                }
-                catch (Exception e){}
-                if(adres!=-1 && wartosc!=-1) {
-                    Main.cpu.mainMemory.put(adres,wartosc);
-                    Main.cpu.refreshGui();
-                }
+        changeValueInChangeValueButton.setOnAction(event -> {
+            int adres = -1;
+            int wartosc = -1;
+            try {
+                adres = Integer.parseInt(Main.cpu.codeMemory.make8DigitsStringFromNumber(addressInChangeValueTextField.getText()), 2);
+            }
+            catch (Exception e){}
+            try {
+                wartosc = Integer.parseInt(Main.cpu.codeMemory.make8DigitsStringFromNumber(valueInChangeValueTextField.getText()), 2);
+            }
+            catch (Exception e){}
+            if(adres!=-1 && wartosc!=-1) {
+                Main.cpu.mainMemory.put(adres,wartosc);
+                Main.cpu.refreshGui();
             }
         });
 
@@ -1480,7 +1477,7 @@ public class MainStage extends Application {
         memoryInfoTab.setContent(mainMemoryGridPane);
 
         mainStage = primaryStage;
-        mainStage.setTitle("8051 MCU Emulator - 0.4 Alpha");
+        mainStage.setTitle("8051 MCU Emulator - 0.5 Alpha");
         mainBorderPane.setCenter(mainGridPane);
         mainScene = new Scene(mainBorderPane,width,height);
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
@@ -1635,7 +1632,7 @@ public class MainStage extends Application {
         portToggle6.setFont(new Font("Arial", smaller/1.5));
         portToggle7.setFont(new Font("Arial", smaller/1.5));
 
-       /* translateToMemoryButton.setFont(new Font("Arial", smaller/2.0));
+        /* translateToMemoryButton.setFont(new Font("Arial", smaller/2.0));
         continuousRunButton.setFont(new Font("Arial", smaller/2.0));
         oneStepButton.setFont(new Font("Arial", smaller/2.0));
         stopSimulationButton.setFont(new Font("Arial", smaller/2.0));
