@@ -770,11 +770,12 @@ public class MainStage extends Application {
                     @Override
                     protected Void call() throws Exception {
                         continuousRunFlag=true;
-                        long time = System.currentTimeMillis();
+                        continuousRunFlag=true;
+                        long time = System.nanoTime();
                         while(continuousRunFlag) {
-                            if(System.currentTimeMillis()-time>(100/speedSelectComboBox.getSelectionModel().getSelectedItem())) {
+                            if(System.nanoTime() - time > 1000000000/speedSelectComboBox.getSelectionModel().getSelectedItem()) {
                                 Main.cpu.executeInstruction();
-                                time = System.currentTimeMillis();
+                                time = System.nanoTime();
                                 Platform.runLater(() -> Main.cpu.refreshGui());
                             }
                         }
@@ -792,8 +793,6 @@ public class MainStage extends Application {
             }
         });
 
-
-
         translateToMemoryButton.setMaxWidth(Double.MAX_VALUE);
         stopSimulationButton.setMaxWidth(Double.MAX_VALUE);
         stopSimulationButton.setDisable(true);
@@ -802,7 +801,7 @@ public class MainStage extends Application {
         oneStepButton.setDisable(true);
 
         speedSelectComboBox = new ComboBox<>();
-        speedSelectComboBox.getItems().addAll(1,10,100);
+        speedSelectComboBox.getItems().addAll(1,5,10,50,100,500,1000,2000);
         speedSelectComboBox.setMaxWidth(Double.MAX_VALUE);
         speedSelectComboBox.getSelectionModel().selectFirst();
 
@@ -810,9 +809,6 @@ public class MainStage extends Application {
         speedSelectLabel.setMaxWidth(Double.MAX_VALUE);
         speedSelectLabel.setAlignment(Pos.CENTER);
         speedSelectLabel.setFont(new Font("Arial",11));
-
-
-
 
         HBox buttonBox = new HBox();
         buttonBox.setPadding(new Insets(0,10,0,10));
@@ -835,11 +831,11 @@ public class MainStage extends Application {
         Menu menuOptions = new Menu("Konfiguracja");
         mainMenuBar.getMenus().add(menuOptions);
 
-        Menu menuAddons = new Menu("Dodatki");
-        mainMenuBar.getMenus().add(menuAddons);
+        //Menu menuAddons = new Menu("Dodatki");
+        //mainMenuBar.getMenus().add(menuAddons);
 
-        MenuItem generateRunMenuItem = new MenuItem("Przebieg");
-        menuAddons.getItems().add(generateRunMenuItem);
+        //MenuItem generateRunMenuItem = new MenuItem("Przebieg");
+        //menuAddons.getItems().add(generateRunMenuItem);
 
 
         MenuItem paneConfigurationMenuItem = new MenuItem("Panel");
