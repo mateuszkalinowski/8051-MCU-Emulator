@@ -1,5 +1,6 @@
 package components;
 
+import com.sun.deploy.util.StringUtils;
 import core.Main;
 import exceptions.CompilingException;
 import javafx.util.Pair;
@@ -187,7 +188,7 @@ public class CodeMemory {
                 if(line.length()>0) {
 
                     line = line.replace(',', ' ');
-                    //line = line.trim();
+                    line = line.trim();
                     String[] splittedLine = line.split(" +");
                     if(splittedLine[0].charAt(splittedLine[0].length()-1)==':') {
                         if(getLineFromLabel(splittedLine[0].toUpperCase().substring(0,splittedLine[0].length()-1))==-1) {
@@ -197,6 +198,7 @@ public class CodeMemory {
                             }
                             catch (NumberFormatException e){
                                 labels.add(new Pair<>(splittedLine[0].toUpperCase().substring(0, splittedLine[0].length() - 1), pointer));
+                                linieZNumerami.add(backupLinii);
                                 String[] splittedLine2 = new String[splittedLine.length-1];
                                 for(int i = 1;i<splittedLine.length;i++) {
                                     splittedLine2[i-1] = splittedLine[i];
@@ -1487,7 +1489,7 @@ public class CodeMemory {
                         String hexPointer = Integer.toHexString(backupPointer);
                         while(hexPointer.length()<4)
                             hexPointer = "0" + hexPointer;
-                        linieZNumerami.add(hexPointer + "\t\t" + String.valueOf(backupLinii));
+                        linieZNumerami.add(hexPointer + " \t" + String.valueOf(backupLinii.trim()));
                     }
                 }
         }

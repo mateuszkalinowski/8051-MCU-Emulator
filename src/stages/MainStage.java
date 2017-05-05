@@ -859,6 +859,12 @@ public class MainStage extends Application {
         Menu menuOptions = new Menu("Konfiguracja");
         mainMenuBar.getMenus().add(menuOptions);
 
+        Menu menuAddons = new Menu("Dodatki");
+        mainMenuBar.getMenus().add(menuAddons);
+
+        MenuItem generateRunMenuItem = new MenuItem("Przebieg");
+        menuAddons.getItems().add(generateRunMenuItem);
+
 
         MenuItem paneConfigurationMenuItem = new MenuItem("Panel");
         menuOptions.getItems().add(paneConfigurationMenuItem);
@@ -1248,7 +1254,7 @@ public class MainStage extends Application {
 
         chartPane.setContent(chartBorderPane);
 
-
+        //editorElementsGridPane.add(diodesPaneGridPane,1,0);
         editorElementsGridPane.add(elementsTabPane,1,0);
 
         rysujRunButton = new Button("Generuj Przebieg");
@@ -1433,34 +1439,54 @@ public class MainStage extends Application {
         valueLabelInChangeMenu.setMaxWidth(Double.MAX_VALUE);
         valueLabelInChangeMenu.setAlignment(Pos.CENTER);
 
-
-
         addressInChangeValueTextField = new TextField();
         valueInChangeValueTextField = new TextField();
-
         addressInChangeValueTextField.setMaxWidth(Double.MAX_VALUE);
         addressInChangeValueTextField.setAlignment(Pos.CENTER);
         valueInChangeValueTextField.setMaxWidth(Double.MAX_VALUE);
         valueInChangeValueTextField.setAlignment(Pos.CENTER);
-
         changeValueInChangeValueButton = new Button("Ustaw");
         changeValueInChangeValueButton.setMaxWidth(Double.MAX_VALUE);
         changeValueInChangeValueButton.setDisable(true);
-
         changeValueInChangeValueButton.setOnAction(event -> {
             int adres = -1;
             int wartosc = -1;
             try {
                 adres = Integer.parseInt(Main.cpu.codeMemory.make8DigitsStringFromNumber(addressInChangeValueTextField.getText()), 2);
             }
-            catch (Exception e){}
+            catch (Exception ignored){
+            }
             try {
                 wartosc = Integer.parseInt(Main.cpu.codeMemory.make8DigitsStringFromNumber(valueInChangeValueTextField.getText()), 2);
             }
-            catch (Exception e){}
+            catch (Exception ignored){
+            }
+            if(adres>255)adres=-1;
+            if(wartosc>255)wartosc=-1;
             if(adres!=-1 && wartosc!=-1) {
                 Main.cpu.mainMemory.put(adres,wartosc);
                 Main.cpu.refreshGui();
+            }
+            else if(adres==-1 && wartosc !=-1) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Błąd ustawiania wartości");
+                alert.setHeaderText("Nie można było ustawić wybranej wartości.");
+                alert.setContentText("Podany adres jest spoza zakresu ilości pamięci (00h-FFh)");
+                alert.showAndWait();
+            }
+            else if(adres!=1 ) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Błąd ustawiania wartości");
+                alert.setHeaderText("Nie można było ustawić wybranej wartości.");
+                alert.setContentText("Podana wartość jest spoza zakresu możliwych wartości (00h-FFh)");
+                alert.showAndWait();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Błąd ustawiania wartości");
+                alert.setHeaderText("Nie można było ustawić wybranej wartości.");
+                alert.setContentText("Zarówno adres jak i wartość są z poza zakresu (00-FF)");
+                alert.showAndWait();
             }
         });
 

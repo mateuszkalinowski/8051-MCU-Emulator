@@ -1361,7 +1361,20 @@ public class Cpu {
         content +="\n";
 
         for(int i = 8; i < 16;i++) {
-            content+=i+"\t";
+            if(i<10)
+             content+=i+"\t";
+            else if(i==10)
+                content+="A"+"\t";
+            else if(i==11)
+                content+="B"+"\t";
+            else if(i==12)
+                content+="C"+"\t";
+            else if(i==13)
+                content+="D"+"\t";
+            else if(i==14)
+                content+="E"+"\t";
+            else if(i==15)
+                content+="F"+"\t";
             for(int j = 0; j < 16;j++) {
                 if(Integer.toHexString(mainMemory.get(i*16+j)).length()==1) {
                     content+=" " + "0" + Integer.toHexString(mainMemory.get(i*16+j)).toUpperCase() + " ";
