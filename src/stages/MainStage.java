@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -914,8 +915,8 @@ public class MainStage extends Application {
 
         diodesPaneGridPane = new GridPane();
         ColumnConstraints columnInDiodesPane = new ColumnConstraints();
-        columnInDiodesPane.setPercentWidth(100/5);
-        for (int i = 0; i < 5;i++) {
+        columnInDiodesPane.setPercentWidth(100.0/8.0);
+        for (int i = 0; i < 8;i++) {
             diodesPaneGridPane.getColumnConstraints().add(columnInDiodesPane);
         }
         RowConstraints rowInDiodesPane = new RowConstraints();
@@ -943,20 +944,6 @@ public class MainStage extends Application {
         portToggle6.setMaxWidth(Double.MAX_VALUE);
         portToggle7.setMaxWidth(Double.MAX_VALUE);
 
-
-        HBox userTogglesHBox = new HBox();
-        userTogglesHBox.setPadding(new Insets(1,2,1,2));
-        userTogglesHBox.setAlignment(Pos.CENTER);
-        userTogglesHBox.setAlignment(Pos.CENTER);
-        HBox.setHgrow(portToggle0,Priority.ALWAYS);
-        HBox.setHgrow(portToggle1,Priority.ALWAYS);
-        HBox.setHgrow(portToggle2,Priority.ALWAYS);
-        HBox.setHgrow(portToggle3,Priority.ALWAYS);
-        HBox.setHgrow(portToggle4,Priority.ALWAYS);
-        HBox.setHgrow(portToggle5,Priority.ALWAYS);
-        HBox.setHgrow(portToggle6,Priority.ALWAYS);
-        HBox.setHgrow(portToggle7,Priority.ALWAYS);
-
         portButton0 = new Button("0");
         portButton1 = new Button("1");
         portButton2 = new Button("2");
@@ -974,19 +961,6 @@ public class MainStage extends Application {
         portButton5.setMaxWidth(Double.MAX_VALUE);
         portButton6.setMaxWidth(Double.MAX_VALUE);
         portButton7.setMaxWidth(Double.MAX_VALUE);
-
-        HBox userButtonsHBox = new HBox();
-        userButtonsHBox.setPadding(new Insets(1,2,1,2));
-        userButtonsHBox.setAlignment(Pos.CENTER);
-        HBox.setHgrow(portButton0,Priority.ALWAYS);
-        HBox.setHgrow(portButton1,Priority.ALWAYS);
-        HBox.setHgrow(portButton2,Priority.ALWAYS);
-        HBox.setHgrow(portButton3,Priority.ALWAYS);
-        HBox.setHgrow(portButton4,Priority.ALWAYS);
-        HBox.setHgrow(portButton5,Priority.ALWAYS);
-        HBox.setHgrow(portButton6,Priority.ALWAYS);
-        HBox.setHgrow(portButton7,Priority.ALWAYS);
-        userButtonsHBox.setSpacing(1);
 
         portToggle7.setOnAction(event -> {
             if(portToggle7.isSelected())
@@ -1165,9 +1139,6 @@ public class MainStage extends Application {
             Main.cpu.refreshGui();
         });
 
-        userTogglesHBox.getChildren().addAll(portToggle7,portToggle6,portToggle5,portToggle4,portToggle3,portToggle2,portToggle1,portToggle0);
-        userButtonsHBox.getChildren().addAll(portButton7,portButton6,portButton5,portButton4,portButton3,portButton2,portButton1,portButton0);
-
         Label przyciskiLabel = new Label("Przyciski:");
         przyciskiLabel.setMaxWidth(Double.MAX_VALUE);
         przyciskiLabel.setAlignment(Pos.CENTER);
@@ -1178,13 +1149,28 @@ public class MainStage extends Application {
         zadajnikiLabel.setAlignment(Pos.CENTER);
         zadajnikiLabel.setFont(new Font("Arial",14));
 
+        diodesPaneGridPane.add(portButton0,7,7);
+        diodesPaneGridPane.add(portButton1,6,7);
+        diodesPaneGridPane.add(portButton2,5,7);
+        diodesPaneGridPane.add(portButton3,4,7);
+        diodesPaneGridPane.add(portButton4,3,7);
+        diodesPaneGridPane.add(portButton5,2,7);
+        diodesPaneGridPane.add(portButton6,1,7);
+        diodesPaneGridPane.add(portButton7,0,7);
+
+        diodesPaneGridPane.add(portToggle0,7,9);
+        diodesPaneGridPane.add(portToggle1,6,9);
+        diodesPaneGridPane.add(portToggle2,5,9);
+        diodesPaneGridPane.add(portToggle3,4,9);
+        diodesPaneGridPane.add(portToggle4,3,9);
+        diodesPaneGridPane.add(portToggle5,2,9);
+        diodesPaneGridPane.add(portToggle6,1,9);
+        diodesPaneGridPane.add(portToggle7,0,9);
+
         diodesPaneGridPane.add(ledCanvas,0,0,8,2);
         diodesPaneGridPane.add(seg7Canvas,0,2,8,4);
-        diodesPaneGridPane.add(userTogglesHBox,0,9,8,1);
         diodesPaneGridPane.add(zadajnikiLabel,0,8,8,1);
-        diodesPaneGridPane.add(userButtonsHBox,0,7,8,1);
         diodesPaneGridPane.add(przyciskiLabel,0,6,8,1);
-        diodesPaneGridPane.setGridLinesVisible(false);
         diodesPane.setContent(diodesPaneGridPane);
 
         final NumberAxis xAxis = new NumberAxis(0,255,64);

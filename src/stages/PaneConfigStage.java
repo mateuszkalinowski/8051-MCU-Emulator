@@ -68,7 +68,7 @@ public class PaneConfigStage extends Application {
         mainGridPane.add(seg7PortLabel,0,5);
         mainGridPane.add(seg7PortComboBox,1,5);
 
-        Scene mainScene = new Scene(mainGridPane, 200, 180);
+        Scene mainScene = new Scene(mainGridPane, 280, 180);
         mainStage.setScene(mainScene);
         mainStage.setTitle("Konfiguracja Panelu");
         mainStage.setResizable(false);
