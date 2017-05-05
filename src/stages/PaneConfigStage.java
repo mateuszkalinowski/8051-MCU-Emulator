@@ -2,8 +2,6 @@ package stages;
 
 import core.Main;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
@@ -12,7 +10,6 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
@@ -56,23 +53,13 @@ public class PaneConfigStage extends Application {
         ComboBox<String> ledPortComboBox = new ComboBox<>();
         ledPortComboBox.getItems().addAll("P0","P1","P2","P3");
         ledPortComboBox.getSelectionModel().select(Main.stage.ledsPort);
-        ledPortComboBox.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                Main.stage.ledsPort = ledPortComboBox.getSelectionModel().getSelectedItem();
-            }
-        });
+        ledPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> Main.stage.ledsPort = ledPortComboBox.getSelectionModel().getSelectedItem());
 
         ComboBox<String> seg7PortComboBox = new ComboBox<>();
         seg7PortComboBox.getItems().addAll("P0","P1","P2","P3");
         seg7PortComboBox.getSelectionModel().select(Main.stage.seg7displayPort);
 
-        seg7PortComboBox.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                Main.stage.seg7displayPort = seg7PortComboBox.getSelectionModel().getSelectedItem();
-            }
-        });
+        seg7PortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> Main.stage.seg7displayPort = seg7PortComboBox.getSelectionModel().getSelectedItem());
 
         mainGridPane.add(ledsLabel,0,0,2,2);
         mainGridPane.add(ledsPortLabel,0,2);

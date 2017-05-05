@@ -138,7 +138,7 @@ public class CodeMemory {
         return emulatedCodeMemory.get(line);
     }
 
-    public int getLineFromLabel(String label) {
+    private int getLineFromLabel(String label) {
         int line = -1;
         for(Pair pair : labels) {
             if(pair.getKey().equals(label)) {
@@ -149,18 +149,7 @@ public class CodeMemory {
         return line;
     }
 
-    private void show() {
-        for(int i = 0; i < 20;i++) {
-            //System.out.println(Integer.toHexString(Integer.parseInt(emulatedCodeMemory.get(i),2)));
-            System.out.println(emulatedCodeMemory.get(i));
-        }
-        for(Pair pair : labels) {
-            System.out.println(pair.getKey() + " "+pair.getValue());
-        }
-    }
-
     public ArrayList<String> setMemory(String[] lines) throws CompilingException {
-        String newEditorText="";
         int pointer = 0;
         emulatedCodeMemory = new ArrayList<>();
         for(int i = 0; i < 8192;i++) {
@@ -200,9 +189,7 @@ public class CodeMemory {
                                 labels.add(new Pair<>(splittedLine[0].toUpperCase().substring(0, splittedLine[0].length() - 1), pointer));
                                 linieZNumerami.add(backupLinii);
                                 String[] splittedLine2 = new String[splittedLine.length-1];
-                                for(int i = 1;i<splittedLine.length;i++) {
-                                    splittedLine2[i-1] = splittedLine[i];
-                                }
+                                System.arraycopy(splittedLine, 1, splittedLine2, 0, splittedLine.length - 1);
                                 splittedLine = splittedLine2;
                             }
                         }
@@ -1044,8 +1031,8 @@ public class CodeMemory {
                                         }
                                     }
                                 } else {
-                                    String address1 = "";
-                                    String address2 = "";
+                                    String address1;
+                                    String address2;
 
                                     try {
                                         address1 = Main.cpu.mainMemory.get8BitAddress(splittedLine[1].toUpperCase());
@@ -1486,9 +1473,9 @@ public class CodeMemory {
                          else {
                             throw new CompilingException("Nierozpoznana komenda, linia: '" + backupLinii + "'");
                         }
-                        String hexPointer = Integer.toHexString(backupPointer);
+                        StringBuilder hexPointer = new StringBuilder(Integer.toHexString(backupPointer));
                         while(hexPointer.length()<4)
-                            hexPointer = "0" + hexPointer;
+                            hexPointer.insert(0, "0");
                         linieZNumerami.add(hexPointer + " \t" + String.valueOf(backupLinii.trim()));
                     }
                 }
@@ -1532,11 +1519,11 @@ public class CodeMemory {
 
 
     public String make8DigitsStringFromNumber(String number) throws NumberFormatException {
-        String result = "";
+        StringBuilder result;
             char lastSymbol = number.charAt(number.length()-1);
             if (lastSymbol == 'd' || lastSymbol == 'D')
                 number = number.substring(0,number.length()-1);
-            int wartosc = -1;
+            int wartosc;
             if (lastSymbol == 'b' || lastSymbol == 'B') {
                 try {
                     number = number.substring(0,number.length()-1);
@@ -1563,20 +1550,20 @@ public class CodeMemory {
                     throw new NumberFormatException();
                 }
             }
-            result = Integer.toBinaryString(wartosc);
+            result = new StringBuilder(Integer.toBinaryString(wartosc));
             int length = result.length();
             for(int i = length;i<8;i++) {
-                result = "0" + result;
+                result.insert(0, "0");
             }
-            return result;
+            return result.toString();
     }
 
     public String make16DigitsStringFromNumber(String number) throws CompilingException {
-        String result = "";
+        StringBuilder result;
             char lastSymbol = number.charAt(number.length()-1);
             if (lastSymbol == 'd' || lastSymbol == 'D')
                 number = number.substring(0,number.length()-1);
-            int wartosc = -1;
+            int wartosc;
             if (lastSymbol == 'b' || lastSymbol == 'B') {
                 try {
                     number = number.substring(0,number.length()-1);
@@ -1603,33 +1590,35 @@ public class CodeMemory {
                 }
             }
 
-            result = Integer.toBinaryString(wartosc);
+            result = new StringBuilder(Integer.toBinaryString(wartosc));
             int length = result.length();
             for(int i = length;i<16;i++) {
-                result = "0" + result;
+                result.insert(0, "0");
             }
-            return result;
+            return result.toString();
     }
 
     private String getRAddress(String label){
-        if(label.equals("R0"))
-            return "000";
-        else if(label.equals("R1"))
-            return "001";
-        else if(label.equals("R2"))
-            return "010";
-        else if(label.equals("R3"))
-            return "011";
-        else if(label.equals("R4"))
-            return "100";
-        else if(label.equals("R5"))
-            return "101";
-        else if(label.equals("R6"))
-            return "110";
-        else if(label.equals("R7"))
-            return "111";
-        else
-            return "";
+        switch (label) {
+            case "R0":
+                return "000";
+            case "R1":
+                return "001";
+            case "R2":
+                return "010";
+            case "R3":
+                return "011";
+            case "R4":
+                return "100";
+            case "R5":
+                return "101";
+            case "R6":
+                return "110";
+            case "R7":
+                return "111";
+            default:
+                return "";
+        }
 
     }
 

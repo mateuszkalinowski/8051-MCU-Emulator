@@ -51,16 +51,6 @@ public class Memory {
         bitAddressableBegginings = new int[]{128,136,144,152,160,168,176,184,208,224,240};
     }
 
-    public int[] getBitAddress(int numer) {
-        int[] toReturn = new int[2];
-        toReturn[0] = -1;
-        toReturn[1] = -1;
-        if(numer == 224) {
-            toReturn[0] = 224;
-            toReturn[1] = 0;
-        }
-        return toReturn;
-    }
     public boolean getBit(String address) throws NoSuchElementException {
         try {
                 int numer = Integer.parseInt(address, 2);
@@ -172,7 +162,7 @@ public class Memory {
         }
         if(index!=160)
             mainMemory[index] = toPut;
-        else if(index==160) {
+        else {
             latcherP2 = String.valueOf(toPut);
             for(int k = 0; k < 8;k++) {
                 if(latcherP2.charAt(k)=='0')
@@ -198,7 +188,7 @@ public class Memory {
         return Integer.parseInt(String.valueOf(mainMemory[index]),2);
     }
     public int getDirect(String number) throws NumberFormatException {
-        int index = -1;
+        int index;
         try {
             index = Integer.parseInt(number,2);
         } catch (Exception e) {
@@ -236,7 +226,7 @@ public class Memory {
     private int[] bitAddressableBegginings;
 
 
-    char[][] mainMemory;
+    private char[][] mainMemory;
 
     String latcherP0 = "11111111";
     String latcherP1 = "11111111";

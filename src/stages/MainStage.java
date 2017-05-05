@@ -5,8 +5,6 @@ import core.Main;
 import exceptions.CompilingException;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,14 +18,11 @@ import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -629,190 +624,173 @@ public class MainStage extends Application {
 
 
         translateToMemoryButton = new Button("Asemblacja");
-        translateToMemoryButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                lines = editorTextArea.getText().split("\n");
-                try {
-                    ArrayList<String> compilatedText = Main.cpu.codeMemory.setMemory(lines);
-                    Main.cpu.resetCpu();
-                    Main.cpu.refreshGui();
-                    translateToMemoryButton.setDisable(true);
-                    stopSimulationButton.setDisable(false);
-                    oneStepButton.setDisable(false);
-                    editorTextArea.setEditable(false);
-                    rysujRunButton.setDisable(true);
-                    continuousRunButton.setDisable(false);
-                    running = true;
-                    changeValueInChangeValueButton.setDisable(false);
-                    setEditorText(compilatedText);
+        translateToMemoryButton.setOnAction(event -> {
+            lines = editorTextArea.getText().split("\n");
+            try {
+                ArrayList<String> compilatedText = Main.cpu.codeMemory.setMemory(lines);
+                Main.cpu.resetCpu();
+                Main.cpu.refreshGui();
+                translateToMemoryButton.setDisable(true);
+                stopSimulationButton.setDisable(false);
+                oneStepButton.setDisable(false);
+                editorTextArea.setEditable(false);
+                rysujRunButton.setDisable(true);
+                continuousRunButton.setDisable(false);
+                running = true;
+                changeValueInChangeValueButton.setDisable(false);
+                setEditorText(compilatedText);
 
-                    if(portToggle7.isSelected())
-                        Main.cpu.mainMemory.buttonsState[0] = '0';
-                    else
-                        Main.cpu.mainMemory.buttonsState[0] = '1';
-                    if(portToggle6.isSelected())
-                        Main.cpu.mainMemory.buttonsState[1] = '0';
-                    else
-                        Main.cpu.mainMemory.buttonsState[1] = '1';
-                    if(portToggle5.isSelected())
-                        Main.cpu.mainMemory.buttonsState[2] = '0';
-                    else
-                        Main.cpu.mainMemory.buttonsState[2] = '1';
-                    if(portToggle4.isSelected())
-                        Main.cpu.mainMemory.buttonsState[3] = '0';
-                    else
-                        Main.cpu.mainMemory.buttonsState[3] = '1';
-                    if(portToggle3.isSelected())
-                        Main.cpu.mainMemory.buttonsState[4] = '0';
-                    else
-                        Main.cpu.mainMemory.buttonsState[4] = '1';
-                    if(portToggle2.isSelected())
-                        Main.cpu.mainMemory.buttonsState[5] = '0';
-                    else
-                        Main.cpu.mainMemory.buttonsState[5] = '1';
-                    if(portToggle1.isSelected())
-                        Main.cpu.mainMemory.buttonsState[6] = '0';
-                    else
-                        Main.cpu.mainMemory.buttonsState[6] = '1';
-                    if(portToggle0.isSelected())
-                        Main.cpu.mainMemory.buttonsState[7] = '0';
-                    else
-                        Main.cpu.mainMemory.buttonsState[7] = '1';
+                if(portToggle7.isSelected())
+                    Main.cpu.mainMemory.buttonsState[0] = '0';
+                else
+                    Main.cpu.mainMemory.buttonsState[0] = '1';
+                if(portToggle6.isSelected())
+                    Main.cpu.mainMemory.buttonsState[1] = '0';
+                else
+                    Main.cpu.mainMemory.buttonsState[1] = '1';
+                if(portToggle5.isSelected())
+                    Main.cpu.mainMemory.buttonsState[2] = '0';
+                else
+                    Main.cpu.mainMemory.buttonsState[2] = '1';
+                if(portToggle4.isSelected())
+                    Main.cpu.mainMemory.buttonsState[3] = '0';
+                else
+                    Main.cpu.mainMemory.buttonsState[3] = '1';
+                if(portToggle3.isSelected())
+                    Main.cpu.mainMemory.buttonsState[4] = '0';
+                else
+                    Main.cpu.mainMemory.buttonsState[4] = '1';
+                if(portToggle2.isSelected())
+                    Main.cpu.mainMemory.buttonsState[5] = '0';
+                else
+                    Main.cpu.mainMemory.buttonsState[5] = '1';
+                if(portToggle1.isSelected())
+                    Main.cpu.mainMemory.buttonsState[6] = '0';
+                else
+                    Main.cpu.mainMemory.buttonsState[6] = '1';
+                if(portToggle0.isSelected())
+                    Main.cpu.mainMemory.buttonsState[7] = '0';
+                else
+                    Main.cpu.mainMemory.buttonsState[7] = '1';
 
 
-                    String content = "";
-                    content +="\t 0\t";
-                    content +=" 1\t";
-                    content +=" 2\t";
-                    content +=" 3\t";
-                    content +=" 4\t";
-                    content +=" 5\t";
-                    content +=" 6\t";
-                    content +=" 7\t";
-                    content +=" 8\t";
-                    content +=" 9\t";
-                    content +=" A\t";
-                    content +=" B\t";
-                    content +=" C\t";
-                    content +=" D\t";
-                    content +=" E\t";
-                    content +=" F\t";
-                    content +="\n";
+                StringBuilder content = new StringBuilder();
+                content.append("\t 0\t");
+                content.append(" 1\t");
+                content.append(" 2\t");
+                content.append(" 3\t");
+                content.append(" 4\t");
+                content.append(" 5\t");
+                content.append(" 6\t");
+                content.append(" 7\t");
+                content.append(" 8\t");
+                content.append(" 9\t");
+                content.append(" A\t");
+                content.append(" B\t");
+                content.append(" C\t");
+                content.append(" D\t");
+                content.append(" E\t");
+                content.append(" F\t");
+                content.append("\n");
 
-                    for(int i = 0; i < 128;i++) {
-                        content+=i+"\t";
-                        for(int j = 0; j < 16;j++) {
-                            if(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).length()==1) {
-                                content+=" " + "0" + Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).toUpperCase() + " ";
-                            }
-                            else
-                                content+=" " + Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).toUpperCase() + " ";
-                            content+="\t";
+                for(int i = 0; i < 128;i++) {
+                    content.append(i).append("\t");
+                    for(int j = 0; j < 16;j++) {
+                        if(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).length()==1) {
+                            content.append(" " + "0").append(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i * 16 + j), 2)).toUpperCase()).append(" ");
                         }
-                        if(i!=127)
-                            content+="\n";
+                        else
+                            content.append(" ").append(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i * 16 + j), 2)).toUpperCase()).append(" ");
+                        content.append("\t");
                     }
-
-                    programMemoryTextArea.setText(content);
-
-                    Main.cpu.mainMemory.putFromExternal(160);
-                    Main.cpu.refreshGui();
-
+                    if(i!=127)
+                        content.append("\n");
                 }
-                catch (CompilingException e) {
-                    Main.stage.compilationErrorsLabel.setText("Błąd: " + e.getMessage());
-                    Main.stage.compilationErrorsLabel.setStyle("-fx-background-color: red; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
 
-                }
+                programMemoryTextArea.setText(content.toString());
+
+                Main.cpu.mainMemory.putFromExternal(160);
+                Main.cpu.refreshGui();
+
+            }
+            catch (CompilingException e) {
+                Main.stage.compilationErrorsLabel.setText("Błąd: " + e.getMessage());
+                Main.stage.compilationErrorsLabel.setStyle("-fx-background-color: red; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
+
             }
         });
 
         stopSimulationButton = new Button("Reset");
-        stopSimulationButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                translateToMemoryButton.setDisable(false);
-                stopSimulationButton.setDisable(true);
-                oneStepButton.setDisable(true);
-                editorTextArea.setEditable(true);
-                editorTextArea.setText("");
-                rysujRunButton.setDisable(false);
-                continuousRunFlag = false;
-                continuousRunButton.setDisable(true);
-                continuousRunButton.setText("Praca Ciągła");
-                running = false;
-                changeValueInChangeValueButton.setDisable(true);
-                String textToSet = "";
-                for(String line : lines) {
-                    textToSet = textToSet + line + "\n";
-                }
-                editorTextArea.setText(textToSet.substring(0,textToSet.length()-1));
-                Main.cpu.resetCpu();
-                Main.cpu.refreshGui();
-                compilationErrorsLabel.setText("");
-                compilationErrorsLabel.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
+        stopSimulationButton.setOnAction(event -> {
+            translateToMemoryButton.setDisable(false);
+            stopSimulationButton.setDisable(true);
+            oneStepButton.setDisable(true);
+            editorTextArea.setEditable(true);
+            editorTextArea.setText("");
+            rysujRunButton.setDisable(false);
+            continuousRunFlag = false;
+            continuousRunButton.setDisable(true);
+            continuousRunButton.setText("Praca Ciągła");
+            running = false;
+            changeValueInChangeValueButton.setDisable(true);
+            StringBuilder textToSet = new StringBuilder();
+            for(String line : lines) {
+                textToSet.append(line).append("\n");
             }
+            editorTextArea.setText(textToSet.substring(0,textToSet.length()-1));
+            Main.cpu.resetCpu();
+            Main.cpu.refreshGui();
+            compilationErrorsLabel.setText("");
+            compilationErrorsLabel.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
         });
 
         oneStepButton = new Button("Krok");
-        oneStepButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    Main.cpu.executeInstruction();
-                    Main.cpu.refreshGui();
-                }
-                catch (Exception e){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Błąd Wykonania");
-                    alert.setHeaderText("Wykonanie przebiegło nieudanie");
-                    alert.setContentText("Sprawdź kod jeszcze raz, informacja gdzie wystąpił błąd zostanie" +
-                            "dodana w jednej z kolejnych wersji programu");
-                    alert.showAndWait();
-                }
+        oneStepButton.setOnAction(event -> {
+            try {
+                Main.cpu.executeInstruction();
+                Main.cpu.refreshGui();
+            }
+            catch (Exception e){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Błąd Wykonania");
+                alert.setHeaderText("Wykonanie przebiegło nieudanie");
+                alert.setContentText("Sprawdź kod jeszcze raz, informacja gdzie wystąpił błąd zostanie" +
+                        "dodana w jednej z kolejnych wersji programu");
+                alert.showAndWait();
             }
         });
 
         continuousRunButton = new Button("Praca Ciągła");
         continuousRunButton.setDisable(true);
-        continuousRunButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(continuousRunButton.getText().equals("Praca Ciągła")) {
-                    continuousRunButton.setText("Stop");
-                    changeValueInChangeValueButton.setDisable(true);
+        continuousRunButton.setOnAction(event -> {
+            if(continuousRunButton.getText().equals("Praca Ciągła")) {
+                continuousRunButton.setText("Stop");
+                changeValueInChangeValueButton.setDisable(true);
 
-                    oneStepButton.setDisable(true);
-                    autoRun = new Task<Void>() {
-                        @Override
-                        protected Void call() throws Exception {
-                            continuousRunFlag=true;
-                            long time = System.currentTimeMillis();
-                            while(continuousRunFlag) {
-                                if(System.currentTimeMillis()-time>(100/speedSelectComboBox.getSelectionModel().getSelectedItem())) {
-                                    Main.cpu.executeInstruction();
-                                    time = System.currentTimeMillis();
-                                    Platform.runLater(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Main.cpu.refreshGui();
-                                        }
-                                    });
-                                }
+                oneStepButton.setDisable(true);
+                autoRun = new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        continuousRunFlag=true;
+                        long time = System.currentTimeMillis();
+                        while(continuousRunFlag) {
+                            if(System.currentTimeMillis()-time>(100/speedSelectComboBox.getSelectionModel().getSelectedItem())) {
+                                Main.cpu.executeInstruction();
+                                time = System.currentTimeMillis();
+                                Platform.runLater(() -> Main.cpu.refreshGui());
                             }
-                            return null;
                         }
-                    };
-                    Thread continuousRunThread = new Thread(autoRun);
-                    continuousRunThread.start();
-                }
-                else {
-                    continuousRunFlag = false;
-                    oneStepButton.setDisable(false);
-                    continuousRunButton.setText("Praca Ciągła");
-                    changeValueInChangeValueButton.setDisable(false);
-                }
+                        return null;
+                    }
+                };
+                Thread continuousRunThread = new Thread(autoRun);
+                continuousRunThread.start();
+            }
+            else {
+                continuousRunFlag = false;
+                oneStepButton.setDisable(false);
+                continuousRunButton.setText("Praca Ciągła");
+                changeValueInChangeValueButton.setDisable(false);
             }
         });
 
@@ -868,16 +846,12 @@ public class MainStage extends Application {
 
         MenuItem paneConfigurationMenuItem = new MenuItem("Panel");
         menuOptions.getItems().add(paneConfigurationMenuItem);
-        paneConfigurationMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                PaneConfigStage paneConfigStage = new PaneConfigStage();
-                try {
-                    paneConfigStage.start(primaryStage);
-                }
-                catch (Exception e) {
-
-                }
+        paneConfigurationMenuItem.setOnAction(event -> {
+            PaneConfigStage paneConfigStage = new PaneConfigStage();
+            try {
+                paneConfigStage.start(primaryStage);
+            }
+            catch (Exception ignored) {
             }
         });
 
@@ -886,52 +860,45 @@ public class MainStage extends Application {
         exitMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
 
         MenuItem importFileMenuItem = new MenuItem("Otwórz");
-        importFileMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(!running) {
-                    FileChooser chooseFile = new FileChooser();
-                    chooseFile.setTitle("Wybierz plik z posiadanymi składnikami");
-                    File openFile = chooseFile.showOpenDialog(primaryStage);
-                    if (openFile != null) {
-                        String textToSet = "";
-                        try {
-                            Scanner in = new Scanner(openFile);
-                            while (in.hasNextLine())
-                                textToSet += in.nextLine() + "\n";
-                        } catch (FileNotFoundException ignored) {
-                        }
-                        editorTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
+        importFileMenuItem.setOnAction(event -> {
+            if(!running) {
+                FileChooser chooseFile = new FileChooser();
+                chooseFile.setTitle("Wybierz plik z posiadanymi składnikami");
+                File openFile = chooseFile.showOpenDialog(primaryStage);
+                if (openFile != null) {
+                    StringBuilder textToSet = new StringBuilder();
+                    try {
+                        Scanner in = new Scanner(openFile);
+                        while (in.hasNextLine())
+                            textToSet.append(in.nextLine()).append("\n");
+                    } catch (FileNotFoundException ignored) {
                     }
-                }
-                else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Nie można otworzyć pliku");
-                    alert.setHeaderText("Aby wczytać plik zatrzymaj symulacja");
-                    alert.setContentText("Nie można wczytywać plików podczas pracy emulatora.");
-                    alert.showAndWait();
+                    editorTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
                 }
             }
-
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Nie można otworzyć pliku");
+                alert.setHeaderText("Aby wczytać plik zatrzymaj symulacja");
+                alert.setContentText("Nie można wczytywać plików podczas pracy emulatora.");
+                alert.showAndWait();
+            }
         });
         MenuItem exportFileMenuItem = new MenuItem("Zapisz jako");
-        exportFileMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                FileChooser chooseFile = new FileChooser();
-                chooseFile.setTitle("Wybierz lokalizację zapisu");
-                chooseFile.setInitialFileName("file.txt");
-                chooseFile.setInitialDirectory(new File(System.getProperty("user.home")));
-                File saveFile = chooseFile.showSaveDialog(primaryStage);
-                if(saveFile!=null) {
-                    try {
-                        PrintWriter in = new PrintWriter(saveFile);
-                        String text = editorTextArea.getText();
-                        in.println(text);
-                        in.close();
-                    } catch (FileNotFoundException e) {
-                        System.out.println("File error");
-                    }
+        exportFileMenuItem.setOnAction(event -> {
+            FileChooser chooseFile = new FileChooser();
+            chooseFile.setTitle("Wybierz lokalizację zapisu");
+            chooseFile.setInitialFileName("file.txt");
+            chooseFile.setInitialDirectory(new File(System.getProperty("user.home")));
+            File saveFile = chooseFile.showSaveDialog(primaryStage);
+            if(saveFile!=null) {
+                try {
+                    PrintWriter in = new PrintWriter(saveFile);
+                    String text = editorTextArea.getText();
+                    in.println(text);
+                    in.close();
+                } catch (FileNotFoundException e) {
+                    System.out.println("File error");
                 }
             }
         });
@@ -1088,132 +1055,116 @@ public class MainStage extends Application {
             Main.cpu.refreshGui();
         });
 
-        portButton7.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+        portButton7.setOnMousePressed(event -> {
+            Main.cpu.mainMemory.buttonsState[0] = '0';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
+        });
+        portButton7.setOnMouseReleased(event -> {
+            if(portToggle7.isSelected())
                 Main.cpu.mainMemory.buttonsState[0] = '0';
-            }
-        });
-        portButton7.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(portToggle7.isSelected())
-                    Main.cpu.mainMemory.buttonsState[0] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[0] = '1';
-            }
+            else
+                Main.cpu.mainMemory.buttonsState[0] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
         });
 
-        portButton6.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+        portButton6.setOnMousePressed(event -> {
+            Main.cpu.mainMemory.buttonsState[1] = '0';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
+        });
+        portButton6.setOnMouseReleased(event -> {
+            if(portToggle6.isSelected())
                 Main.cpu.mainMemory.buttonsState[1] = '0';
-            }
-        });
-        portButton6.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(portToggle6.isSelected())
-                    Main.cpu.mainMemory.buttonsState[1] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[1] = '1';
-            }
+            else
+                Main.cpu.mainMemory.buttonsState[1] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
         });
 
-        portButton5.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+        portButton5.setOnMousePressed(event -> {
+            Main.cpu.mainMemory.buttonsState[2] = '0';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
+        });
+        portButton5.setOnMouseReleased(event -> {
+            if(portToggle5.isSelected())
                 Main.cpu.mainMemory.buttonsState[2] = '0';
-            }
-        });
-        portButton5.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(portToggle5.isSelected())
-                    Main.cpu.mainMemory.buttonsState[2] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[2] = '1';
-            }
+            else
+                Main.cpu.mainMemory.buttonsState[2] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
         });
 
-        portButton4.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+        portButton4.setOnMousePressed(event -> {
+            Main.cpu.mainMemory.buttonsState[3] = '0';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
+        });
+        portButton4.setOnMouseReleased(event -> {
+            if(portToggle4.isSelected())
                 Main.cpu.mainMemory.buttonsState[3] = '0';
-            }
-        });
-        portButton4.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(portToggle4.isSelected())
-                    Main.cpu.mainMemory.buttonsState[3] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[3] = '1';
-            }
+            else
+                Main.cpu.mainMemory.buttonsState[3] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
         });
 
-        portButton3.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+        portButton3.setOnMousePressed(event -> {
+            Main.cpu.mainMemory.buttonsState[4] = '0';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
+        });
+        portButton3.setOnMouseReleased(event -> {
+            if(portToggle3.isSelected())
                 Main.cpu.mainMemory.buttonsState[4] = '0';
-            }
-        });
-        portButton3.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(portToggle3.isSelected())
-                    Main.cpu.mainMemory.buttonsState[4] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[4] = '1';
-            }
+            else
+                Main.cpu.mainMemory.buttonsState[4] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
         });
 
-        portButton2.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+        portButton2.setOnMousePressed(event -> {
+            Main.cpu.mainMemory.buttonsState[5] = '0';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
+        });
+        portButton2.setOnMouseReleased(event -> {
+            if(portToggle2.isSelected())
                 Main.cpu.mainMemory.buttonsState[5] = '0';
-            }
-        });
-        portButton2.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(portToggle2.isSelected())
-                    Main.cpu.mainMemory.buttonsState[5] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[5] = '1';
-            }
+            else
+                Main.cpu.mainMemory.buttonsState[5] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
         });
 
-        portButton1.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+        portButton1.setOnMousePressed(event -> {
+            Main.cpu.mainMemory.buttonsState[6] = '0';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
+        });
+        portButton1.setOnMouseReleased(event -> {
+            if(portToggle1.isSelected())
                 Main.cpu.mainMemory.buttonsState[6] = '0';
-            }
-        });
-        portButton1.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(portToggle1.isSelected())
-                    Main.cpu.mainMemory.buttonsState[6] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[6] = '1';
-            }
+            else
+                Main.cpu.mainMemory.buttonsState[6] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
         });
 
-        portButton0.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                Main.cpu.mainMemory.buttonsState[7] = '0';
-            }
+        portButton0.setOnMousePressed(event -> {
+            Main.cpu.mainMemory.buttonsState[7] = '0';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
         });
-        portButton0.setOnMouseReleased(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(portToggle0.isSelected())
-                    Main.cpu.mainMemory.buttonsState[7] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[7] = '1';
-            }
+        portButton0.setOnMouseReleased(event -> {
+            if(portToggle0.isSelected())
+                Main.cpu.mainMemory.buttonsState[7] = '0';
+            else
+                Main.cpu.mainMemory.buttonsState[7] = '1';
+            Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.refreshGui();
         });
 
         userTogglesHBox.getChildren().addAll(portToggle7,portToggle6,portToggle5,portToggle4,portToggle3,portToggle2,portToggle1,portToggle0);
@@ -1249,9 +1200,7 @@ public class MainStage extends Application {
         XYChart.Series series = new XYChart.Series();
         lineChart.getData().add(series);
         chartPane.setContent(chartBorderPane);
-
         chartBorderPane.setCenter(lineChart);
-
         chartPane.setContent(chartBorderPane);
 
         //editorElementsGridPane.add(diodesPaneGridPane,1,0);
@@ -1259,52 +1208,47 @@ public class MainStage extends Application {
 
         rysujRunButton = new Button("Generuj Przebieg");
         rysujRunButton.setDisable(false);
-        rysujRunButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        rysujRunButton.setOnAction(event -> {
 
-                lines = editorTextArea.getText().split("\n");
-                try {
-                    Main.cpu.codeMemory.setMemory(lines);
-                    Main.cpu.resetCpu();
-                    Main.cpu.refreshGui();
-                }
-                catch (CompilingException e) {
-                    Main.stage.compilationErrorsLabel.setText("Błąd: " + e.getMessage());
-                    Main.stage.compilationErrorsLabel.setStyle("-fx-background-color: red; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
-                    return;
+            lines = editorTextArea.getText().split("\n");
+            try {
+                Main.cpu.codeMemory.setMemory(lines);
+                Main.cpu.resetCpu();
+                Main.cpu.refreshGui();
+            }
+            catch (CompilingException e) {
+                Main.stage.compilationErrorsLabel.setText("Błąd: " + e.getMessage());
+                Main.stage.compilationErrorsLabel.setStyle("-fx-background-color: red; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
+                return;
 
-                }
-                series.getData().clear();
-                Main.cpu.resetCounter();
-                for(int i = 0; i < 255;i++){
-                    int counter = 0;
-                    //Main.cpu.ports.put("P0",i);
-                    Main.cpu.mainMemory.put("P0",i);
-                    while(true) {
-                        counter++;
-                        try {
-                            Main.cpu.executeInstruction();
-                        }
-                        catch (Exception e) {
-
-                        }
-                        if(Main.cpu.mainMemory.get("P3")==0) {
-                            int wartoscp1 = Main.cpu.mainMemory.get("P1");
-                            series.getData().add(new XYChart.Data(i,wartoscp1));
-                            Main.cpu.resetCpu();
-                            break;
-                        }
-                        if(counter>100) {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Błąd Generacji Przebiegu");
-                            alert.setHeaderText("Nie wykryto stanu aktywującego zapis przebiegu");
-                            alert.setContentText("Aby rejestrator przebiegów zapisał parę (P0,P1) ustaw wartość" +
-                                    " '00h' na porcie trzecim. Rejestrator podaje na p0 kolejne wartości i czeka na ten " +
-                                    "stan, aby zapisać pomiar.");
-                            alert.showAndWait();
-                            return;
-                        }
+            }
+            series.getData().clear();
+            Main.cpu.resetCounter();
+            for(int i = 0; i < 255;i++){
+                int counter = 0;
+                //Main.cpu.ports.put("P0",i);
+                Main.cpu.mainMemory.put("P0",i);
+                while(true) {
+                    counter++;
+                    try {
+                        Main.cpu.executeInstruction();
+                    }
+                    catch (Exception ignored) { }
+                    if(Main.cpu.mainMemory.get("P3")==0) {
+                        int wartoscp1 = Main.cpu.mainMemory.get("P1");
+                        series.getData().add(new XYChart.Data(i,wartoscp1));
+                        Main.cpu.resetCpu();
+                        break;
+                    }
+                    if(counter>100) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Błąd Generacji Przebiegu");
+                        alert.setHeaderText("Nie wykryto stanu aktywującego zapis przebiegu");
+                        alert.setContentText("Aby rejestrator przebiegów zapisał parę (P0,P1) ustaw wartość" +
+                                " '00h' na porcie trzecim. Rejestrator podaje na p0 kolejne wartości i czeka na ten " +
+                                "stan, aby zapisać pomiar.");
+                        alert.showAndWait();
+                        return;
                     }
                 }
             }
@@ -1348,40 +1292,40 @@ public class MainStage extends Application {
 
         programMemoryInfoTab.setContent(programMemoryGridPane);
 
-        String content = "";
-        content +="\t 0\t";
-        content +=" 1\t";
-        content +=" 2\t";
-        content +=" 3\t";
-        content +=" 4\t";
-        content +=" 5\t";
-        content +=" 6\t";
-        content +=" 7\t";
-        content +=" 8\t";
-        content +=" 9\t";
-        content +=" A\t";
-        content +=" B\t";
-        content +=" C\t";
-        content +=" D\t";
-        content +=" E\t";
-        content +=" F\t";
-        content +="\n";
+        StringBuilder content = new StringBuilder();
+        content.append("\t 0\t");
+        content.append(" 1\t");
+        content.append(" 2\t");
+        content.append(" 3\t");
+        content.append(" 4\t");
+        content.append(" 5\t");
+        content.append(" 6\t");
+        content.append(" 7\t");
+        content.append(" 8\t");
+        content.append(" 9\t");
+        content.append(" A\t");
+        content.append(" B\t");
+        content.append(" C\t");
+        content.append(" D\t");
+        content.append(" E\t");
+        content.append(" F\t");
+        content.append("\n");
 
         for(int i = 0; i < 128;i++) {
-            content+=i+"\t";
+            content.append(i).append("\t");
             for(int j = 0; j < 16;j++) {
                 if(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).length()==1) {
-                    content+=" " + "0" + Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).toUpperCase() + " ";
+                    content.append(" " + "0").append(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i * 16 + j), 2)).toUpperCase()).append(" ");
                 }
                 else
-                    content+=" " + Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).toUpperCase() + " ";
-                content+="\t";
+                    content.append(" ").append(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i * 16 + j), 2)).toUpperCase()).append(" ");
+                content.append("\t");
             }
             if(i!=127)
-                content+="\n";
+                content.append("\n");
         }
 
-        programMemoryTextArea.setText(content);
+        programMemoryTextArea.setText(content.toString());
 
 
         Tab memoryInfoTab = new Tab("Pamięć RAM");
@@ -1514,39 +1458,25 @@ public class MainStage extends Application {
         Main.cpu.refreshGui();
         resizeComponents();
 
-        mainStage.fullScreenProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                drawFrame();
-                resizeComponents();
-            }
+        mainStage.fullScreenProperty().addListener((observable, oldValue, newValue) -> {
+            drawFrame();
+            resizeComponents();
         });
 
-        mainScene.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                drawFrame();
-                resizeComponents();
-            }
+        mainScene.heightProperty().addListener((observable, oldValue, newValue) -> {
+            drawFrame();
+            resizeComponents();
         });
-        mainScene.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                drawFrame();
-                resizeComponents();
-            }
+        mainScene.widthProperty().addListener((observable, oldValue, newValue) -> {
+            drawFrame();
+            resizeComponents();
         });
-        mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                continuousRunFlag=false;
-            }
-        });
+        mainStage.setOnCloseRequest(event -> continuousRunFlag=false);
         drawFrame();
     }
 
 
-    public void resizeComponents(){
+    private void resizeComponents(){
         double oneWidth =simulatorGridPane.getWidth()/20.0;
         double oneHeight = mainStage.getHeight()/3.0/10.0;
         double smaller = oneWidth < oneHeight ? oneWidth : oneHeight;
@@ -1724,11 +1654,8 @@ public class MainStage extends Application {
         gc.setFill(Color.BLACK);
 
         //LICZBA PIERWSZA
-        String wartosc = Main.cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get(seg7displayPort)));
+        String wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get(seg7displayPort)));
         int[] wartosci = Converters.bcdto7seg(wartosc.substring(0,4));
-
-
-
 
         if(wartosci[0] == 1)
             gc.setFill(Color.RED);
@@ -1822,10 +1749,10 @@ public class MainStage extends Application {
     private Canvas ledCanvas = new Canvas();
     private Canvas seg7Canvas =  new Canvas();
 
-    public void setEditorText(String text) {
-        editorTextArea.setText(text);
-    }
-    public void setEditorText(ArrayList<String> toSet) {
+    //public void setEditorText(String text) {
+    //    editorTextArea.setText(text);
+   // }
+    private void setEditorText(ArrayList<String> toSet) {
         String textToSet = "";
         for(int i = 0; i < toSet.size();i++) {
             textToSet += toSet.get(i);
@@ -1835,146 +1762,146 @@ public class MainStage extends Application {
         editorTextArea.setText(textToSet);
     }
 
-    GridPane mainGridPane;
-    GridPane editorElementsGridPane;
-    GridPane simulatorGridPane;
+    private GridPane mainGridPane;
+    private GridPane editorElementsGridPane;
+    private GridPane simulatorGridPane;
 
-    BorderPane mainBorderPane;
+    private BorderPane mainBorderPane;
 
-    double height;
-    double width;
+    private double height;
+    private double width;
 
-    public Label accumulatorLabel;
+    private Label accumulatorLabel;
     public Label accumulatorTextFieldHex;
     public Label accumulatorTextFieldBin;
     public Label accumulatorTextFieldDec;
 
-    public Label bLabel;
+    private Label bLabel;
     public Label bTextFieldHex;
     public Label bTextFieldBin;
     public Label bTextFieldDec;
 
-    public Label r0Label;
+    private Label r0Label;
     public Label r0TextField;
 
-    public Label r1Label;
+    private Label r1Label;
     public Label r1TextField;
 
-    public Label r2Label;
+    private Label r2Label;
     public Label r2TextField;
 
-    public Label r3Label;
+    private Label r3Label;
     public Label r3TextField;
 
-    public Label r4Label;
+    private Label r4Label;
     public Label r4TextField;
 
-    public Label r5Label;
+    private Label r5Label;
     public Label r5TextField;
 
-    public Label r6Label;
+    private Label r6Label;
     public Label r6TextField;
 
-    public Label r7Label;
+    private Label r7Label;
     public Label r7TextField;
 
-    public Label p0Label;
+    private Label p0Label;
     public Label p0TextField;
 
-    public Label p1Label;
+    private Label p1Label;
     public Label p1TextField;
 
-    public Label p2Label;
+    private Label p2Label;
     public Label p2TextField;
 
-    public Label p3Label;
+    private Label p3Label;
     public Label p3TextField;
 
-    public Label pLabel;
+    private Label pLabel;
     public Label pTextField;
 
-    public Label ovLabel;
+    private Label ovLabel;
     public Label ovTextField;
 
-    public Label rs0Label;
+    private Label rs0Label;
     public Label rs0TextField;
 
-    public Label rs1Label;
+    private Label rs1Label;
     public Label rs1TextField;
 
-    public Label f0Label;
+    private Label f0Label;
     public Label f0TextField;
 
-    public Label f1Label;
+    private Label f1Label;
     public Label f1TextField;
 
-    public Label acLabel;
+    private Label acLabel;
     public Label acTextField;
 
-    public Label cLabel;
+    private Label cLabel;
     public Label cTextField;
 
-    public Label timePassedLabel;
+    private Label timePassedLabel;
     public Label timePassedTextField;
 
-    public Label pcLabel;
+    private Label pcLabel;
     public Label pcTextField;
 
-    public Label T0LLabel;
+    private Label T0LLabel;
     public Label T0LTextField;
-    public Label T0HLabel;
+    private Label T0HLabel;
     public Label T0HTextField;
 
-    public Label T1LLabel;
+    private Label T1LLabel;
     public Label T1LTtextField;
-    public Label T1HLabel;
+    private Label T1HLabel;
     public Label T1HTextField;
 
-    public Label TMODLabel;
+    private Label TMODLabel;
     public Label TMODTextField;
 
-    public Label TCONLabel;
+    private Label TCONLabel;
     public Label TCONTextField;
 
-    public Label EX0Label;
+    private Label EX0Label;
     public Label EX0TextField;
 
-    public Label ET0Label;
+    private Label ET0Label;
     public Label ET0TextField;
 
-    public Label EX1Label;
+    private Label EX1Label;
     public Label EX1TextField;
 
-    public Label ET1Label;
+    private Label ET1Label;
     public Label ET1TextField;
 
-    public Label ESLabel;
+    private Label ESLabel;
     public Label ESTextField;
 
-    public Label EALabel;
+    private Label EALabel;
     public Label EATextField;
 
-    public ToggleButton portToggle0;
-    public ToggleButton portToggle1;
-    public ToggleButton portToggle2;
-    public ToggleButton portToggle3;
-    public ToggleButton portToggle4;
-    public ToggleButton portToggle5;
-    public ToggleButton portToggle6;
-    public ToggleButton portToggle7;
+    private ToggleButton portToggle0;
+    private ToggleButton portToggle1;
+    private ToggleButton portToggle2;
+    private ToggleButton portToggle3;
+    private ToggleButton portToggle4;
+    private ToggleButton portToggle5;
+    private ToggleButton portToggle6;
+    private ToggleButton portToggle7;
 
-    public Button portButton0;
-    public Button portButton1;
-    public Button portButton2;
-    public Button portButton3;
-    public Button portButton4;
-    public Button portButton5;
-    public Button portButton6;
-    public Button portButton7;
+    private Button portButton0;
+    private Button portButton1;
+    private Button portButton2;
+    private Button portButton3;
+    private Button portButton4;
+    private Button portButton5;
+    private Button portButton6;
+    private Button portButton7;
 
     public TextArea lowerRamTextArea;
     public TextArea upperRawTextArea;
-    public TextArea programMemoryTextArea;
+    private TextArea programMemoryTextArea;
 
     public Label compilationErrorsLabel;
 
@@ -1993,8 +1920,8 @@ public class MainStage extends Application {
 
     private Label speedSelectLabel;
 
-    Stage mainStage;
-    Scene mainScene;
+    private Stage mainStage;
+    private Scene mainScene;
 
     private boolean continuousRunFlag;
 
@@ -2004,16 +1931,16 @@ public class MainStage extends Application {
 
     private Button rysujRunButton;
 
-    public boolean running;
+    private boolean running;
 
     private GridPane diodesPaneGridPane;
 
-    public String ledsPort = "P0";
-    public String seg7displayPort = "P1";
+    String ledsPort = "P0";
+    String seg7displayPort = "P1";
 
     private TextField addressInChangeValueTextField;
     private TextField valueInChangeValueTextField;
 
-    Button changeValueInChangeValueButton;
+    private Button changeValueInChangeValueButton;
 
 }

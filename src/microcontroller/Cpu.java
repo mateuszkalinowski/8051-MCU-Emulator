@@ -4,13 +4,9 @@ import components.CodeMemory;
 import components.Memory;
 import core.Main;
 import exceptions.InstructionException;
-import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
 
 /**
  * Created by Mateusz on 18.04.2017.
@@ -704,47 +700,47 @@ public class Cpu {
             machineCycle();
             int wartosc = mainMemory.get("A");
             String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
-            String wynik = "";
+            StringBuilder wynik = new StringBuilder();
             char tmp = stringWartosc.charAt(0);
             for (int i = 1; i < 8; i++) {
-                wynik += stringWartosc.charAt(i);
+                wynik.append(stringWartosc.charAt(i));
             }
-            wynik += tmp;
-            mainMemory.put("A",Integer.parseInt(wynik,2));
+            wynik.append(tmp);
+            mainMemory.put("A",Integer.parseInt(wynik.toString(),2));
             linePointer+=1;
         }
         else if(toExecute.equals("00000011")) { //RR A
             machineCycle();
             int wartosc = mainMemory.get("A");
             String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
-            String wynik = "";
+            StringBuilder wynik = new StringBuilder();
             char tmp = stringWartosc.charAt(7);
             for (int i = 0; i < 7; i++) {
-                wynik += stringWartosc.charAt(i);
+                wynik.append(stringWartosc.charAt(i));
             }
-            wynik = tmp + wynik;
-            mainMemory.put("A",Integer.parseInt(wynik,2));
+            wynik.insert(0, tmp);
+            mainMemory.put("A",Integer.parseInt(wynik.toString(),2));
             linePointer+=1;
         }
         else if(toExecute.equals("00110011")) { //RLC
             machineCycle();
             int wartosc = mainMemory.get("A");
             String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
-            String wynik = "";
+            StringBuilder wynik = new StringBuilder();
             char tmp = stringWartosc.charAt(0);
             for (int i = 1; i < 8; i++) {
-                wynik += stringWartosc.charAt(i);
+                wynik.append(stringWartosc.charAt(i));
             }
             if(mainMemory.getBit(codeMemory.bitAddresses.get("CY")))
-                wynik += "1";
+                wynik.append("1");
             else
-                wynik += "0";
+                wynik.append("0");
             if(tmp=='1')
                 mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
             else
                 mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
 
-            mainMemory.put("A",Integer.parseInt(wynik,2));
+            mainMemory.put("A",Integer.parseInt(wynik.toString(),2));
             linePointer+=1;
             checkP();
         }
@@ -753,21 +749,21 @@ public class Cpu {
             machineCycle();
             int wartosc = mainMemory.get("A");
             String stringWartosc = expandTo8Digits(Integer.toString(wartosc,2));
-            String wynik = "";
+            StringBuilder wynik = new StringBuilder();
             char tmp = stringWartosc.charAt(7);
             for (int i = 0; i < 7; i++) {
-                wynik += stringWartosc.charAt(i);
+                wynik.append(stringWartosc.charAt(i));
             }
             if(mainMemory.getBit(codeMemory.bitAddresses.get("CY")))
-                wynik = "1" + wynik;
+                wynik.insert(0, "1");
             else
-                wynik = "0" + wynik;
+                wynik.insert(0, "0");
             if(tmp=='1')
                 mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
             else
                 mainMemory.setBit(codeMemory.bitAddresses.get("CY"),false);
 
-            mainMemory.put("A",Integer.parseInt(wynik,2));
+            mainMemory.put("A",Integer.parseInt(wynik.toString(),2));
             linePointer+=1;
             checkP();
         }
@@ -894,10 +890,7 @@ public class Cpu {
             checkP();
         }
         else if(toExecute.equals("00100101")) {
-            int doDodania = 0;
-
-            doDodania = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
-
+            int doDodania = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
             int obecnaWartosc = mainMemory.get("A");
             int wynik = obecnaWartosc + doDodania;
             if(wynik>255) {
@@ -914,7 +907,7 @@ public class Cpu {
             checkP();
         }
         else if(toExecute.equals("00110101")) { //ADDC direct
-            int doDodania = 0;
+            int doDodania;
             doDodania = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
             int obecnaWartosc = mainMemory.get("A");
             int wynik = obecnaWartosc + doDodania;
@@ -994,7 +987,7 @@ public class Cpu {
             checkP();
         }
         else if(toExecute.equals("10010101")) { //SUBB A,Px
-            int doOdjecia = 0;
+            int doOdjecia;
             int c = mainMemory.getBit(codeMemory.bitAddresses.get("CY")) ? 1 : 0;
             doOdjecia = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
 
@@ -1043,14 +1036,14 @@ public class Cpu {
         else if(toExecute.equals("11000100")) { //SWAP A
             machineCycle();
             String acc = expandTo8Digits(Integer.toBinaryString(mainMemory.get("A")));
-            String wynik = "";
+            StringBuilder wynik = new StringBuilder();
             for(int i = 4; i < 8;i++) {
-                wynik+=acc.charAt(i);
+                wynik.append(acc.charAt(i));
             }
             for(int i = 0; i < 4;i++) {
-                wynik+=acc.charAt(i);
+                wynik.append(acc.charAt(i));
             }
-            int intWynik = Integer.parseInt(wynik,2);
+            int intWynik = Integer.parseInt(wynik.toString(),2);
             mainMemory.put("A",intWynik);
             linePointer+=1;
         }
@@ -1294,102 +1287,102 @@ public class Cpu {
 
         Main.stage.timePassedTextField.setText(timePassed + " mks");
 
-        String hexLinePointer = Integer.toHexString(linePointer);
+        StringBuilder hexLinePointer = new StringBuilder(Integer.toHexString(linePointer));
 
         int howMany = 4 - hexLinePointer.length();
         for(;howMany>0;howMany--) {
-            hexLinePointer = "0"+hexLinePointer;
+            hexLinePointer.insert(0, "0");
         }
 
         Main.stage.pcTextField.setText( hexLinePointer+ "h");
 
-        String content = "";
-        content +="\t 0\t";
-        content +=" 1\t";
-        content +=" 2\t";
-        content +=" 3\t";
-        content +=" 4\t";
-        content +=" 5\t";
-        content +=" 6\t";
-        content +=" 7\t";
-        content +=" 8\t";
-        content +=" 9\t";
-        content +=" A\t";
-        content +=" B\t";
-        content +=" C\t";
-        content +=" D\t";
-        content +=" E\t";
-        content +=" F\t";
-        content +="\n";
+        StringBuilder content = new StringBuilder();
+        content.append("\t 0\t");
+        content.append(" 1\t");
+        content.append(" 2\t");
+        content.append(" 3\t");
+        content.append(" 4\t");
+        content.append(" 5\t");
+        content.append(" 6\t");
+        content.append(" 7\t");
+        content.append(" 8\t");
+        content.append(" 9\t");
+        content.append(" A\t");
+        content.append(" B\t");
+        content.append(" C\t");
+        content.append(" D\t");
+        content.append(" E\t");
+        content.append(" F\t");
+        content.append("\n");
 
         for(int i = 0; i < 8;i++) {
-            content+=i+"\t";
+            content.append(i).append("\t");
             for(int j = 0; j < 16;j++) {
                 if(Integer.toHexString(mainMemory.get(i*16+j)).length()==1) {
-                    content+=" " + "0" + Integer.toHexString(mainMemory.get(i*16+j)).toUpperCase() + " ";
+                    content.append(" " + "0").append(Integer.toHexString(mainMemory.get(i * 16 + j)).toUpperCase()).append(" ");
                 }
                 else
-                    content+=" " + Integer.toHexString(mainMemory.get(i*16+j)).toUpperCase() + " ";
-                content+="\t";
+                    content.append(" ").append(Integer.toHexString(mainMemory.get(i * 16 + j)).toUpperCase()).append(" ");
+                content.append("\t");
             }
             if(i!=7)
-                content+="\n";
+                content.append("\n");
         }
         double pos = Main.stage.lowerRamTextArea.getScrollTop();
         double pos2 = Main.stage.lowerRamTextArea.getScrollLeft();
-        Main.stage.lowerRamTextArea.setText(content);
+        Main.stage.lowerRamTextArea.setText(content.toString());
         Main.stage.lowerRamTextArea.setScrollTop(pos);
         Main.stage.lowerRamTextArea.setScrollLeft(pos2);
 
-        content = "";
-        content +="\t 0\t";
-        content +=" 1\t";
-        content +=" 2\t";
-        content +=" 3\t";
-        content +=" 4\t";
-        content +=" 5\t";
-        content +=" 6\t";
-        content +=" 7\t";
-        content +=" 8\t";
-        content +=" 9\t";
-        content +=" A\t";
-        content +=" B\t";
-        content +=" C\t";
-        content +=" D\t";
-        content +=" E\t";
-        content +=" F\t";
-        content +="\n";
+        content = new StringBuilder();
+        content.append("\t 0\t");
+        content.append(" 1\t");
+        content.append(" 2\t");
+        content.append(" 3\t");
+        content.append(" 4\t");
+        content.append(" 5\t");
+        content.append(" 6\t");
+        content.append(" 7\t");
+        content.append(" 8\t");
+        content.append(" 9\t");
+        content.append(" A\t");
+        content.append(" B\t");
+        content.append(" C\t");
+        content.append(" D\t");
+        content.append(" E\t");
+        content.append(" F\t");
+        content.append("\n");
 
         for(int i = 8; i < 16;i++) {
             if(i<10)
-             content+=i+"\t";
+             content.append(i).append("\t");
             else if(i==10)
-                content+="A"+"\t";
+                content.append("A" + "\t");
             else if(i==11)
-                content+="B"+"\t";
+                content.append("B" + "\t");
             else if(i==12)
-                content+="C"+"\t";
+                content.append("C" + "\t");
             else if(i==13)
-                content+="D"+"\t";
+                content.append("D" + "\t");
             else if(i==14)
-                content+="E"+"\t";
+                content.append("E" + "\t");
             else if(i==15)
-                content+="F"+"\t";
+                content.append("F" + "\t");
             for(int j = 0; j < 16;j++) {
                 if(Integer.toHexString(mainMemory.get(i*16+j)).length()==1) {
-                    content+=" " + "0" + Integer.toHexString(mainMemory.get(i*16+j)).toUpperCase() + " ";
+                    content.append(" " + "0").append(Integer.toHexString(mainMemory.get(i * 16 + j)).toUpperCase()).append(" ");
                 }
                 else
-                    content+=" " + Integer.toHexString(mainMemory.get(i*16+j)).toUpperCase() + " ";
-                content+="\t";
+                    content.append(" ").append(Integer.toHexString(mainMemory.get(i * 16 + j)).toUpperCase()).append(" ");
+                content.append("\t");
             }
             if(i!=15)
-                content+="\n";
+                content.append("\n");
         }
 
         pos = Main.stage.upperRawTextArea.getScrollTop();
         pos2 = Main.stage.upperRawTextArea.getScrollLeft();
-        Main.stage.upperRawTextArea.setText(content);
+        Main.stage.upperRawTextArea.setText(content.toString());
         Main.stage.upperRawTextArea.setScrollTop(pos);
         Main.stage.upperRawTextArea.setScrollLeft(pos2);
 
@@ -1562,16 +1555,20 @@ public class Cpu {
 
     public static String expandTo8Digits(String number) {
         int howMany = 8 - number.length();
-        for(;howMany>0;howMany--) {
-            number = "0"+number;
+        StringBuilder numberBuilder = new StringBuilder(number);
+        for(; howMany>0; howMany--) {
+            numberBuilder.insert(0, "0");
         }
+        number = numberBuilder.toString();
         return number;
     }
     public static String expandTo16Digits(String number) {
         int howMany = 16 - number.length();
-        for(;howMany>0;howMany--) {
-            number = "0"+number;
+        StringBuilder numberBuilder = new StringBuilder(number);
+        for(; howMany>0; howMany--) {
+            numberBuilder.insert(0, "0");
         }
+        number = numberBuilder.toString();
         return number;
     }
     public void resetCounter(){
@@ -1580,7 +1577,7 @@ public class Cpu {
 
     private ArrayList<Boolean> interrupts = new ArrayList<>();
 
-    public long timePassed;
+    private long timePassed;
     private int linePointer;
     public Memory mainMemory;
     public CodeMemory codeMemory = new CodeMemory();
