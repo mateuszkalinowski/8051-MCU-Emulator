@@ -6,8 +6,6 @@ import exceptions.CompilingException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -23,7 +21,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -948,7 +945,8 @@ public class MainStage extends Application {
 
 
         HBox userTogglesHBox = new HBox();
-        //userTogglesHBox.setPadding();
+        userTogglesHBox.setPadding(new Insets(1,2,1,2));
+        userTogglesHBox.setAlignment(Pos.CENTER);
         userTogglesHBox.setAlignment(Pos.CENTER);
         HBox.setHgrow(portToggle0,Priority.ALWAYS);
         HBox.setHgrow(portToggle1,Priority.ALWAYS);
@@ -1749,17 +1747,14 @@ public class MainStage extends Application {
     private Canvas ledCanvas = new Canvas();
     private Canvas seg7Canvas =  new Canvas();
 
-    //public void setEditorText(String text) {
-    //    editorTextArea.setText(text);
-   // }
     private void setEditorText(ArrayList<String> toSet) {
-        String textToSet = "";
+        StringBuilder textToSet = new StringBuilder();
         for(int i = 0; i < toSet.size();i++) {
-            textToSet += toSet.get(i);
+            textToSet.append(toSet.get(i));
             if(i!=toSet.size()-1)
-                textToSet+="\n";
+                textToSet.append("\n");
         }
-        editorTextArea.setText(textToSet);
+        editorTextArea.setText(textToSet.toString());
     }
 
     private GridPane mainGridPane;
