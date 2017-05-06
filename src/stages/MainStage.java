@@ -728,6 +728,10 @@ public class MainStage extends Application {
             rysujRunButton.setDisable(false);
             continuousRunFlag = false;
             continuousRunButton.setDisable(true);
+            port1History = new char[16][8];
+            for(int i = 0; i < 16;i++) {
+                port1History[i] = "11100111".toCharArray();
+            }
             continuousRunButton.setText("Praca Ciągła");
             running = false;
             changeValueInChangeValueButton.setDisable(true);
@@ -1428,7 +1432,10 @@ public class MainStage extends Application {
         portsStatus.setClosable(false);
         portsStatus.setContent(portsStatusCanvas);
 
-
+        port1History = new char[16][8];
+        for(int i = 0; i < 16;i++) {
+            port1History[i] = "11111111".toCharArray();
+        }
 
 
         memoryInfoTab.setContent(mainMemoryGridPane);
@@ -1729,12 +1736,22 @@ public class MainStage extends Application {
         portsStatusCanvas.setHeight(height);
         gc = portsStatusCanvas.getGraphicsContext2D();
         gc.clearRect(0, 0, width, height);
-
-        gc.setStroke(Color.WHITE);
-        gc.strokeRect(0,0,width/4,height);
+        double upperMargin = 40;
+        double breakValue = (height-upperMargin)/12.0;
+        gc.setStroke(Color.BLACK);
+        gc.strokeRect(0,upperMargin,width/4,breakValue*8);
         gc.setStroke(Color.RED);
         for(int i = 0; i < 8; i++) {
-            gc.strokeLine(0,i*height/8.0,width/4,i*height/8.0);
+            for(int j = 0; j < 16;j++) {
+                if(port1History[j][i]=='0') {
+                    gc.setStroke(Color.GREEN);
+                    gc.strokeLine((width/4.0/16.0)*j,upperMargin+i*breakValue+breakValue/3.0*2.0,(width/4.0/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0*2.0);
+                }
+                else {
+                    gc.setStroke(Color.RED);
+                    gc.strokeLine((width/4.0/16.0)*j,upperMargin+i*breakValue+breakValue/3.0,(width/4.0/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0);
+                }
+            }
         }
 
     }
@@ -1757,6 +1774,10 @@ public class MainStage extends Application {
     private GridPane mainGridPane;
     private GridPane editorElementsGridPane;
     private GridPane simulatorGridPane;
+
+    public char[][] port1History;
+
+
 
     private BorderPane mainBorderPane;
 

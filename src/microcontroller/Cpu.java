@@ -33,6 +33,17 @@ public class Cpu {
 
     private void machineCycle(){
         timePassed++;
+
+        String port1String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P0")));
+        char[] port1Char = port1String.toCharArray();
+        for(int i = 15; i >=1;i--) {
+            Main.stage.port1History[i] = Main.stage.port1History[i-1];
+        }
+        Main.stage.port1History[0] = port1Char;
+       /* System.out.println("NOWE:");
+        for(int i = 0; i < 16;i++)
+            System.out.println(String.valueOf(Main.stage.port1History[i]));
+*/
         int tmod = mainMemory.get("TMOD");
         String tmodString = expandTo8Digits(Integer.toBinaryString(tmod));
 
