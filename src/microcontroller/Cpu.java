@@ -34,16 +34,34 @@ public class Cpu {
     private void machineCycle(){
         timePassed++;
 
-        String port1String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P0")));
+        String port0String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P0")));
+        char[] port0Char = port0String.toCharArray();
+        for(int i = 15; i >=1;i--) {
+            Main.stage.port0History[i] = Main.stage.port0History[i-1];
+        }
+        Main.stage.port0History[0] = port0Char;
+
+        String port1String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P1")));
         char[] port1Char = port1String.toCharArray();
         for(int i = 15; i >=1;i--) {
             Main.stage.port1History[i] = Main.stage.port1History[i-1];
         }
         Main.stage.port1History[0] = port1Char;
-       /* System.out.println("NOWE:");
-        for(int i = 0; i < 16;i++)
-            System.out.println(String.valueOf(Main.stage.port1History[i]));
-*/
+
+        String port2String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P2")));
+        char[] port2Char = port2String.toCharArray();
+        for(int i = 15; i >=1;i--) {
+            Main.stage.port2History[i] = Main.stage.port2History[i-1];
+        }
+        Main.stage.port2History[0] = port2Char;
+
+        String port3String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P3")));
+        char[] port3Char = port3String.toCharArray();
+        for(int i = 15; i >=1;i--) {
+            Main.stage.port3History[i] = Main.stage.port3History[i-1];
+        }
+        Main.stage.port3History[0] = port3Char;
+
         int tmod = mainMemory.get("TMOD");
         String tmodString = expandTo8Digits(Integer.toBinaryString(tmod));
 

@@ -728,9 +728,21 @@ public class MainStage extends Application {
             rysujRunButton.setDisable(false);
             continuousRunFlag = false;
             continuousRunButton.setDisable(true);
+            port0History = new char[16][8];
             port1History = new char[16][8];
+            port2History = new char[16][8];
+            port3History = new char[16][8];
             for(int i = 0; i < 16;i++) {
-                port1History[i] = "11100111".toCharArray();
+                port0History[i] = "11111111".toCharArray();
+            }
+            for(int i = 0; i < 16;i++) {
+                port1History[i] = "11111111".toCharArray();
+            }
+            for(int i = 0; i < 16;i++) {
+                port2History[i] = "11111111".toCharArray();
+            }
+            for(int i = 0; i < 16;i++) {
+                port3History[i] = "11111111".toCharArray();
             }
             continuousRunButton.setText("Praca Ciągła");
             running = false;
@@ -1432,16 +1444,28 @@ public class MainStage extends Application {
         portsStatus.setClosable(false);
         portsStatus.setContent(portsStatusCanvas);
 
+        port0History = new char[16][8];
+        for(int i = 0; i < 16;i++) {
+            port0History[i] = "11111111".toCharArray();
+        }
         port1History = new char[16][8];
         for(int i = 0; i < 16;i++) {
             port1History[i] = "11111111".toCharArray();
+        }
+        port2History = new char[16][8];
+        for(int i = 0; i < 16;i++) {
+            port2History[i] = "11111111".toCharArray();
+        }
+        port3History = new char[16][8];
+        for(int i = 0; i < 16;i++) {
+            port3History[i] = "11111111".toCharArray();
         }
 
 
         memoryInfoTab.setContent(mainMemoryGridPane);
 
         mainStage = primaryStage;
-        mainStage.setTitle("8051 MCU Emulator - 0.5 Alpha");
+        mainStage.setTitle("8051 MCU Emulator - 0.6 Alpha");
         mainBorderPane.setCenter(mainGridPane);
         mainScene = new Scene(mainBorderPane,width,height);
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
@@ -1737,19 +1761,53 @@ public class MainStage extends Application {
         gc = portsStatusCanvas.getGraphicsContext2D();
         gc.clearRect(0, 0, width, height);
         double upperMargin = 40;
+        double XMargin = 30;
+        double betweenMargin = 20;
         double breakValue = (height-upperMargin)/12.0;
         gc.setStroke(Color.BLACK);
-        gc.strokeRect(0,upperMargin,width/4,breakValue*8);
-        gc.setStroke(Color.RED);
+        double oneWidht = (width-2*XMargin - 3*betweenMargin)/4;
+        gc.setLineWidth(2);
+        gc.strokeRect(XMargin,upperMargin,oneWidht,breakValue*8);
+        gc.strokeRect(XMargin+oneWidht+betweenMargin,upperMargin,oneWidht,breakValue*8);
+        gc.strokeRect(XMargin+2.0*oneWidht+2.0*betweenMargin,upperMargin,oneWidht,breakValue*8);
+        gc.strokeRect(XMargin+3.0*oneWidht+3.0*betweenMargin,upperMargin,oneWidht,breakValue*8);
+        gc.setLineWidth(1);
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 16;j++) {
-                if(port1History[j][i]=='0') {
+                if(port0History[j][i]=='0') {
                     gc.setStroke(Color.GREEN);
-                    gc.strokeLine((width/4.0/16.0)*j,upperMargin+i*breakValue+breakValue/3.0*2.0,(width/4.0/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0*2.0);
+                    gc.strokeLine(XMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0*2.0,XMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0*2.0);
                 }
                 else {
                     gc.setStroke(Color.RED);
-                    gc.strokeLine((width/4.0/16.0)*j,upperMargin+i*breakValue+breakValue/3.0,(width/4.0/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0);
+                    gc.strokeLine(XMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0,XMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0);
+                }
+
+                if(port1History[j][i]=='0') {
+                    gc.setStroke(Color.GREEN);
+                    gc.strokeLine(XMargin+1.0*oneWidht+1.0*betweenMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0*2.0,XMargin+1.0*oneWidht+1.0*betweenMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0*2.0);
+                }
+                else {
+                    gc.setStroke(Color.RED);
+                    gc.strokeLine(XMargin+1.0*oneWidht+1.0*betweenMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0,XMargin+1.0*oneWidht+1.0*betweenMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0);
+                }
+
+                if(port2History[j][i]=='0') {
+                    gc.setStroke(Color.GREEN);
+                    gc.strokeLine(XMargin+2.0*oneWidht+2.0*betweenMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0*2.0,XMargin+2.0*oneWidht+2.0*betweenMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0*2.0);
+                }
+                else {
+                    gc.setStroke(Color.RED);
+                    gc.strokeLine(XMargin+2.0*oneWidht+2.0*betweenMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0,XMargin+2.0*oneWidht+2.0*betweenMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0);
+                }
+
+                if(port3History[j][i]=='0') {
+                    gc.setStroke(Color.GREEN);
+                    gc.strokeLine(XMargin+3.0*oneWidht+3.0*betweenMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0*2.0,XMargin+3.0*oneWidht+3.0*betweenMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0*2.0);
+                }
+                else {
+                    gc.setStroke(Color.RED);
+                    gc.strokeLine(XMargin+3.0*oneWidht+3.0*betweenMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0,XMargin+3.0*oneWidht+3.0*betweenMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0);
                 }
             }
         }
@@ -1775,7 +1833,10 @@ public class MainStage extends Application {
     private GridPane editorElementsGridPane;
     private GridPane simulatorGridPane;
 
+    public char[][] port0History;
     public char[][] port1History;
+    public char[][] port2History;
+    public char[][] port3History;
 
 
 
