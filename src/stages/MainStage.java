@@ -1423,6 +1423,13 @@ public class MainStage extends Application {
         mainMemoryGridPane.add(changeValueInRamVBox,9,1,2,1);
 
 
+        Tab portsStatus = new Tab("Stan Portów");
+        simulatorTabPane.getTabs().add(portsStatus);
+        portsStatus.setClosable(false);
+        portsStatus.setContent(portsStatusCanvas);
+
+
+
 
         memoryInfoTab.setContent(mainMemoryGridPane);
 
@@ -1568,14 +1575,6 @@ public class MainStage extends Application {
         portToggle6.setFont(new Font("Arial", smaller/1.5));
         portToggle7.setFont(new Font("Arial", smaller/1.5));
 
-        /* translateToMemoryButton.setFont(new Font("Arial", smaller/2.0));
-        continuousRunButton.setFont(new Font("Arial", smaller/2.0));
-        oneStepButton.setFont(new Font("Arial", smaller/2.0));
-        stopSimulationButton.setFont(new Font("Arial", smaller/2.0));
-
-        speedSelectLabel.setFont(new Font("Arial",smaller/2.0));*/
-
-
         compilationErrorsLabel.setFont(new Font("Arial",smaller/2.0));
 
     }
@@ -1585,37 +1584,37 @@ public class MainStage extends Application {
         this.width = width;
     }
 
-    public void drawFrame(){
-        double width = mainStage.getWidth() * 3.0/10.0;
-        double height = mainScene.getHeight()*1.0/10.0;
+    public void drawFrame() {
+        double width = mainStage.getWidth() * 3.0 / 10.0;
+        double height = mainScene.getHeight() * 1.0 / 10.0;
 
         ledCanvas.setWidth(width);
         ledCanvas.setHeight(height);
 
-        double oneLedWidth = width/8.0;
+        double oneLedWidth = width / 8.0;
 
         GraphicsContext gc = ledCanvas.getGraphicsContext2D();
-        gc.clearRect(0,0,width,height);
+        gc.clearRect(0, 0, width, height);
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(2);
         //gc.strokeRect(0,0,width,height);
         gc.setFill(Color.RED);
 
-        for(int i = 0; i<8;i++) {
-            String portName = ledsPort+"." + (7 - i);
-            if(Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(portName)))
+        for (int i = 0; i < 8; i++) {
+            String portName = ledsPort + "." + (7 - i);
+            if (Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(portName)))
                 gc.setFill(Color.RED);
             else
                 gc.setFill(Color.LIGHTGRAY);
 
-            double centerX = i*oneLedWidth+oneLedWidth/2.0;
-            double centerY = height/2.0;
-            double radius = (oneLedWidth >= height ? height-2 : oneLedWidth)/2.0-5;
+            double centerX = i * oneLedWidth + oneLedWidth / 2.0;
+            double centerY = height / 2.0;
+            double radius = (oneLedWidth >= height ? height - 2 : oneLedWidth) / 2.0 - 5;
 
-            gc.fillOval(centerX-radius,centerY-radius,radius*2,radius*2);
+            gc.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
         }
 
-        height = mainScene.getHeight()*2.5/10;
+        height = mainScene.getHeight() * 2.5 / 10;
 
         seg7Canvas.setWidth(width);
         seg7Canvas.setHeight(height);
@@ -1625,109 +1624,125 @@ public class MainStage extends Application {
         double marginX = 10;
         double marginY = 20;
 
-        gc.clearRect(0,0,width,height);
+        gc.clearRect(0, 0, width, height);
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(2);
         double shorter = 10;
-        double longer = (height-2*marginY-4*shorter)/2.0;
+        double longer = (height - 2 * marginY - 4 * shorter) / 2.0;
 
         gc.setFill(Color.BLACK);
 
         //LICZBA PIERWSZA
         String wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get(seg7displayPort)));
-        int[] wartosci = Converters.bcdto7seg(wartosc.substring(0,4));
+        int[] wartosci = Converters.bcdto7seg(wartosc.substring(0, 4));
 
-        if(wartosci[0] == 1)
+        if (wartosci[0] == 1)
             gc.setFill(Color.RED);
         else
             gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width/2.0-longer-shorter-marginX,marginY,longer,shorter,10,10);//a
-        if(wartosci[6] == 1)
+        gc.fillRoundRect(width / 2.0 - longer - shorter - marginX, marginY, longer, shorter, 10, 10);//a
+        if (wartosci[6] == 1)
             gc.setFill(Color.RED);
         else
             gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width/2.0-longer-shorter-marginX,marginY+longer+shorter,longer,shorter,10,10);//g
-        if(wartosci[3] == 1)
+        gc.fillRoundRect(width / 2.0 - longer - shorter - marginX, marginY + longer + shorter, longer, shorter, 10, 10);//g
+        if (wartosci[3] == 1)
             gc.setFill(Color.RED);
         else
             gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width/2.0-longer-shorter-marginX,marginY+2.0*longer+2.0*shorter,longer,shorter,10,10);//d
+        gc.fillRoundRect(width / 2.0 - longer - shorter - marginX, marginY + 2.0 * longer + 2.0 * shorter, longer, shorter, 10, 10);//d
 
-        if(wartosci[5] == 1)
+        if (wartosci[5] == 1)
             gc.setFill(Color.RED);
         else
             gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width/2.0-longer-shorter-marginX-shorter,marginY+shorter,shorter,longer,10,10);//f
-        if(wartosci[4] == 1)
+        gc.fillRoundRect(width / 2.0 - longer - shorter - marginX - shorter, marginY + shorter, shorter, longer, 10, 10);//f
+        if (wartosci[4] == 1)
             gc.setFill(Color.RED);
         else
             gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width/2.0-longer-shorter-marginX-shorter,marginY+shorter+longer+shorter,shorter,longer,10,10);//e
+        gc.fillRoundRect(width / 2.0 - longer - shorter - marginX - shorter, marginY + shorter + longer + shorter, shorter, longer, 10, 10);//e
 
-        if(wartosci[1] == 1)
+        if (wartosci[1] == 1)
             gc.setFill(Color.RED);
         else
             gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width/2.0-marginX-shorter,marginY+shorter,shorter,longer,10,10);//b
-        if(wartosci[2] == 1)
+        gc.fillRoundRect(width / 2.0 - marginX - shorter, marginY + shorter, shorter, longer, 10, 10);//b
+        if (wartosci[2] == 1)
             gc.setFill(Color.RED);
         else
             gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width/2.0-marginX-shorter,marginY+shorter+longer+shorter,shorter,longer,10,10);//c
+        gc.fillRoundRect(width / 2.0 - marginX - shorter, marginY + shorter + longer + shorter, shorter, longer, 10, 10);//c
 
 
-
-        wartosci = Converters.bcdto7seg(wartosc.substring(4,8));
+        wartosci = Converters.bcdto7seg(wartosc.substring(4, 8));
 
         //LICZBA DRUGA
-        if(wartosci[0] == 1)
+        if (wartosci[0] == 1)
             gc.setFill(Color.RED);
         else
             gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width/2.0+shorter+marginX,marginY,longer,shorter,10,10);//a
+        gc.fillRoundRect(width / 2.0 + shorter + marginX, marginY, longer, shorter, 10, 10);//a
 
-        if(wartosci[6] == 1)
+        if (wartosci[6] == 1)
             gc.setFill(Color.RED);
         else
             gc.setFill(Color.LIGHTGRAY);
-        gc.fillRoundRect(width/2.0+shorter+marginX,marginY+longer+shorter,longer,shorter,10,10);//g
+        gc.fillRoundRect(width / 2.0 + shorter + marginX, marginY + longer + shorter, longer, shorter, 10, 10);//g
 
-        if(wartosci[3] == 1)
+        if (wartosci[3] == 1)
             gc.setFill(Color.RED);
         else
             gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width/2.0+shorter+marginX,marginY+2.0*longer+2.0*shorter,longer,shorter,10,10);//d
+        gc.fillRoundRect(width / 2.0 + shorter + marginX, marginY + 2.0 * longer + 2.0 * shorter, longer, shorter, 10, 10);//d
 
 
-        if(wartosci[1] == 1)
+        if (wartosci[1] == 1)
             gc.setFill(Color.RED);
         else
             gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width/2.0+longer+shorter+marginX,marginY+shorter,shorter,longer,10,10);//b
+        gc.fillRoundRect(width / 2.0 + longer + shorter + marginX, marginY + shorter, shorter, longer, 10, 10);//b
 
-        if(wartosci[2] == 1)
+        if (wartosci[2] == 1)
             gc.setFill(Color.RED);
         else
             gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width/2.0+longer+shorter+marginX,marginY+shorter+longer+shorter,shorter,longer,10,10);//c
+        gc.fillRoundRect(width / 2.0 + longer + shorter + marginX, marginY + shorter + longer + shorter, shorter, longer, 10, 10);//c
 
 
-        if(wartosci[5] == 1)
+        if (wartosci[5] == 1)
             gc.setFill(Color.RED);
         else
             gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width/2.0+marginX,marginY+shorter,shorter,longer,10,10);//f
+        gc.fillRoundRect(width / 2.0 + marginX, marginY + shorter, shorter, longer, 10, 10);//f
 
-        if(wartosci[4] == 1)
+        if (wartosci[4] == 1)
             gc.setFill(Color.RED);
         else
             gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width/2.0+marginX,marginY+shorter+longer+shorter,shorter,longer,10,10);//e
+        gc.fillRoundRect(width / 2.0 + marginX, marginY + shorter + longer + shorter, shorter, longer, 10, 10);//e
+
+        width = mainStage.getWidth();
+        height = mainStage.getHeight() * (37.0 / 100.0);
+
+        portsStatusCanvas.setWidth(width);
+        portsStatusCanvas.setHeight(height);
+        gc = portsStatusCanvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, width, height);
+
+        gc.setStroke(Color.WHITE);
+        gc.strokeRect(0,0,width/4,height);
+        gc.setStroke(Color.RED);
+        for(int i = 0; i < 8; i++) {
+            gc.strokeLine(0,i*height/8.0,width/4,i*height/8.0);
+        }
+
     }
 
 
     private Canvas ledCanvas = new Canvas();
     private Canvas seg7Canvas =  new Canvas();
+    private Canvas portsStatusCanvas = new Canvas();
 
     private void setEditorText(ArrayList<String> toSet) {
         StringBuilder textToSet = new StringBuilder();
