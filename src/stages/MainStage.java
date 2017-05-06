@@ -1766,11 +1766,6 @@ public class MainStage extends Application {
         double breakValue = (height-upperMargin)/12.0;
         gc.setStroke(Color.BLACK);
         double oneWidht = (width-2*XMargin - 3*betweenMargin)/4;
-        gc.setLineWidth(2);
-        gc.strokeRect(XMargin,upperMargin,oneWidht,breakValue*8);
-        gc.strokeRect(XMargin+oneWidht+betweenMargin,upperMargin,oneWidht,breakValue*8);
-        gc.strokeRect(XMargin+2.0*oneWidht+2.0*betweenMargin,upperMargin,oneWidht,breakValue*8);
-        gc.strokeRect(XMargin+3.0*oneWidht+3.0*betweenMargin,upperMargin,oneWidht,breakValue*8);
         gc.setLineWidth(1);
         for(int i = 0; i < 8; i++) {
             for(int j = 0; j < 16;j++) {
@@ -1811,7 +1806,27 @@ public class MainStage extends Application {
                 }
             }
         }
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(2);
+        gc.strokeRect(XMargin,upperMargin,oneWidht,breakValue*8);
+        gc.strokeRect(XMargin+oneWidht+betweenMargin,upperMargin,oneWidht,breakValue*8);
+        gc.strokeRect(XMargin+2.0*oneWidht+2.0*betweenMargin,upperMargin,oneWidht,breakValue*8);
+        gc.strokeRect(XMargin+3.0*oneWidht+3.0*betweenMargin,upperMargin,oneWidht,breakValue*8);
 
+        gc.fillText("0",marginX/1.5,upperMargin+8*breakValue);
+        gc.fillText("1",marginX/1.5,upperMargin+7*breakValue);
+        gc.fillText("2",marginX/1.5,upperMargin+6*breakValue);
+        gc.fillText("3",marginX/1.5,upperMargin+5*breakValue);
+        gc.fillText("4",marginX/1.5,upperMargin+4*breakValue);
+        gc.fillText("5",marginX/1.5,upperMargin+3*breakValue);
+        gc.fillText("6",marginX/1.5,upperMargin+2*breakValue);
+        gc.fillText("7",marginX/1.5,upperMargin+breakValue);
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setTextBaseline(VPos.CENTER);
+        gc.fillText("PO",XMargin+oneWidht/2,upperMargin/2.0);
+        gc.fillText("P1",XMargin+oneWidht+betweenMargin+oneWidht/2,upperMargin/2.0);
+        gc.fillText("P3",XMargin+oneWidht+betweenMargin+oneWidht+betweenMargin+oneWidht/2,upperMargin/2.0);
+        gc.fillText("P4",XMargin+oneWidht+betweenMargin+oneWidht+betweenMargin+oneWidht+betweenMargin+oneWidht/2,upperMargin/2.0);
     }
 
 
