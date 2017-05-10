@@ -36,28 +36,28 @@ public class Cpu {
 
         String port0String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P0")));
         char[] port0Char = port0String.toCharArray();
-        for(int i = 15; i >=1;i--) {
+        for(int i = Main.stage.portChartScale-1; i >=1;i--) {
             Main.stage.port0History[i] = Main.stage.port0History[i-1];
         }
         Main.stage.port0History[0] = port0Char;
 
         String port1String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P1")));
         char[] port1Char = port1String.toCharArray();
-        for(int i = 15; i >=1;i--) {
+        for(int i = Main.stage.portChartScale-1; i >=1;i--) {
             Main.stage.port1History[i] = Main.stage.port1History[i-1];
         }
         Main.stage.port1History[0] = port1Char;
 
         String port2String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P2")));
         char[] port2Char = port2String.toCharArray();
-        for(int i = 15; i >=1;i--) {
+        for(int i = Main.stage.portChartScale-1; i >=1;i--) {
             Main.stage.port2History[i] = Main.stage.port2History[i-1];
         }
         Main.stage.port2History[0] = port2Char;
 
         String port3String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P3")));
         char[] port3Char = port3String.toCharArray();
-        for(int i = 15; i >=1;i--) {
+        for(int i = Main.stage.portChartScale-1; i >=1;i--) {
             Main.stage.port3History[i] = Main.stage.port3History[i-1];
         }
         Main.stage.port3History[0] = port3Char;
@@ -703,7 +703,7 @@ public class Cpu {
             machineCycle();
             int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
             String rejestrString = "R" + rejestr;
-            mainMemory.put(rejestrString,Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            mainMemory.put(rejestrString,mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2)));
             linePointer+=2;
         }
         else if(toExecute.equals("11110101")) { // direct, a

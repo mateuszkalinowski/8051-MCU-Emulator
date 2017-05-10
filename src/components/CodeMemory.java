@@ -134,6 +134,11 @@ public class CodeMemory {
         bitAddresses.put("EA","10101111");
 
     }
+    public void show(){
+        for (int i = 0; i < 100;i++) {
+            System.out.println(emulatedCodeMemory.get(i));
+        }
+    }
     public String getFromAddress(int line) {
         return emulatedCodeMemory.get(line);
     }

@@ -634,6 +634,8 @@ public class MainStage extends Application {
                 editorTextArea.setEditable(false);
                 rysujRunButton.setDisable(true);
                 continuousRunButton.setDisable(false);
+                exportFileMenuItem.setDisable(true);
+                importFileMenuItem.setDisable(true);
                 running = true;
                 changeValueInChangeValueButton.setDisable(false);
                 setEditorText(compilatedText);
@@ -691,19 +693,19 @@ public class MainStage extends Application {
                 content.append(" F\t");
                 content.append("\n");
 
-                for(int i = 0; i < 128;i++) {
-                    content.append(i).append("\t");
-                    for(int j = 0; j < 16;j++) {
-                        if(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).length()==1) {
-                            content.append(" " + "0").append(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i * 16 + j), 2)).toUpperCase()).append(" ");
+                    for (int i = 0; i < 128; i++) {
+                        content.append(i).append("\t");
+                        for (int j = 0; j < 16; j++) {
+                            if (Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i * 16 + j), 2)).length() == 1) {
+                                content.append(" " + "0").append(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i * 16 + j), 2)).toUpperCase()).append(" ");
+                            } else
+                                content.append(" ").append(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i * 16 + j), 2)).toUpperCase()).append(" ");
+                            content.append("\t");
                         }
-                        else
-                            content.append(" ").append(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i * 16 + j), 2)).toUpperCase()).append(" ");
-                        content.append("\t");
+                        if (i != 127)
+                            content.append("\n");
                     }
-                    if(i!=127)
-                        content.append("\n");
-                }
+
 
                 programMemoryTextArea.setText(content.toString());
 
@@ -728,20 +730,22 @@ public class MainStage extends Application {
             rysujRunButton.setDisable(false);
             continuousRunFlag = false;
             continuousRunButton.setDisable(true);
-            port0History = new char[16][8];
-            port1History = new char[16][8];
-            port2History = new char[16][8];
-            port3History = new char[16][8];
-            for(int i = 0; i < 16;i++) {
+            exportFileMenuItem.setDisable(false);
+            importFileMenuItem.setDisable(false);
+            port0History = new char[portChartScale][8];
+            port1History = new char[portChartScale][8];
+            port2History = new char[portChartScale][8];
+            port3History = new char[portChartScale][8];
+            for(int i = 0; i < portChartScale;i++) {
                 port0History[i] = "11111111".toCharArray();
             }
-            for(int i = 0; i < 16;i++) {
+            for(int i = 0; i < portChartScale;i++) {
                 port1History[i] = "11111111".toCharArray();
             }
-            for(int i = 0; i < 16;i++) {
+            for(int i = 0; i < portChartScale;i++) {
                 port2History[i] = "11111111".toCharArray();
             }
-            for(int i = 0; i < 16;i++) {
+            for(int i = 0; i < portChartScale;i++) {
                 port3History[i] = "11111111".toCharArray();
             }
             continuousRunButton.setText("Praca Ciągła");
@@ -868,12 +872,11 @@ public class MainStage extends Application {
         MenuItem exitMenuItem = new MenuItem("Zamknij");
         exitMenuItem.setOnAction(event -> System.exit(0));
         exitMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
-
-        MenuItem importFileMenuItem = new MenuItem("Otwórz");
+        importFileMenuItem = new MenuItem("Otwórz");
         importFileMenuItem.setOnAction(event -> {
             if(!running) {
                 FileChooser chooseFile = new FileChooser();
-                chooseFile.setTitle("Wybierz plik z posiadanymi składnikami");
+                chooseFile.setTitle("Wybierz plik z programem");
                 File openFile = chooseFile.showOpenDialog(primaryStage);
                 if (openFile != null) {
                     StringBuilder textToSet = new StringBuilder();
@@ -894,7 +897,7 @@ public class MainStage extends Application {
                 alert.showAndWait();
             }
         });
-        MenuItem exportFileMenuItem = new MenuItem("Zapisz jako");
+        exportFileMenuItem = new MenuItem("Zapisz jako");
         exportFileMenuItem.setOnAction(event -> {
             FileChooser chooseFile = new FileChooser();
             chooseFile.setTitle("Wybierz lokalizację zapisu");
@@ -1444,20 +1447,20 @@ public class MainStage extends Application {
         portsStatus.setClosable(false);
         portsStatus.setContent(portsStatusCanvas);
 
-        port0History = new char[16][8];
-        for(int i = 0; i < 16;i++) {
+        port0History = new char[portChartScale][8];
+        for(int i = 0; i < portChartScale;i++) {
             port0History[i] = "11111111".toCharArray();
         }
-        port1History = new char[16][8];
-        for(int i = 0; i < 16;i++) {
+        port1History = new char[portChartScale][8];
+        for(int i = 0; i < portChartScale;i++) {
             port1History[i] = "11111111".toCharArray();
         }
-        port2History = new char[16][8];
-        for(int i = 0; i < 16;i++) {
+        port2History = new char[portChartScale][8];
+        for(int i = 0; i < portChartScale;i++) {
             port2History[i] = "11111111".toCharArray();
         }
-        port3History = new char[16][8];
-        for(int i = 0; i < 16;i++) {
+        port3History = new char[portChartScale][8];
+        for(int i = 0; i < portChartScale;i++) {
             port3History[i] = "11111111".toCharArray();
         }
 
@@ -1768,41 +1771,41 @@ public class MainStage extends Application {
         double oneWidht = (width-2*XMargin - 3*betweenMargin)/4;
         gc.setLineWidth(1);
         for(int i = 0; i < 8; i++) {
-            for(int j = 0; j < 16;j++) {
+            for(int j = 0; j < portChartScale;j++) {
                 if(port0History[j][i]=='0') {
                     gc.setStroke(Color.GREEN);
-                    gc.strokeLine(XMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0*2.0,XMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0*2.0);
+                    gc.strokeLine(XMargin+(oneWidht/(portChartScale*1.0))*j,upperMargin+i*breakValue+breakValue/3.0*2.0,XMargin+(oneWidht/(portChartScale*1.0))*(j+1),upperMargin+i*breakValue+breakValue/3.0*2.0);
                 }
                 else {
                     gc.setStroke(Color.RED);
-                    gc.strokeLine(XMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0,XMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0);
+                    gc.strokeLine(XMargin+(oneWidht/(portChartScale*1.0))*j,upperMargin+i*breakValue+breakValue/3.0,XMargin+(oneWidht/(portChartScale*1.0))*(j+1),upperMargin+i*breakValue+breakValue/3.0);
                 }
 
                 if(port1History[j][i]=='0') {
                     gc.setStroke(Color.GREEN);
-                    gc.strokeLine(XMargin+1.0*oneWidht+1.0*betweenMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0*2.0,XMargin+1.0*oneWidht+1.0*betweenMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0*2.0);
+                    gc.strokeLine(XMargin+1.0*oneWidht+1.0*betweenMargin+(oneWidht/(portChartScale*1.0))*j,upperMargin+i*breakValue+breakValue/3.0*2.0,XMargin+1.0*oneWidht+1.0*betweenMargin+(oneWidht/(portChartScale*1.0))*(j+1),upperMargin+i*breakValue+breakValue/3.0*2.0);
                 }
                 else {
                     gc.setStroke(Color.RED);
-                    gc.strokeLine(XMargin+1.0*oneWidht+1.0*betweenMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0,XMargin+1.0*oneWidht+1.0*betweenMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0);
+                    gc.strokeLine(XMargin+1.0*oneWidht+1.0*betweenMargin+(oneWidht/(portChartScale*1.0))*j,upperMargin+i*breakValue+breakValue/3.0,XMargin+1.0*oneWidht+1.0*betweenMargin+(oneWidht/(portChartScale*1.0))*(j+1),upperMargin+i*breakValue+breakValue/3.0);
                 }
 
                 if(port2History[j][i]=='0') {
                     gc.setStroke(Color.GREEN);
-                    gc.strokeLine(XMargin+2.0*oneWidht+2.0*betweenMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0*2.0,XMargin+2.0*oneWidht+2.0*betweenMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0*2.0);
+                    gc.strokeLine(XMargin+2.0*oneWidht+2.0*betweenMargin+(oneWidht/(portChartScale*1.0))*j,upperMargin+i*breakValue+breakValue/3.0*2.0,XMargin+2.0*oneWidht+2.0*betweenMargin+(oneWidht/(portChartScale*1.0))*(j+1),upperMargin+i*breakValue+breakValue/3.0*2.0);
                 }
                 else {
                     gc.setStroke(Color.RED);
-                    gc.strokeLine(XMargin+2.0*oneWidht+2.0*betweenMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0,XMargin+2.0*oneWidht+2.0*betweenMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0);
+                    gc.strokeLine(XMargin+2.0*oneWidht+2.0*betweenMargin+(oneWidht/(portChartScale*1.0))*j,upperMargin+i*breakValue+breakValue/3.0,XMargin+2.0*oneWidht+2.0*betweenMargin+(oneWidht/(portChartScale*1.0))*(j+1),upperMargin+i*breakValue+breakValue/3.0);
                 }
 
                 if(port3History[j][i]=='0') {
                     gc.setStroke(Color.GREEN);
-                    gc.strokeLine(XMargin+3.0*oneWidht+3.0*betweenMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0*2.0,XMargin+3.0*oneWidht+3.0*betweenMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0*2.0);
+                    gc.strokeLine(XMargin+3.0*oneWidht+3.0*betweenMargin+(oneWidht/(portChartScale*1.0))*j,upperMargin+i*breakValue+breakValue/3.0*2.0,XMargin+3.0*oneWidht+3.0*betweenMargin+(oneWidht/(portChartScale*1.0))*(j+1),upperMargin+i*breakValue+breakValue/3.0*2.0);
                 }
                 else {
                     gc.setStroke(Color.RED);
-                    gc.strokeLine(XMargin+3.0*oneWidht+3.0*betweenMargin+(oneWidht/16.0)*j,upperMargin+i*breakValue+breakValue/3.0,XMargin+3.0*oneWidht+3.0*betweenMargin+(oneWidht/16.0)*(j+1),upperMargin+i*breakValue+breakValue/3.0);
+                    gc.strokeLine(XMargin+3.0*oneWidht+3.0*betweenMargin+(oneWidht/(portChartScale*1.0))*j,upperMargin+i*breakValue+breakValue/3.0,XMargin+3.0*oneWidht+3.0*betweenMargin+(oneWidht/(portChartScale*1.0))*(j+1),upperMargin+i*breakValue+breakValue/3.0);
                 }
             }
         }
@@ -1813,14 +1816,14 @@ public class MainStage extends Application {
         gc.strokeRect(XMargin+2.0*oneWidht+2.0*betweenMargin,upperMargin,oneWidht,breakValue*8);
         gc.strokeRect(XMargin+3.0*oneWidht+3.0*betweenMargin,upperMargin,oneWidht,breakValue*8);
 
-        gc.fillText("0",marginX/1.5,upperMargin+8*breakValue);
-        gc.fillText("1",marginX/1.5,upperMargin+7*breakValue);
-        gc.fillText("2",marginX/1.5,upperMargin+6*breakValue);
-        gc.fillText("3",marginX/1.5,upperMargin+5*breakValue);
-        gc.fillText("4",marginX/1.5,upperMargin+4*breakValue);
-        gc.fillText("5",marginX/1.5,upperMargin+3*breakValue);
-        gc.fillText("6",marginX/1.5,upperMargin+2*breakValue);
-        gc.fillText("7",marginX/1.5,upperMargin+breakValue);
+        gc.fillText("0",marginX,upperMargin+8*breakValue-breakValue/2.0);
+        gc.fillText("1",marginX,upperMargin+7*breakValue-breakValue/2.0);
+        gc.fillText("2",marginX,upperMargin+6*breakValue-breakValue/2.0);
+        gc.fillText("3",marginX,upperMargin+5*breakValue-breakValue/2.0);
+        gc.fillText("4",marginX,upperMargin+4*breakValue-breakValue/2.0);
+        gc.fillText("5",marginX,upperMargin+3*breakValue-breakValue/2.0);
+        gc.fillText("6",marginX,upperMargin+2*breakValue-breakValue/2.0);
+        gc.fillText("7",marginX,upperMargin+breakValue-breakValue/2.0);
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setTextBaseline(VPos.CENTER);
         gc.fillText("PO",XMargin+oneWidht/2,upperMargin/2.0);
@@ -2031,5 +2034,10 @@ public class MainStage extends Application {
     private TextField valueInChangeValueTextField;
 
     private Button changeValueInChangeValueButton;
+
+    public int portChartScale = 16;
+
+    private MenuItem exportFileMenuItem;
+    private MenuItem importFileMenuItem;
 
 }
