@@ -860,26 +860,23 @@ public class MainStage extends Application {
         menuMemory.getItems().add(menuLowRam);
 
         MenuItem exportLowRamMenuItem = new MenuItem("Eksportuj");
-        exportLowRamMenuItem.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                FileChooser chooseFile = new FileChooser();
-                chooseFile.setTitle("Wybierz lokalizację zapisu");
-                chooseFile.setInitialFileName("memory.txt");
-                chooseFile.setInitialDirectory(new File(System.getProperty("user.home")));
-                File saveFile = chooseFile.showSaveDialog(primaryStage);
-                if(saveFile!=null) {
-                    try {
-                        PrintWriter in = new PrintWriter(saveFile);
-                        String text = "";
-                        for(int i = 0; i < 128;i++) {
-                            text =  Main.cpu.codeMemory.make8DigitsStringFromNumber(String.valueOf(Main.cpu.mainMemory.get(i)));
-                            in.println(text);
-                        }
-                        in.close();
-                    } catch (FileNotFoundException e) {
-                        System.out.println("File error");
+        exportLowRamMenuItem.setOnAction(event -> {
+            FileChooser chooseFile = new FileChooser();
+            chooseFile.setTitle("Wybierz lokalizację zapisu");
+            chooseFile.setInitialFileName("memory.txt");
+            chooseFile.setInitialDirectory(new File(System.getProperty("user.home")));
+            File saveFile = chooseFile.showSaveDialog(primaryStage);
+            if(saveFile!=null) {
+                try {
+                    PrintWriter in = new PrintWriter(saveFile);
+                    String text = "";
+                    for(int i = 0; i < 128;i++) {
+                        text =  Main.cpu.codeMemory.make8DigitsStringFromNumber(String.valueOf(Main.cpu.mainMemory.get(i)));
+                        in.println(text);
                     }
+                    in.close();
+                } catch (FileNotFoundException e) {
+                    System.out.println("File error");
                 }
             }
         });
