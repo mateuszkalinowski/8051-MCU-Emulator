@@ -6,6 +6,8 @@ import exceptions.CompilingException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -851,11 +853,69 @@ public class MainStage extends Application {
         Menu menuOptions = new Menu("Konfiguracja");
         mainMenuBar.getMenus().add(menuOptions);
 
-        //Menu menuAddons = new Menu("Dodatki");
-        //mainMenuBar.getMenus().add(menuAddons);
+        Menu menuMemory = new Menu("Pamięć");
+        mainMenuBar.getMenus().add(menuMemory);
 
-        //MenuItem generateRunMenuItem = new MenuItem("Przebieg");
-        //menuAddons.getItems().add(generateRunMenuItem);
+        Menu menuLowRam = new Menu("Low RAM");
+        menuMemory.getItems().add(menuLowRam);
+
+        MenuItem exportLowRamMenuItem = new MenuItem("Eksportuj");
+        exportLowRamMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                FileChooser chooseFile = new FileChooser();
+                chooseFile.setTitle("Wybierz lokalizację zapisu");
+                chooseFile.setInitialFileName("memory.txt");
+                chooseFile.setInitialDirectory(new File(System.getProperty("user.home")));
+                File saveFile = chooseFile.showSaveDialog(primaryStage);
+                if(saveFile!=null) {
+                    try {
+                        PrintWriter in = new PrintWriter(saveFile);
+                        String text = "";
+                        for(int i = 0; i < 128;i++) {
+                            text =  Main.cpu.codeMemory.make8DigitsStringFromNumber(String.valueOf(Main.cpu.mainMemory.get(i)));
+                            in.println(text);
+                        }
+                        in.close();
+                    } catch (FileNotFoundException e) {
+                        System.out.println("File error");
+                    }
+                }
+            }
+        });
+        MenuItem importLowRawMenuItem = new MenuItem("Importuj");
+        importLowRawMenuItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                FileChooser chooseFile = new FileChooser();
+                chooseFile.setTitle("Wybierz plik z pamięcią");
+                File openFile = chooseFile.showOpenDialog(primaryStage);
+                if (openFile != null) {
+                    String number = "";
+                    try {
+                        Scanner in = new Scanner(openFile);
+                        int i = 0;
+                        while (in.hasNextLine()) {
+                            number = in.nextLine();
+                            try {
+                                int w = Integer.valueOf(number, 2);
+                                Main.cpu.mainMemory.put(i, w);
+                                i++;
+                            }
+                            catch (NumberFormatException ignored) {
+                            }
+
+                        }
+                        Main.cpu.refreshGui();
+                    } catch (FileNotFoundException ignored) {
+                    }
+                }
+            }
+        });
+        menuLowRam.getItems().addAll(exportLowRamMenuItem,importLowRawMenuItem);
+
+
+
 
 
         MenuItem paneConfigurationMenuItem = new MenuItem("Panel");

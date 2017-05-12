@@ -1512,7 +1512,7 @@ public class CodeMemory {
                 }
             }
         }
-        Main.stage.compilationErrorsLabel.setText("Kompilacja przebiegła pomyślnie");
+        Main.stage.compilationErrorsLabel.setText("Asemblacja przebiegła pomyślnie");
         Main.stage.compilationErrorsLabel.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
         //show();
         return linieZNumerami;

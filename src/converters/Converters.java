@@ -27,6 +27,18 @@ public class Converters {
                 return new int[]{ 1, 1, 1, 1, 1, 1, 1 };
             case "1001":
                 return new int[]{ 1, 1, 1, 1, 0, 1, 1 };
+            case "1010":
+                return new int[]{ 1, 1, 1, 0, 1, 1, 1 };
+            case "1011":
+                return new int[]{ 0, 0, 1, 1, 1, 1, 1 };
+            case "1100":
+                return new int[]{ 1, 0, 0, 1, 1, 1, 0 };
+            case "1101":
+                return new int[]{ 0, 1, 1, 1, 1, 0, 1 };
+            case "1110":
+                return new int[]{ 1, 0, 0, 1, 1, 1, 1 };
+            case "1111":
+                return new int[]{ 1, 0, 0, 0, 1, 1, 1 };
             default:
                 return new int[]{ 1, 1, 1, 1, 1, 1, 0 };
         }
