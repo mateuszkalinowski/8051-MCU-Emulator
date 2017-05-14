@@ -289,6 +289,97 @@ public class Cpu {
                 linePointer+=3;
             }
         }
+        else if(toExecute.equals("10110100")) { //CJNE A,#number,offset
+            machineCycle();
+            machineCycle();
+            int wartosc = mainMemory.get("A");
+            int wartosc2 = Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
+            if(wartosc!=wartosc2) {
+                int wynik = linePointer+1+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
+                if(wynik>255)
+                    wynik-=256;
+                linePointer = wynik;
+            }
+            else {
+                linePointer+=3;
+            }
+            if(wartosc<wartosc2) {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"), true);
+            }
+            else {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"), false);
+            }
+
+        }
+        else if(toExecute.equals("10110101")) { //CJNE A,direct,offset
+            machineCycle();
+            machineCycle();
+            int wartosc = mainMemory.get("A");
+            int wartosc2 = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer + 1),2));
+            if(wartosc!=wartosc2) {
+                int wynik = linePointer+1+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
+                if(wynik>255)
+                    wynik-=256;
+                linePointer = wynik;
+            }
+            else {
+                linePointer+=3;
+            }
+            if(wartosc<wartosc2) {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"), true);
+            }
+            else {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"), false);
+            }
+
+        }
+        else if(toExecute.substring(0,7).equals("1011011")) { //CJNE @Ri,#number,offset
+            machineCycle();
+            machineCycle();
+            String rejestrString = "R" + toExecute.charAt(7);
+            int wartosc = mainMemory.get(mainMemory.get(rejestrString));
+            int wartosc2 = Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
+            if(wartosc!=wartosc2) {
+                int wynik = linePointer+1+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
+                if(wynik>255)
+                    wynik-=256;
+                linePointer = wynik;
+            }
+            else {
+                linePointer+=3;
+            }
+            if(wartosc<wartosc2) {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"), true);
+            }
+            else {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"), false);
+            }
+
+        }
+        else if(toExecute.substring(0,5).equals("10111")) { //CJNE Rn,#number,offset
+            machineCycle();
+            machineCycle();
+            int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
+            String rejestrString = "R" + rejestr;
+            int wartosc = mainMemory.get(rejestrString);
+            int wartosc2 = Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
+            if(wartosc!=wartosc2) {
+                int wynik = linePointer+1+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
+                if(wynik>255)
+                    wynik-=256;
+                linePointer = wynik;
+            }
+            else {
+                linePointer+=3;
+            }
+            if(wartosc<wartosc2) {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"), true);
+            }
+            else {
+                mainMemory.setBit(codeMemory.bitAddresses.get("CY"), false);
+            }
+
+        }
         /*
             ANL:
                 wszystko bez Ri

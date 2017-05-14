@@ -694,7 +694,6 @@ public class MainStage extends Application {
                 content.append(" E\t");
                 content.append(" F\t");
                 content.append("\n");
-
                     for (int i = 0; i < 128; i++) {
                         content.append(i).append("\t");
                         for (int j = 0; j < 16; j++) {

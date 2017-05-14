@@ -262,7 +262,68 @@ public class CodeMemory {
                                 emulatedCodeMemory.set(pointer + 1, splittedLine[2].toUpperCase());
                                 pointer+=2;
                             }
-                        } else if(splittedLine[0].toUpperCase().equals("INC")) {
+                        } else if(splittedLine[0].toUpperCase().equals("CJNE")) {
+                            if(splittedLine.length==4) {
+                                if(splittedLine[2].charAt(0) == '#') {
+                                    try {
+                                        String number = make8DigitsStringFromNumber(splittedLine[2].substring(1));
+                                        if(splittedLine[1].toUpperCase().equals("A")) {
+                                            emulatedCodeMemory.set(pointer,"10110100");
+                                            emulatedCodeMemory.set(pointer+1,number);
+                                            emulatedCodeMemory.set(pointer+2,splittedLine[3].toUpperCase());
+                                            pointer+=3;
+                                        }
+                                        else if(splittedLine[1].toUpperCase().equals("@R0") || splittedLine[1].toUpperCase().equals("@R1")) {
+                                            emulatedCodeMemory.set(pointer,"1011011" + splittedLine[1].charAt(2));
+                                            emulatedCodeMemory.set(pointer+1,number);
+                                            emulatedCodeMemory.set(pointer+2,splittedLine[3].toUpperCase());
+                                            pointer+=3;
+                                        }
+                                        else {
+                                            String numer = getRAddress(splittedLine[1].toUpperCase());
+                                            if(numer.equals("")) {
+                                                throw new CompilingException("Błędnie użyta komenda CJNE: '" + backupLinii + "'");
+                                            }
+                                            emulatedCodeMemory.set(pointer,"10111" + numer);
+                                            emulatedCodeMemory.set(pointer+1,number);
+                                            emulatedCodeMemory.set(pointer+2,splittedLine[3].toUpperCase());
+                                            pointer+=3;
+                                        }
+                                    }
+                                    catch (Exception e) {
+                                        throw new CompilingException("Niepoprawna wartość liczbowa '" + splittedLine[2] + "', linia: '" + backupLinii + "");
+                                    }
+
+                                }
+                                else if(splittedLine[1].equals("A")){
+                                    String address;
+                                    try {
+                                        address = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
+                                        emulatedCodeMemory.set(pointer,"10110101");
+                                        emulatedCodeMemory.set(pointer+1,address);
+                                        emulatedCodeMemory.set(pointer+2,splittedLine[3].toUpperCase());
+                                        pointer+=3;
+                                    }
+                                    catch (Exception e) {
+                                        try {
+                                            address = make8DigitsStringFromNumber(splittedLine[2]);
+                                            emulatedCodeMemory.set(pointer,"10110101");
+                                            emulatedCodeMemory.set(pointer+1,address);
+                                            emulatedCodeMemory.set(pointer+2,splittedLine[3].toUpperCase());
+                                            pointer+=3;
+                                        }
+                                        catch (Exception e1) {
+                                            throw new CompilingException("Nierozpoznany Adres: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
+                                        }
+                                    }
+                                }
+                                else
+                                    throw new CompilingException("Błędnie użyta komenda CJNE: '" + backupLinii+"'");
+                            }
+                            else
+                                throw new CompilingException("Błędnie użyta komenda CJNE: '" + backupLinii+"'");
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("INC")) {
                             if(splittedLine[1].toUpperCase().equals("A")) {
                                 emulatedCodeMemory.set(pointer,"00000100");
                                 pointer+=1;
@@ -1499,11 +1560,11 @@ public class CodeMemory {
                         if(wynik<0)
                             wynik+=256;
                         if(wynik<0 || wynik>255)
-                            throw new CompilingException("Przekroczono zakres skoku djnz: '" + s + "'");
+                            throw new CompilingException("Przekroczono zakres skoku: '" + s + "'");
                         if(numer>i && wynik>128)
-                            throw new CompilingException("Przekroczono zakres skoku djnz: '" + s + "'");
+                            throw new CompilingException("Przekroczono zakres skoku: '" + s + "'");
                         if(numer<i && wynik<128)
-                            throw new CompilingException("Przekroczono zakres skoku djnz: '" + s + "'");
+                            throw new CompilingException("Przekroczono zakres skoku: '" + s + "'");
                         emulatedCodeMemory.set(i, make8DigitsStringFromNumber(Integer.toString(wynik) + "d"));
                     }
                 }
