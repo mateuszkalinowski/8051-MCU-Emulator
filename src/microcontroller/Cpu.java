@@ -1211,6 +1211,7 @@ public class Cpu {
             }
         }
         else if(toExecute.equals("00000000")) { //NOP
+            machineCycle();
             linePointer+=1;
         }
         else if(toExecute.equals("11000000")) { //PUSH
