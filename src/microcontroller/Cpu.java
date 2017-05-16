@@ -148,14 +148,12 @@ public class Cpu {
 
     public void executeInstruction() throws InstructionException{
         String toExecute = codeMemory.getFromAddress(linePointer);
-        //System.out.println(linePointer);
-        //System.out.println(linePointer + " " + toExecute);
         if(toExecute.equals("00000010")) { //LJMP
             machineCycle();
             machineCycle();
             linePointer = Integer.parseInt(codeMemory.getFromAddress(linePointer+1) + codeMemory.getFromAddress(linePointer+2),2);
         }
-        else if(toExecute.equals("00010010")) { //JCALL
+        else if(toExecute.equals("00010010")) { //LCALL
             int stackPointer = mainMemory.get("SP");
             try {
                 String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer+3)+"B");
@@ -174,6 +172,20 @@ public class Cpu {
                 linePointer = Integer.parseInt(codeMemory.getFromAddress(linePointer+1) + codeMemory.getFromAddress(linePointer+2),2);
             } catch (Exception ignored) {
             }
+        }
+        else if(toExecute.equals("10010011")) {
+            String dphString = expandTo8Digits(Integer.toBinaryString(mainMemory.get("DPH")));
+            String dplString = expandTo8Digits(Integer.toBinaryString(mainMemory.get("DPL")));
+            int wartosc = Integer.parseInt(dphString+dplString,2);
+            wartosc+= mainMemory.get("A");
+            mainMemory.put("A",Integer.parseInt(codeMemory.getFromAddress(wartosc),2));
+            linePointer+=1;
+        }
+        else if(toExecute.equals("10000011")) {
+            linePointer+=1;
+            int wartosc = linePointer;
+            wartosc+= mainMemory.get("A");
+            mainMemory.put("A",Integer.parseInt(codeMemory.getFromAddress(wartosc),2));
         }
         else if(toExecute.equals("00000100")) {//INC A
             machineCycle();

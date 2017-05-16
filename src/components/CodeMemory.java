@@ -217,6 +217,20 @@ public class CodeMemory {
                             linieZNumerami.add(backupLinii);
                         }
                     }
+                    else if(splittedLine[0].toUpperCase().equals("DB")){
+                        String address;
+                        try {
+                            for(int i = 1; i < splittedLine.length;i++) {
+                                address = make8DigitsStringFromNumber(splittedLine[i]);
+                                emulatedCodeMemory.set(pointer, address);
+                                pointer += 1;
+                            }
+                            linieZNumerami.add(backupLinii);
+                        }
+                        catch (Exception e) {
+                            throw new CompilingException("Błędny bit: '" + backupLinii + "'");
+                        }
+                    }
                     else {
                         int backupPointer = pointer;
                         if(splittedLine[0].toUpperCase().equals("LCALL")) {
@@ -229,6 +243,19 @@ public class CodeMemory {
                                 emulatedCodeMemory.set(pointer+1,splittedLine[1].toUpperCase());
                             }
                             pointer+=3;
+                        }
+                        else if(splittedLine[0].toUpperCase().equals("MOVC")) {
+                            if(splittedLine[1].toUpperCase().equals("A") && splittedLine[2].toUpperCase().equals("@A+DPTR")){
+                                emulatedCodeMemory.set(pointer,"10010011");
+                                pointer+=1;
+                            }
+                            else if(splittedLine[1].toUpperCase().equals("A") && splittedLine[2].toUpperCase().equals("@A+PC")) {
+                                emulatedCodeMemory.set(pointer,"10000011");
+                                pointer+=1;
+                            }
+                            else {
+                                throw new CompilingException("Niepoprawne użycie MOVC: '" + backupLinii+"'");
+                            }
                         }
                         else if(splittedLine[0].toUpperCase().equals("LJMP")) {
                             emulatedCodeMemory.set(pointer,"00000010");

@@ -40,6 +40,8 @@ public class Memory {
         memoryCellsNames.put("TH0",140);
         memoryCellsNames.put("TH1",141);
         memoryCellsNames.put("IE",168);
+        memoryCellsNames.put("DPL",130);
+        memoryCellsNames.put("DPH",131);
 
         put("P0",255);
         put("P1",255);
