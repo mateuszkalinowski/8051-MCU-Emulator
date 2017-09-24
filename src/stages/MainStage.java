@@ -95,7 +95,6 @@ public class MainStage extends Application {
         for(int i = 0; i < 20;i++)
             infoEditorAndButtonGridPane.getRowConstraints().add(rowTenPercent);
 
-
         compilationErrorsLabel = new Label("");
         compilationErrorsLabel.setPadding(new Insets(0,22,0,22));
         compilationErrorsLabel.setMaxWidth(Double.MAX_VALUE);
@@ -777,7 +776,7 @@ public class MainStage extends Application {
             Main.cpu.refreshGui();
             compilationErrorsLabel.setText("");
             compilationErrorsLabel.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
-            resetPrzebieg();
+            OscilloscopePane.resetPrzebieg();
         });
 
         oneStepButton = new Button("Krok");
@@ -785,7 +784,7 @@ public class MainStage extends Application {
             try {
                 Main.cpu.executeInstruction();
                 Main.cpu.refreshGui();
-                przebiegAktualizacja();
+                OscilloscopePane.updateChart();
             }
             catch (Exception e){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -814,7 +813,7 @@ public class MainStage extends Application {
                         while(continuousRunFlag) {
                             if(System.nanoTime() - time > 1000000000/speedSelectComboBox.getSelectionModel().getSelectedItem()) {
                                 Main.cpu.executeInstruction();
-                                Platform.runLater(() -> przebiegAktualizacja());
+                                Platform.runLater(() -> OscilloscopePane.updateChart());
                                 time = System.nanoTime();
                                 Platform.runLater(() -> Main.cpu.refreshGui());
                             }
@@ -833,16 +832,16 @@ public class MainStage extends Application {
             }
         });
 
-        translateToMemoryButton.setMaxWidth(Double.MAX_VALUE);
-        stopSimulationButton.setMaxWidth(Double.MAX_VALUE);
+        translateToMemoryButton.setMaxWidth(100);
+        stopSimulationButton.setMaxWidth(100);
         stopSimulationButton.setDisable(true);
-        continuousRunButton.setMaxWidth(Double.MAX_VALUE);
-        oneStepButton.setMaxWidth(Double.MAX_VALUE);
+        continuousRunButton.setMaxWidth(100);
+        oneStepButton.setMaxWidth(100);
         oneStepButton.setDisable(true);
 
         speedSelectComboBox = new ComboBox<>();
         speedSelectComboBox.getItems().addAll(1,5,10,50,100,500,1000,2000);
-        speedSelectComboBox.setMaxWidth(Double.MAX_VALUE);
+        speedSelectComboBox.setMaxWidth(100);
         speedSelectComboBox.getSelectionModel().selectFirst();
 
         speedSelectLabel = new Label("Prędkość Symulacji:");
@@ -877,9 +876,7 @@ public class MainStage extends Application {
         Menu menuTools = new Menu("Narzędzia");
         mainMenuBar.getMenus().add(menuTools);
 
-        MenuItem menuItemOscilloscope = new Menu("Oscyloskop");
-
-        menuTools.getItems().add(menuItemOscilloscope);
+        MenuItem menuItemOscilloscope = new MenuItem("Oscyloskop");
 
         Menu menuLowRam = new Menu("Low RAM");
         menuMemory.getItems().add(menuLowRam);
@@ -947,6 +944,16 @@ public class MainStage extends Application {
             }
         });
 
+        menuItemOscilloscope.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    OscilloscopePane.start(primaryStage);
+                }
+                catch (Exception ignored) {}
+            }
+        });
+
         MenuItem exitMenuItem = new MenuItem("Zamknij");
         exitMenuItem.setOnAction(event -> System.exit(0));
         exitMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
@@ -994,6 +1001,7 @@ public class MainStage extends Application {
             }
         });
         menuFile.getItems().addAll(importFileMenuItem,exportFileMenuItem,new SeparatorMenuItem(),exitMenuItem);
+        menuTools.getItems().add(menuItemOscilloscope);
 
 
         //PRAWY OBSZAR
@@ -1755,6 +1763,9 @@ public class MainStage extends Application {
         double shorter = 10;
         double longer = (height - 2 * marginY - 4 * shorter) / 2.0;
 
+        if((longer+shorter+shorter+marginX+10)>=(width/2))
+            longer = width/2 - shorter-shorter-marginX-10;
+
         gc.setFill(Color.BLACK);
 
         //LICZBA PIERWSZA
@@ -1945,8 +1956,6 @@ public class MainStage extends Application {
         if (Main.cpu.getTimePassed() - passedTime >= interval) {
             passedTime = Main.cpu.getTimePassed();
             int wartoscp0 = Main.cpu.mainMemory.get("P0");
-            series.getData().add(new XYChart.Data(usedScale,wartoscp0));
-            series.getData().add(new XYChart.Data(usedScale,wartoscp0));
             series.getData().add(new XYChart.Data(usedScale,wartoscp0));
             usedScale++;
         }
@@ -2153,13 +2162,13 @@ public class MainStage extends Application {
 
     private int interval = 1;
 
-    private void resetPrzebieg() {
+   /* private void resetPrzebieg() {
         passedTime = 0;
         scale = 256;
         usedScale = 0;
         series.getData().clear();
+    }*/
 
-
-    }
+    OscilloscopeStage OscilloscopePane = new OscilloscopeStage();
 
 }
