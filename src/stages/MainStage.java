@@ -5,6 +5,8 @@ import core.Main;
 import exceptions.CompilingException;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -40,14 +42,21 @@ public class MainStage extends Application {
         mainBorderPane = new BorderPane();
         mainGridPane.setGridLinesVisible(false);
         RowConstraints upperRow = new RowConstraints();
-        upperRow.setPercentHeight(62.5);
+        //upperRow.setPercentHeight(62.5);
         RowConstraints lowerRow = new RowConstraints();
-        lowerRow.setPercentHeight(37.5);
+        lowerRow.setPrefHeight(200);
         ColumnConstraints onlyColumn = new ColumnConstraints();
         onlyColumn.setPercentWidth(100);
         mainGridPane.getColumnConstraints().add(onlyColumn);
         mainGridPane.getRowConstraints().add(upperRow);
         mainGridPane.getRowConstraints().add(lowerRow);
+
+        mainGridPane.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                mainGridPane.getRowConstraints().get(0).setPrefHeight(newValue.doubleValue()-200);
+            }
+        });
 
         editorElementsGridPane = new GridPane();
         editorElementsGridPane.setGridLinesVisible(false);
@@ -55,12 +64,19 @@ public class MainStage extends Application {
         rowInEditorElementsGridPane.setPercentHeight(100);
         editorElementsGridPane.getRowConstraints().add(rowInEditorElementsGridPane);
         ColumnConstraints editorColumn = new ColumnConstraints();
-        editorColumn.setPercentWidth(70);
+        //editorColumn.setPercentWidth(70);
         ColumnConstraints elementsColumn = new ColumnConstraints();
-        elementsColumn.setPercentWidth(30);
+        elementsColumn.setPrefWidth(240);
         editorElementsGridPane.getColumnConstraints().add(editorColumn);
         editorElementsGridPane.getColumnConstraints().add(elementsColumn);
         mainGridPane.add(editorElementsGridPane,0,0,2,1);
+
+        mainGridPane.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                editorElementsGridPane.getColumnConstraints().get(0).setPrefWidth(newValue.doubleValue()-240);
+            }
+        });
 
         TabPane simulatorTabPane = new TabPane();
         Tab mainSimulatorTab = new Tab();
@@ -761,6 +777,7 @@ public class MainStage extends Application {
             Main.cpu.refreshGui();
             compilationErrorsLabel.setText("");
             compilationErrorsLabel.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
+            resetPrzebieg();
         });
 
         oneStepButton = new Button("Krok");
@@ -768,6 +785,7 @@ public class MainStage extends Application {
             try {
                 Main.cpu.executeInstruction();
                 Main.cpu.refreshGui();
+                przebiegAktualizacja();
             }
             catch (Exception e){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -796,6 +814,7 @@ public class MainStage extends Application {
                         while(continuousRunFlag) {
                             if(System.nanoTime() - time > 1000000000/speedSelectComboBox.getSelectionModel().getSelectedItem()) {
                                 Main.cpu.executeInstruction();
+                                Platform.runLater(() -> przebiegAktualizacja());
                                 time = System.nanoTime();
                                 Platform.runLater(() -> Main.cpu.refreshGui());
                             }
@@ -855,6 +874,13 @@ public class MainStage extends Application {
         Menu menuMemory = new Menu("Pamięć");
         mainMenuBar.getMenus().add(menuMemory);
 
+        Menu menuTools = new Menu("Narzędzia");
+        mainMenuBar.getMenus().add(menuTools);
+
+        MenuItem menuItemOscilloscope = new Menu("Oscyloskop");
+
+        menuTools.getItems().add(menuItemOscilloscope);
+
         Menu menuLowRam = new Menu("Low RAM");
         menuMemory.getItems().add(menuLowRam);
 
@@ -909,10 +935,6 @@ public class MainStage extends Application {
             }
         });
         menuLowRam.getItems().addAll(exportLowRamMenuItem,importLowRawMenuItem);
-
-
-
-
 
         MenuItem paneConfigurationMenuItem = new MenuItem("Panel");
         menuOptions.getItems().add(paneConfigurationMenuItem);
@@ -1251,8 +1273,8 @@ public class MainStage extends Application {
         final ScatterChart<Number,Number> lineChart =
                 new ScatterChart<Number,Number>(xAxis,yAxis);
         lineChart.setLegendVisible(false);
-        lineChart.setTitle("Przebieg - p1(p0)");
-        XYChart.Series series = new XYChart.Series();
+        lineChart.setTitle("Przebieg - P0");
+        series = new XYChart.Series();
         lineChart.getData().add(series);
         chartPane.setContent(chartBorderPane);
         chartBorderPane.setCenter(lineChart);
@@ -1261,8 +1283,9 @@ public class MainStage extends Application {
         //editorElementsGridPane.add(diodesPaneGridPane,1,0);
         editorElementsGridPane.add(elementsTabPane,1,0);
 
+
         rysujRunButton = new Button("Generuj Przebieg");
-        rysujRunButton.setDisable(false);
+        /*rysujRunButton.setDisable(false);
         rysujRunButton.setOnAction(event -> {
 
             lines = editorTextArea.getText().split("\n");
@@ -1308,7 +1331,8 @@ public class MainStage extends Application {
                 }
             }
         });
-
+*/
+        /*
         HBox generateButtonBox = new HBox();
         generateButtonBox.setPadding(new Insets(10,10,10,10));
         generateButtonBox.setAlignment(Pos.CENTER);
@@ -1317,13 +1341,13 @@ public class MainStage extends Application {
 
         generateButtonBox.getChildren().addAll(rysujRunButton);
 
-        chartBorderPane.setBottom(generateButtonBox);
+        chartBorderPane.setBottom(generateButtonBox);*/
 
 
         Tab programMemoryInfoTab = new Tab("Pamięć Programu");
         programMemoryInfoTab.setClosable(false);
 
-        GridPane programMemoryGridPane = new GridPane();
+      /*  GridPane programMemoryGridPane = new GridPane();
         RowConstraints firstRowInProgramMemory = new RowConstraints();
         firstRowInProgramMemory.setPercentHeight(15);
         RowConstraints secondRowInProgramMemory = new RowConstraints();
@@ -1335,17 +1359,26 @@ public class MainStage extends Application {
         for(int i = 0; i < 20; i++)
             programMemoryGridPane.getColumnConstraints().addAll(columnInProgramMemoryTab);
 
+*/
         programMemoryTextArea = new TextArea();
         programMemoryTextArea.setFont(new Font("Arial",13));
         programMemoryTextArea.setEditable(false);
-        programMemoryGridPane.add(programMemoryTextArea,4,1,12,1);
+        //programMemoryGridPane.add(programMemoryTextArea,4,1,12,1);
+        programMemoryTextArea.setMaxWidth(550.0);
+
+        BorderPane programMemoryBorderPane = new BorderPane();
+        programMemoryBorderPane.setCenter(programMemoryTextArea);
 
         progrmMemoryLabel = new Label("Pamięć Programu");
         progrmMemoryLabel.setAlignment(Pos.CENTER);
         progrmMemoryLabel.setMaxWidth(Double.MAX_VALUE);
-        programMemoryGridPane.add(progrmMemoryLabel,4,0,12,1);
+      //  programMemoryGridPane.add(progrmMemoryLabel,4,0,12,1);
 
-        programMemoryInfoTab.setContent(programMemoryGridPane);
+        programMemoryBorderPane.setTop(progrmMemoryLabel);
+        programMemoryBorderPane.setCenter(programMemoryTextArea);
+
+        programMemoryInfoTab.setContent(programMemoryBorderPane);
+       // programMemoryInfoTab.setContent(programMemoryGridPane);
 
         StringBuilder content = new StringBuilder();
         content.append("\t 0\t");
@@ -1537,16 +1570,16 @@ public class MainStage extends Application {
 
         mainStage.fullScreenProperty().addListener((observable, oldValue, newValue) -> {
             drawFrame();
-            resizeComponents();
+       //     resizeComponents();
         });
 
         mainScene.heightProperty().addListener((observable, oldValue, newValue) -> {
             drawFrame();
-            resizeComponents();
+       //     resizeComponents();
         });
         mainScene.widthProperty().addListener((observable, oldValue, newValue) -> {
             drawFrame();
-            resizeComponents();
+       //     resizeComponents();
         });
         mainStage.setOnCloseRequest(event -> continuousRunFlag=false);
         drawFrame();
@@ -1675,8 +1708,10 @@ public class MainStage extends Application {
     }
 
     public void drawFrame() {
-        double width = mainStage.getWidth() * 3.0 / 10.0;
+        //double width = mainStage.getWidth() * 3.0 / 10.0;
+        double width = 240;
         double height = mainScene.getHeight() * 1.0 / 10.0;
+        height = 60;
 
         ledCanvas.setWidth(width);
         ledCanvas.setHeight(height);
@@ -1813,8 +1848,8 @@ public class MainStage extends Application {
         gc.fillRoundRect(width / 2.0 + marginX, marginY + shorter + longer + shorter, shorter, longer, 10, 10);//e
 
         width = mainStage.getWidth();
-        height = mainStage.getHeight() * (37.0 / 100.0);
-
+        //height = mainStage.getHeight() * (37.0 / 100.0);
+        height = 200;
         portsStatusCanvas.setWidth(width);
         portsStatusCanvas.setHeight(height);
         gc = portsStatusCanvas.getGraphicsContext2D();
@@ -1901,6 +1936,20 @@ public class MainStage extends Application {
                 textToSet.append("\n");
         }
         editorTextArea.setText(textToSet.toString());
+    }
+
+    public void przebiegAktualizacja(){
+        if(usedScale==256) {
+            usedScale = 0;
+        }
+        if (Main.cpu.getTimePassed() - passedTime >= interval) {
+            passedTime = Main.cpu.getTimePassed();
+            int wartoscp0 = Main.cpu.mainMemory.get("P0");
+            series.getData().add(new XYChart.Data(usedScale,wartoscp0));
+            series.getData().add(new XYChart.Data(usedScale,wartoscp0));
+            series.getData().add(new XYChart.Data(usedScale,wartoscp0));
+            usedScale++;
+        }
     }
 
     private GridPane mainGridPane;
@@ -2095,5 +2144,22 @@ public class MainStage extends Application {
 
     private MenuItem exportFileMenuItem;
     private MenuItem importFileMenuItem;
+
+    private XYChart.Series series;
+
+    private long passedTime = 0;
+    private int scale = 256;
+    private int usedScale = 0;
+
+    private int interval = 1;
+
+    private void resetPrzebieg() {
+        passedTime = 0;
+        scale = 256;
+        usedScale = 0;
+        series.getData().clear();
+
+
+    }
 
 }

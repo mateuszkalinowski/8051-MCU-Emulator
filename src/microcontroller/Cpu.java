@@ -30,10 +30,8 @@ public class Cpu {
         interrupts.add(false);
         higherInterrupt=5;
     }
-
     private void machineCycle(){
         timePassed++;
-
         String port0String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P0")));
         char[] port0Char = port0String.toCharArray();
         for(int i = Main.stage.portChartScale-1; i >=1;i--) {
@@ -1704,6 +1702,8 @@ public class Cpu {
         number = numberBuilder.toString();
         return number;
     }
+
+    public long getTimePassed(){return timePassed;}
     public void resetCounter(){
         linePointer = 0;
     }
