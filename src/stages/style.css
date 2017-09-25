@@ -3,3 +3,33 @@
     -fx-background-color: #34d87b;
     -fx-padding: 2px ;
 }
+
+.chart {
+    -fx-background-color:  black;
+}
+
+.chart-plot-background {
+    -fx-background-color: black;
+}
+
+.chart-title {
+  -fx-text-fill: green;
+  -fx-font-size: 1.6em;
+}
+
+.axis {
+    -fx-font-size: 1.4em;
+    -fx-tick-label-fill: green;
+}
+
+.axis-label {
+   -fx-text-fill: #462300;
+}
+
+.axis-tick-mark {
+    -fx-stroke: #637040;
+    -fx-stroke-width: 3;
+}
+.axis-minor-tick-mark {
+    -fx-stroke: #859656;
+}
