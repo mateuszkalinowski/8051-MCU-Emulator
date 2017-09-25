@@ -44,43 +44,140 @@ public class OscilloscopeStage extends Application {
         rangeSelectLabel.setAlignment(Pos.CENTER);
         rangeSelectLabel.setFont(new Font("Arial",14));
 
+        intervalSelectionLabel = new Label("10^0 mks");
+        intervalSelectionLabel.setMaxWidth(Double.MAX_VALUE);
+        intervalSelectionLabel.setAlignment(Pos.CENTER);
+        intervalSelectionLabel.setFont(new Font("Arial",14));
+
 
         portSelectComboBox = new ComboBox<>();
         portSelectComboBox.getItems().addAll("P0","P1","P2","P3");
         portSelectComboBox.setMaxWidth(100);
         portSelectComboBox.getSelectionModel().selectFirst();
 
-        intervalSlider = new Slider();
-        intervalSlider.setMin(1);
-        intervalSlider.setMax(100);
-        intervalSlider.setValue(interval);
-
-        intervalSlider.valueProperty().addListener(new ChangeListener<Number>() {
+        portSelectComboBox.valueProperty().addListener(new ChangeListener<String>() {
             @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                interval = newValue.intValue();
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 resetPrzebieg();
                 createChart();
             }
         });
 
-        HBox buttonBox = new HBox();
-        buttonBox.setPadding(new Insets(10,10,10,10));
-        buttonBox.setAlignment(Pos.CENTER);
+        intervalSlider = new Slider();
+        intervalSlider.setMin(1);
+        intervalSlider.setMax(10);
+        intervalSlider.setValue(interval);
+        intervalSlider.setShowTickLabels(true);
+        intervalSlider.setShowTickMarks(true);
+        intervalSlider.setMajorTickUnit(1);
+        intervalSlider.setMinorTickCount(0);
+        intervalSlider.setSnapToTicks(true);
+
+        intervalSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                interval = (int)Math.pow(10,newValue.intValue()-1);
+                intervalSelectionLabel.setText("10^" + (newValue.intValue()-1)+ " mks");
+                resetPrzebieg();
+                createChart();
+            }
+        });
+
+        VBox lowerBox = new VBox();
+
+        HBox upperButtonBox = new HBox();
+        upperButtonBox.setPadding(new Insets(10,10,10,10));
+        upperButtonBox.setAlignment(Pos.CENTER);
         HBox.setHgrow(portSelectLabel,Priority.ALWAYS);
         HBox.setHgrow(portSelectComboBox,Priority.ALWAYS);
         HBox.setHgrow(intervalSelectLabel,Priority.ALWAYS);
+        HBox.setHgrow(intervalSelectionLabel,Priority.ALWAYS);
 
-        buttonBox.setSpacing(5);
+        upperButtonBox.setSpacing(5);
 
-        buttonBox.getChildren().addAll(portSelectLabel,portSelectComboBox,intervalSelectLabel,intervalSlider);
+        upperButtonBox.getChildren().addAll(portSelectLabel,portSelectComboBox,intervalSelectLabel,intervalSlider,intervalSelectionLabel);
+        lowerBox.getChildren().add(upperButtonBox);
 
-        mainBorderPane.setBottom(buttonBox);
+
+        HBox lowerButtonBox = new HBox();
+        lowerButtonBox.setPadding(new Insets(10,10,10,10));
+        lowerButtonBox.setAlignment(Pos.CENTER);
+
+        lowerButtonBox.setSpacing(5);
+
+        xRangeLabel = new Label("Zakres X: ");
+        xRangeLabel.setMaxWidth(Double.MAX_VALUE);
+        xRangeLabel.setAlignment(Pos.CENTER);
+        xRangeLabel.setFont(new Font("Arial",14));
+
+        yRangeLabel = new Label("Zakres Y: ");
+        yRangeLabel.setMaxWidth(Double.MAX_VALUE);
+        yRangeLabel.setAlignment(Pos.CENTER);
+        yRangeLabel.setFont(new Font("Arial",14));
+
+        HBox.setHgrow(xRangeLabel,Priority.ALWAYS);
+        HBox.setHgrow(yRangeLabel,Priority.ALWAYS);
+
+        XRangeSelect = new Slider();
+        XRangeSelect.setMin(10);
+        XRangeSelect.setMax(500);
+        XRangeSelect.setValue(XAxisRange);
+        XRangeSelect.setShowTickLabels(true);
+        XRangeSelect.setShowTickMarks(true);
+        XRangeSelect.setMajorTickUnit(100);
+        XRangeSelect.setMinorTickCount(1);
+        XRangeSelect.setSnapToTicks(true);
+
+        XRangeSelect.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+               /* interval = (int)Math.pow(10,newValue.intValue()-1);
+                intervalSelectionLabel.setText("10^" + (newValue.intValue()-1)+ " mks");*/
+                XAxisRange = newValue.doubleValue();
+                scale = (int)newValue.doubleValue();
+                resetPrzebieg();
+                createChart();
+            }
+        });
+
+
+        YRangeSelect = new Slider();
+        YRangeSelect.setMin(1);
+        YRangeSelect.setMax(5);
+        YRangeSelect.setValue(YAxisRange);
+        YRangeSelect.setShowTickLabels(true);
+        YRangeSelect.setShowTickMarks(true);
+        YRangeSelect.setMajorTickUnit(1);
+        YRangeSelect.setMinorTickCount(1);
+        YRangeSelect.setSnapToTicks(true);
+
+        YRangeSelect.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+               /* interval = (int)Math.pow(10,newValue.intValue()-1);
+                intervalSelectionLabel.setText("10^" + (newValue.intValue()-1)+ " mks");*/
+                YAxisRange = newValue.doubleValue();
+                resetPrzebieg();
+                createChart();
+            }
+        });
+
+
+
+
+
+        lowerButtonBox.getChildren().addAll(xRangeLabel,XRangeSelect,yRangeLabel,YRangeSelect);
+        lowerBox.getChildren().add(lowerButtonBox);
+
+
+        mainBorderPane.setBottom(lowerBox);
 
         Scene mainScene = new Scene(mainBorderPane, 600, 500);
+        mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
         mainStage.setScene(mainScene);
         mainStage.setTitle("Oscyloskop");
-        mainStage.setResizable(false);
+        mainStage.setResizable(true);
+
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -95,14 +192,14 @@ public class OscilloscopeStage extends Application {
         if (Main.cpu.getTimePassed() - passedTime >= interval) {
             passedTime = Main.cpu.getTimePassed();
             int wartoscp0 = Main.cpu.mainMemory.get(portSelectComboBox.getSelectionModel().getSelectedItem());
-            series.getData().add(new XYChart.Data(usedScale,wartoscp0));
+            series.getData().add(new XYChart.Data(usedScale,5.0 * (wartoscp0/255.0)));
             usedScale++;
         }
     }
 
     private void createChart(){
-        final NumberAxis xAxis = new NumberAxis(0,100,10);
-        final NumberAxis yAxis = new NumberAxis(0,255,10);
+        final NumberAxis xAxis = new NumberAxis(0,XAxisRange,XAxisRange/10.0);
+        final NumberAxis yAxis = new NumberAxis(-YAxisRange*0.1,YAxisRange*1.1,YAxisRange*1.2/10.0);
 
         final ScatterChart<Number,Number> lineChart =
                 new ScatterChart<Number,Number>(xAxis,yAxis);
@@ -121,6 +218,9 @@ public class OscilloscopeStage extends Application {
     private int scale = 100;
     private int usedScale = 0;
 
+    private double XAxisRange = 100;
+    private double YAxisRange = 5;
+
     private int interval = 1;
 
     public void resetPrzebieg() {
@@ -132,9 +232,15 @@ public class OscilloscopeStage extends Application {
     Label portSelectLabel;
     Label intervalSelectLabel;
     Label rangeSelectLabel;
+    Label intervalSelectionLabel;
+
+    Label xRangeLabel;
+    Label yRangeLabel;
+
     ComboBox<String> portSelectComboBox;
     Slider intervalSlider;
-    Slider rangeSelect;
+    Slider XRangeSelect;
+    Slider YRangeSelect;
 
 
 }
