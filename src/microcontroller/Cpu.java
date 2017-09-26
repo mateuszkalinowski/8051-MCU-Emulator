@@ -270,13 +270,20 @@ public class Cpu {
                 wartosc=255;
 
             mainMemory.put(rejestrString,wartosc);
-
-            if(wartosc>0) {
+            //TODO
+           /* if(wartosc>0) {
                 int wynik = linePointer+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
+               System.out.println(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
                 if(wynik>255)
                     wynik-=256;
                 linePointer = wynik;
-            }
+            }*/
+           if(wartosc>0) {
+               int wynik = Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
+               if(wynik>127)
+                   wynik = wynik - 256;
+               linePointer = linePointer + 1 + 1 + wynik;
+           }
             if(wartosc==0) {
                 linePointer+=2;
             }

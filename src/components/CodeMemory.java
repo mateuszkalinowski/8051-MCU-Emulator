@@ -180,7 +180,6 @@ public class CodeMemory {
                     linieZNumerami.add(backupLinii.trim());
                 }
                 if(line.length()>0) {
-
                     line = line.replace(',', ' ');
                     line = line.trim();
                     String[] splittedLine = line.split(" +");
