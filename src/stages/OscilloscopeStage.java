@@ -2,8 +2,11 @@ package stages;
 
 import core.Main;
 import javafx.application.Application;
+import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -20,12 +23,16 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 /**
  * Created by Mateusz on 24.09.2017.
  * Project InferenceEngine
  */
 public class OscilloscopeStage extends Application {
     public OscilloscopeStage() {
+
+        chartDataArrayList = new ArrayList<>();
 
         createChart();
 
@@ -44,10 +51,13 @@ public class OscilloscopeStage extends Application {
         rangeSelectLabel.setAlignment(Pos.CENTER);
         rangeSelectLabel.setFont(new Font("Arial",14));
 
-        intervalSelectionLabel = new Label("10^0 mks");
-        intervalSelectionLabel.setMaxWidth(Double.MAX_VALUE);
+        intervalSelectionLabel = new Label();
+        intervalSelectionLabel.setText("1 mikrosekunda");
+        //intervalSelectionLabel.setMaxWidth(Double.MAX_VALUE);
         intervalSelectionLabel.setAlignment(Pos.CENTER);
         intervalSelectionLabel.setFont(new Font("Arial",14));
+        intervalSelectionLabel.setMaxWidth(120);
+        intervalSelectionLabel.setMinWidth(120);
 
 
         portSelectComboBox = new ComboBox<>();
@@ -76,8 +86,50 @@ public class OscilloscopeStage extends Application {
         intervalSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                interval = (int)Math.pow(10,newValue.intValue()-1);
-                intervalSelectionLabel.setText("10^" + (newValue.intValue()-1)+ " mks");
+                //interval = (int)Math.pow(10,newValue.intValue()-1);
+                //intervalSelectionLabel.setText("10^" + (newValue.intValue()-1)+ " mks");
+                int tmpInterval = newValue.intValue();
+                if(tmpInterval==1) {
+                    interval = 1;
+                    intervalSelectionLabel.setText("1 mikrosekunda");
+                }
+                if(tmpInterval==2) {
+                    interval = 10;
+                    intervalSelectionLabel.setText("10 mikrosekund");
+                }
+                if(tmpInterval==3) {
+                    interval = 50;
+                    intervalSelectionLabel.setText("50 mikrosekund");
+                }
+                if(tmpInterval==4) {
+                    interval = 100;
+                    intervalSelectionLabel.setText("100 mikrosekund");
+                }
+                if(tmpInterval==5) {
+                    interval = 1000;
+                    intervalSelectionLabel.setText("1 milisekunda");
+                }
+                if(tmpInterval==6) {
+                    interval = 10000;
+                    intervalSelectionLabel.setText("10 milisekund");
+                }
+                if(tmpInterval==7) {
+                    interval = 50000;
+                    intervalSelectionLabel.setText("50 milisekund");
+                }
+                if(tmpInterval==8) {
+                    interval = 100000;
+                    intervalSelectionLabel.setText("100 milisekund");
+                }
+                if(tmpInterval==9) {
+                    interval = 1000000;
+                    intervalSelectionLabel.setText("1 sekunda");
+                }
+                if(tmpInterval==10) {
+                    interval = 10000000;
+                    intervalSelectionLabel.setText("10 sekund");
+                }
+
                 resetPrzebieg();
                 createChart();
             }
@@ -119,8 +171,8 @@ public class OscilloscopeStage extends Application {
         HBox.setHgrow(yRangeLabel,Priority.ALWAYS);
 
         XRangeSelect = new Slider();
-        XRangeSelect.setMin(10);
-        XRangeSelect.setMax(500);
+        XRangeSelect.setMin(100);
+        XRangeSelect.setMax(900);
         XRangeSelect.setValue(XAxisRange);
         XRangeSelect.setShowTickLabels(true);
         XRangeSelect.setShowTickMarks(true);
@@ -131,8 +183,6 @@ public class OscilloscopeStage extends Application {
         XRangeSelect.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-               /* interval = (int)Math.pow(10,newValue.intValue()-1);
-                intervalSelectionLabel.setText("10^" + (newValue.intValue()-1)+ " mks");*/
                 XAxisRange = newValue.doubleValue();
                 scale = (int)newValue.doubleValue();
                 resetPrzebieg();
@@ -154,8 +204,6 @@ public class OscilloscopeStage extends Application {
         YRangeSelect.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-               /* interval = (int)Math.pow(10,newValue.intValue()-1);
-                intervalSelectionLabel.setText("10^" + (newValue.intValue()-1)+ " mks");*/
                 YAxisRange = newValue.doubleValue();
                 resetPrzebieg();
                 createChart();
@@ -193,9 +241,11 @@ public class OscilloscopeStage extends Application {
             passedTime = Main.cpu.getTimePassed();
             int wartoscp0 = Main.cpu.mainMemory.get(portSelectComboBox.getSelectionModel().getSelectedItem());
             series.getData().add(new XYChart.Data(usedScale,5.0 * (wartoscp0/255.0)));
+
             usedScale++;
         }
     }
+
 
     private void createChart(){
         final NumberAxis xAxis = new NumberAxis(0,XAxisRange,XAxisRange/10.0);
@@ -242,5 +292,6 @@ public class OscilloscopeStage extends Application {
     Slider XRangeSelect;
     Slider YRangeSelect;
 
+    ArrayList<Double> chartDataArrayList;
 
 }

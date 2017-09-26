@@ -297,10 +297,10 @@ public class Cpu {
             mainMemory.putDirect(codeMemory.getFromAddress(linePointer+1),wartosc);
 
             if(wartosc>0) {
-                int wynik = linePointer+1+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
-                if(wynik>255)
-                    wynik-=256;
-                linePointer = wynik;
+                int wynik = Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
+                if(wynik>127)
+                    wynik = wynik - 256;
+                linePointer = linePointer+1+1+1+wynik;
             }
             if(wartosc==0) {
                 linePointer+=3;
@@ -1332,10 +1332,10 @@ public class Cpu {
         else if(toExecute.equals("10000000")) {
             machineCycle();
             machineCycle();
-            int wynik = linePointer+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
-            if(wynik>255)
+            int wynik = Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
+            if(wynik>127)
                 wynik-=256;
-            linePointer = wynik;
+            linePointer = linePointer + 1 + 1 +wynik;
         }
 
             if (interrupts.get(1)) {

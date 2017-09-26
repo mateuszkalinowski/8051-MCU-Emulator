@@ -1288,8 +1288,9 @@ public class MainStage extends Application {
         chartBorderPane.setCenter(lineChart);
         chartPane.setContent(chartBorderPane);
 
-        //editorElementsGridPane.add(diodesPaneGridPane,1,0);
-        editorElementsGridPane.add(elementsTabPane,1,0);
+        editorElementsGridPane.add(diodesPaneGridPane,1,0);
+
+       // editorElementsGridPane.add(elementsTabPane,1,0);
 
 
         rysujRunButton = new Button("Generuj Przebieg");
@@ -1408,7 +1409,7 @@ public class MainStage extends Application {
         content.append("\n");
 
         for(int i = 0; i < 128;i++) {
-            content.append(i).append("\t");
+            content.append(Integer.toHexString(i)).append("\t");
             for(int j = 0; j < 16;j++) {
                 if(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).length()==1) {
                     content.append(" " + "0").append(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i * 16 + j), 2)).toUpperCase()).append(" ");
