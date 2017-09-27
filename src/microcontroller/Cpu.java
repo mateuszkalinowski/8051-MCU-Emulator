@@ -34,30 +34,22 @@ public class Cpu {
         timePassed++;
         String port0String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P0")));
         char[] port0Char = port0String.toCharArray();
-        for(int i = Main.stage.portChartScale-1; i >=1;i--) {
-            Main.stage.port0History[i] = Main.stage.port0History[i-1];
-        }
+        System.arraycopy(Main.stage.port0History, 0, Main.stage.port0History, 1, Main.stage.portChartScale - 1);
         Main.stage.port0History[0] = port0Char;
 
         String port1String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P1")));
         char[] port1Char = port1String.toCharArray();
-        for(int i = Main.stage.portChartScale-1; i >=1;i--) {
-            Main.stage.port1History[i] = Main.stage.port1History[i-1];
-        }
+        System.arraycopy(Main.stage.port1History, 0, Main.stage.port1History, 1, Main.stage.portChartScale - 1);
         Main.stage.port1History[0] = port1Char;
 
         String port2String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P2")));
         char[] port2Char = port2String.toCharArray();
-        for(int i = Main.stage.portChartScale-1; i >=1;i--) {
-            Main.stage.port2History[i] = Main.stage.port2History[i-1];
-        }
+        System.arraycopy(Main.stage.port2History, 0, Main.stage.port2History, 1, Main.stage.portChartScale - 1);
         Main.stage.port2History[0] = port2Char;
 
         String port3String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P3")));
         char[] port3Char = port3String.toCharArray();
-        for(int i = Main.stage.portChartScale-1; i >=1;i--) {
-            Main.stage.port3History[i] = Main.stage.port3History[i-1];
-        }
+        System.arraycopy(Main.stage.port3History, 0, Main.stage.port3History, 1, Main.stage.portChartScale - 1);
         Main.stage.port3History[0] = port3Char;
 
         int tmod = mainMemory.get("TMOD");
@@ -270,14 +262,6 @@ public class Cpu {
                 wartosc=255;
 
             mainMemory.put(rejestrString,wartosc);
-            //TODO
-           /* if(wartosc>0) {
-                int wynik = linePointer+1+1+Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
-               System.out.println(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
-                if(wynik>255)
-                    wynik-=256;
-                linePointer = wynik;
-            }*/
            if(wartosc>0) {
                int wynik = Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2);
                if(wynik>127)
@@ -1700,7 +1684,7 @@ public class Cpu {
         number = numberBuilder.toString();
         return number;
     }
-    public static String expandTo16Digits(String number) {
+    private static String expandTo16Digits(String number) {
         int howMany = 16 - number.length();
         StringBuilder numberBuilder = new StringBuilder(number);
         for(; howMany>0; howMany--) {
@@ -1711,9 +1695,6 @@ public class Cpu {
     }
 
     public long getTimePassed(){return timePassed;}
-    public void resetCounter(){
-        linePointer = 0;
-    }
 
     private ArrayList<Boolean> interrupts = new ArrayList<>();
 

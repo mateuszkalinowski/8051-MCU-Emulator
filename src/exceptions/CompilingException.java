@@ -11,4 +11,7 @@ public class CompilingException extends Exception {
     public CompilingException(String message) {
         super(message);
     }
+    public CompilingException(int numer,String message) {
+        super("Linia: " + numer + " " + message);
+    }
 }

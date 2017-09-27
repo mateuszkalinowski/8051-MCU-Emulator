@@ -210,22 +210,16 @@ public class OscilloscopeStage extends Application {
             }
         });
 
-
-
-
-
         lowerButtonBox.getChildren().addAll(xRangeLabel,XRangeSelect,yRangeLabel,YRangeSelect);
         lowerBox.getChildren().add(lowerButtonBox);
-
-
         mainBorderPane.setBottom(lowerBox);
-
-        Scene mainScene = new Scene(mainBorderPane, 600, 500);
+        Scene mainScene = new Scene(mainBorderPane,600,500);
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
         mainStage.setScene(mainScene);
         mainStage.setTitle("Oscyloskop");
         mainStage.setResizable(true);
-
+        mainStage.setMinHeight(600);
+        mainStage.setMinWidth(500);
     }
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -254,14 +248,14 @@ public class OscilloscopeStage extends Application {
         final ScatterChart<Number,Number> lineChart =
                 new ScatterChart<Number,Number>(xAxis,yAxis);
         lineChart.setLegendVisible(false);
-        lineChart.setTitle("Oscyloskop");
+        //lineChart.setTitle("Oscyloskop");
         series = new XYChart.Series();
         lineChart.getData().add(series);
         mainBorderPane.setCenter(lineChart);
 
     }
-    BorderPane mainBorderPane = new BorderPane();
-    Stage mainStage = new Stage();
+    private BorderPane mainBorderPane = new BorderPane();
+    private Stage mainStage = new Stage();
     private XYChart.Series series;
 
     private long passedTime = 0;
@@ -279,19 +273,19 @@ public class OscilloscopeStage extends Application {
         series.getData().clear();
     }
 
-    Label portSelectLabel;
-    Label intervalSelectLabel;
-    Label rangeSelectLabel;
-    Label intervalSelectionLabel;
+    private Label portSelectLabel;
+    private Label intervalSelectLabel;
+    private Label rangeSelectLabel;
+    private Label intervalSelectionLabel;
 
-    Label xRangeLabel;
-    Label yRangeLabel;
+    private Label xRangeLabel;
+    private Label yRangeLabel;
 
-    ComboBox<String> portSelectComboBox;
-    Slider intervalSlider;
-    Slider XRangeSelect;
-    Slider YRangeSelect;
+    private ComboBox<String> portSelectComboBox;
+    private Slider intervalSlider;
+    private Slider XRangeSelect;
+    private Slider YRangeSelect;
 
-    ArrayList<Double> chartDataArrayList;
+    private ArrayList<Double> chartDataArrayList;
 
 }

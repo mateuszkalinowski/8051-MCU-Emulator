@@ -118,17 +118,17 @@ public class Memory {
     }
 
 
-    public String get8BitAddress(String label) throws NoSuchElementException{
+    String get8BitAddress(String label) throws NoSuchElementException{
         try {
             if(!memoryCellsNames.containsKey(label))
              throw new NoSuchElementException();
             int wartosc = memoryCellsNames.get(label);
-            String result = Integer.toBinaryString(wartosc);
+            StringBuilder result = new StringBuilder(Integer.toBinaryString(wartosc));
 
             for (int i = result.length(); i < 8; i++) {
-                result = "0" + result;
+                result.insert(0, "0");
             }
-            return result;
+            return result.toString();
         }
         catch (Exception e) {
             throw new NoSuchElementException();
@@ -230,10 +230,10 @@ public class Memory {
 
     private char[][] mainMemory;
 
-    String latcherP0 = "11111111";
-    String latcherP1 = "11111111";
-    String latcherP2 = "11111111";
-    String latcherP3 = "11111111";
+    private String latcherP0 = "11111111";
+    private String latcherP1 = "11111111";
+    private String latcherP2 = "11111111";
+    private String latcherP3 = "11111111";
 
     public char[] buttonsState = {'1','1','1','1','1','1','1','1'};
 
