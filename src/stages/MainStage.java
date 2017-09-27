@@ -1306,7 +1306,7 @@ public class MainStage extends Application {
         programMemoryTextArea = new TextArea();
         programMemoryTextArea.setFont(new Font("Arial",13));
         programMemoryTextArea.setEditable(false);
-        programMemoryTextArea.setMaxWidth(550.0);
+        programMemoryTextArea.setMaxWidth(530.0);
 
         BorderPane programMemoryBorderPane = new BorderPane();
         programMemoryBorderPane.setCenter(programMemoryTextArea);
@@ -1847,7 +1847,6 @@ public class MainStage extends Application {
         gc.fillText("P4",XMargin+oneWidht+betweenMargin+oneWidht+betweenMargin+oneWidht+betweenMargin+oneWidht/2,upperMargin/2.0);
     }
 
-
     private Canvas seg7Canvas =  new Canvas();
     private Canvas portsStatusCanvas = new Canvas();
 
@@ -1869,8 +1868,6 @@ public class MainStage extends Application {
     public char[][] port1History;
     public char[][] port2History;
     public char[][] port3History;
-
-
 
     private BorderPane mainBorderPane;
 
@@ -2035,8 +2032,6 @@ public class MainStage extends Application {
 
     private String lines[];
 
-
-
     private boolean running;
 
     private GridPane diodesPaneGridPane;
@@ -2055,12 +2050,6 @@ public class MainStage extends Application {
     private MenuItem importFileMenuItem;
 
     private XYChart.Series series;
-
-    private long passedTime = 0;
-    private int scale = 256;
-    private int usedScale = 0;
-
-    private int interval = 1;
 
     private OscilloscopeStage OscilloscopePane = new OscilloscopeStage();
 
