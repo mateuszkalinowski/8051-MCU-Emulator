@@ -183,7 +183,7 @@ public class CodeMemory {
                 if(line.length()>0) {
                     line = line.replace(',', ' ');
                     line = line.trim();
-                    String[] splittedLine = line.split(" +");
+                    String[] splittedLine = line.split("\\s+");
                     if(splittedLine[0].charAt(splittedLine[0].length()-1)==':') {
                         if(getLineFromLabel(splittedLine[0].toUpperCase().substring(0,splittedLine[0].length()-1))==-1) {
                             try {
@@ -234,17 +234,25 @@ public class CodeMemory {
                     else {
                         int backupPointer = pointer;
                         if(splittedLine[0].toUpperCase().equals("LCALL")) {
+
+                            if(splittedLine.length!=2) {
+                                throw new CompilingException(numeracjaLinii, "Niepoprawne uzycie LCALL: " + backupLinii + "'");
+                            }
                             emulatedCodeMemory.set(pointer,"00010010");
-                            try {
-                                String destination = make16DigitsStringFromNumber(splittedLine[1]);
-                                emulatedCodeMemory.set(pointer+1,destination.substring(0,8));
-                                emulatedCodeMemory.set(pointer+2,destination.substring(8,16));
-                            } catch (Exception e) {
-                                emulatedCodeMemory.set(pointer+1,splittedLine[1].toUpperCase());
+                            if(splittedLine[1].charAt(0)=='#') {
+                                String destination = make16DigitsStringFromNumber(splittedLine[1].substring(1));
+                                emulatedCodeMemory.set(pointer + 1, destination.substring(0, 8));
+                                emulatedCodeMemory.set(pointer + 2, destination.substring(8, 16));
+                            }
+                            else {
+                                    emulatedCodeMemory.set(pointer + 1, splittedLine[1].toUpperCase());
                             }
                             pointer+=3;
                         }
                         else if(splittedLine[0].toUpperCase().equals("MOVC")) {
+                            if(splittedLine.length!=3) {
+                                throw new CompilingException(numeracjaLinii, "Niepoprawne uzycie MOVC: " + backupLinii + "'");
+                            }
                             if(splittedLine[1].toUpperCase().equals("A") && splittedLine[2].toUpperCase().equals("@A+DPTR")){
                                 emulatedCodeMemory.set(pointer,"10010011");
                                 pointer+=1;
@@ -259,12 +267,18 @@ public class CodeMemory {
                         }
                         else if(splittedLine[0].toUpperCase().equals("LJMP")) {
                             emulatedCodeMemory.set(pointer,"00000010");
-                            try {
-                                 String destination = make16DigitsStringFromNumber(splittedLine[1]);
-                                emulatedCodeMemory.set(pointer+1,destination.substring(0,8));
-                                emulatedCodeMemory.set(pointer+2,destination.substring(8,16));
-                            } catch (Exception e) {
-                                emulatedCodeMemory.set(pointer+1,splittedLine[1].toUpperCase());
+
+                            if(splittedLine.length!=2) {
+                                throw new CompilingException(numeracjaLinii, "Niepoprawne uzycie LJMP: " + backupLinii + "'");
+                            }
+
+                            if(splittedLine[1].charAt(0)=='#') {
+                                String destination = make16DigitsStringFromNumber(splittedLine[1].substring(1));
+                                emulatedCodeMemory.set(pointer + 1, destination.substring(0, 8));
+                                emulatedCodeMemory.set(pointer + 2, destination.substring(8, 16));
+                            }
+                            else {
+                                emulatedCodeMemory.set(pointer + 1, splittedLine[1].toUpperCase());
                             }
                             pointer+=3;
                         }
@@ -353,6 +367,10 @@ public class CodeMemory {
                         else if(splittedLine[0].toUpperCase().equals("INC")) {
                             if(splittedLine[1].toUpperCase().equals("A")) {
                                 emulatedCodeMemory.set(pointer,"00000100");
+                                pointer+=1;
+                            }
+                            if(splittedLine[1].toUpperCase().equals("DPTR")) {
+                                emulatedCodeMemory.set(pointer,"10100011");
                                 pointer+=1;
                             }
                             else if(splittedLine[1].toUpperCase().charAt(0) == 'R') {
@@ -1054,7 +1072,23 @@ public class CodeMemory {
 
 
                                 }
-                            }  else  {
+                            } else if(splittedLine[1].toUpperCase().equals("DPTR")) {
+                              //TODO
+                                if(splittedLine[2].charAt(0) != '#') {
+                                    throw new CompilingException(numeracjaLinii,"Niepoprawna wartosc liczbowa ustawienia rejestru dptr: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
+                                }
+                                try {
+                                    String number = make16DigitsStringFromNumber(splittedLine[2].substring(1));
+                                    emulatedCodeMemory.set(pointer,"10010000");
+                                    emulatedCodeMemory.set(pointer+1,number.substring(0,8));
+                                    emulatedCodeMemory.set(pointer+2,number.substring(8,16));
+                                    pointer+=3;
+
+                                } catch (Exception e) {
+                                    throw new CompilingException(numeracjaLinii,"Niepoprawna wartosc liczbowa ustawienia rejestru dptr: '" + splittedLine[2] + "', linia: '" + backupLinii+"'");
+                                }
+
+                            } else {
                                 if(splittedLine[2].toUpperCase().equals("A")) {
                                     try {
                                         String address = Main.cpu.mainMemory.get8BitAddress(splittedLine[1].toUpperCase());
@@ -1643,6 +1677,8 @@ public class CodeMemory {
                     throw new NumberFormatException();
                 }
             }
+            if(wartosc>255 || wartosc < 0)
+                throw new NumberFormatException();
             result = new StringBuilder(Integer.toBinaryString(wartosc));
             int length = result.length();
             for(int i = length;i<8;i++) {

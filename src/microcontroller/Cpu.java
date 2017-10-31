@@ -186,6 +186,24 @@ public class Cpu {
             mainMemory.put("A",wartosc);
             linePointer+=1;
         }
+
+        else if(toExecute.equals("10100011")) {//INC DPTR
+            machineCycle();
+            machineCycle();
+            String number = expandTo8Digits(Integer.toString(mainMemory.get("DPH"),2));
+            number = number + expandTo8Digits(Integer.toString(mainMemory.get("DPL"),2));
+            int wartosc = Integer.parseInt(number,2);
+            wartosc+=1;
+            if(wartosc>65535)
+                wartosc = 0;
+
+            number = expandTo16Digits(Integer.toBinaryString(wartosc));
+
+            mainMemory.put("DPH",Integer.valueOf(number.substring(0,8),2));
+            mainMemory.put("DPL",Integer.valueOf(number.substring(8,16),2));
+            linePointer+=1;
+        }
+
         else if(toExecute.substring(0,5).equals("00001")) { //INC Rx
             machineCycle();
             int rejestr = Integer.parseInt(toExecute.substring(5,8),2);
@@ -746,6 +764,16 @@ public class Cpu {
             mainMemory.put("A",Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
             linePointer+=2;
         }
+        else if(toExecute.equals("10010000")) { // MOV dptr,#wartosc
+            machineCycle();
+            machineCycle();
+            mainMemory.put("DPH",Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            mainMemory.put("DPL",Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2));
+            linePointer+=3;
+        }
+
+
+
         else if(toExecute.substring(0,5).equals("11101")) { //MOV A,Rx
             machineCycle();
             int rejestr = Integer.parseInt(toExecute.substring(5,8),2);

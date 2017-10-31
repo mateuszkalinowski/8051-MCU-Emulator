@@ -713,7 +713,7 @@ public class MainStage extends Application {
             catch (CompilingException e) {
                 Main.stage.compilationErrorsLabel.setText("Błąd: " + e.getMessage());
                 Main.stage.compilationErrorsLabel.setStyle("-fx-background-color: red; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
-
+                Main.stage.compilationErrorsLabel.setTooltip(new Tooltip("Błąd: " + e.getMessage()));
             }
         });
 
@@ -1487,7 +1487,7 @@ public class MainStage extends Application {
         memoryInfoTab.setContent(mainMemoryGridPane);
 
         mainStage = primaryStage;
-        mainStage.setTitle("8051 MCU Emulator - 0.9 Alpha");
+        mainStage.setTitle("8051 MCU Emulator - 0.9.1 Alpha");
         mainBorderPane.setCenter(mainGridPane);
         mainScene = new Scene(mainBorderPane,width,height);
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
@@ -1508,7 +1508,11 @@ public class MainStage extends Application {
         mainScene.widthProperty().addListener((observable, oldValue, newValue) -> {
             drawFrame();
         });
-        mainStage.setOnCloseRequest(event -> continuousRunFlag=false);
+        mainStage.setOnCloseRequest(event -> {
+            continuousRunFlag=false;
+            Platform.exit();
+            System.exit(0);
+        });
         drawFrame();
     }
 
