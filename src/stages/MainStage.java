@@ -1529,7 +1529,7 @@ public class MainStage extends Application {
         memoryInfoTab.setContent(mainMemoryGridPane);
 
         mainStage = primaryStage;
-        mainStage.setTitle("8051 MCU Emulator - 0.9.1 Alpha");
+        mainStage.setTitle("8051 MCU Emulator - 0.10.0 Alpha");
         mainBorderPane.setCenter(mainGridPane);
         mainScene = new Scene(mainBorderPane,width,height);
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
