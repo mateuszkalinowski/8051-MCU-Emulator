@@ -3,6 +3,7 @@ package components;
 import core.Main;
 import exceptions.CompilingException;
 import javafx.util.Pair;
+import stages.MainStage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ import java.util.Map;
 public class CodeMemory {
     public CodeMemory(){
         emulatedCodeMemory = new ArrayList<>();
-        for(int i = 0; i < 8192;i++) {
+        for(int i = 0; i < Main.cpu.programMemory;i++) {
             emulatedCodeMemory.add("00000000");
         }
 
@@ -156,7 +157,7 @@ public class CodeMemory {
     public ArrayList<String> setMemory(String[] lines) throws CompilingException {
         int pointer = 0;
         emulatedCodeMemory = new ArrayList<>();
-        for(int i = 0; i < 8192;i++) {
+        for(int i = 0; i < Main.cpu.programMemory; i++) {
             emulatedCodeMemory.add("00000000");
         }
         labels.clear();
@@ -204,17 +205,53 @@ public class CodeMemory {
                     if(splittedLine.length==0)
                         continue;
                     if(splittedLine[0].toUpperCase().equals("ORG") && splittedLine.length==2) {
-                        if(splittedLine[1].toUpperCase().charAt(splittedLine[1].length()-1)=='D') {
-                            pointer = Integer.parseInt(splittedLine[1].substring(0,splittedLine[1].length()-1));
-                            linieZNumerami.add(backupLinii);
+                        try {
+                            if(splittedLine[1].toUpperCase().charAt(splittedLine[1].length()-1)=='H') {
+                                pointer = Integer.parseInt(splittedLine[1].substring(0,splittedLine[1].length()-1),16);
+                                linieZNumerami.add(backupLinii);
+                            }
+                            else if(splittedLine[1].toUpperCase().charAt(splittedLine[1].length()-1)=='B') {
+                                pointer = Integer.parseInt(splittedLine[1].substring(0,splittedLine[1].length()-1),2);
+                                linieZNumerami.add(backupLinii);
+                            }
+                            else if (splittedLine[1].toUpperCase().charAt(splittedLine[1].length() - 1) == 'D') {
+                                pointer = Integer.parseInt(splittedLine[1].substring(0, splittedLine[1].length() - 1));
+                                linieZNumerami.add(backupLinii);
+                            }
+                            else {
+                                pointer = Integer.parseInt(splittedLine[1]);
+                                linieZNumerami.add(backupLinii);
+                            }
                         }
-                        if(splittedLine[1].toUpperCase().charAt(splittedLine[1].length()-1)=='H') {
-                            pointer = Integer.parseInt(splittedLine[1].substring(0,splittedLine[1].length()-1),16);
-                            linieZNumerami.add(backupLinii);
+                        catch (NumberFormatException e) {
+                            throw new CompilingException(numeracjaLinii,"Błędny adres: '" + splittedLine[1] + ", linia: " + backupLinii + "'");
                         }
-                        if(splittedLine[1].toUpperCase().charAt(splittedLine[1].length()-1)=='B') {
-                            pointer = Integer.parseInt(splittedLine[1].substring(0,splittedLine[1].length()-1),2);
-                            linieZNumerami.add(backupLinii);
+                    }
+                    else if(splittedLine[0].toUpperCase().equals("CODE") && splittedLine.length==3) {
+                        if(splittedLine[1].toUpperCase().equals("AT")) {
+                            try {
+                                if (splittedLine[2].toUpperCase().charAt(splittedLine[2].length() - 1) == 'H') {
+                                    pointer = Integer.parseInt(splittedLine[2].substring(0, splittedLine[2].length() - 1), 16);
+                                    linieZNumerami.add(backupLinii);
+                                }
+                                else if (splittedLine[2].toUpperCase().charAt(splittedLine[2].length() - 1) == 'B') {
+                                    pointer = Integer.parseInt(splittedLine[2].substring(0, splittedLine[2].length() - 1), 2);
+                                    linieZNumerami.add(backupLinii);
+                                }
+                                else if (splittedLine[2].toUpperCase().charAt(splittedLine[2].length() - 1) == 'D') {
+                                    pointer = Integer.parseInt(splittedLine[2].substring(0, splittedLine[2].length() - 1));
+                                    linieZNumerami.add(backupLinii);
+                                } else {
+                                    pointer = Integer.parseInt(splittedLine[2]);
+                                    linieZNumerami.add(backupLinii);
+                                }
+                            } catch (NumberFormatException e) {
+                                throw new CompilingException(numeracjaLinii, "Błędny adres: '" + splittedLine[2] + ", linia: " + backupLinii + "'");
+                            }
+                        }
+                        else {
+                            throw new CompilingException(numeracjaLinii, "Błędna instukcja: '"+ backupLinii +"'");
+
                         }
                     }
                     else if(splittedLine[0].toUpperCase().equals("DB")){
@@ -283,6 +320,9 @@ public class CodeMemory {
                             pointer+=3;
                         }
                         else if(splittedLine[0].toUpperCase().equals("DJNZ")) {
+                            if(splittedLine.length!=3) {
+                                throw new CompilingException(numeracjaLinii,"Niepoprawna ilość argumentów DJNZ: '" + backupLinii + "'");
+                            }
 
                             String numer = getRAddress(splittedLine[1].toUpperCase());
 
@@ -365,11 +405,13 @@ public class CodeMemory {
                                 throw new CompilingException(numeracjaLinii,"Błędnie użyta komenda CJNE: '" + backupLinii+"'");
                         }
                         else if(splittedLine[0].toUpperCase().equals("INC")) {
+                            if(splittedLine.length!=2)
+                                throw new CompilingException(numeracjaLinii,"Niepoprawna ilość argumentów funkcji INC: '" + backupLinii + "'");
                             if(splittedLine[1].toUpperCase().equals("A")) {
                                 emulatedCodeMemory.set(pointer,"00000100");
                                 pointer+=1;
                             }
-                            if(splittedLine[1].toUpperCase().equals("DPTR")) {
+                            else if(splittedLine[1].toUpperCase().equals("DPTR")) {
                                 emulatedCodeMemory.set(pointer,"10100011");
                                 pointer+=1;
                             }
@@ -405,6 +447,8 @@ public class CodeMemory {
                             }
                         }
                         else if(splittedLine[0].toUpperCase().equals("DEC")) {
+                            if(splittedLine.length!=2)
+                                throw new CompilingException(numeracjaLinii,"Niepoprawna ilość argumentów funkcji DEC: '" + backupLinii + "'");
                             if(splittedLine[1].toUpperCase().equals("A")) {
                                 emulatedCodeMemory.set(pointer,"00010100");
                                 pointer+=1;
@@ -441,6 +485,9 @@ public class CodeMemory {
                             }
                         }
                         else if (splittedLine[0].toUpperCase().equals("ANL")) {
+                            if(splittedLine.length!=3)
+                                throw new CompilingException(numeracjaLinii,"Niepoprawna ilość argumentów funkcji ANL: '" + backupLinii + "'");
+
                             if(splittedLine[1].toUpperCase().equals("A")) {
                                    if(splittedLine[2].charAt(0) == '#') {
                                        emulatedCodeMemory.set(pointer,"01010100");
@@ -581,6 +628,11 @@ public class CodeMemory {
                             }
                         }
                         else if (splittedLine[0].toUpperCase().equals("ORL")) {
+
+                            if(splittedLine.length!=3)
+                                throw new CompilingException(numeracjaLinii,"Niepoprawna ilość argumentów funkcji ORL: '" + backupLinii + "'");
+
+
                             if(splittedLine[1].toUpperCase().equals("A")) {
                                 if(splittedLine[2].charAt(0) == '#') {
                                     emulatedCodeMemory.set(pointer,"01000100");
@@ -720,11 +772,12 @@ public class CodeMemory {
                             }
                         }
 
-                        /*
-                            XRL
-                         */
-
                         else if (splittedLine[0].toUpperCase().equals("XRL")) {
+
+                            if(splittedLine.length!=3)
+                                throw new CompilingException(numeracjaLinii,"Niepoprawna ilość argumentów funkcji ANL: '" + backupLinii + "'");
+
+
                             if(splittedLine[1].toUpperCase().equals("A")) {
                                 if(splittedLine[2].charAt(0) == '#') {
                                     emulatedCodeMemory.set(pointer,"01100100");
@@ -822,6 +875,10 @@ public class CodeMemory {
                         }
 
                         else if(splittedLine[0].toUpperCase().equals("CPL")) {
+
+                            if(splittedLine.length!=2)
+                                throw new CompilingException(numeracjaLinii,"Niepoprawna ilość argumentów funkcji CPL: '" + backupLinii + "'");
+
                             if(splittedLine[1].toUpperCase().equals("A")) {
                                 emulatedCodeMemory.set(pointer,"11110100");
                                 pointer++;

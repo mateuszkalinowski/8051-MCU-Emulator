@@ -1111,10 +1111,12 @@ public class MainStage extends Application {
             Main.cpu.refreshGui();
         });
         portToggle0.setOnAction(event -> {
-            if(portToggle0.isSelected())
+            if(portToggle0.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[7] = '0';
-            else
+            }
+            else {
                 Main.cpu.mainMemory.buttonsState[7] = '1';
+            }
             Main.cpu.mainMemory.putFromExternal(160);
             Main.cpu.refreshGui();
         });
@@ -1122,6 +1124,10 @@ public class MainStage extends Application {
         portButton7.setOnMousePressed(event -> {
             Main.cpu.mainMemory.buttonsState[0] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
+            if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+            }
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),false);
             Main.cpu.refreshGui();
         });
         portButton7.setOnMouseReleased(event -> {
@@ -1130,12 +1136,17 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[0] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),true);
             Main.cpu.refreshGui();
         });
 
         portButton6.setOnMousePressed(event -> {
             Main.cpu.mainMemory.buttonsState[1] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
+            if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+            }
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),false);
             Main.cpu.refreshGui();
         });
         portButton6.setOnMouseReleased(event -> {
@@ -1144,12 +1155,17 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[1] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),true);
             Main.cpu.refreshGui();
         });
 
         portButton5.setOnMousePressed(event -> {
             Main.cpu.mainMemory.buttonsState[2] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
+            if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+            }
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),false);
             Main.cpu.refreshGui();
         });
         portButton5.setOnMouseReleased(event -> {
@@ -1158,12 +1174,17 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[2] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),true);
             Main.cpu.refreshGui();
         });
 
         portButton4.setOnMousePressed(event -> {
             Main.cpu.mainMemory.buttonsState[3] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
+            if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+            }
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),false);
             Main.cpu.refreshGui();
         });
         portButton4.setOnMouseReleased(event -> {
@@ -1172,12 +1193,17 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[3] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),true);
             Main.cpu.refreshGui();
         });
 
         portButton3.setOnMousePressed(event -> {
             Main.cpu.mainMemory.buttonsState[4] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
+            if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+            }
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),false);
             Main.cpu.refreshGui();
         });
         portButton3.setOnMouseReleased(event -> {
@@ -1186,12 +1212,17 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[4] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),true);
             Main.cpu.refreshGui();
         });
 
         portButton2.setOnMousePressed(event -> {
             Main.cpu.mainMemory.buttonsState[5] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
+            if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+            }
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),false);
             Main.cpu.refreshGui();
         });
         portButton2.setOnMouseReleased(event -> {
@@ -1200,12 +1231,17 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[5] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),true);
             Main.cpu.refreshGui();
         });
 
         portButton1.setOnMousePressed(event -> {
             Main.cpu.mainMemory.buttonsState[6] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
+            if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+            }
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),false);
             Main.cpu.refreshGui();
         });
         portButton1.setOnMouseReleased(event -> {
@@ -1214,12 +1250,17 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[6] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),true);
             Main.cpu.refreshGui();
         });
 
         portButton0.setOnMousePressed(event -> {
             Main.cpu.mainMemory.buttonsState[7] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
+            if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+            }
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),false);
             Main.cpu.refreshGui();
         });
         portButton0.setOnMouseReleased(event -> {
@@ -1228,6 +1269,7 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[7] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
+            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"),true);
             Main.cpu.refreshGui();
         });
 
@@ -1338,7 +1380,7 @@ public class MainStage extends Application {
         content.append(" F\t");
         content.append("\n");
 
-        for(int i = 0; i < 128;i++) {
+        for(int i = 0; i < 256;i++) {
             content.append(Integer.toHexString(i)).append("\t");
             for(int j = 0; j < 16;j++) {
                 if(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i*16+j),2)).length()==1) {
@@ -1348,7 +1390,7 @@ public class MainStage extends Application {
                     content.append(" ").append(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i * 16 + j), 2)).toUpperCase()).append(" ");
                 content.append("\t");
             }
-            if(i!=127)
+            if(i!=256)
                 content.append("\n");
         }
 

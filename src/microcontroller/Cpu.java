@@ -29,8 +29,13 @@ public class Cpu {
         interrupts.add(false);
         interrupts.add(false);
         higherInterrupt=5;
+        LastP32 = true;
+        LastP33 = true;
     }
     private void machineCycle(){
+
+        //TODO Dodanie wykrywania przerwań od przycisków
+
         timePassed++;
         String port0String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P0")));
         char[] port0Char = port0String.toCharArray();
@@ -125,10 +130,35 @@ public class Cpu {
             mainMemory.put("TH1",TH1int);
         }
 
-        if(mainMemory.getBit(codeMemory.bitAddresses.get("EA"))) {
+        //Pierwsze przerwanie zewnętrzne
 
+        if(LastP32 && !mainMemory.getBit(codeMemory.bitAddresses.get("P3.2")) && mainMemory.getBit(codeMemory.bitAddresses.get("IT0"))) {
+            mainMemory.setBit(codeMemory.bitAddresses.get("EX0"),true);
+        }
+
+        if(LastP33 && !mainMemory.getBit(codeMemory.bitAddresses.get("P3.3")) && mainMemory.getBit(codeMemory.bitAddresses.get("IT1"))) {
+            mainMemory.setBit(codeMemory.bitAddresses.get("EX1"),true);
+        }
+
+        if(!mainMemory.getBit(codeMemory.bitAddresses.get("P3.2")) && !mainMemory.getBit(codeMemory.bitAddresses.get("IT0"))) {
+            mainMemory.setBit(codeMemory.bitAddresses.get("EX0"),true);
+        }
+        if(!mainMemory.getBit(codeMemory.bitAddresses.get("P3.3")) && !mainMemory.getBit(codeMemory.bitAddresses.get("IT1"))) {
+            mainMemory.setBit(codeMemory.bitAddresses.get("EX1"),true);
+        }
+
+        LastP32 = mainMemory.getBit(codeMemory.bitAddresses.get("P3.2"));
+        LastP33 = mainMemory.getBit(codeMemory.bitAddresses.get("P3.3"));
+
+
+
+        if(mainMemory.getBit(codeMemory.bitAddresses.get("EA"))) {
+            if (mainMemory.getBit(codeMemory.bitAddresses.get("EX0")) && !mainMemory.getBit(codeMemory.bitAddresses.get("P3.2")) && higherInterrupt>=1)
+                interrupts.set(0, true);
             if (mainMemory.getBit(codeMemory.bitAddresses.get("TF0")) && mainMemory.getBit(codeMemory.bitAddresses.get("ET0")) && higherInterrupt>=2)
                 interrupts.set(1, true);
+            if (mainMemory.getBit(codeMemory.bitAddresses.get("EX1")) && !mainMemory.getBit(codeMemory.bitAddresses.get("P3.3")) && higherInterrupt>=3)
+                interrupts.set(2, true);
             if (mainMemory.getBit(codeMemory.bitAddresses.get("TF1")) && mainMemory.getBit(codeMemory.bitAddresses.get("ET1")) && higherInterrupt>=4)
                 interrupts.set(3, true);
 
@@ -1349,8 +1379,27 @@ public class Cpu {
                 wynik-=256;
             linePointer = linePointer + 1 + 1 +wynik;
         }
-
-            if (interrupts.get(1)) {
+            if (interrupts.get(0)) {
+                int stackPointer = mainMemory.get("SP");
+                try {
+                    String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer)+"B");
+                    stackPointer += 1;
+                    if (stackPointer == 256)
+                        stackPointer = 0;
+                    mainMemory.put(stackPointer, Integer.parseInt(address.substring(8, 16), 2));
+                    stackPointer += 1;
+                    if (stackPointer == 256)
+                        stackPointer = 0;
+                    mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
+                    mainMemory.put("SP",stackPointer);
+                    mainMemory.setBit(codeMemory.bitAddresses.get("EX0"), false);
+                    interrupts.set(0,false);
+                    higherInterrupt=0;
+                    linePointer = 3;
+                } catch (Exception ignored) {
+                }
+            }
+            else if (interrupts.get(1)) {
                 int stackPointer = mainMemory.get("SP");
                 try {
                     String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer)+"B");
@@ -1370,7 +1419,27 @@ public class Cpu {
                 } catch (Exception ignored) {
                 }
 
-            } else if (interrupts.get(3)) {
+            } else if (interrupts.get(2)) {
+            int stackPointer = mainMemory.get("SP");
+            try {
+                String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer)+"B");
+                stackPointer += 1;
+                if (stackPointer == 256)
+                    stackPointer = 0;
+                mainMemory.put(stackPointer, Integer.parseInt(address.substring(8, 16), 2));
+                stackPointer += 1;
+                if (stackPointer == 256)
+                    stackPointer = 0;
+                mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
+                mainMemory.put("SP",stackPointer);
+                mainMemory.setBit(codeMemory.bitAddresses.get("EX1"), false);
+                interrupts.set(0,false);
+                higherInterrupt=2;
+                linePointer = 19;
+            }   catch (Exception ignored) {
+                }
+            }
+            else if (interrupts.get(3)) {
                 int stackPointer = mainMemory.get("SP");
                 try {
                     String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer)+"B");
@@ -1392,6 +1461,8 @@ public class Cpu {
             }
         checkP();
         //refreshGui();
+        if(linePointer>=programMemory)
+            linePointer=0;
     }
 
     private int higherInterrupt = 5;
@@ -1727,8 +1798,13 @@ public class Cpu {
     private ArrayList<Boolean> interrupts = new ArrayList<>();
 
     private long timePassed;
-    private int linePointer;
+    public int linePointer;
     public Memory mainMemory;
     public CodeMemory codeMemory = new CodeMemory();
+
+    public boolean LastP32 = true;
+    public boolean LastP33 = true;
+
+    public static int programMemory = 16384;
 
 }
