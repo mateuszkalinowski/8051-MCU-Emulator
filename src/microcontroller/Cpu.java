@@ -165,6 +165,93 @@ public class Cpu {
 
     public void executeInstruction() throws InstructionException{
         String toExecute = codeMemory.getFromAddress(linePointer);
+
+        //WYKRYWANIE PRZERWAN
+
+        if (interrupts.get(0) && higherInterrupt>=1) {
+            int stackPointer = mainMemory.get("SP");
+            try {
+                String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer)+"B");
+                stackPointer += 1;
+                if (stackPointer == 256)
+                    stackPointer = 0;
+                mainMemory.put(stackPointer, Integer.parseInt(address.substring(8, 16), 2));
+                stackPointer += 1;
+                if (stackPointer == 256)
+                    stackPointer = 0;
+                mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
+                mainMemory.put("SP",stackPointer);
+                mainMemory.setBit(codeMemory.bitAddresses.get("EX0"), false);
+                interrupts.set(0,false);
+                higherInterrupt=0;
+                linePointer = 3;
+                return;
+            } catch (Exception ignored) {
+            }
+        }
+        else if (interrupts.get(1) && higherInterrupt>=2) {
+            int stackPointer = mainMemory.get("SP");
+            try {
+                String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer)+"B");
+                stackPointer += 1;
+                if (stackPointer == 256)
+                    stackPointer = 0;
+                mainMemory.put(stackPointer, Integer.parseInt(address.substring(8, 16), 2));
+                stackPointer += 1;
+                if (stackPointer == 256)
+                    stackPointer = 0;
+                mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
+                mainMemory.put("SP",stackPointer);
+                mainMemory.setBit(codeMemory.bitAddresses.get("TF0"), false);
+                interrupts.set(1,false);
+                higherInterrupt=1;
+                linePointer = 11;
+                return;
+            } catch (Exception ignored) {
+            }
+
+        } else if (interrupts.get(2) && higherInterrupt>=3) {
+            int stackPointer = mainMemory.get("SP");
+            try {
+                String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer)+"B");
+                stackPointer += 1;
+                if (stackPointer == 256)
+                    stackPointer = 0;
+                mainMemory.put(stackPointer, Integer.parseInt(address.substring(8, 16), 2));
+                stackPointer += 1;
+                if (stackPointer == 256)
+                    stackPointer = 0;
+                mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
+                mainMemory.put("SP",stackPointer);
+                mainMemory.setBit(codeMemory.bitAddresses.get("EX1"), false);
+                interrupts.set(2,false);
+                higherInterrupt=2;
+                linePointer = 19;
+                return;
+            }   catch (Exception ignored) {
+            }
+        }
+        else if (interrupts.get(3)&& higherInterrupt>=4) {
+            int stackPointer = mainMemory.get("SP");
+            try {
+                String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer)+"B");
+                stackPointer += 1;
+                if (stackPointer == 256)
+                    stackPointer = 0;
+                mainMemory.put(stackPointer, Integer.parseInt(address.substring(8, 16), 2));
+                stackPointer += 1;
+                if (stackPointer == 256)
+                    stackPointer = 0;
+                mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
+                mainMemory.put("SP",stackPointer);
+                mainMemory.setBit(codeMemory.bitAddresses.get("TF1"), false);
+                interrupts.set(3,false);
+                higherInterrupt=3;
+                linePointer = 27;
+                return;
+            } catch (Exception ignored) {
+            }
+        }
         if(toExecute.equals("00000010")) { //LJMP
             machineCycle();
             machineCycle();
@@ -1320,6 +1407,8 @@ public class Cpu {
             String lowerAddressString = expandTo8Digits(Integer.toBinaryString(lowerAddress));
             higherInterrupt = 5;
             linePointer = Integer.parseInt(upperAddressString + lowerAddressString,2);
+            machineCycle();
+            machineCycle();
         }
         else if(toExecute.substring(0,7).equals("1101011")) {
             machineCycle();
@@ -1376,86 +1465,6 @@ public class Cpu {
                 wynik-=256;
             linePointer = linePointer + 1 + 1 +wynik;
         }
-            if (interrupts.get(0)) {
-                int stackPointer = mainMemory.get("SP");
-                try {
-                    String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer)+"B");
-                    stackPointer += 1;
-                    if (stackPointer == 256)
-                        stackPointer = 0;
-                    mainMemory.put(stackPointer, Integer.parseInt(address.substring(8, 16), 2));
-                    stackPointer += 1;
-                    if (stackPointer == 256)
-                        stackPointer = 0;
-                    mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
-                    mainMemory.put("SP",stackPointer);
-                    mainMemory.setBit(codeMemory.bitAddresses.get("EX0"), false);
-                    interrupts.set(0,false);
-                    higherInterrupt=0;
-                    linePointer = 3;
-                } catch (Exception ignored) {
-                }
-            }
-            else if (interrupts.get(1)) {
-                int stackPointer = mainMemory.get("SP");
-                try {
-                    String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer)+"B");
-                    stackPointer += 1;
-                    if (stackPointer == 256)
-                        stackPointer = 0;
-                    mainMemory.put(stackPointer, Integer.parseInt(address.substring(8, 16), 2));
-                    stackPointer += 1;
-                    if (stackPointer == 256)
-                        stackPointer = 0;
-                    mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
-                    mainMemory.put("SP",stackPointer);
-                    mainMemory.setBit(codeMemory.bitAddresses.get("TF0"), false);
-                    interrupts.set(1,false);
-                    higherInterrupt=1;
-                    linePointer = 11;
-                } catch (Exception ignored) {
-                }
-
-            } else if (interrupts.get(2)) {
-            int stackPointer = mainMemory.get("SP");
-            try {
-                String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer)+"B");
-                stackPointer += 1;
-                if (stackPointer == 256)
-                    stackPointer = 0;
-                mainMemory.put(stackPointer, Integer.parseInt(address.substring(8, 16), 2));
-                stackPointer += 1;
-                if (stackPointer == 256)
-                    stackPointer = 0;
-                mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
-                mainMemory.put("SP",stackPointer);
-                mainMemory.setBit(codeMemory.bitAddresses.get("EX1"), false);
-                interrupts.set(2,false);
-                higherInterrupt=2;
-                linePointer = 19;
-            }   catch (Exception ignored) {
-                }
-            }
-            else if (interrupts.get(3)) {
-                int stackPointer = mainMemory.get("SP");
-                try {
-                    String address = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer)+"B");
-                    stackPointer += 1;
-                    if (stackPointer == 256)
-                        stackPointer = 0;
-                    mainMemory.put(stackPointer, Integer.parseInt(address.substring(8, 16), 2));
-                    stackPointer += 1;
-                    if (stackPointer == 256)
-                        stackPointer = 0;
-                    mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
-                    mainMemory.put("SP",stackPointer);
-                    mainMemory.setBit(codeMemory.bitAddresses.get("TF1"), false);
-                    interrupts.set(3,false);
-                    higherInterrupt=3;
-                    linePointer = 27;
-                } catch (Exception ignored) {
-                }
-            }
         checkP();
         //refreshGui();
         if(linePointer>=programMemory)

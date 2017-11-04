@@ -1959,8 +1959,8 @@ public class MainStage extends Application {
         gc.setTextBaseline(VPos.CENTER);
         gc.fillText("PO",XMargin+oneWidht/2,upperMargin/2.0);
         gc.fillText("P1",XMargin+oneWidht+betweenMargin+oneWidht/2,upperMargin/2.0);
-        gc.fillText("P3",XMargin+oneWidht+betweenMargin+oneWidht+betweenMargin+oneWidht/2,upperMargin/2.0);
-        gc.fillText("P4",XMargin+oneWidht+betweenMargin+oneWidht+betweenMargin+oneWidht+betweenMargin+oneWidht/2,upperMargin/2.0);
+        gc.fillText("P2",XMargin+oneWidht+betweenMargin+oneWidht+betweenMargin+oneWidht/2,upperMargin/2.0);
+        gc.fillText("P3",XMargin+oneWidht+betweenMargin+oneWidht+betweenMargin+oneWidht+betweenMargin+oneWidht/2,upperMargin/2.0);
     }
 
     private Canvas seg7Canvas =  new Canvas();
