@@ -1055,67 +1055,137 @@ public class MainStage extends Application {
         portButton7.setMaxWidth(Double.MAX_VALUE);
 
         portToggle7.setOnAction(event -> {
-            if(portToggle7.isSelected())
+            if(portToggle7.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[0] = '0';
-            else
+                if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                }
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),false);
+            }
+            else {
                 Main.cpu.mainMemory.buttonsState[0] = '1';
+                if(!anyTogglePressed()) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),true);
+                }
+            }
             Main.cpu.mainMemory.putFromExternal(160);
             Main.cpu.refreshGui();
         });
         portToggle6.setOnAction(event -> {
-            if(portToggle6.isSelected())
+            if(portToggle6.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[1] = '0';
-            else
+                if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                }
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),false);
+            }
+            else {
                 Main.cpu.mainMemory.buttonsState[1] = '1';
+                if(!anyTogglePressed()) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),true);
+                }
+            }
             Main.cpu.mainMemory.putFromExternal(160);
             Main.cpu.refreshGui();
         });
         portToggle5.setOnAction(event -> {
-            if(portToggle5.isSelected())
+            if(portToggle5.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[2] = '0';
-            else
+                if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                }
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),false);
+            }
+            else {
                 Main.cpu.mainMemory.buttonsState[2] = '1';
+                if(!anyTogglePressed()) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),true);
+                }
+            }
             Main.cpu.mainMemory.putFromExternal(160);
             Main.cpu.refreshGui();
         });
         portToggle4.setOnAction(event -> {
-            if(portToggle4.isSelected())
+            if(portToggle4.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[3] = '0';
-            else
+                if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                }
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),false);
+            }
+            else {
                 Main.cpu.mainMemory.buttonsState[3] = '1';
+                if(!anyTogglePressed()) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),true);
+                }
+            }
             Main.cpu.mainMemory.putFromExternal(160);
             Main.cpu.refreshGui();
         });
         portToggle3.setOnAction(event -> {
-            if(portToggle3.isSelected())
+            if(portToggle3.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[4] = '0';
-            else
+                if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                }
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),false);
+            }
+            else {
                 Main.cpu.mainMemory.buttonsState[4] = '1';
+                if(!anyTogglePressed()) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),true);
+                }
+            }
             Main.cpu.mainMemory.putFromExternal(160);
             Main.cpu.refreshGui();
         });
         portToggle2.setOnAction(event -> {
-            if(portToggle2.isSelected())
+            if(portToggle2.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[5] = '0';
-            else
+                if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                }
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),false);
+            }
+            else {
                 Main.cpu.mainMemory.buttonsState[5] = '1';
+                if(!anyTogglePressed()) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),true);
+                }
+            }
             Main.cpu.mainMemory.putFromExternal(160);
             Main.cpu.refreshGui();
         });
         portToggle1.setOnAction(event -> {
-            if(portToggle1.isSelected())
+            if(portToggle1.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[6] = '0';
-            else
+                if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                }
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),false);
+            }
+            else {
                 Main.cpu.mainMemory.buttonsState[6] = '1';
+                if(!anyTogglePressed()) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),true);
+                }
+            }
             Main.cpu.mainMemory.putFromExternal(160);
             Main.cpu.refreshGui();
         });
         portToggle0.setOnAction(event -> {
             if(portToggle0.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[7] = '0';
+                if(!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                }
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),false);
             }
             else {
                 Main.cpu.mainMemory.buttonsState[7] = '1';
+                if(!anyTogglePressed()) {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"),true);
+                }
             }
             Main.cpu.mainMemory.putFromExternal(160);
             Main.cpu.refreshGui();
@@ -1529,7 +1599,7 @@ public class MainStage extends Application {
         memoryInfoTab.setContent(mainMemoryGridPane);
 
         mainStage = primaryStage;
-        mainStage.setTitle("8051 MCU Emulator - 0.10.0 Alpha");
+        mainStage.setTitle("8051 MCU Emulator - 0.10.1 Alpha");
         mainBorderPane.setCenter(mainGridPane);
         mainScene = new Scene(mainBorderPane,width,height);
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
@@ -1906,6 +1976,13 @@ public class MainStage extends Application {
         editorTextArea.setText(textToSet.toString());
     }
 
+    private boolean anyTogglePressed() {
+        for(int i = 0; i <  Main.cpu.mainMemory.buttonsState.length;i++) {
+            if(Main.cpu.mainMemory.buttonsState[i]=='0')
+                return true;
+        }
+        return false;
+    }
     private GridPane mainGridPane;
     private GridPane editorElementsGridPane;
     private GridPane simulatorGridPane;

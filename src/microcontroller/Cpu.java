@@ -33,9 +33,6 @@ public class Cpu {
         LastP33 = true;
     }
     private void machineCycle(){
-
-        //TODO Dodanie wykrywania przerwań od przycisków
-
         timePassed++;
         String port0String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P0")));
         char[] port0Char = port0String.toCharArray();
@@ -1433,7 +1430,7 @@ public class Cpu {
                 mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
                 mainMemory.put("SP",stackPointer);
                 mainMemory.setBit(codeMemory.bitAddresses.get("EX1"), false);
-                interrupts.set(0,false);
+                interrupts.set(2,false);
                 higherInterrupt=2;
                 linePointer = 19;
             }   catch (Exception ignored) {
