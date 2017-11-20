@@ -1467,6 +1467,7 @@ public class Cpu {
         }
         checkP();
         //refreshGui();
+        checkRegistersBank();
         if(linePointer>=programMemory)
             linePointer=0;
     }
@@ -1798,6 +1799,66 @@ public class Cpu {
         number = numberBuilder.toString();
         return number;
     }
+
+    private void checkRegistersBank() {
+        int rs0 = 0;
+        int rs1 = 0;
+        try {
+            if (Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("RS0")))
+                rs0 = 1;
+            if (Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("RS1")))
+                rs1 = 1;
+
+            if (rs0 == 0 && rs1 == 0) {
+                Main.cpu.mainMemory.memoryCellsNames.put("R0", 0);
+                Main.cpu.mainMemory.memoryCellsNames.put("R1", 1);
+                Main.cpu.mainMemory.memoryCellsNames.put("R2", 2);
+                Main.cpu.mainMemory.memoryCellsNames.put("R3", 3);
+                Main.cpu.mainMemory.memoryCellsNames.put("R4", 4);
+                Main.cpu.mainMemory.memoryCellsNames.put("R5", 5);
+                Main.cpu.mainMemory.memoryCellsNames.put("R6", 6);
+                Main.cpu.mainMemory.memoryCellsNames.put("R7", 7);
+            }
+
+            else if (rs0 == 1 && rs1 == 0) {
+                Main.cpu.mainMemory.memoryCellsNames.put("R0", 8);
+                Main.cpu.mainMemory.memoryCellsNames.put("R1", 9);
+                Main.cpu.mainMemory.memoryCellsNames.put("R2", 10);
+                Main.cpu.mainMemory.memoryCellsNames.put("R3", 11);
+                Main.cpu.mainMemory.memoryCellsNames.put("R4", 12);
+                Main.cpu.mainMemory.memoryCellsNames.put("R5", 13);
+                Main.cpu.mainMemory.memoryCellsNames.put("R6", 14);
+                Main.cpu.mainMemory.memoryCellsNames.put("R7", 15);
+            }
+
+            else if (rs0 == 0 && rs1 == 1) {
+                Main.cpu.mainMemory.memoryCellsNames.put("R0", 16);
+                Main.cpu.mainMemory.memoryCellsNames.put("R1", 17);
+                Main.cpu.mainMemory.memoryCellsNames.put("R2", 18);
+                Main.cpu.mainMemory.memoryCellsNames.put("R3", 19);
+                Main.cpu.mainMemory.memoryCellsNames.put("R4", 20);
+                Main.cpu.mainMemory.memoryCellsNames.put("R5", 21);
+                Main.cpu.mainMemory.memoryCellsNames.put("R6", 22);
+                Main.cpu.mainMemory.memoryCellsNames.put("R7", 23);
+
+            }
+
+            else if (rs0 == 1 && rs1 == 1) {
+                Main.cpu.mainMemory.memoryCellsNames.put("R0", 24);
+                Main.cpu.mainMemory.memoryCellsNames.put("R1", 25);
+                Main.cpu.mainMemory.memoryCellsNames.put("R2", 26);
+                Main.cpu.mainMemory.memoryCellsNames.put("R3", 27);
+                Main.cpu.mainMemory.memoryCellsNames.put("R4", 28);
+                Main.cpu.mainMemory.memoryCellsNames.put("R5", 29);
+                Main.cpu.mainMemory.memoryCellsNames.put("R6", 30);
+                Main.cpu.mainMemory.memoryCellsNames.put("R7", 31);
+            }
+        }
+        catch (Exception ignored){
+            System.out.println(ignored.fillInStackTrace());
+        }
+    }
+
 
     public long getTimePassed(){return timePassed;}
 

@@ -174,6 +174,7 @@ public class Memory {
             }
             mainMemory[index] = toPut;
         }
+
     }
     public void putFromExternal(int index) {
         char value[] = buttonsState;
@@ -223,7 +224,7 @@ public class Memory {
         return Integer.parseInt(String.valueOf(mainMemory[wartosc]),2);
     }
 
-    private Map<String,Integer> memoryCellsNames = new HashMap<>();
+    public Map<String,Integer> memoryCellsNames = new HashMap<>();
 
     private int[] bitAddressableBegginings;
 
@@ -236,6 +237,7 @@ public class Memory {
     private String latcherP3 = "11111111";
 
     public char[] buttonsState = {'1','1','1','1','1','1','1','1'};
+
 
 
 }
