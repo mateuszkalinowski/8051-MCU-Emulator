@@ -1093,7 +1093,7 @@ public class MainStage extends Application {
             }
         });
         saveFileMenuItem = new MenuItem("Zapisz");
-        //saveFileMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S,KeyCombination.CONTROL_DOWN));
+        saveFileMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
         saveFileMenuItem.setOnAction(event -> {
 
             String selectedCardName = editorTabPane.getSelectionModel().getSelectedItem().getText();
