@@ -18,10 +18,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.*;
@@ -969,6 +966,18 @@ public class MainStage extends Application {
                         Scanner in = new Scanner(openFile);
                         while (in.hasNextLine())
                             textToSet.append(in.nextLine()).append("\n");
+
+                        for(int i = 0; i < editorTabs.size();i++) {
+                            if(editorTabs.get(i).ownTab.getText().equals(openFile.getName())) {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Błąd dodawania pliku");
+                                alert.setHeaderText("Nie można było zaimportować pliku o nazwie '"  +openFile.getName()+"'");
+                                alert.setContentText("Plik o tej nazwie już istnieje");
+                                alert.showAndWait();
+                                return;
+                            }
+                        }
+
                         editorTabs.add(new editorTab());
                         editorTabs.get(editorTabs.size() - 1).ownTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
                         editorTabs.get(editorTabs.size() - 1).path = openFile.getPath();
@@ -1032,10 +1041,56 @@ public class MainStage extends Application {
         });
 
         newFileMenuItem = new MenuItem("Nowy");
-        newFileMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.N,KeyCombination.CONTROL_DOWN));
+        newFileMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+N"));
         newFileMenuItem.setOnAction(event -> {
-            editorTabs.add(new editorTab());
-            editorTabPane.getSelectionModel().selectLast();
+
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Tworzenie nowego pliku");
+            dialog.setHeaderText("Podaj nazwę nowego pliku");
+            while(true) {
+                boolean exit = false;
+                Optional<String> result = dialog.showAndWait();
+                if (result.isPresent()) {
+                    String name = result.get();
+
+                    if(name.equals("")) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Błąd dodawania pliku");
+                        alert.setHeaderText("Nie można było stworzyć pliku o nazwie '" + name + "'");
+                        alert.setContentText("Nazwa pliku nie może być pusta");
+                        alert.showAndWait();
+                        continue;
+                    }
+
+                    if (name.charAt(0) == '*') {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Błąd dodawania pliku");
+                        alert.setHeaderText("Nie można było stworzyć pliku o nazwie '" + name + "'");
+                        alert.setContentText("Nazwa pliku nie może zaczynać się od znaku '*'");
+                        alert.showAndWait();
+                        continue;
+                    }
+
+                    for (int i = 0; i < editorTabs.size(); i++) {
+                        if (editorTabs.get(i).ownTab.getText().equals(name)) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Błąd dodawania pliku");
+                            alert.setHeaderText("Nie można było stworzyć pliku o nazwie '" + name + "'");
+                            alert.setContentText("Plik o tej nazwie już istnieje");
+                            alert.showAndWait();
+                            exit = true;
+                        }
+                    }
+                    if(!exit) {
+                        editorTabs.add(new editorTab());
+                        editorTabs.get(editorTabs.size() - 1).ownTab.setText(name);
+                        editorTabPane.getSelectionModel().selectLast();
+                        break;
+                    }
+                }
+                else
+                    break;
+            }
         });
         saveFileMenuItem = new MenuItem("Zapisz");
         //saveFileMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S,KeyCombination.CONTROL_DOWN));
@@ -1712,7 +1767,7 @@ public class MainStage extends Application {
         memoryInfoTab.setContent(mainMemoryGridPane);
 
         mainStage = primaryStage;
-        mainStage.setTitle("8051 MCU Emulator - 0.10.1 Alpha");
+        mainStage.setTitle("8051 MCU Emulator - 0.11 Alpha");
         mainBorderPane.setCenter(mainGridPane);
         mainScene = new Scene(mainBorderPane, width, height);
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
@@ -1720,6 +1775,53 @@ public class MainStage extends Application {
         mainStage.show();
         mainStage.setMinHeight(600);
         mainStage.setMinWidth(800);
+
+        mainScene.setOnDragOver(event -> {
+            if (event.getDragboard().hasFiles()) {
+                event.acceptTransferModes(TransferMode.LINK);
+            }
+            event.consume();
+        });
+
+        mainScene.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            if(db.hasFiles()) {
+                for(File file:db.getFiles()) {
+                    StringBuilder textToSet = new StringBuilder();
+                    try {
+                        Scanner in = new Scanner(file);
+                        while (in.hasNextLine())
+                            textToSet.append(in.nextLine()).append("\n");
+                        boolean breakFlag = false;
+                        for(int i = 0; i < editorTabs.size();i++) {
+                            if(editorTabs.get(i).ownTab.getText().equals(file.getName())) {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Błąd dodawania pliku");
+                                alert.setHeaderText("Nie można było zaimportować pliku o nazwie '"  +file.getName()+"'");
+                                alert.setContentText("Plik o tej nazwie już istnieje");
+                                alert.showAndWait();
+                                event.setDropCompleted(true);
+                                event.consume();
+                                breakFlag = true;
+                            }
+                        }
+
+                        if(breakFlag)
+                            continue;
+
+                        editorTabs.add(new editorTab());
+                        editorTabs.get(editorTabs.size() - 1).ownTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
+                        editorTabs.get(editorTabs.size() - 1).path = file.getPath();
+                        editorTabs.get(editorTabs.size() - 1).ownTab.setText(file.getName());
+                        editorTabPane.getSelectionModel().selectLast();
+                    } catch (FileNotFoundException ignored) {
+                    }
+                    event.setDropCompleted(true);
+                    event.consume();
+                }
+            }
+        });
+
         Main.cpu.refreshGui();
         //resizeComponents();
 
@@ -1761,7 +1863,6 @@ public class MainStage extends Application {
 
         drawFrame();
     }
-
 
     private void resizeComponents() {
         double oneWidth = simulatorGridPane.getWidth() / 20.0;
