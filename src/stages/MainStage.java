@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -93,13 +94,7 @@ public class MainStage extends Application {
         compilationErrorsLabelHBox.getChildren().add(compilationErrorsLabel);
         compilationErrorsLabelHBox.setPadding(new Insets(5, 0, 5, 0));
 
-
-        //TODO WIĘCEJ NIŻ JEDEN PLIK
-
-
         editorTabPane = new TabPane();
-
-        editorTabs.add(new editorTab());
 
         HBox editorTextAreaHBox = new HBox();
         HBox.setHgrow(editorTextAreaHBox, Priority.ALWAYS);
@@ -644,7 +639,7 @@ public class MainStage extends Application {
             //  lines = editorTextArea.getText().split("\n");
             lines = editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTextArea.getText().split("\n");
             try {
-                ArrayList<String> compilatedText = Main.cpu.codeMemory.setMemory(lines);
+                ArrayList<String> compilatedText = Main.cpu.codeMemory.setMemory(lines,true);
                 Main.cpu.resetCpu();
                 Main.cpu.refreshGui();
                 translateToMemoryButton.setDisable(true);
@@ -1043,7 +1038,7 @@ public class MainStage extends Application {
             editorTabPane.getSelectionModel().selectLast();
         });
         saveFileMenuItem = new MenuItem("Zapisz");
-        saveFileMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S,KeyCombination.CONTROL_DOWN));
+        //saveFileMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S,KeyCombination.CONTROL_DOWN));
         saveFileMenuItem.setOnAction(event -> {
 
             String selectedCardName = editorTabPane.getSelectionModel().getSelectedItem().getText();
@@ -2320,6 +2315,26 @@ public class MainStage extends Application {
     private ArrayList<editorTab> editorTabs = new ArrayList<>();
 
     private String currentlyRunTabName = "";
+
+    public String[] getLinesFromTabByName(String name) throws NoSuchElementException {
+        int numerKarty = -1;
+        for(int i =0; i < editorTabs.size();i++) {
+            if(editorTabs.get(i).ownTab.getText().equals(name)) {
+                numerKarty = i;
+                break;
+            }
+            else if(editorTabs.get(i).ownTab.getText().substring(1).equals(name)) {
+                numerKarty = i;
+                break;
+            }
+        }
+        if(numerKarty==-1)
+            throw new NoSuchElementException();
+        else
+            return editorTabs.get(numerKarty).ownTextArea.getText().split("\n");
+
+    }
+
 
     class editorTab {
         public editorTab() {

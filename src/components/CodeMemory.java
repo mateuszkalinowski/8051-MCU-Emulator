@@ -3,11 +3,13 @@ package components;
 import core.Main;
 import exceptions.CompilingException;
 import javafx.util.Pair;
+import microcontroller.Cpu;
 import stages.MainStage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * Created by Mateusz on 18.04.2017.
@@ -16,7 +18,7 @@ import java.util.Map;
 public class CodeMemory {
     public CodeMemory(){
         emulatedCodeMemory = new ArrayList<>();
-        for(int i = 0; i < Main.cpu.programMemory;i++) {
+        for(int i = 0; i < Cpu.programMemory; i++) {
             emulatedCodeMemory.add("00000000");
         }
 
@@ -154,13 +156,15 @@ public class CodeMemory {
         return line;
     }
 
-    public ArrayList<String> setMemory(String[] lines) throws CompilingException {
+    public ArrayList<String> setMemory(String[] lines,boolean isMain) throws CompilingException {
         int pointer = 0;
-        emulatedCodeMemory = new ArrayList<>();
-        for(int i = 0; i < Main.cpu.programMemory; i++) {
-            emulatedCodeMemory.add("00000000");
+        if(isMain) {
+            emulatedCodeMemory = new ArrayList<>();
+            for (int i = 0; i < Cpu.programMemory; i++) {
+                emulatedCodeMemory.add("00000000");
+            }
+            labels.clear();
         }
-        labels.clear();
         ArrayList<String> linieZNumerami = new ArrayList<>();
         int numeracjaLinii = -1;
         for(String line : lines) {
@@ -267,6 +271,24 @@ public class CodeMemory {
                         catch (Exception e) {
                             throw new CompilingException(numeracjaLinii,"Błędny bit: '" + backupLinii + "'");
                         }
+                    }
+                    else if(splittedLine[0].toUpperCase().equals("INCLUDE")) {
+                        String fileName = line.substring(7).trim();
+                        //TODO
+
+                        try {
+                            String[] linesInside = Main.stage.getLinesFromTabByName(fileName);
+                            Main.cpu.codeMemory.setMemory(linesInside, false);
+                            ArrayList<String> lineWewnetrzne = Main.cpu.codeMemory.setMemory(linesInside,false);
+                            int size = linieZNumerami.size();
+                            for(int i = 0; i < lineWewnetrzne.size();i++) {
+                                linieZNumerami.add(size+i,lineWewnetrzne.get(i));
+                            }
+                        }
+                        catch (NoSuchElementException e) {
+                            throw new CompilingException(numeracjaLinii,"Nie odnaleziono pliku: '" + fileName + "'");
+                        }
+
                     }
                     else {
                         int backupPointer = pointer;
