@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 
 /**
@@ -1042,7 +1043,7 @@ public class MainStage extends Application {
             editorTabPane.getSelectionModel().selectLast();
         });
         saveFileMenuItem = new MenuItem("Zapisz");
-        newFileMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S,KeyCombination.CONTROL_DOWN));
+        saveFileMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.S,KeyCombination.CONTROL_DOWN));
         saveFileMenuItem.setOnAction(event -> {
 
             String selectedCardName = editorTabPane.getSelectionModel().getSelectedItem().getText();
@@ -1738,10 +1739,31 @@ public class MainStage extends Application {
             drawFrame();
         });
         mainStage.setOnCloseRequest(event -> {
+
+            boolean flag = false;
+            for(int i = 0; i < editorTabs.size();i++) {
+                if(editorTabs.get(i).edited) {
+                    flag = true;
+                    break;
+                }
+            }
+
+            if(flag) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Potwierdzenie wyjścia");
+                alert.setHeaderText("Masz niezapisane programy, na pewno chcesz wyjść?");
+                alert.setContentText("Wszelkie niezapisane zmiany zostaną utracone i nie będzie możliwości i ich przywrócenia.");
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.get() == ButtonType.CANCEL) {
+                    event.consume();
+                    return;
+                }
+            }
             continuousRunFlag = false;
             Platform.exit();
             System.exit(0);
         });
+
         drawFrame();
     }
 
@@ -2331,8 +2353,20 @@ public class MainStage extends Application {
                 }
             });
             ownTab.setOnCloseRequest(event -> {
+                if(edited) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Potwierdzenie zamknięcia karty");
+                    alert.setHeaderText("Zmiany nie zostały zapisane, na pewno chcesz zamknąć kartę?");
+                    alert.setContentText("Wszelkie niezapisane zmiany zostaną utracone i nie będzie możliwości i ich przywrócenia.");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.CANCEL) {
+                        event.consume();
+                        return;
+                    }
+                }
                 editorTabs.remove(this);
             });
+
 
             editorTabPane.getTabs().add(ownTab);
             this.edited = false;
