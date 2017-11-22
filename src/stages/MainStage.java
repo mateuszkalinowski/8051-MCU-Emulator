@@ -1239,18 +1239,21 @@ public class MainStage extends Application {
         portButton5.setMaxWidth(Double.MAX_VALUE);
         portButton6.setMaxWidth(Double.MAX_VALUE);
         portButton7.setMaxWidth(Double.MAX_VALUE);
-
         portToggle7.setOnAction(event -> {
             if (portToggle7.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[0] = '0';
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
                 }
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), false);
+                try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
+                } catch (Exception e){}
             } else {
                 Main.cpu.mainMemory.buttonsState[0] = '1';
                 if (!anyTogglePressed()) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), true);
+                    try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), true);
+                } catch (Exception e){}
                 }
             }
             Main.cpu.mainMemory.putFromExternal(160);
@@ -1262,11 +1265,15 @@ public class MainStage extends Application {
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
                 }
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), false);
+                try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
+                } catch (Exception e){}
             } else {
                 Main.cpu.mainMemory.buttonsState[1] = '1';
                 if (!anyTogglePressed()) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), true);
+                    try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), true);
+                } catch (Exception e){}
                 }
             }
             Main.cpu.mainMemory.putFromExternal(160);
@@ -1278,11 +1285,15 @@ public class MainStage extends Application {
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
                 }
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), false);
+                try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
+                } catch (Exception e){}
             } else {
                 Main.cpu.mainMemory.buttonsState[2] = '1';
                 if (!anyTogglePressed()) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), true);
+                    try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), true);
+                } catch (Exception e){}
                 }
             }
             Main.cpu.mainMemory.putFromExternal(160);
@@ -1294,11 +1305,15 @@ public class MainStage extends Application {
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
                 }
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), false);
+                try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
+                } catch (Exception e){}
             } else {
                 Main.cpu.mainMemory.buttonsState[3] = '1';
                 if (!anyTogglePressed()) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), true);
+                    try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), true);
+                } catch (Exception e){}
                 }
             }
             Main.cpu.mainMemory.putFromExternal(160);
@@ -1310,11 +1325,15 @@ public class MainStage extends Application {
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
                 }
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), false);
+                try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
+                } catch (Exception e){}
             } else {
                 Main.cpu.mainMemory.buttonsState[4] = '1';
                 if (!anyTogglePressed()) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), true);
+                    try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), true);
+                } catch (Exception e){}
                 }
             }
             Main.cpu.mainMemory.putFromExternal(160);
@@ -1326,11 +1345,15 @@ public class MainStage extends Application {
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
                 }
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), false);
+                try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
+                } catch (Exception e){}
             } else {
                 Main.cpu.mainMemory.buttonsState[5] = '1';
                 if (!anyTogglePressed()) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), true);
+                    try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), true);
+                } catch (Exception e){}
                 }
             }
             Main.cpu.mainMemory.putFromExternal(160);
@@ -1342,11 +1365,15 @@ public class MainStage extends Application {
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
                 }
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), false);
+                try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
+                } catch (Exception e){}
             } else {
                 Main.cpu.mainMemory.buttonsState[6] = '1';
                 if (!anyTogglePressed()) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), true);
+                    try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), true);
+                } catch (Exception e){}
                 }
             }
             Main.cpu.mainMemory.putFromExternal(160);
@@ -1358,11 +1385,15 @@ public class MainStage extends Application {
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
                 }
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), false);
+                try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
+                } catch (Exception e){}
             } else {
                 Main.cpu.mainMemory.buttonsState[7] = '1';
                 if (!anyTogglePressed()) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.3"), true);
+                    try {
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), true);
+                } catch (Exception e){}
                 }
             }
             Main.cpu.mainMemory.putFromExternal(160);
@@ -1374,8 +1405,9 @@ public class MainStage extends Application {
             Main.cpu.mainMemory.putFromExternal(160);
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
-            }
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), false);
+            } try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
         portButton7.setOnMouseReleased(event -> {
@@ -1384,7 +1416,9 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[0] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), true);
+            try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), true);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
 
@@ -1394,7 +1428,9 @@ public class MainStage extends Application {
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
             }
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), false);
+            try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
         portButton6.setOnMouseReleased(event -> {
@@ -1403,7 +1439,9 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[1] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), true);
+            try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), true);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
 
@@ -1413,7 +1451,9 @@ public class MainStage extends Application {
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
             }
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), false);
+            try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
         portButton5.setOnMouseReleased(event -> {
@@ -1422,7 +1462,9 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[2] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), true);
+            try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), true);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
 
@@ -1432,7 +1474,9 @@ public class MainStage extends Application {
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
             }
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), false);
+            try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
         portButton4.setOnMouseReleased(event -> {
@@ -1441,7 +1485,9 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[3] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), true);
+            try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), true);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
 
@@ -1451,7 +1497,9 @@ public class MainStage extends Application {
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
             }
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), false);
+            try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
         portButton3.setOnMouseReleased(event -> {
@@ -1460,7 +1508,9 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[4] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), true);
+            try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), true);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
 
@@ -1470,7 +1520,9 @@ public class MainStage extends Application {
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
             }
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), false);
+            try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
         portButton2.setOnMouseReleased(event -> {
@@ -1479,7 +1531,9 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[5] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), true);
+            try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), true);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
 
@@ -1489,7 +1543,9 @@ public class MainStage extends Application {
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
             }
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), false);
+            try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
         portButton1.setOnMouseReleased(event -> {
@@ -1498,7 +1554,9 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[6] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), true);
+            try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), true);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
 
@@ -1508,7 +1566,9 @@ public class MainStage extends Application {
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
             }
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), false);
+            try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
         portButton0.setOnMouseReleased(event -> {
@@ -1517,7 +1577,9 @@ public class MainStage extends Application {
             else
                 Main.cpu.mainMemory.buttonsState[7] = '1';
             Main.cpu.mainMemory.putFromExternal(160);
-            Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("P3.2"), true);
+            try {
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), true);
+            } catch (Exception e) { }
             Main.cpu.refreshGui();
         });
 
@@ -2042,9 +2104,23 @@ public class MainStage extends Application {
 
         gc.setFill(Color.BLACK);
 
+
         //LICZBA PIERWSZA
-        String wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get(seg7displayPort)));
-        int[] wartosci = Converters.bcdto7seg(wartosc.substring(0, 4));
+        int[] wartosci;
+        if(seg7ConnectionType==0) {
+            String wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get(seg7displayPort)));
+            wartosci = Converters.bcdto7seg(wartosc.substring(0, 4));
+        }
+        else {
+            String wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get("P0")));
+            wartosci = new int[8];
+            for(int i = 0; i < 8;i++) {
+                if(wartosc.charAt(7-i)=='0')
+                    wartosci[i] = 0;
+                else
+                    wartosci[i] = 1;
+            }
+        }
 
         if (wartosci[0] == 1)
             gc.setFill(seg7Color);
@@ -2084,8 +2160,20 @@ public class MainStage extends Application {
             gc.setFill(Color.LIGHTGREY);
         gc.fillRoundRect(width / 2.0 - marginX - shorter, marginY + shorter + longer + shorter, shorter, longer, 10, 10);//c
 
-
-        wartosci = Converters.bcdto7seg(wartosc.substring(4, 8));
+        if(seg7ConnectionType==0) {
+            String wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get(seg7displayPort)));
+            wartosci = Converters.bcdto7seg(wartosc.substring(4, 8));
+        }
+        else {
+            String wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get("P1")));
+            wartosci = new int[8];
+            for(int i = 0; i < 8;i++) {
+                if(wartosc.charAt(7-i)=='0')
+                    wartosci[i] = 0;
+                else
+                    wartosci[i] = 1;
+            }
+        }
 
         //LICZBA DRUGA
         if (wartosci[0] == 1)
@@ -2407,6 +2495,10 @@ public class MainStage extends Application {
     String ledsType = "Katoda";
     Color ledsColor = Color.RED;
     Color seg7Color = Color.RED;
+    int seg7ConnectionType  = 0;
+    String przyciskiPrzerwania = "P3.2";
+    String zadajnikiPrzerwania = "P3.3";
+
 
     private TextField addressInChangeValueTextField;
     private TextField valueInChangeValueTextField;

@@ -34,6 +34,12 @@ public class Cpu {
     }
     private void machineCycle(){
         timePassed++;
+        interrupts.clear();
+        interrupts.add(false);
+        interrupts.add(false);
+        interrupts.add(false);
+        interrupts.add(false);
+        interrupts.add(false);
         String port0String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P0")));
         char[] port0Char = port0String.toCharArray();
         System.arraycopy(Main.stage.port0History, 0, Main.stage.port0History, 1, Main.stage.portChartScale - 1);

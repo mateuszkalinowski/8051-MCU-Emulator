@@ -107,6 +107,20 @@ public class PaneConfigStage extends Application {
         seg7PortComboBox.setMaxWidth(Double.MAX_VALUE);
         seg7PortComboBox.getSelectionModel().select(Main.stage.seg7displayPort);
 
+        Label seg7TypeLabel = new Label("Podłączenie:");
+        seg7TypeLabel.setAlignment(Pos.CENTER);
+        seg7TypeLabel.setMaxWidth(Double.MAX_VALUE);
+        seg7TypeLabel.setFont(new Font("Arial",12));
+
+        ComboBox<String> seg7TypeComboBox = new ComboBox<>();
+        seg7TypeComboBox.getItems().addAll("Konwertery bin-7seg","Bezpośrednio");
+        seg7TypeComboBox.setMaxWidth(Double.MAX_VALUE);
+        seg7TypeComboBox.getSelectionModel().select(Main.stage.seg7ConnectionType);
+        seg7TypeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Main.stage.seg7ConnectionType = seg7TypeComboBox.getSelectionModel().getSelectedIndex();
+            Main.stage.drawFrame();
+        });
+
         seg7PortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             Main.stage.seg7displayPort = seg7PortComboBox.getSelectionModel().getSelectedItem();
             Main.stage.drawFrame();
@@ -124,6 +138,42 @@ public class PaneConfigStage extends Application {
         });
 
 
+        Label externalInterruptsLabel = new Label("Przerwania zewnętrzne:");
+        externalInterruptsLabel.setAlignment(Pos.CENTER);
+        externalInterruptsLabel.setMaxWidth(Double.MAX_VALUE);
+        externalInterruptsLabel.setFont(new Font("Arial",15));
+
+        Label przyciskiInterruptsLabel = new Label("Przyciski");
+        przyciskiInterruptsLabel.setAlignment(Pos.CENTER);
+        przyciskiInterruptsLabel.setMaxWidth(Double.MAX_VALUE);
+        przyciskiInterruptsLabel.setFont(new Font("Arial",12));
+
+        Label zadajnikiInterruptsLabel = new Label("Zadajniki");
+        zadajnikiInterruptsLabel.setAlignment(Pos.CENTER);
+        zadajnikiInterruptsLabel.setMaxWidth(Double.MAX_VALUE);
+        zadajnikiInterruptsLabel.setFont(new Font("Arial",12));
+
+        ComboBox<String> przyciskiPrzerwaniaComboBox = new ComboBox<>();
+        przyciskiPrzerwaniaComboBox.getItems().addAll("-","P3.2","P3.3");
+        przyciskiPrzerwaniaComboBox.setMaxWidth(Double.MAX_VALUE);
+        przyciskiPrzerwaniaComboBox.getSelectionModel().select(Main.stage.przyciskiPrzerwania);
+        przyciskiPrzerwaniaComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+                Main.stage.przyciskiPrzerwania = przyciskiPrzerwaniaComboBox.getSelectionModel().getSelectedItem();
+                Main.stage.drawFrame();
+        });
+
+        ComboBox<String> zadajnikiPrzerwaniaComboBox = new ComboBox<>();
+        zadajnikiPrzerwaniaComboBox.getItems().addAll("-","P3.2","P3.3");
+        zadajnikiPrzerwaniaComboBox.setMaxWidth(Double.MAX_VALUE);
+        zadajnikiPrzerwaniaComboBox.getSelectionModel().select(Main.stage.zadajnikiPrzerwania);
+        zadajnikiPrzerwaniaComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+                 Main.stage.zadajnikiPrzerwania = zadajnikiPrzerwaniaComboBox.getSelectionModel().getSelectedItem();
+                 Main.stage.drawFrame();
+        });
+
+
+
+
         mainGridPane.add(ledsLabel,0,0,4,2);
         mainGridPane.add(ledsPortLabel,0,3,2,1);
         mainGridPane.add(ledPortComboBox,2,3,2,1);
@@ -131,16 +181,24 @@ public class PaneConfigStage extends Application {
         mainGridPane.add(ledCommonComboBox,2,5,2,1);
         mainGridPane.add(ledsColorLabel,0,7,2,2);
         mainGridPane.add(ledsColorPicker,2,7,2,2);
+        mainGridPane.add(seg7Label,5,0,4,2);
+        mainGridPane.add(seg7PortLabel,5,3,2,1);
+        mainGridPane.add(seg7PortComboBox,7,3,2,1);
+        mainGridPane.add(seg7TypeLabel,5,5,2,1);
+        mainGridPane.add(seg7TypeComboBox,7,5,2,1);
+        mainGridPane.add(seg7ColorLabel,5,7,2,2);
+        mainGridPane.add(seg7ColorPicker,7,7,2,2);
 
-        mainGridPane.add(seg7Label,0,10,4,2);
-        mainGridPane.add(seg7PortLabel,0,13,2,1);
-        mainGridPane.add(seg7PortComboBox,2,13,2,1);
-        mainGridPane.add(seg7ColorLabel,0,15,2,2);
-        mainGridPane.add(seg7ColorPicker,2,15,2,2);
+        mainGridPane.add(externalInterruptsLabel,0,10,4,2);
+        mainGridPane.add(przyciskiInterruptsLabel,0,13,2,1);
+        mainGridPane.add(przyciskiPrzerwaniaComboBox,2,13,2,1);
+        mainGridPane.add(zadajnikiInterruptsLabel,0,15,2,1);
+        mainGridPane.add(zadajnikiPrzerwaniaComboBox,2,15,2,1);
+
 
         Scene mainScene = new Scene(mainGridPane, 500, 300);
         mainStage.setScene(mainScene);
-        mainStage.setTitle("Konfiguracja Panelu");
+        mainStage.setTitle("Konfiguracja płytki prototypowej");
         mainStage.setResizable(false);
         mainStage.setResizable(false);
         mainStage.show();
