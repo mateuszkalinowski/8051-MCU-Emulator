@@ -982,6 +982,7 @@ public class MainStage extends Application {
                         editorTabs.get(editorTabs.size() - 1).ownTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
                         editorTabs.get(editorTabs.size() - 1).path = openFile.getPath();
                         editorTabs.get(editorTabs.size() - 1).ownTab.setText(openFile.getName());
+                        editorTabs.get(editorTabs.size() - 1).previousText = editorTabs.get(editorTabs.size() - 1).ownTextArea.getText();
                         editorTabPane.getSelectionModel().selectLast();
                     } catch (FileNotFoundException ignored) {
                     }
@@ -1032,6 +1033,7 @@ public class MainStage extends Application {
                     editorTabs.get(numerKarty).edited = false;
                     editorTabs.get(numerKarty).ownTab.setText(saveFile.getName());
                     editorTabs.get(numerKarty).path = saveFile.getPath();
+                    editorTabs.get(numerKarty).previousText = editorTabs.get(numerKarty).ownTextArea.getText();
 
 
                 } catch (FileNotFoundException e) {
@@ -1095,7 +1097,6 @@ public class MainStage extends Application {
         saveFileMenuItem = new MenuItem("Zapisz");
         saveFileMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
         saveFileMenuItem.setOnAction(event -> {
-
             String selectedCardName = editorTabPane.getSelectionModel().getSelectedItem().getText();
             int numerKarty = 0;
             for (; numerKarty < editorTabs.size(); numerKarty++) {
@@ -1133,6 +1134,7 @@ public class MainStage extends Application {
                         editorTabs.get(numerKarty).edited = false;
                         editorTabs.get(numerKarty).ownTab.setText(saveFile.getName());
                         editorTabs.get(numerKarty).path = saveFile.getPath();
+                        editorTabs.get(numerKarty).previousText = editorTabs.get(numerKarty).ownTextArea.getText();
 
 
                     } catch (FileNotFoundException e) {
@@ -1147,10 +1149,11 @@ public class MainStage extends Application {
                     in.close();
 
                     editorTabs.get(numerKarty).edited = false;
+                    editorTabs.get(numerKarty).previousText = editorTabs.get(numerKarty).ownTextArea.getText();
 
-                    if (editorTabs.get(numerKarty).ownTab.getText().startsWith("*"))
+                    if (editorTabs.get(numerKarty).ownTab.getText().startsWith("*")) {
                         editorTabs.get(numerKarty).ownTab.setText(editorTabs.get(numerKarty).ownTab.getText().substring(1));
-
+                    }
                 } catch (Exception e) {
                     //TODO ERROR MESSAGE
                 }
@@ -1813,6 +1816,7 @@ public class MainStage extends Application {
                         editorTabs.get(editorTabs.size() - 1).ownTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
                         editorTabs.get(editorTabs.size() - 1).path = file.getPath();
                         editorTabs.get(editorTabs.size() - 1).ownTab.setText(file.getName());
+                        editorTabs.get(editorTabs.size() - 1).previousText = editorTabs.get(editorTabs.size() - 1).ownTextArea.getText();
                         editorTabPane.getSelectionModel().selectLast();
                     } catch (FileNotFoundException ignored) {
                     }
@@ -2008,12 +2012,12 @@ public class MainStage extends Application {
         for (int i = 0; i < 8; i++) {
             String portName = ledsPort + "." + (7 - i);
             if (Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(portName)))
-                if(ledsType.equals("katoda"))
+                if(ledsType.equals("Katoda"))
                     gc.setFill(ledsColor);
                 else
                     gc.setFill(Color.LIGHTGREY);
             else
-                if(ledsType.equals("katoda"))
+                if(ledsType.equals("Katoda"))
                     gc.setFill(Color.LIGHTGRAY);
                 else
                     gc.setFill(ledsColor);
@@ -2400,7 +2404,7 @@ public class MainStage extends Application {
 
     String ledsPort = "P0";
     String seg7displayPort = "P1";
-    String ledsType = "katoda";
+    String ledsType = "Katoda";
     Color ledsColor = Color.RED;
     Color seg7Color = Color.RED;
 
@@ -2470,10 +2474,14 @@ public class MainStage extends Application {
             ownTextArea = new TextArea();
             ownTab.setContent(ownTextArea);
             ownTextArea.setPrefColumnCount(1000);
-            ownTextArea.setOnKeyTyped(event -> {
-                if (!edited) {
+            ownTextArea.setOnKeyReleased(event -> {
+                if (!edited && !ownTextArea.getText().equals(previousText)) {
                     edited = true;
                     ownTab.setText("*" + ownTab.getText());
+                }
+                else if (edited && ownTextArea.getText().equals(previousText)) {
+                    edited = false;
+                    ownTab.setText(ownTab.getText().substring(1));
                 }
             });
             ownTab.setOnCloseRequest(event -> {
@@ -2496,6 +2504,7 @@ public class MainStage extends Application {
             this.edited = false;
         }
 
+        public String previousText = "";
         public String path;
         public Tab ownTab;
         public TextArea ownTextArea;

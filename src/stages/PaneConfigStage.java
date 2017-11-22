@@ -39,7 +39,7 @@ public class PaneConfigStage extends Application {
         Label ledsLabel = new Label("Diody:");
         ledsLabel.setAlignment(Pos.CENTER);
         ledsLabel.setMaxWidth(Double.MAX_VALUE);
-        ledsLabel.setFont(new Font("Arial",14));
+        ledsLabel.setFont(new Font("Arial",15));
 
         Label ledsPortLabel = new Label("Port:");
         ledsPortLabel.setAlignment(Pos.CENTER);
@@ -93,7 +93,7 @@ public class PaneConfigStage extends Application {
         });
 
         ComboBox<String> ledCommonComboBox = new ComboBox<>();
-        ledCommonComboBox.getItems().addAll("katoda","anoda");
+        ledCommonComboBox.getItems().addAll("Katoda","Anoda");
         ledCommonComboBox.setMaxWidth(Double.MAX_VALUE);
         ledCommonComboBox.getSelectionModel().select(Main.stage.ledsType);
         ledCommonComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
