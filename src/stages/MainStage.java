@@ -1844,7 +1844,7 @@ public class MainStage extends Application {
         mainStage.setTitle("8051 MCU Emulator - 0.11 Alpha");
         mainBorderPane.setCenter(mainGridPane);
         mainScene = new Scene(mainBorderPane, width, height);
-        mainStage.getIcons().add(new Image(MainStage.class.getResourceAsStream("cpu2.png")));
+        mainStage.getIcons().add(new Image(MainStage.class.getResourceAsStream("cpu.png")));
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
         mainStage.setScene(mainScene);
         mainStage.show();
@@ -1852,7 +1852,7 @@ public class MainStage extends Application {
         mainStage.setMinWidth(800);
 
         try {
-            URL iconURL = MainStage.class.getResource("cpu2.png");
+            URL iconURL = MainStage.class.getResource("cpu.png");
             java.awt.Image image = new ImageIcon(iconURL).getImage();
              com.apple.eawt.Application.getApplication().setDockIconImage(image);
             // com.apple.eawt.Application.getApplication().setDockIconBadge("8051");
@@ -2317,7 +2317,7 @@ public class MainStage extends Application {
         gc = programImageCanvas.getGraphicsContext2D();
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(5);
-        gc.drawImage(new Image(MainStage.class.getResourceAsStream("cpu2.png")),0,5,buttonsBorderPane.getWidth(),buttonsBorderPane.getWidth());
+        gc.drawImage(new Image(MainStage.class.getResourceAsStream("cpu.png")),0,5,buttonsBorderPane.getWidth(),buttonsBorderPane.getWidth());
         gc.strokeRoundRect(3.0/8.0 * buttonsBorderPane.getWidth() / 2.0,5,buttonsBorderPane.getWidth()-3.0/8.0 * buttonsBorderPane.getWidth(),buttonsBorderPane.getWidth(),10,10);
 
     }
