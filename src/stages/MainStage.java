@@ -18,6 +18,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -934,7 +935,7 @@ public class MainStage extends Application {
         });
         menuLowRam.getItems().addAll(exportLowRamMenuItem, importLowRawMenuItem);
 
-        MenuItem paneConfigurationMenuItem = new MenuItem("Wygląd płytki prototypowej");
+        MenuItem paneConfigurationMenuItem = new MenuItem("Układ płytki prototypowej");
         menuOptions.getItems().add(paneConfigurationMenuItem);
         paneConfigurationMenuItem.setOnAction(event -> {
             PaneConfigStage paneConfigStage = new PaneConfigStage();
@@ -1835,6 +1836,7 @@ public class MainStage extends Application {
         mainStage.setTitle("8051 MCU Emulator - 0.11 Alpha");
         mainBorderPane.setCenter(mainGridPane);
         mainScene = new Scene(mainBorderPane, width, height);
+        mainStage.getIcons().add(new Image(MainStage.class.getResourceAsStream("cpu.png")));
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
         mainStage.setScene(mainScene);
         mainStage.show();

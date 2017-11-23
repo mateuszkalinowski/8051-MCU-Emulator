@@ -30,8 +30,8 @@ public class PaneConfigStage extends Application {
         for(int i = 0; i < 10 ; i ++)
             mainGridPane.getColumnConstraints().add(column);
         RowConstraints row = new RowConstraints();
-        row.setPercentHeight(5);
-        for(int i = 0; i < 20;i++)
+        row.setPercentHeight(100.0/18.0);
+        for(int i = 0; i < 18;i++)
             mainGridPane.getRowConstraints().addAll(row);
 
         //mainGridPane.setGridLinesVisible(true);
