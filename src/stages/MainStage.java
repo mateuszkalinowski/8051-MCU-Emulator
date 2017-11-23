@@ -27,9 +27,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -861,10 +863,16 @@ public class MainStage extends Application {
         buttonBox.setSpacing(5);
 
         buttonBox.getChildren().addAll(translateToMemoryButton, stopSimulationButton, oneStepButton, speedSelectLabel, speedSelectComboBox, continuousRunButton);
-        // editorBorderPane.setBottom(buttonBox);
         buttonBox.setAlignment(Pos.TOP_CENTER);
         buttonBox.setPadding(new Insets(5, 5, 0, 5));
-        editorBorderPane.setLeft(buttonBox);
+
+        buttonsBorderPane = new BorderPane();
+        buttonsBorderPane.setCenter(buttonBox);
+        buttonsBorderPane.setBottom(programImageCanvas);
+        editorBorderPane.setLeft(buttonsBorderPane);
+
+
+
         editorElementsGridPane.add(editorBorderPane, 0, 0);
 
         MenuBar mainMenuBar = new MenuBar();
@@ -1843,6 +1851,15 @@ public class MainStage extends Application {
         mainStage.setMinHeight(600);
         mainStage.setMinWidth(800);
 
+        try {
+            URL iconURL = MainStage.class.getResource("cpu2.png");
+            java.awt.Image image = new ImageIcon(iconURL).getImage();
+             com.apple.eawt.Application.getApplication().setDockIconImage(image);
+            // com.apple.eawt.Application.getApplication().setDockIconBadge("8051");
+        } catch (Exception ignored) {
+
+        }
+
         mainScene.setOnDragOver(event -> {
             if (event.getDragboard().hasFiles()) {
                 event.acceptTransferModes(TransferMode.LINK);
@@ -2292,10 +2309,22 @@ public class MainStage extends Application {
         gc.fillText("P1", XMargin + oneWidht + betweenMargin + oneWidht / 2, upperMargin / 2.0);
         gc.fillText("P2", XMargin + oneWidht + betweenMargin + oneWidht + betweenMargin + oneWidht / 2, upperMargin / 2.0);
         gc.fillText("P3", XMargin + oneWidht + betweenMargin + oneWidht + betweenMargin + oneWidht + betweenMargin + oneWidht / 2, upperMargin / 2.0);
+
+
+        programImageCanvas.setWidth(buttonsBorderPane.getWidth());
+        programImageCanvas.setHeight(buttonsBorderPane.getWidth()+25);
+
+        gc = programImageCanvas.getGraphicsContext2D();
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(5);
+        gc.drawImage(new Image(MainStage.class.getResourceAsStream("cpu2.png")),0,5,buttonsBorderPane.getWidth(),buttonsBorderPane.getWidth());
+        gc.strokeRoundRect(3.0/8.0 * buttonsBorderPane.getWidth() / 2.0,5,buttonsBorderPane.getWidth()-3.0/8.0 * buttonsBorderPane.getWidth(),buttonsBorderPane.getWidth(),10,10);
+
     }
 
     private Canvas seg7Canvas = new Canvas();
     private Canvas portsStatusCanvas = new Canvas();
+    private Canvas programImageCanvas = new Canvas();
 
     private void setEditorText(ArrayList<String> toSet) {
         StringBuilder textToSet = new StringBuilder();
@@ -2515,6 +2544,8 @@ public class MainStage extends Application {
     private MenuItem importFileMenuItem;
 
     private XYChart.Series series;
+
+    BorderPane buttonsBorderPane;
 
     private OscilloscopeStage OscilloscopePane = new OscilloscopeStage();
 
