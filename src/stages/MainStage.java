@@ -1836,7 +1836,7 @@ public class MainStage extends Application {
         mainStage.setTitle("8051 MCU Emulator - 0.11 Alpha");
         mainBorderPane.setCenter(mainGridPane);
         mainScene = new Scene(mainBorderPane, width, height);
-        mainStage.getIcons().add(new Image(MainStage.class.getResourceAsStream("cpu.png")));
+        mainStage.getIcons().add(new Image(MainStage.class.getResourceAsStream("cpu2.png")));
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
         mainStage.setScene(mainScene);
         mainStage.show();
