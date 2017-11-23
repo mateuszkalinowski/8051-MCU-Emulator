@@ -133,21 +133,20 @@ public class Cpu {
             mainMemory.put("TH1",TH1int);
         }
 
-        //Pierwsze przerwanie zewnętrzne
 
         if(LastP32 && !mainMemory.getBit(codeMemory.bitAddresses.get("P3.2")) && mainMemory.getBit(codeMemory.bitAddresses.get("IT0"))) {
-            mainMemory.setBit(codeMemory.bitAddresses.get("EX0"),true);
+            mainMemory.setBit(codeMemory.bitAddresses.get("IE0"),true);
         }
 
         if(LastP33 && !mainMemory.getBit(codeMemory.bitAddresses.get("P3.3")) && mainMemory.getBit(codeMemory.bitAddresses.get("IT1"))) {
-            mainMemory.setBit(codeMemory.bitAddresses.get("EX1"),true);
+            mainMemory.setBit(codeMemory.bitAddresses.get("IE1"),true);
         }
 
         if(!mainMemory.getBit(codeMemory.bitAddresses.get("P3.2")) && !mainMemory.getBit(codeMemory.bitAddresses.get("IT0"))) {
-            mainMemory.setBit(codeMemory.bitAddresses.get("EX0"),true);
+            mainMemory.setBit(codeMemory.bitAddresses.get("IE0"),true);
         }
         if(!mainMemory.getBit(codeMemory.bitAddresses.get("P3.3")) && !mainMemory.getBit(codeMemory.bitAddresses.get("IT1"))) {
-            mainMemory.setBit(codeMemory.bitAddresses.get("EX1"),true);
+            mainMemory.setBit(codeMemory.bitAddresses.get("IE1"),true);
         }
 
         LastP32 = mainMemory.getBit(codeMemory.bitAddresses.get("P3.2"));
@@ -156,11 +155,11 @@ public class Cpu {
 
 
         if(mainMemory.getBit(codeMemory.bitAddresses.get("EA"))) {
-            if (mainMemory.getBit(codeMemory.bitAddresses.get("EX0")) && !mainMemory.getBit(codeMemory.bitAddresses.get("P3.2")) && higherInterrupt>=1)
+            if (mainMemory.getBit(codeMemory.bitAddresses.get("EX0")) && mainMemory.getBit(codeMemory.bitAddresses.get("IE0")) && !mainMemory.getBit(codeMemory.bitAddresses.get("P3.2")) && higherInterrupt>=1)
                 interrupts.set(0, true);
             if (mainMemory.getBit(codeMemory.bitAddresses.get("TF0")) && mainMemory.getBit(codeMemory.bitAddresses.get("ET0")) && higherInterrupt>=2)
                 interrupts.set(1, true);
-            if (mainMemory.getBit(codeMemory.bitAddresses.get("EX1")) && !mainMemory.getBit(codeMemory.bitAddresses.get("P3.3")) && higherInterrupt>=3)
+            if (mainMemory.getBit(codeMemory.bitAddresses.get("EX1")) && mainMemory.getBit(codeMemory.bitAddresses.get("IE1")) && !mainMemory.getBit(codeMemory.bitAddresses.get("P3.3")) && higherInterrupt>=3)
                 interrupts.set(2, true);
             if (mainMemory.getBit(codeMemory.bitAddresses.get("TF1")) && mainMemory.getBit(codeMemory.bitAddresses.get("ET1")) && higherInterrupt>=4)
                 interrupts.set(3, true);
@@ -187,7 +186,7 @@ public class Cpu {
                     stackPointer = 0;
                 mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
                 mainMemory.put("SP",stackPointer);
-                mainMemory.setBit(codeMemory.bitAddresses.get("EX0"), false);
+                mainMemory.setBit(codeMemory.bitAddresses.get("IE0"), false);
                 interrupts.set(0,false);
                 higherInterrupt=0;
                 linePointer = 3;
@@ -229,7 +228,7 @@ public class Cpu {
                     stackPointer = 0;
                 mainMemory.put(stackPointer, Integer.parseInt(address.substring(0, 8), 2));
                 mainMemory.put("SP",stackPointer);
-                mainMemory.setBit(codeMemory.bitAddresses.get("EX1"), false);
+                mainMemory.setBit(codeMemory.bitAddresses.get("IE1"), false);
                 interrupts.set(2,false);
                 higherInterrupt=2;
                 linePointer = 19;

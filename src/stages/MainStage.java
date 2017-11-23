@@ -1252,7 +1252,7 @@ public class MainStage extends Application {
             if (portToggle7.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[0] = '0';
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
                 }
                 try {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
@@ -1272,7 +1272,7 @@ public class MainStage extends Application {
             if (portToggle6.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[1] = '0';
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
                 }
                 try {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
@@ -1292,7 +1292,7 @@ public class MainStage extends Application {
             if (portToggle5.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[2] = '0';
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
                 }
                 try {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
@@ -1312,7 +1312,7 @@ public class MainStage extends Application {
             if (portToggle4.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[3] = '0';
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
                 }
                 try {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
@@ -1332,7 +1332,7 @@ public class MainStage extends Application {
             if (portToggle3.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[4] = '0';
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
                 }
                 try {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
@@ -1352,7 +1352,7 @@ public class MainStage extends Application {
             if (portToggle2.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[5] = '0';
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
                 }
                 try {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
@@ -1372,7 +1372,7 @@ public class MainStage extends Application {
             if (portToggle1.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[6] = '0';
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
                 }
                 try {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
@@ -1392,7 +1392,7 @@ public class MainStage extends Application {
             if (portToggle0.isSelected()) {
                 Main.cpu.mainMemory.buttonsState[7] = '0';
                 if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX1"), true);
+                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
                 }
                 try {
                     Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(zadajnikiPrzerwania), false);
@@ -1413,7 +1413,7 @@ public class MainStage extends Application {
             Main.cpu.mainMemory.buttonsState[0] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
             } try {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
             } catch (Exception e) { }
@@ -1435,7 +1435,7 @@ public class MainStage extends Application {
             Main.cpu.mainMemory.buttonsState[1] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
             }
             try {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
@@ -1458,7 +1458,7 @@ public class MainStage extends Application {
             Main.cpu.mainMemory.buttonsState[2] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
             }
             try {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
@@ -1481,7 +1481,7 @@ public class MainStage extends Application {
             Main.cpu.mainMemory.buttonsState[3] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
             }
             try {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
@@ -1504,7 +1504,7 @@ public class MainStage extends Application {
             Main.cpu.mainMemory.buttonsState[4] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
             }
             try {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
@@ -1527,7 +1527,7 @@ public class MainStage extends Application {
             Main.cpu.mainMemory.buttonsState[5] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
             }
             try {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
@@ -1550,7 +1550,7 @@ public class MainStage extends Application {
             Main.cpu.mainMemory.buttonsState[6] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
             }
             try {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
@@ -1573,7 +1573,7 @@ public class MainStage extends Application {
             Main.cpu.mainMemory.buttonsState[7] = '0';
             Main.cpu.mainMemory.putFromExternal(160);
             if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("EX0"), true);
+                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
             }
             try {
                 Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(przyciskiPrzerwania), false);
@@ -1841,7 +1841,7 @@ public class MainStage extends Application {
         memoryInfoTab.setContent(mainMemoryGridPane);
 
         mainStage = primaryStage;
-        mainStage.setTitle("8051 MCU Emulator - 0.11 Alpha");
+        mainStage.setTitle("8051 MCU Emulator - 0.12 Alpha");
         mainBorderPane.setCenter(mainGridPane);
         mainScene = new Scene(mainBorderPane, width, height);
         mainStage.getIcons().add(new Image(MainStage.class.getResourceAsStream("cpu.png")));
@@ -1893,13 +1893,15 @@ public class MainStage extends Application {
                         if(breakFlag)
                             continue;
 
+                        String text = textToSet.substring(0,textToSet.length()-1);
+
                         editorTabs.add(new editorTab());
                         editorTabs.get(editorTabs.size() - 1).ownTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
                         editorTabs.get(editorTabs.size() - 1).path = file.getPath();
                         editorTabs.get(editorTabs.size() - 1).ownTab.setText(file.getName());
                         editorTabs.get(editorTabs.size() - 1).previousText = editorTabs.get(editorTabs.size() - 1).ownTextArea.getText();
                         editorTabPane.getSelectionModel().selectLast();
-                    } catch (FileNotFoundException ignored) {
+                    } catch (Exception ignored) {
                     }
                     event.setDropCompleted(true);
                     event.consume();
@@ -2075,20 +2077,31 @@ public class MainStage extends Application {
         double width = 240;
         double oneLedWidth = width / 8.0;
 
+        height = 220;
+
         seg7Canvas.setWidth(width);
         seg7Canvas.setHeight(height);
 
         GraphicsContext gc = seg7Canvas.getGraphicsContext2D();
+
+        //Color mainBackgroud = Color.web("0x1ccc65");
+
+        //gc.setFill(mainBackgroud);
+        //gc.fillRoundRect(0,0,width,height,10,10);
 
         double marginX = 10;
         double marginY = 80;
         double marginYUp = 20;
         height = 60;
 
-        gc.clearRect(0, 0, width, height);
+       // gc.clearRect(0, 0, width, height);
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(2);
         gc.setFill(Color.RED);
+
+
+
+
 
         for (int i = 0; i < 8; i++) {
             String portName = ledsPort + "." + (7 - i);
@@ -2124,6 +2137,11 @@ public class MainStage extends Application {
         gc.setFill(Color.BLACK);
 
 
+        Color seg7background = Color.web("0x454545");
+        gc.setFill(seg7background);
+        gc.fillRect(width / 2.0 - longer - shorter - marginX-shorter-shorter,marginY-shorter,longer+longer+6*shorter+marginX+marginX,longer+longer+5*shorter);
+
+
         //LICZBA PIERWSZA
         int[] wartosci;
         if(seg7ConnectionType==0) {
@@ -2141,43 +2159,45 @@ public class MainStage extends Application {
             }
         }
 
+        Color backgroud = Color.web("0x666666");
+
         if (wartosci[0] == 1)
             gc.setFill(seg7Color);
         else
-            gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width / 2.0 - longer - shorter - marginX, marginY, longer, shorter, 10, 10);//a
+            gc.setFill(backgroud);
+        gc.fillRect(width / 2.0 - longer - shorter - marginX, marginY, longer, shorter);//a
         if (wartosci[6] == 1)
             gc.setFill(seg7Color);
         else
-            gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width / 2.0 - longer - shorter - marginX, marginY + longer + shorter, longer, shorter, 10, 10);//g
+            gc.setFill(backgroud);
+        gc.fillRect(width / 2.0 - longer - shorter - marginX, marginY + longer + shorter, longer, shorter);//g
         if (wartosci[3] == 1)
             gc.setFill(seg7Color);
         else
-            gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width / 2.0 - longer - shorter - marginX, marginY + 2.0 * longer + 2.0 * shorter, longer, shorter, 10, 10);//d
+            gc.setFill(backgroud);
+        gc.fillRect(width / 2.0 - longer - shorter - marginX, marginY + 2.0 * longer + 2.0 * shorter, longer, shorter);//d
 
         if (wartosci[5] == 1)
             gc.setFill(seg7Color);
         else
-            gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width / 2.0 - longer - shorter - marginX - shorter, marginY + shorter, shorter, longer, 10, 10);//f
+            gc.setFill(backgroud);
+        gc.fillRect(width / 2.0 - longer - shorter - marginX - shorter, marginY + shorter, shorter, longer);//f
         if (wartosci[4] == 1)
             gc.setFill(seg7Color);
         else
-            gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width / 2.0 - longer - shorter - marginX - shorter, marginY + shorter + longer + shorter, shorter, longer, 10, 10);//e
+            gc.setFill(backgroud);
+        gc.fillRect(width / 2.0 - longer - shorter - marginX - shorter, marginY + shorter + longer + shorter, shorter, longer);//e
 
         if (wartosci[1] == 1)
             gc.setFill(seg7Color);
         else
-            gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width / 2.0 - marginX - shorter, marginY + shorter, shorter, longer, 10, 10);//b
+            gc.setFill(backgroud);
+        gc.fillRect(width / 2.0 - marginX - shorter, marginY + shorter, shorter, longer);//b
         if (wartosci[2] == 1)
             gc.setFill(seg7Color);
         else
-            gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width / 2.0 - marginX - shorter, marginY + shorter + longer + shorter, shorter, longer, 10, 10);//c
+            gc.setFill(backgroud);
+        gc.fillRect(width / 2.0 - marginX - shorter, marginY + shorter + longer + shorter, shorter, longer);//c
 
         if(seg7ConnectionType==0) {
             String wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get(seg7displayPort)));
@@ -2198,46 +2218,46 @@ public class MainStage extends Application {
         if (wartosci[0] == 1)
             gc.setFill(seg7Color);
         else
-            gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width / 2.0 + shorter + marginX, marginY, longer, shorter, 10, 10);//a
+            gc.setFill(backgroud);
+        gc.fillRect(width / 2.0 + shorter + marginX, marginY, longer, shorter);//a
 
         if (wartosci[6] == 1)
             gc.setFill(seg7Color);
         else
-            gc.setFill(Color.LIGHTGRAY);
-        gc.fillRoundRect(width / 2.0 + shorter + marginX, marginY + longer + shorter, longer, shorter, 10, 10);//g
+            gc.setFill(backgroud);
+        gc.fillRect(width / 2.0 + shorter + marginX, marginY + longer + shorter, longer, shorter);//g
 
         if (wartosci[3] == 1)
             gc.setFill(seg7Color);
         else
-            gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width / 2.0 + shorter + marginX, marginY + 2.0 * longer + 2.0 * shorter, longer, shorter, 10, 10);//d
+            gc.setFill(backgroud);
+        gc.fillRect(width / 2.0 + shorter + marginX, marginY + 2.0 * longer + 2.0 * shorter, longer, shorter);//d
 
 
         if (wartosci[1] == 1)
             gc.setFill(seg7Color);
         else
-            gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width / 2.0 + longer + shorter + marginX, marginY + shorter, shorter, longer, 10, 10);//b
+            gc.setFill(backgroud);
+        gc.fillRect(width / 2.0 + longer + shorter + marginX, marginY + shorter, shorter, longer);//b
 
         if (wartosci[2] == 1)
             gc.setFill(seg7Color);
         else
-            gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width / 2.0 + longer + shorter + marginX, marginY + shorter + longer + shorter, shorter, longer, 10, 10);//c
+            gc.setFill(backgroud);
+        gc.fillRect(width / 2.0 + longer + shorter + marginX, marginY + shorter + longer + shorter, shorter, longer);//c
 
 
         if (wartosci[5] == 1)
             gc.setFill(seg7Color);
         else
-            gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width / 2.0 + marginX, marginY + shorter, shorter, longer, 10, 10);//f
+            gc.setFill(backgroud);
+        gc.fillRect(width / 2.0 + marginX, marginY + shorter, shorter, longer);//f
 
         if (wartosci[4] == 1)
             gc.setFill(seg7Color);
         else
-            gc.setFill(Color.LIGHTGREY);
-        gc.fillRoundRect(width / 2.0 + marginX, marginY + shorter + longer + shorter, shorter, longer, 10, 10);//e
+            gc.setFill(backgroud);
+        gc.fillRect(width / 2.0 + marginX, marginY + shorter + longer + shorter, shorter, longer);//e
 
         width = mainStage.getWidth();
         //height = mainStage.getHeight() * (37.0 / 100.0);
