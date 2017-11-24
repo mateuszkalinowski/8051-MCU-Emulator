@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -56,17 +57,14 @@ public class PaneConfigStage extends Application {
         ledsColorLabel.setMaxWidth(Double.MAX_VALUE);
         ledsColorLabel.setFont(new Font("Arial",12));
 
-        ColorPicker ledsColorPicker = new ColorPicker();
-        ledsColorPicker.setValue(Main.stage.ledsColor);
-        ledsColorPicker.setMaxWidth(Double.MAX_VALUE);
-        ledsColorPicker.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Main.stage.ledsColor = ledsColorPicker.getValue();
-                Main.stage.drawFrame();
-            }
+        ComboBox<String> ledsColorPickerComboBox = new ComboBox<>();
+        ledsColorPickerComboBox.setValue(Main.stage.ledsColor);
+        ledsColorPickerComboBox.setMaxWidth(Double.MAX_VALUE);
+        ledsColorPickerComboBox.getItems().addAll("Czerwony","Niebieski");
+        ledsColorPickerComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Main.stage.ledsColor = ledsColorPickerComboBox.getSelectionModel().getSelectedItem();
+            Main.stage.drawFrame();
         });
-
 
         Label seg7Label = new Label("Wyświetlacz 7-seg:");
         seg7Label.setAlignment(Pos.CENTER);
@@ -126,15 +124,13 @@ public class PaneConfigStage extends Application {
             Main.stage.drawFrame();
         });
 
-        ColorPicker seg7ColorPicker = new ColorPicker();
-        seg7ColorPicker.setValue(Main.stage.seg7Color);
-        seg7ColorPicker.setMaxWidth(Double.MAX_VALUE);
-        seg7ColorPicker.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Main.stage.seg7Color = seg7ColorPicker.getValue();
-                Main.stage.drawFrame();
-            }
+        ComboBox<String> seg7ColorPickerComboBox = new ComboBox<>();
+        seg7ColorPickerComboBox.setValue(Main.stage.seg7Color);
+        seg7ColorPickerComboBox.setMaxWidth(Double.MAX_VALUE);
+        seg7ColorPickerComboBox.getItems().addAll("Czerwony","Zielony","Niebieski");
+        seg7ColorPickerComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Main.stage.seg7Color = seg7ColorPickerComboBox.getSelectionModel().getSelectedItem();
+            Main.stage.drawFrame();
         });
 
 
@@ -171,6 +167,39 @@ public class PaneConfigStage extends Application {
                  Main.stage.drawFrame();
         });
 
+        Button resetToDefaultButton = new Button("Przywroć wartości domyślne");
+        resetToDefaultButton.setMaxWidth(Double.MAX_VALUE);
+        resetToDefaultButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Main.stage.ledsPort = "P0";
+                ledPortComboBox.getSelectionModel().select(Main.stage.ledsPort);
+
+                Main.stage.ledsType = "Katoda";
+                ledCommonComboBox.getSelectionModel().select(Main.stage.ledsType);
+
+                Main.stage.ledsColor = "Czerwony";
+                ledsColorPickerComboBox.getSelectionModel().select(Main.stage.ledsColor);
+
+                Main.stage.seg7displayPort = "P1";
+                seg7PortComboBox.getSelectionModel().select(Main.stage.seg7displayPort);
+
+                Main.stage.seg7ConnectionType = 0;
+                seg7TypeComboBox.getSelectionModel().select(Main.stage.seg7ConnectionType);
+
+                Main.stage.seg7Color = "Czerwony";
+                seg7ColorPickerComboBox.getSelectionModel().select(Main.stage.seg7Color);
+
+                Main.stage.przyciskiPrzerwania = "P3.2";
+                przyciskiPrzerwaniaComboBox.getSelectionModel().select(Main.stage.przyciskiPrzerwania);
+
+                Main.stage.zadajnikiPrzerwania = "P3.3";
+                zadajnikiPrzerwaniaComboBox.getSelectionModel().select(Main.stage.zadajnikiPrzerwania);
+
+                Main.stage.drawFrame();
+
+            }
+        });
 
 
 
@@ -179,21 +208,23 @@ public class PaneConfigStage extends Application {
         mainGridPane.add(ledPortComboBox,2,3,2,1);
         mainGridPane.add(ledsCommonLabel,0,5,2,1);
         mainGridPane.add(ledCommonComboBox,2,5,2,1);
-        mainGridPane.add(ledsColorLabel,0,7,2,2);
-        mainGridPane.add(ledsColorPicker,2,7,2,2);
+        mainGridPane.add(ledsColorLabel,0,7,2,1);
+        mainGridPane.add(ledsColorPickerComboBox,2,7,2,1);
         mainGridPane.add(seg7Label,5,0,4,2);
         mainGridPane.add(seg7PortLabel,5,3,2,1);
         mainGridPane.add(seg7PortComboBox,7,3,2,1);
         mainGridPane.add(seg7TypeLabel,5,5,2,1);
         mainGridPane.add(seg7TypeComboBox,7,5,2,1);
-        mainGridPane.add(seg7ColorLabel,5,7,2,2);
-        mainGridPane.add(seg7ColorPicker,7,7,2,2);
+        mainGridPane.add(seg7ColorLabel,5,7,2,1);
+        mainGridPane.add(seg7ColorPickerComboBox,7,7,2,1);
 
         mainGridPane.add(externalInterruptsLabel,0,10,4,2);
         mainGridPane.add(przyciskiInterruptsLabel,0,13,2,1);
         mainGridPane.add(przyciskiPrzerwaniaComboBox,2,13,2,1);
         mainGridPane.add(zadajnikiInterruptsLabel,0,15,2,1);
         mainGridPane.add(zadajnikiPrzerwaniaComboBox,2,15,2,1);
+
+        mainGridPane.add(resetToDefaultButton,5,15,4,1);
 
 
         Scene mainScene = new Scene(mainGridPane, 500, 300);

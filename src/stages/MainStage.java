@@ -2084,10 +2084,14 @@ public class MainStage extends Application {
 
         GraphicsContext gc = seg7Canvas.getGraphicsContext2D();
 
-        //Color mainBackgroud = Color.web("0x1ccc65");
+        Color mainBackgroud = Color.DARKGREEN;
 
-        //gc.setFill(mainBackgroud);
-        //gc.fillRoundRect(0,0,width,height,10,10);
+        gc.setFill(mainBackgroud);
+        gc.fillRect(0,0,width,height);
+
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(5f);
+        gc.strokeRect(0,0,width,height);
 
         double marginX = 10;
         double marginY = 80;
@@ -2105,27 +2109,54 @@ public class MainStage extends Application {
 
         for (int i = 0; i < 8; i++) {
             String portName = ledsPort + "." + (7 - i);
-            if (Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(portName)))
-                if(ledsType.equals("Katoda"))
-                    gc.setFill(ledsColor);
-                else
-                    gc.setFill(Color.LIGHTGREY);
-            else
-                if(ledsType.equals("Katoda"))
-                    gc.setFill(Color.LIGHTGRAY);
-                else
-                    gc.setFill(ledsColor);
+
+            Color mainColor = Color.BLACK;
+
+            if(ledsColor.equals("Czerwony")) {
+                gc.setFill(Color.DARKRED);
+                mainColor = Color.ORANGERED;
+            }
+            if(ledsColor.equals("Zielony")) {
+                gc.setFill(Color.DARKGREEN);
+                mainColor = Color.LIGHTGREEN;
+            }
+            if(ledsColor.equals("Niebieski")) {
+                gc.setFill(Color.DARKBLUE);
+                mainColor = Color.LIGHTBLUE;
+            }
 
             double centerX = i * oneLedWidth + oneLedWidth / 2.0;
             double centerY = height / 2.0;
             double radius = (oneLedWidth >= height ? height - 2 : oneLedWidth) / 2.0 - 5;
 
-            gc.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+            gc.setStroke(Color.YELLOW);
+
+            gc.setLineWidth(4);
+
+            gc.strokeLine(centerX-radius/2.0,centerY-2*radius-5,centerX-radius/2.0+2,centerY-2*radius);
+            gc.strokeLine(centerX-radius/2.0,centerY+2*radius+5,centerX-radius/2.0+2,centerY+2*radius);
+
+            gc.fillRect(centerX - radius,centerY-2*radius,radius+2,radius*4);
+
+            if (Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(portName)))
+                if(ledsType.equals("Katoda"))
+                    gc.setFill(mainColor);
+                else
+                    gc.setFill(Color.TRANSPARENT);
+            else
+                if(ledsType.equals("Katoda"))
+                    gc.setFill(Color.TRANSPARENT);
+                else
+                    gc.setFill(mainColor);
+
+            gc.fillRect(centerX - radius,centerY-radius,radius+2,radius*2);
+
+            //gc.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
         }
 
         height = 210.0;
 
-        gc.clearRect(0, 60, width, height);
+        //gc.clearRect(0, 60, width, height);
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(2);
         double shorter = 10;
@@ -2134,8 +2165,18 @@ public class MainStage extends Application {
         if ((longer + shorter + shorter + marginX + 10) >= (width / 2))
             longer = width / 2 - shorter - shorter - marginX - 10;
 
-        gc.setFill(Color.BLACK);
+        double breakHeight = (longer+longer+5*shorter - 2*shorter)/6;
 
+        for(int i = 0; i < 7; i ++) {
+            gc.setStroke(Color.YELLOW);
+            gc.setLineWidth(4);
+
+            gc.strokeLine(width/2.0 + longer + shorter + marginX+shorter+shorter,marginY+i*breakHeight,width/2.0 + longer + shorter + marginX+shorter+shorter+4,marginY+i*breakHeight);
+            gc.strokeLine(width/2.0 - longer - shorter - marginX-shorter-shorter,marginY+i*breakHeight,width/2.0 - longer - shorter - marginX-shorter-shorter-4,marginY+i*breakHeight);
+
+        }
+
+        gc.setFill(Color.BLACK);
 
         Color seg7background = Color.web("0x454545");
         gc.setFill(seg7background);
@@ -2161,40 +2202,52 @@ public class MainStage extends Application {
 
         Color backgroud = Color.web("0x666666");
 
+        Color seg7RealColor = Color.web("0x666666");
+
+        if(seg7Color.equals("Czerwony")) {
+            seg7RealColor = Color.RED;
+        }
+        if(seg7Color.equals("Zielony")) {
+            seg7RealColor = Color.LIGHTGREEN;
+        }
+        if(seg7Color.equals("Niebieski")) {
+            seg7RealColor = Color.LIGHTBLUE;
+        }
+
         if (wartosci[0] == 1)
-            gc.setFill(seg7Color);
+            gc.setFill(seg7RealColor);
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 - longer - shorter - marginX, marginY, longer, shorter);//a
         if (wartosci[6] == 1)
-            gc.setFill(seg7Color);
+            gc.setFill(seg7RealColor);
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 - longer - shorter - marginX, marginY + longer + shorter, longer, shorter);//g
         if (wartosci[3] == 1)
-            gc.setFill(seg7Color);
+            gc.setFill(seg7RealColor);
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 - longer - shorter - marginX, marginY + 2.0 * longer + 2.0 * shorter, longer, shorter);//d
 
         if (wartosci[5] == 1)
-            gc.setFill(seg7Color);
+            gc.setFill(seg7RealColor);
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 - longer - shorter - marginX - shorter, marginY + shorter, shorter, longer);//f
         if (wartosci[4] == 1)
-            gc.setFill(seg7Color);
+            gc.setFill(seg7RealColor);
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 - longer - shorter - marginX - shorter, marginY + shorter + longer + shorter, shorter, longer);//e
 
         if (wartosci[1] == 1)
-            gc.setFill(seg7Color);
+            gc.setFill(seg7RealColor);
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 - marginX - shorter, marginY + shorter, shorter, longer);//b
         if (wartosci[2] == 1)
-            gc.setFill(seg7Color);
+            gc.setFill(seg7RealColor);
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 - marginX - shorter, marginY + shorter + longer + shorter, shorter, longer);//c
@@ -2216,45 +2269,45 @@ public class MainStage extends Application {
 
         //LICZBA DRUGA
         if (wartosci[0] == 1)
-            gc.setFill(seg7Color);
+            gc.setFill(seg7RealColor);
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 + shorter + marginX, marginY, longer, shorter);//a
 
         if (wartosci[6] == 1)
-            gc.setFill(seg7Color);
+            gc.setFill(seg7RealColor);
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 + shorter + marginX, marginY + longer + shorter, longer, shorter);//g
 
         if (wartosci[3] == 1)
-            gc.setFill(seg7Color);
+            gc.setFill(seg7RealColor);
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 + shorter + marginX, marginY + 2.0 * longer + 2.0 * shorter, longer, shorter);//d
 
 
         if (wartosci[1] == 1)
-            gc.setFill(seg7Color);
+            gc.setFill(seg7RealColor);
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 + longer + shorter + marginX, marginY + shorter, shorter, longer);//b
 
         if (wartosci[2] == 1)
-            gc.setFill(seg7Color);
+            gc.setFill(seg7RealColor);
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 + longer + shorter + marginX, marginY + shorter + longer + shorter, shorter, longer);//c
 
 
         if (wartosci[5] == 1)
-            gc.setFill(seg7Color);
+            gc.setFill(seg7RealColor);
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 + marginX, marginY + shorter, shorter, longer);//f
 
         if (wartosci[4] == 1)
-            gc.setFill(seg7Color);
+            gc.setFill(seg7RealColor);
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 + marginX, marginY + shorter + longer + shorter, shorter, longer);//e
@@ -2334,11 +2387,11 @@ public class MainStage extends Application {
         programImageCanvas.setWidth(buttonsBorderPane.getWidth());
         programImageCanvas.setHeight(buttonsBorderPane.getWidth()+25);
 
-        gc = programImageCanvas.getGraphicsContext2D();
-        gc.setStroke(Color.BLACK);
-        gc.setLineWidth(5);
-        gc.drawImage(new Image(MainStage.class.getResourceAsStream("cpu.png")),0,5,buttonsBorderPane.getWidth(),buttonsBorderPane.getWidth());
-        gc.strokeRoundRect(3.0/8.0 * buttonsBorderPane.getWidth() / 2.0,5,buttonsBorderPane.getWidth()-3.0/8.0 * buttonsBorderPane.getWidth(),buttonsBorderPane.getWidth(),10,10);
+        //gc = programImageCanvas.getGraphicsContext2D();
+        //gc.setStroke(Color.BLACK);
+        //gc.setLineWidth(5);
+        //gc.drawImage(new Image(MainStage.class.getResourceAsStream("cpu.png")),0,5,buttonsBorderPane.getWidth(),buttonsBorderPane.getWidth());
+        //gc.strokeRoundRect(3.0/8.0 * buttonsBorderPane.getWidth() / 2.0,5,buttonsBorderPane.getWidth()-3.0/8.0 * buttonsBorderPane.getWidth(),buttonsBorderPane.getWidth(),10,10);
 
     }
 
@@ -2544,8 +2597,8 @@ public class MainStage extends Application {
     String ledsPort = "P0";
     String seg7displayPort = "P1";
     String ledsType = "Katoda";
-    Color ledsColor = Color.RED;
-    Color seg7Color = Color.RED;
+    String ledsColor = "Czerwony";
+    String seg7Color = "Czerwony";
     int seg7ConnectionType  = 0;
     String przyciskiPrzerwania = "P3.2";
     String zadajnikiPrzerwania = "P3.3";
