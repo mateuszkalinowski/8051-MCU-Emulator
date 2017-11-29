@@ -1472,7 +1472,6 @@ public class Cpu {
         }
         checkP();
         //refreshGui();
-        Dac7524.convert();
         checkRegistersBank();
         if(linePointer>=programMemory)
             linePointer=0;

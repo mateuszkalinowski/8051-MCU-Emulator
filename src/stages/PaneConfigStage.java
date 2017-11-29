@@ -61,7 +61,7 @@ public class PaneConfigStage extends Application {
         ComboBox<String> ledsColorPickerComboBox = new ComboBox<>();
         ledsColorPickerComboBox.setValue(Main.stage.ledsColor);
         ledsColorPickerComboBox.setMaxWidth(Double.MAX_VALUE);
-        ledsColorPickerComboBox.getItems().addAll("Czerwony","Niebieski");
+        ledsColorPickerComboBox.getItems().addAll("Czerwony","Zielony","Niebieski");
         ledsColorPickerComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             Main.stage.ledsColor = ledsColorPickerComboBox.getSelectionModel().getSelectedItem();
             Main.stage.drawFrame();
@@ -83,7 +83,7 @@ public class PaneConfigStage extends Application {
         seg7ColorLabel.setFont(new Font("Arial",12));
 
         ComboBox<String> ledPortComboBox = new ComboBox<>();
-        ledPortComboBox.getItems().addAll("-","P0","P1","P2","P3");
+        ledPortComboBox.getItems().addAll("VCC","GND","P0","P1","P2","P3");
         ledPortComboBox.setMaxWidth(Double.MAX_VALUE);
         ledPortComboBox.getSelectionModel().select(Main.stage.ledsPort);
         ledPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -102,7 +102,7 @@ public class PaneConfigStage extends Application {
 
 
         ComboBox<String> seg7PortComboBox = new ComboBox<>();
-        seg7PortComboBox.getItems().addAll("-","P0","P1","P2","P3");
+        seg7PortComboBox.getItems().addAll("VCC","GND","P0","P1","P2","P3");
         seg7PortComboBox.setMaxWidth(Double.MAX_VALUE);
         seg7PortComboBox.getSelectionModel().select(Main.stage.seg7displayPort);
 
@@ -179,7 +179,7 @@ public class PaneConfigStage extends Application {
         dacPortLabel.setFont(new Font("Arial",12));
 
         ComboBox<String> dacPortComboBox = new ComboBox<>();
-        dacPortComboBox.getItems().addAll("-","P0","P1");
+        dacPortComboBox.getItems().addAll("VCC","GND","P0","P1");
         dacPortComboBox.setMaxWidth(Double.MAX_VALUE);
         dacPortComboBox.getSelectionModel().select(Main.stage.przetwornikDACPort);
         dacPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -246,6 +246,15 @@ public class PaneConfigStage extends Application {
 
                 Main.stage.zadajnikiPrzerwania = "P3.3";
                 zadajnikiPrzerwaniaComboBox.getSelectionModel().select(Main.stage.zadajnikiPrzerwania);
+
+                Main.stage.przetwornikDACPort = "P0";
+                dacPortComboBox.getSelectionModel().select(Main.stage.przetwornikDACPort);
+
+                Main.stage.przetwornikDACWR = "P1.6";
+                wrPortComboBox.getSelectionModel().select(Main.stage.przetwornikDACWR);
+
+                Main.stage.przetwornikDACCS = "P1.7";
+                csPortComboBox.getSelectionModel().select(Main.stage.przetwornikDACCS);
 
                 Main.stage.drawFrame();
 

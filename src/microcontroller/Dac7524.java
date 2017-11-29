@@ -32,11 +32,22 @@ public class Dac7524 {
             if(!wr)
                 return;
             else {
-                int wartoscportu = Main.cpu.mainMemory.get(Main.stage.przetwornikDACPort);
+                int wartoscportu;
+                if(Main.stage.przetwornikDACPort.equals("VCC")) {
+                    wartoscportu = 255;
+                }
+                else if(Main.stage.przetwornikDACPort.equals("GND")) {
+                    wartoscportu = 0;
+                }
+                else {
+                    wartoscportu = Main.cpu.mainMemory.get(Main.stage.przetwornikDACPort);
+                }
                 double wynik = 5 * (wartoscportu/255.0);
                 value = Double.toString(wynik);
                 if(value.length()>5)
                     value = Double.toString(wynik).substring(0,5);
+
+                Main.stage.dacStateLabel.setText("Wyjście DAC: "+value+" V");
             }
         }
 
@@ -46,6 +57,11 @@ public class Dac7524 {
 
     public static String getValue(){
         return value;
+    }
+
+    public static void reset(){
+        value = "0.000";
+        Main.stage.dacStateLabel.setText("Wyjście DAC: "+value+" V");
     }
 
 

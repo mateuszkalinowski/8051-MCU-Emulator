@@ -26,6 +26,7 @@ import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+import microcontroller.Dac7524;
 
 import javax.swing.*;
 import java.io.File;
@@ -776,10 +777,10 @@ public class MainStage extends Application {
             for (String line : lines) {
                 textToSet.append(line).append("\n");
             }
-            //editorTextArea.setText(textToSet.substring(0,textToSet.length()-1));
             editorTabs.get(numerKarty).ownTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
             Main.cpu.resetCpu();
             Main.cpu.refreshGui();
+            Dac7524.reset();
             compilationErrorsLabel.setText("");
             compilationErrorsLabel.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
             OscilloscopePane.resetPrzebieg();
@@ -787,18 +788,19 @@ public class MainStage extends Application {
 
         oneStepButton = new Button("Krok");
         oneStepButton.setOnAction(event -> {
-         //   try {
+            try {
                 Main.cpu.executeInstruction();
                 Main.cpu.refreshGui();
+                Dac7524.convert();
                 OscilloscopePane.updateChart();
-           /* } catch (Exception e) {
+            } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Błąd Wykonania");
                 alert.setHeaderText("Wykonanie przebiegło nieudanie");
                 alert.setContentText("Sprawdź kod jeszcze raz, informacja gdzie wystąpił błąd zostanie" +
                         "dodana w jednej z kolejnych wersji programu");
                 alert.showAndWait();
-            }*/
+            }
         });
 
         continuousRunButton = new Button("Praca Ciągła");
@@ -818,7 +820,8 @@ public class MainStage extends Application {
                         while (continuousRunFlag) {
                             if (System.nanoTime() - time > 1000000000 / speedSelectComboBox.getSelectionModel().getSelectedItem()) {
                                 Main.cpu.executeInstruction();
-                                Platform.runLater(() -> OscilloscopePane.updateChart());
+                                Platform.runLater(Dac7524::convert);
+                                Platform.runLater(OscilloscopePane::updateChart);
                                 time = System.nanoTime();
                                 Platform.runLater(() -> Main.cpu.refreshGui());
                             }
@@ -1642,7 +1645,18 @@ public class MainStage extends Application {
 
         buttonsHBox.getChildren().addAll(portButton0, portButton1, portButton2, portButton3, portButton4, portButton5, portButton6, portButton7);
 
-        lowerBox.getChildren().addAll(zadajnikiLabel, togglesHBox, przyciskiLabel, buttonsHBox);
+        VBox dacStateHBox = new VBox();
+        VBox.setVgrow(dacStateHBox,Priority.ALWAYS);
+
+        dacStateLabel = new Label("Wyjście DAC: 0.000 V");
+        dacStateLabel.setFont(new Font("Arial", 15));
+        dacStateLabel.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-background-insets: 0 0 0 0");
+        dacStateLabel.setPadding(new Insets(10,15,10,15));
+        dacStateHBox.getChildren().add(dacStateLabel);
+        dacStateHBox.setAlignment(Pos.CENTER);
+        dacStateHBox.setPadding(new Insets(0,0,10,0));
+
+        lowerBox.getChildren().addAll(dacStateHBox,zadajnikiLabel, togglesHBox, przyciskiLabel, buttonsHBox);
 
         final NumberAxis xAxis = new NumberAxis(0, 255, 64);
         final NumberAxis yAxis = new NumberAxis(0, 255, 64);
@@ -1848,7 +1862,7 @@ public class MainStage extends Application {
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
         mainStage.setScene(mainScene);
         mainStage.show();
-        mainStage.setMinHeight(600);
+        mainStage.setMinHeight(640);
         mainStage.setMinWidth(800);
 
         try {
@@ -2151,11 +2165,24 @@ public class MainStage extends Application {
                     gc.setFill(mainColor);
             }
             catch (NoSuchElementException e) {
-                gc.setFill(Color.TRANSPARENT);
+                if(ledsType.equals("Katoda")) {
+                    if(ledsPort.equals("VCC")) {
+                        gc.setFill(mainColor);
+                    }
+                    else {
+                        gc.setFill(Color.TRANSPARENT);
+                    }
+                }
+                if(ledsType.equals("Anoda")) {
+                    if(ledsPort.equals("GND")) {
+                        gc.setFill(mainColor);
+                    }
+                    else {
+                        gc.setFill(Color.TRANSPARENT);
+                    }
+                }
             }
-
             gc.fillRect(centerX - radius,centerY-radius,radius+2,radius*2);
-
             //gc.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
         }
 
@@ -2197,13 +2224,24 @@ public class MainStage extends Application {
                 wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get(seg7displayPort)));
                 wartosci = Converters.bcdto7seg(wartosc.substring(0, 4));
             } catch (Exception e) {
-                wartosci[0] = 0;
-                wartosci[1] = 0;
-                wartosci[2] = 0;
-                wartosci[3] = 0;
-                wartosci[4] = 0;
-                wartosci[5] = 0;
-                wartosci[6] = 0;
+                if(seg7displayPort.equals("GND")) {
+                    wartosci[0] = 0;
+                    wartosci[1] = 0;
+                    wartosci[2] = 0;
+                    wartosci[3] = 0;
+                    wartosci[4] = 0;
+                    wartosci[5] = 0;
+                    wartosci[6] = 0;
+                }
+                else if(seg7displayPort.equals("VCC")) {
+                    wartosci[0] = 1;
+                    wartosci[1] = 1;
+                    wartosci[2] = 1;
+                    wartosci[3] = 1;
+                    wartosci[4] = 1;
+                    wartosci[5] = 1;
+                    wartosci[6] = 1;
+                }
             }
         }
         else {
@@ -2275,13 +2313,24 @@ public class MainStage extends Application {
                 wartosci = Converters.bcdto7seg(wartosc.substring(4, 8));
             }
             catch (NullPointerException e) {
-                wartosci[0] = 0;
-                wartosci[1] = 0;
-                wartosci[2] = 0;
-                wartosci[3] = 0;
-                wartosci[4] = 0;
-                wartosci[5] = 0;
-                wartosci[6] = 0;
+                if(seg7displayPort.equals("GND")) {
+                    wartosci[0] = 0;
+                    wartosci[1] = 0;
+                    wartosci[2] = 0;
+                    wartosci[3] = 0;
+                    wartosci[4] = 0;
+                    wartosci[5] = 0;
+                    wartosci[6] = 0;
+                }
+                else if(seg7displayPort.equals("VCC")) {
+                    wartosci[0] = 1;
+                    wartosci[1] = 1;
+                    wartosci[2] = 1;
+                    wartosci[3] = 1;
+                    wartosci[4] = 1;
+                    wartosci[5] = 1;
+                    wartosci[6] = 1;
+                }
             }
         }
         else {
@@ -2740,6 +2789,8 @@ public class MainStage extends Application {
         public Tab ownTab;
         public TextArea ownTextArea;
         public boolean edited;
+
     }
+    public Label dacStateLabel;
 
 }

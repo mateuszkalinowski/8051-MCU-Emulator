@@ -57,7 +57,7 @@ public class OscilloscopeStage extends Application {
         //intervalSelectionLabel.setMaxWidth(Double.MAX_VALUE);
         intervalSelectionLabel.setAlignment(Pos.CENTER);
         intervalSelectionLabel.setFont(new Font("Arial",14));
-        intervalSelectionLabel.setMaxWidth(120);
+        intervalSelectionLabel.setMaxWidth(Double.MAX_VALUE);
         intervalSelectionLabel.setMinWidth(120);
 
 
@@ -138,18 +138,18 @@ public class OscilloscopeStage extends Application {
 
         VBox lowerBox = new VBox();
 
-        HBox upperButtonBox = new HBox();
-        upperButtonBox.setPadding(new Insets(10,10,10,10));
-        upperButtonBox.setAlignment(Pos.CENTER);
-        HBox.setHgrow(portSelectLabel,Priority.ALWAYS);
-        HBox.setHgrow(portSelectComboBox,Priority.ALWAYS);
-        HBox.setHgrow(intervalSelectLabel,Priority.ALWAYS);
-        HBox.setHgrow(intervalSelectionLabel,Priority.ALWAYS);
+     //   HBox upperButtonBox = new HBox();
+     //   upperButtonBox.setPadding(new Insets(10,10,10,10));
+     //   upperButtonBox.setAlignment(Pos.CENTER);
+     //   HBox.setHgrow(portSelectLabel,Priority.ALWAYS);
+     //   HBox.setHgrow(portSelectComboBox,Priority.ALWAYS);
+     //   HBox.setHgrow(intervalSelectLabel,Priority.ALWAYS);
+     //   HBox.setHgrow(intervalSelectionLabel,Priority.ALWAYS);
 
-        upperButtonBox.setSpacing(5);
+    //    upperButtonBox.setSpacing(5);
 
-        upperButtonBox.getChildren().addAll(portSelectLabel,portSelectComboBox,intervalSelectLabel,intervalSlider,intervalSelectionLabel);
-        lowerBox.getChildren().add(upperButtonBox);
+        //upperButtonBox.getChildren().addAll(portSelectLabel,portSelectComboBox,intervalSelectLabel,intervalSlider,intervalSelectionLabel);
+        //lowerBox.getChildren().add(upperButtonBox);
 
 
         HBox lowerButtonBox = new HBox();
@@ -211,16 +211,38 @@ public class OscilloscopeStage extends Application {
             }
         });
 
-        lowerButtonBox.getChildren().addAll(xRangeLabel,XRangeSelect,yRangeLabel,YRangeSelect);
-        lowerBox.getChildren().add(lowerButtonBox);
-        mainBorderPane.setBottom(lowerBox);
-        Scene mainScene = new Scene(mainBorderPane,600,500);
+        //lowerButtonBox.getChildren().addAll(xRangeLabel,XRangeSelect,yRangeLabel,YRangeSelect);
+        //lowerBox.getChildren().add(lowerButtonBox);
+
+        VBox RightVBox = new VBox();
+        RightVBox.setSpacing(5);
+        RightVBox.setPadding(new Insets(10,10,10,10));
+
+        RightVBox.getChildren().add(xRangeLabel);
+        RightVBox.getChildren().add(XRangeSelect);
+
+        RightVBox.getChildren().add(yRangeLabel);
+        RightVBox.getChildren().add(YRangeSelect);
+
+        RightVBox.getChildren().add(intervalSelectLabel);
+        RightVBox.getChildren().add(intervalSlider);
+        RightVBox.getChildren().add(intervalSelectionLabel);
+
+
+
+
+
+
+        //mainBorderPane.setBottom(lowerBox);
+        mainBorderPane.setRight(RightVBox);
+        mainBorderPane.setPadding(new Insets(10,10,10,10));
+        Scene mainScene = new Scene(mainBorderPane,700,450);
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
         mainStage.setScene(mainScene);
         mainStage.setTitle("Oscyloskop");
         mainStage.setResizable(true);
-        mainStage.setMinHeight(600);
-        mainStage.setMinWidth(500);
+        mainStage.setMinHeight(450);
+        mainStage.setMinWidth(700);
     }
     @Override
     public void start(Stage primaryStage) throws Exception {

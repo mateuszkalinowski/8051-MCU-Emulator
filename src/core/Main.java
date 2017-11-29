@@ -10,7 +10,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         double initialWidth = 800;
-        double initialHeight = 600;
+        double initialHeight = 620;
         stage = new MainStage(initialWidth, initialHeight);
         stage.start(primaryStage);
 
