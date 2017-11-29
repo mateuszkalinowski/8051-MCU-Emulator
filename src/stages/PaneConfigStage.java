@@ -187,12 +187,12 @@ public class PaneConfigStage extends Application {
             Main.stage.drawFrame();
         });
 
-        Label wrPortLabel = new Label("WR:");
+        Label wrPortLabel = new Label("/WR:");
         wrPortLabel.setAlignment(Pos.CENTER);
         wrPortLabel.setMaxWidth(Double.MAX_VALUE);
         wrPortLabel.setFont(new Font("Arial",12));
 
-        Label csPortLabel = new Label("CS:");
+        Label csPortLabel = new Label("/CS:");
         csPortLabel.setAlignment(Pos.CENTER);
         csPortLabel.setMaxWidth(Double.MAX_VALUE);
         csPortLabel.setFont(new Font("Arial",12));

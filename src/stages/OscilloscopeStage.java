@@ -22,6 +22,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import microcontroller.Dac7524;
 
 import java.util.ArrayList;
 
@@ -233,8 +234,7 @@ public class OscilloscopeStage extends Application {
         }
         if (Main.cpu.getTimePassed() - passedTime >= interval) {
             passedTime = Main.cpu.getTimePassed();
-            int wartoscp0 = Main.cpu.mainMemory.get(portSelectComboBox.getSelectionModel().getSelectedItem());
-            series.getData().add(new XYChart.Data(usedScale,5.0 * (wartoscp0/255.0)));
+            series.getData().add(new XYChart.Data(usedScale,Double.parseDouble(Dac7524.getValue())));
 
             usedScale++;
         }

@@ -44,7 +44,7 @@ public class Dac7524 {
     }
     private static String value = "0.000";
 
-    public String getValue(){
+    public static String getValue(){
         return value;
     }
 
