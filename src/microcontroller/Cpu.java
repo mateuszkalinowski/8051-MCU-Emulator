@@ -168,7 +168,7 @@ public class Cpu {
 
     }
 
-    public void executeInstruction() throws InstructionException{
+    public void executeInstruction() {
         String toExecute = codeMemory.getFromAddress(linePointer);
 
         //WYKRYWANIE PRZERWAN
@@ -1472,6 +1472,7 @@ public class Cpu {
         }
         checkP();
         //refreshGui();
+        Dac7524.convert();
         checkRegistersBank();
         if(linePointer>=programMemory)
             linePointer=0;

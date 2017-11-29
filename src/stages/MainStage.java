@@ -787,18 +787,18 @@ public class MainStage extends Application {
 
         oneStepButton = new Button("Krok");
         oneStepButton.setOnAction(event -> {
-            try {
+         //   try {
                 Main.cpu.executeInstruction();
                 Main.cpu.refreshGui();
                 OscilloscopePane.updateChart();
-            } catch (Exception e) {
+           /* } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Błąd Wykonania");
                 alert.setHeaderText("Wykonanie przebiegło nieudanie");
                 alert.setContentText("Sprawdź kod jeszcze raz, informacja gdzie wystąpił błąd zostanie" +
                         "dodana w jednej z kolejnych wersji programu");
                 alert.showAndWait();
-            }
+            }*/
         });
 
         continuousRunButton = new Button("Praca Ciągła");
@@ -1841,7 +1841,7 @@ public class MainStage extends Application {
         memoryInfoTab.setContent(mainMemoryGridPane);
 
         mainStage = primaryStage;
-        mainStage.setTitle("8051 MCU Emulator - 0.12 Alpha");
+        mainStage.setTitle("8051 MCU Emulator");
         mainBorderPane.setCenter(mainGridPane);
         mainScene = new Scene(mainBorderPane, width, height);
         mainStage.getIcons().add(new Image(MainStage.class.getResourceAsStream("cpu.png")));
@@ -2084,14 +2084,14 @@ public class MainStage extends Application {
 
         GraphicsContext gc = seg7Canvas.getGraphicsContext2D();
 
-        Color mainBackgroud = Color.DARKGREEN;
+        //Color mainBackgroud = Color.DARKGREEN;
 
-        gc.setFill(mainBackgroud);
-        gc.fillRect(0,0,width,height);
+        //gc.setFill(mainBackgroud);
+        //gc.fillRect(0,0,width,height);
 
-        gc.setStroke(Color.BLACK);
-        gc.setLineWidth(5f);
-        gc.strokeRect(0,0,width,height);
+       // gc.setStroke(Color.BLACK);
+       // gc.setLineWidth(5f);
+       // gc.strokeRect(0,0,width,height);
 
         double marginX = 10;
         double marginY = 80;
@@ -2129,25 +2129,30 @@ public class MainStage extends Application {
             double centerY = height / 2.0;
             double radius = (oneLedWidth >= height ? height - 2 : oneLedWidth) / 2.0 - 5;
 
-            gc.setStroke(Color.YELLOW);
+            //gc.setStroke(Color.YELLOW);
 
-            gc.setLineWidth(4);
+           //gc.setLineWidth(4);
 
-            gc.strokeLine(centerX-radius/2.0,centerY-2*radius-5,centerX-radius/2.0+2,centerY-2*radius);
-            gc.strokeLine(centerX-radius/2.0,centerY+2*radius+5,centerX-radius/2.0+2,centerY+2*radius);
+           // gc.strokeLine(centerX-radius/2.0,centerY-2*radius-5,centerX-radius/2.0+2,centerY-2*radius);
+           // gc.strokeLine(centerX-radius/2.0,centerY+2*radius+5,centerX-radius/2.0+2,centerY+2*radius);
 
             gc.fillRect(centerX - radius,centerY-2*radius,radius+2,radius*4);
 
-            if (Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(portName)))
-                if(ledsType.equals("Katoda"))
-                    gc.setFill(mainColor);
-                else
+            try {
+
+                if (Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(portName)))
+                    if (ledsType.equals("Katoda"))
+                        gc.setFill(mainColor);
+                    else
+                        gc.setFill(Color.TRANSPARENT);
+                else if (ledsType.equals("Katoda"))
                     gc.setFill(Color.TRANSPARENT);
-            else
-                if(ledsType.equals("Katoda"))
-                    gc.setFill(Color.TRANSPARENT);
                 else
                     gc.setFill(mainColor);
+            }
+            catch (NoSuchElementException e) {
+                gc.setFill(Color.TRANSPARENT);
+            }
 
             gc.fillRect(centerX - radius,centerY-radius,radius+2,radius*2);
 
@@ -2167,14 +2172,14 @@ public class MainStage extends Application {
 
         double breakHeight = (longer+longer+5*shorter - 2*shorter)/6;
 
-        for(int i = 0; i < 7; i ++) {
+       /* for(int i = 0; i < 7; i ++) {
             gc.setStroke(Color.YELLOW);
             gc.setLineWidth(4);
 
             gc.strokeLine(width/2.0 + longer + shorter + marginX+shorter+shorter,marginY+i*breakHeight,width/2.0 + longer + shorter + marginX+shorter+shorter+4,marginY+i*breakHeight);
             gc.strokeLine(width/2.0 - longer - shorter - marginX-shorter-shorter,marginY+i*breakHeight,width/2.0 - longer - shorter - marginX-shorter-shorter-4,marginY+i*breakHeight);
 
-        }
+        }*/
 
         gc.setFill(Color.BLACK);
 
@@ -2186,8 +2191,20 @@ public class MainStage extends Application {
         //LICZBA PIERWSZA
         int[] wartosci;
         if(seg7ConnectionType==0) {
-            String wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get(seg7displayPort)));
-            wartosci = Converters.bcdto7seg(wartosc.substring(0, 4));
+            wartosci = new int[8];
+            String wartosc;
+            try {
+                wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get(seg7displayPort)));
+                wartosci = Converters.bcdto7seg(wartosc.substring(0, 4));
+            } catch (Exception e) {
+                wartosci[0] = 0;
+                wartosci[1] = 0;
+                wartosci[2] = 0;
+                wartosci[3] = 0;
+                wartosci[4] = 0;
+                wartosci[5] = 0;
+                wartosci[6] = 0;
+            }
         }
         else {
             String wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get("P0")));
@@ -2251,10 +2268,21 @@ public class MainStage extends Application {
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 - marginX - shorter, marginY + shorter + longer + shorter, shorter, longer);//c
-
         if(seg7ConnectionType==0) {
-            String wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get(seg7displayPort)));
-            wartosci = Converters.bcdto7seg(wartosc.substring(4, 8));
+            String wartosc;
+            try {
+                wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get(seg7displayPort)));
+                wartosci = Converters.bcdto7seg(wartosc.substring(4, 8));
+            }
+            catch (NullPointerException e) {
+                wartosci[0] = 0;
+                wartosci[1] = 0;
+                wartosci[2] = 0;
+                wartosci[3] = 0;
+                wartosci[4] = 0;
+                wartosci[5] = 0;
+                wartosci[6] = 0;
+            }
         }
         else {
             String wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get("P1")));
@@ -2387,11 +2415,11 @@ public class MainStage extends Application {
         programImageCanvas.setWidth(buttonsBorderPane.getWidth());
         programImageCanvas.setHeight(buttonsBorderPane.getWidth()+25);
 
-        //gc = programImageCanvas.getGraphicsContext2D();
-        //gc.setStroke(Color.BLACK);
-        //gc.setLineWidth(5);
-        //gc.drawImage(new Image(MainStage.class.getResourceAsStream("cpu.png")),0,5,buttonsBorderPane.getWidth(),buttonsBorderPane.getWidth());
-        //gc.strokeRoundRect(3.0/8.0 * buttonsBorderPane.getWidth() / 2.0,5,buttonsBorderPane.getWidth()-3.0/8.0 * buttonsBorderPane.getWidth(),buttonsBorderPane.getWidth(),10,10);
+        gc = programImageCanvas.getGraphicsContext2D();
+        gc.setStroke(Color.BLACK);
+        gc.setLineWidth(5);
+        gc.drawImage(new Image(MainStage.class.getResourceAsStream("cpu.png")),0,5,buttonsBorderPane.getWidth(),buttonsBorderPane.getWidth());
+        gc.strokeRoundRect(3.0/8.0 * buttonsBorderPane.getWidth() / 2.0,5,buttonsBorderPane.getWidth()-3.0/8.0 * buttonsBorderPane.getWidth(),buttonsBorderPane.getWidth(),10,10);
 
     }
 
@@ -2602,6 +2630,11 @@ public class MainStage extends Application {
     int seg7ConnectionType  = 0;
     String przyciskiPrzerwania = "P3.2";
     String zadajnikiPrzerwania = "P3.3";
+
+    public String przetwornikDACPort = "P0";
+    public String przetwornikDACCS = "P1.7";
+    public String przetwornikDACWR = "P1.6";
+
 
 
     private TextField addressInChangeValueTextField;

@@ -15,6 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import microcontroller.Dac7524;
 
 /**
  * Created by Mateusz on 29.04.2017.
@@ -31,8 +32,8 @@ public class PaneConfigStage extends Application {
         for(int i = 0; i < 10 ; i ++)
             mainGridPane.getColumnConstraints().add(column);
         RowConstraints row = new RowConstraints();
-        row.setPercentHeight(100.0/18.0);
-        for(int i = 0; i < 18;i++)
+        row.setPercentHeight(100.0/22.0);
+        for(int i = 0; i < 22;i++)
             mainGridPane.getRowConstraints().addAll(row);
 
         //mainGridPane.setGridLinesVisible(true);
@@ -82,7 +83,7 @@ public class PaneConfigStage extends Application {
         seg7ColorLabel.setFont(new Font("Arial",12));
 
         ComboBox<String> ledPortComboBox = new ComboBox<>();
-        ledPortComboBox.getItems().addAll("P0","P1","P2","P3");
+        ledPortComboBox.getItems().addAll("-","P0","P1","P2","P3");
         ledPortComboBox.setMaxWidth(Double.MAX_VALUE);
         ledPortComboBox.getSelectionModel().select(Main.stage.ledsPort);
         ledPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -101,7 +102,7 @@ public class PaneConfigStage extends Application {
 
 
         ComboBox<String> seg7PortComboBox = new ComboBox<>();
-        seg7PortComboBox.getItems().addAll("P0","P1","P2","P3");
+        seg7PortComboBox.getItems().addAll("-","P0","P1","P2","P3");
         seg7PortComboBox.setMaxWidth(Double.MAX_VALUE);
         seg7PortComboBox.getSelectionModel().select(Main.stage.seg7displayPort);
 
@@ -167,6 +168,56 @@ public class PaneConfigStage extends Application {
                  Main.stage.drawFrame();
         });
 
+        Label dacLabel = new Label("Przetwornik DAC:");
+        dacLabel.setAlignment(Pos.CENTER);
+        dacLabel.setMaxWidth(Double.MAX_VALUE);
+        dacLabel.setFont(new Font("Arial",15));
+
+        Label dacPortLabel = new Label("Port:");
+        dacPortLabel.setAlignment(Pos.CENTER);
+        dacPortLabel.setMaxWidth(Double.MAX_VALUE);
+        dacPortLabel.setFont(new Font("Arial",12));
+
+        ComboBox<String> dacPortComboBox = new ComboBox<>();
+        dacPortComboBox.getItems().addAll("-","P0","P1");
+        dacPortComboBox.setMaxWidth(Double.MAX_VALUE);
+        dacPortComboBox.getSelectionModel().select(Main.stage.przetwornikDACPort);
+        dacPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Main.stage.przetwornikDACPort = dacPortComboBox.getSelectionModel().getSelectedItem();
+            Main.stage.drawFrame();
+        });
+
+        Label wrPortLabel = new Label("WR:");
+        wrPortLabel.setAlignment(Pos.CENTER);
+        wrPortLabel.setMaxWidth(Double.MAX_VALUE);
+        wrPortLabel.setFont(new Font("Arial",12));
+
+        Label csPortLabel = new Label("CS:");
+        csPortLabel.setAlignment(Pos.CENTER);
+        csPortLabel.setMaxWidth(Double.MAX_VALUE);
+        csPortLabel.setFont(new Font("Arial",12));
+
+        ComboBox<String> wrPortComboBox = new ComboBox<>();
+        wrPortComboBox.getItems().addAll("VCC","GND","P0.6","P1.6");
+        wrPortComboBox.setMaxWidth(Double.MAX_VALUE);
+        wrPortComboBox.getSelectionModel().select(Main.stage.przetwornikDACWR);
+        wrPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Main.stage.przetwornikDACWR = wrPortComboBox.getSelectionModel().getSelectedItem();
+            Dac7524.convert();
+            Main.stage.drawFrame();
+        });
+
+        ComboBox<String> csPortComboBox = new ComboBox<>();
+        csPortComboBox.getItems().addAll("VCC","GND","P0.7","P1.7");
+        csPortComboBox.setMaxWidth(Double.MAX_VALUE);
+        csPortComboBox.getSelectionModel().select(Main.stage.przetwornikDACCS);
+        csPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Main.stage.przetwornikDACCS = csPortComboBox.getSelectionModel().getSelectedItem();
+            Dac7524.convert();
+            Main.stage.drawFrame();
+        });
+
+
         Button resetToDefaultButton = new Button("Przywroć wartości domyślne");
         resetToDefaultButton.setMaxWidth(Double.MAX_VALUE);
         resetToDefaultButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -224,7 +275,15 @@ public class PaneConfigStage extends Application {
         mainGridPane.add(zadajnikiInterruptsLabel,0,15,2,1);
         mainGridPane.add(zadajnikiPrzerwaniaComboBox,2,15,2,1);
 
-        mainGridPane.add(resetToDefaultButton,5,15,4,1);
+        mainGridPane.add(dacLabel,5,10,4,2);
+        mainGridPane.add(dacPortLabel,5,13,2,1);
+        mainGridPane.add(dacPortComboBox,7,13,2,1);
+        mainGridPane.add(wrPortLabel,5,15,2,1);
+        mainGridPane.add(wrPortComboBox,7,15,2,1);
+        mainGridPane.add(csPortLabel,5,17,2,1);
+        mainGridPane.add(csPortComboBox,7,17,2,1);
+
+        mainGridPane.add(resetToDefaultButton,3,20,4,1);
 
 
         Scene mainScene = new Scene(mainGridPane, 500, 300);
