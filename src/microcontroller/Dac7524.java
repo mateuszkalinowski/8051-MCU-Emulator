@@ -7,23 +7,23 @@ public class Dac7524 {
     public static void convert(){
         boolean wr = false;
         boolean cs = false;
-        if(Main.stage.przetwornikDACWR.equals("GND")) {
+        if(Main.settingsMap.get("przetwornikDACWR").equals("GND")) {
             wr = true;
         }
-        else if(Main.stage.przetwornikDACWR.equals("VCC")) {
+        else if(Main.settingsMap.get("przetwornikDACWR").equals("VCC")) {
             wr = false;
         }
         else {
-            wr = !Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(Main.stage.przetwornikDACWR));
+            wr = !Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przetwornikDACWR")));
         }
-        if(Main.stage.przetwornikDACCS.equals("GND")) {
+        if(Main.settingsMap.get("przetwornikDACCS").equals("GND")) {
             cs = true;
         }
-        else if(Main.stage.przetwornikDACCS.equals("VCC")) {
+        else if(Main.settingsMap.get("przetwornikDACCS").equals("VCC")) {
             cs = false;
         }
         else {
-            cs = !Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(Main.stage.przetwornikDACCS));
+            cs = !Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przetwornikDACCS")));
         }
 
         if(!cs)
@@ -33,14 +33,14 @@ public class Dac7524 {
                 return;
             else {
                 int wartoscportu;
-                if(Main.stage.przetwornikDACPort.equals("VCC")) {
+                if(Main.settingsMap.get("przetwornikDACPort").equals("VCC")) {
                     wartoscportu = 255;
                 }
-                else if(Main.stage.przetwornikDACPort.equals("GND")) {
+                else if(Main.settingsMap.get("przetwornikDACPort").equals("GND")) {
                     wartoscportu = 0;
                 }
                 else {
-                    wartoscportu = Main.cpu.mainMemory.get(Main.stage.przetwornikDACPort);
+                    wartoscportu = Main.cpu.mainMemory.get(Main.settingsMap.get("przetwornikDACPort"));
                 }
                 double wynik = 5 * (wartoscportu/255.0);
                 value = Double.toString(wynik);

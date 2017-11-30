@@ -59,12 +59,14 @@ public class PaneConfigStage extends Application {
         ledsColorLabel.setFont(new Font("Arial",12));
 
         ComboBox<String> ledsColorPickerComboBox = new ComboBox<>();
-        ledsColorPickerComboBox.setValue(Main.stage.ledsColor);
+        ledsColorPickerComboBox.setValue(Main.settingsMap.get("ledsColor"));
         ledsColorPickerComboBox.setMaxWidth(Double.MAX_VALUE);
         ledsColorPickerComboBox.getItems().addAll("Czerwony","Zielony","Niebieski");
         ledsColorPickerComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            Main.stage.ledsColor = ledsColorPickerComboBox.getSelectionModel().getSelectedItem();
+
+            Main.settingsMap.put("ledsColor",ledsColorPickerComboBox.getSelectionModel().getSelectedItem());
             Main.stage.drawFrame();
+            Main.saveSettings();
         });
 
         Label seg7Label = new Label("Wyświetlacz 7-seg:");
@@ -85,26 +87,28 @@ public class PaneConfigStage extends Application {
         ComboBox<String> ledPortComboBox = new ComboBox<>();
         ledPortComboBox.getItems().addAll("VCC","GND","P0","P1","P2","P3");
         ledPortComboBox.setMaxWidth(Double.MAX_VALUE);
-        ledPortComboBox.getSelectionModel().select(Main.stage.ledsPort);
+        ledPortComboBox.getSelectionModel().select(Main.settingsMap.get("ledsPort"));
         ledPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            Main.stage.ledsPort = ledPortComboBox.getSelectionModel().getSelectedItem();
+            Main.settingsMap.put("ledsPort",ledPortComboBox.getSelectionModel().getSelectedItem());
             Main.stage.drawFrame();
+            Main.saveSettings();
         });
 
         ComboBox<String> ledCommonComboBox = new ComboBox<>();
         ledCommonComboBox.getItems().addAll("Katoda","Anoda");
         ledCommonComboBox.setMaxWidth(Double.MAX_VALUE);
-        ledCommonComboBox.getSelectionModel().select(Main.stage.ledsType);
+        ledCommonComboBox.getSelectionModel().select(Main.settingsMap.get("ledsType"));
         ledCommonComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            Main.stage.ledsType = ledCommonComboBox.getSelectionModel().getSelectedItem();
+            Main.settingsMap.put("ledsType",ledCommonComboBox.getSelectionModel().getSelectedItem());
             Main.stage.drawFrame();
+            Main.saveSettings();
         });
 
 
         ComboBox<String> seg7PortComboBox = new ComboBox<>();
         seg7PortComboBox.getItems().addAll("VCC","GND","P0","P1","P2","P3");
         seg7PortComboBox.setMaxWidth(Double.MAX_VALUE);
-        seg7PortComboBox.getSelectionModel().select(Main.stage.seg7displayPort);
+        seg7PortComboBox.getSelectionModel().select(Main.settingsMap.get("seg7DisplayPort"));
 
         Label seg7TypeLabel = new Label("Podłączenie:");
         seg7TypeLabel.setAlignment(Pos.CENTER);
@@ -114,24 +118,33 @@ public class PaneConfigStage extends Application {
         ComboBox<String> seg7TypeComboBox = new ComboBox<>();
         seg7TypeComboBox.getItems().addAll("Konwertery bin-7seg","Bezpośrednio");
         seg7TypeComboBox.setMaxWidth(Double.MAX_VALUE);
-        seg7TypeComboBox.getSelectionModel().select(Main.stage.seg7ConnectionType);
+        seg7TypeComboBox.getSelectionModel().select(Integer.parseInt(Main.settingsMap.get("seg7ConnectionType")));
         seg7TypeComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            Main.stage.seg7ConnectionType = seg7TypeComboBox.getSelectionModel().getSelectedIndex();
+
+            if(seg7TypeComboBox.getSelectionModel().getSelectedIndex()==0) {
+                Main.settingsMap.put("seg7ConnectionType","0");
+            }
+            else {
+                Main.settingsMap.put("seg7ConnectionType","1");
+            }
             Main.stage.drawFrame();
+            Main.saveSettings();
         });
 
         seg7PortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            Main.stage.seg7displayPort = seg7PortComboBox.getSelectionModel().getSelectedItem();
+            Main.settingsMap.put("seg7DisplayPort",seg7PortComboBox.getSelectionModel().getSelectedItem());
             Main.stage.drawFrame();
+            Main.saveSettings();
         });
 
         ComboBox<String> seg7ColorPickerComboBox = new ComboBox<>();
-        seg7ColorPickerComboBox.setValue(Main.stage.seg7Color);
+        seg7ColorPickerComboBox.setValue(Main.settingsMap.get("seg7Color"));
         seg7ColorPickerComboBox.setMaxWidth(Double.MAX_VALUE);
         seg7ColorPickerComboBox.getItems().addAll("Czerwony","Zielony","Niebieski");
         seg7ColorPickerComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            Main.stage.seg7Color = seg7ColorPickerComboBox.getSelectionModel().getSelectedItem();
+            Main.settingsMap.put("seg7Color",seg7ColorPickerComboBox.getSelectionModel().getSelectedItem());
             Main.stage.drawFrame();
+            Main.saveSettings();
         });
 
 
@@ -153,19 +166,21 @@ public class PaneConfigStage extends Application {
         ComboBox<String> przyciskiPrzerwaniaComboBox = new ComboBox<>();
         przyciskiPrzerwaniaComboBox.getItems().addAll("-","P3.2","P3.3");
         przyciskiPrzerwaniaComboBox.setMaxWidth(Double.MAX_VALUE);
-        przyciskiPrzerwaniaComboBox.getSelectionModel().select(Main.stage.przyciskiPrzerwania);
+        przyciskiPrzerwaniaComboBox.getSelectionModel().select(Main.settingsMap.get("przyciskiPrzerwania"));
         przyciskiPrzerwaniaComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-                Main.stage.przyciskiPrzerwania = przyciskiPrzerwaniaComboBox.getSelectionModel().getSelectedItem();
-                Main.stage.drawFrame();
+            Main.settingsMap.put("przyciskiPrzerwania",przyciskiPrzerwaniaComboBox.getSelectionModel().getSelectedItem());
+            Main.stage.drawFrame();
+            Main.saveSettings();
         });
 
         ComboBox<String> zadajnikiPrzerwaniaComboBox = new ComboBox<>();
         zadajnikiPrzerwaniaComboBox.getItems().addAll("-","P3.2","P3.3");
         zadajnikiPrzerwaniaComboBox.setMaxWidth(Double.MAX_VALUE);
-        zadajnikiPrzerwaniaComboBox.getSelectionModel().select(Main.stage.zadajnikiPrzerwania);
+        zadajnikiPrzerwaniaComboBox.getSelectionModel().select(Main.settingsMap.get("zadajnikiPrzerwania"));
         zadajnikiPrzerwaniaComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-                 Main.stage.zadajnikiPrzerwania = zadajnikiPrzerwaniaComboBox.getSelectionModel().getSelectedItem();
-                 Main.stage.drawFrame();
+            Main.settingsMap.put("zadajnikiPrzerwania",zadajnikiPrzerwaniaComboBox.getSelectionModel().getSelectedItem());
+            Main.stage.drawFrame();
+            Main.saveSettings();
         });
 
         Label dacLabel = new Label("Przetwornik DAC:");
@@ -181,10 +196,12 @@ public class PaneConfigStage extends Application {
         ComboBox<String> dacPortComboBox = new ComboBox<>();
         dacPortComboBox.getItems().addAll("VCC","GND","P0","P1");
         dacPortComboBox.setMaxWidth(Double.MAX_VALUE);
-        dacPortComboBox.getSelectionModel().select(Main.stage.przetwornikDACPort);
+        dacPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACPort"));
         dacPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            Main.stage.przetwornikDACPort = dacPortComboBox.getSelectionModel().getSelectedItem();
+            Main.settingsMap.put("przetwornikDACPort",dacPortComboBox.getSelectionModel().getSelectedItem());
+            Dac7524.convert();
             Main.stage.drawFrame();
+            Main.saveSettings();
         });
 
         Label wrPortLabel = new Label("/WR:");
@@ -200,21 +217,23 @@ public class PaneConfigStage extends Application {
         ComboBox<String> wrPortComboBox = new ComboBox<>();
         wrPortComboBox.getItems().addAll("VCC","GND","P0.6","P1.6");
         wrPortComboBox.setMaxWidth(Double.MAX_VALUE);
-        wrPortComboBox.getSelectionModel().select(Main.stage.przetwornikDACWR);
+        wrPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACWR"));
         wrPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            Main.stage.przetwornikDACWR = wrPortComboBox.getSelectionModel().getSelectedItem();
+            Main.settingsMap.put("przetwornikDACWR",wrPortComboBox.getSelectionModel().getSelectedItem());
             Dac7524.convert();
             Main.stage.drawFrame();
+            Main.saveSettings();
         });
 
         ComboBox<String> csPortComboBox = new ComboBox<>();
         csPortComboBox.getItems().addAll("VCC","GND","P0.7","P1.7");
         csPortComboBox.setMaxWidth(Double.MAX_VALUE);
-        csPortComboBox.getSelectionModel().select(Main.stage.przetwornikDACCS);
+        csPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACCS"));
         csPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            Main.stage.przetwornikDACCS = csPortComboBox.getSelectionModel().getSelectedItem();
+            Main.settingsMap.put("przetwornikDACCS",csPortComboBox.getSelectionModel().getSelectedItem());
             Dac7524.convert();
             Main.stage.drawFrame();
+            Main.saveSettings();
         });
 
 
@@ -223,45 +242,35 @@ public class PaneConfigStage extends Application {
         resetToDefaultButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Main.stage.ledsPort = "P0";
-                ledPortComboBox.getSelectionModel().select(Main.stage.ledsPort);
 
-                Main.stage.ledsType = "Katoda";
-                ledCommonComboBox.getSelectionModel().select(Main.stage.ledsType);
+                Main.loadDefaultSettings();
+                ledPortComboBox.getSelectionModel().select(Main.settingsMap.get("ledsPort"));
 
-                Main.stage.ledsColor = "Czerwony";
-                ledsColorPickerComboBox.getSelectionModel().select(Main.stage.ledsColor);
+                ledCommonComboBox.getSelectionModel().select(Main.settingsMap.get("ledsType"));
 
-                Main.stage.seg7displayPort = "P1";
-                seg7PortComboBox.getSelectionModel().select(Main.stage.seg7displayPort);
+                ledsColorPickerComboBox.getSelectionModel().select(Main.settingsMap.get("ledsColor"));
 
-                Main.stage.seg7ConnectionType = 0;
-                seg7TypeComboBox.getSelectionModel().select(Main.stage.seg7ConnectionType);
+                seg7PortComboBox.getSelectionModel().select(Main.settingsMap.get("seg7DisplayPort"));
 
-                Main.stage.seg7Color = "Czerwony";
-                seg7ColorPickerComboBox.getSelectionModel().select(Main.stage.seg7Color);
+                seg7TypeComboBox.getSelectionModel().select(Integer.parseInt(Main.settingsMap.get("seg7ConnectionType")));
 
-                Main.stage.przyciskiPrzerwania = "P3.2";
-                przyciskiPrzerwaniaComboBox.getSelectionModel().select(Main.stage.przyciskiPrzerwania);
+                seg7ColorPickerComboBox.getSelectionModel().select(Main.settingsMap.get("seg7Color"));
 
-                Main.stage.zadajnikiPrzerwania = "P3.3";
-                zadajnikiPrzerwaniaComboBox.getSelectionModel().select(Main.stage.zadajnikiPrzerwania);
+                przyciskiPrzerwaniaComboBox.getSelectionModel().select(Main.settingsMap.get("przyciskiPrzerwania"));
 
-                Main.stage.przetwornikDACPort = "P0";
-                dacPortComboBox.getSelectionModel().select(Main.stage.przetwornikDACPort);
+                zadajnikiPrzerwaniaComboBox.getSelectionModel().select(Main.settingsMap.get("zadajnikiPrzerwania"));
 
-                Main.stage.przetwornikDACWR = "P1.6";
-                wrPortComboBox.getSelectionModel().select(Main.stage.przetwornikDACWR);
+                dacPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACPort"));
 
-                Main.stage.przetwornikDACCS = "P1.7";
-                csPortComboBox.getSelectionModel().select(Main.stage.przetwornikDACCS);
+                wrPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACWR"));
+
+                csPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACCS"));
 
                 Main.stage.drawFrame();
+                Main.saveSettings();
 
             }
         });
-
-
 
         mainGridPane.add(ledsLabel,0,0,4,2);
         mainGridPane.add(ledsPortLabel,0,3,2,1);
