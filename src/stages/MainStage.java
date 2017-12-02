@@ -7,7 +7,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 
 import javafx.concurrent.Task;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -25,8 +24,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Pair;
-import microcontroller.Dac7524;
+import microcontroller.Dac;
 
 import javax.swing.*;
 import java.io.File;
@@ -780,7 +778,7 @@ public class MainStage extends Application {
             editorTabs.get(numerKarty).ownTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
             Main.cpu.resetCpu();
             Main.cpu.refreshGui();
-            Dac7524.reset();
+            Dac.reset();
             compilationErrorsLabel.setText("");
             compilationErrorsLabel.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
             OscilloscopePane.resetPrzebieg();
@@ -791,7 +789,7 @@ public class MainStage extends Application {
             try {
                 Main.cpu.executeInstruction();
                 Main.cpu.refreshGui();
-                Dac7524.convert();
+                Dac.convert();
                 OscilloscopePane.updateChart();
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -820,7 +818,7 @@ public class MainStage extends Application {
                         while (continuousRunFlag) {
                             if (System.nanoTime() - time > 1000000000 / speedSelectComboBox.getSelectionModel().getSelectedItem()) {
                                 Main.cpu.executeInstruction();
-                                Platform.runLater(Dac7524::convert);
+                                Platform.runLater(Dac::convert);
                                 Platform.runLater(OscilloscopePane::updateChart);
                                 time = System.nanoTime();
                                 Platform.runLater(() -> Main.cpu.refreshGui());

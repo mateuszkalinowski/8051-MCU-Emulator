@@ -7,7 +7,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
@@ -15,7 +14,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import microcontroller.Dac7524;
+import microcontroller.Dac;
 
 /**
  * Created by Mateusz on 29.04.2017.
@@ -199,7 +198,7 @@ public class PaneConfigStage extends Application {
         dacPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACPort"));
         dacPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             Main.settingsMap.put("przetwornikDACPort",dacPortComboBox.getSelectionModel().getSelectedItem());
-            Dac7524.convert();
+            Dac.convert();
             Main.stage.drawFrame();
             Main.saveSettings();
         });
@@ -220,7 +219,7 @@ public class PaneConfigStage extends Application {
         wrPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACWR"));
         wrPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             Main.settingsMap.put("przetwornikDACWR",wrPortComboBox.getSelectionModel().getSelectedItem());
-            Dac7524.convert();
+            Dac.convert();
             Main.stage.drawFrame();
             Main.saveSettings();
         });
@@ -231,7 +230,7 @@ public class PaneConfigStage extends Application {
         csPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACCS"));
         csPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
             Main.settingsMap.put("przetwornikDACCS",csPortComboBox.getSelectionModel().getSelectedItem());
-            Dac7524.convert();
+            Dac.convert();
             Main.stage.drawFrame();
             Main.saveSettings();
         });

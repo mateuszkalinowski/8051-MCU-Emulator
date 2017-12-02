@@ -2,7 +2,7 @@ package microcontroller;
 
 import core.Main;
 
-public class Dac7524 {
+public class Dac {
 
     public static void convert(){
         boolean wr = false;
