@@ -465,7 +465,7 @@ public class MainStage extends Application {
         p3PinsTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(p3PinsTextField, 18, 8, 1, 1);
 
-        portsDesc = new Label("Porty:");
+        portsDesc = new Label("Port:");
         portsDesc.setMaxWidth(Double.MAX_VALUE);
         portsDesc.setAlignment(Pos.CENTER);
         portsDesc.setFont(new Font("Arial", 11));
@@ -482,12 +482,6 @@ public class MainStage extends Application {
         portsDesc2.setAlignment(Pos.CENTER);
         portsDesc2.setFont(new Font("Arial", 11));
         simulatorGridPane.add(portsDesc2, 16, 0, 2, 2);
-
-        /*Label pswLabel = new Label("REG\nPSW:");
-        pswLabel.setMaxWidth(Double.MAX_VALUE);
-        pswLabel.setAlignment(Pos.CENTER);
-        pswLabel.setFont(new Font("Arial",11));
-        simulatorGridPane.add(pswLabel,1,5,1,2);*/
 
         timePassedLabel = new Label("Czas Symulacji:");
         timePassedLabel.setMaxWidth(Double.MAX_VALUE);
