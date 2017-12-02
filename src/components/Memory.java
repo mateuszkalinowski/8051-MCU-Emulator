@@ -2,6 +2,7 @@ package components;
 
 import core.Main;
 import javafx.util.Pair;
+import microcontroller.Cpu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +51,11 @@ public class Memory {
 
         put("SP",7);
 
+        latcherP0 = "11111111";
+        latcherP1 = "11111111";
+        latcherP2 = "11111111";
+        latcherP3 = "11111111";
+
         bitAddressableBegginings = new int[]{128,136,144,152,160,168,176,184,208,224,240};
     }
 
@@ -80,7 +86,7 @@ public class Memory {
         }
     }
 
-    public void setBit(String address,boolean value) throws NoSuchElementException {
+    public void setBitExternal(String address,boolean value) throws NoSuchElementException {
         try {
             int numer = Integer.parseInt(address, 2);
             if (numer >=0 && numer <=127) {
@@ -118,6 +124,111 @@ public class Memory {
     }
 
 
+    public void setBit(String address,boolean value) throws NoSuchElementException {
+        try {
+            int numer = Integer.parseInt(address, 2);
+            if (numer >=0 && numer <=127) {
+
+                int bajt = numer / 8 + 32;
+                int bit = numer % 8;
+                bit = 7 - bit;
+                if(value)
+                    mainMemory[bajt][bit] = '1';
+                else
+                    mainMemory[bajt][bit] = '0';
+            }
+            else {
+                for(int i = 0; i < bitAddressableBegginings.length;i++) {
+                    if(numer-bitAddressableBegginings[i]>=0 && numer-bitAddressableBegginings[i]<=7) {
+                        int index = numer - bitAddressableBegginings[i];
+                        index = 7 - index;
+                        if(value) {
+                            if(bitAddressableBegginings[i]==128) {
+                                char latcherTemp[] = latcherP0.toCharArray();
+                                latcherTemp[index] = '1';
+                                latcherP0 = String.valueOf(latcherTemp);
+                                if(Main.board.getState("P0." + (7-index)).equals("1")) {
+                                    mainMemory[bitAddressableBegginings[i]][index] = '1';
+                                }
+                                else {
+                                    mainMemory[bitAddressableBegginings[i]][index] = '0';
+                                }
+                            }
+                            else if(bitAddressableBegginings[i]==144) {
+                                char latcherTemp[] = latcherP1.toCharArray();
+                                latcherTemp[index] = '1';
+                                latcherP1 = String.valueOf(latcherTemp);
+                                if(Main.board.getState("P1." + (7-index)).equals("1")) {
+                                    mainMemory[bitAddressableBegginings[i]][index] = '1';
+                                }
+                                else {
+                                    mainMemory[bitAddressableBegginings[i]][index] = '0';
+                                }
+                            }
+                            else if(bitAddressableBegginings[i]==160) {
+                                char latcherTemp[] = latcherP2.toCharArray();
+                                latcherTemp[index] = '1';
+                                latcherP2 = String.valueOf(latcherTemp);
+                                if(Main.board.getState("P2." + (7-index)).equals("1")) {
+                                    mainMemory[bitAddressableBegginings[i]][index] = '1';
+                                }
+                                else {
+                                    mainMemory[bitAddressableBegginings[i]][index] = '0';
+                                }
+                            }
+                            else if(bitAddressableBegginings[i]==176) {
+                                char latcherTemp[] = latcherP3.toCharArray();
+                                latcherTemp[index] = '1';
+                                latcherP3 = String.valueOf(latcherTemp);
+                                if(Main.board.getState("P3." + (7-index)).equals("1")) {
+                                    mainMemory[bitAddressableBegginings[i]][index] = '1';
+                                }
+                                else {
+                                    mainMemory[bitAddressableBegginings[i]][index] = '0';
+                                }
+                            }
+                            else
+                                mainMemory[bitAddressableBegginings[i]][index] = '1';
+                            return;
+                        }
+                        else {
+                            if(bitAddressableBegginings[i]==128) {
+                                char latcherTemp[] = latcherP0.toCharArray();
+                                latcherTemp[index] = '0';
+                                latcherP0 = String.valueOf(latcherTemp);
+                            }
+                            if(bitAddressableBegginings[i]==144) {
+                                char latcherTemp[] = latcherP1.toCharArray();
+                                latcherTemp[index] = '0';
+                                latcherP1 = String.valueOf(latcherTemp);
+                            }
+                            if(bitAddressableBegginings[i]==160) {
+                                char latcherTemp[] = latcherP2.toCharArray();
+                                latcherTemp[index] = '0';
+                                latcherP2 = String.valueOf(latcherTemp);
+                            }
+                            if(bitAddressableBegginings[i]==176) {
+                                char latcherTemp[] = latcherP3.toCharArray();
+                                latcherTemp[index] = '0';
+                                latcherP3 = String.valueOf(latcherTemp);
+                            }
+
+
+                            mainMemory[bitAddressableBegginings[i]][index] = '0';
+                            return;
+                        }
+                    }
+                }
+                throw new NoSuchElementException();
+            }
+
+        }
+        catch (Exception e) {
+            throw new NoSuchElementException();
+        }
+    }
+
+
     String get8BitAddress(String label) throws NoSuchElementException{
         try {
             if(!memoryCellsNames.containsKey(label))
@@ -136,7 +247,7 @@ public class Memory {
     }
 
     public void put(String label,int wartosc) {
-        int index = memoryCellsNames.get(label);
+            int index = memoryCellsNames.get(label);
             String binaryValue = Integer.toBinaryString(wartosc);
             char[] toPut = { '0', '0', '0', '0', '0', '0', '0', '0' };
             int i = 7;
@@ -148,7 +259,66 @@ public class Memory {
                 j--;
             }
 
+        if (index == 128) {
+            latcherP0 = String.valueOf(toPut);
+            String port0 = "";
+            try { port0 = Main.board.getPortState("P0"); }
+            catch (Exception e) {
+                port0 = "11111111";
+            }
+            for (int k = 0; k < 8; k++) {
+                if (latcherP0.charAt(k) == '1' && port0.charAt(k) == '1')
+                    toPut[k] = '1';
+                else
+                    toPut[k] = '0';
+            }
+        }
+
+        if (index == 144) {
+            latcherP1 = String.valueOf(toPut);
+            String port1 = "";
+            try { port1 = Main.board.getPortState("P1"); }
+            catch (Exception e) {
+                port1 = "11111111";
+            }
+            for (int k = 0; k < 8; k++) {
+                if (latcherP1.charAt(k) == '1' && port1.charAt(k) == '1')
+                    toPut[k] = '1';
+                else
+                    toPut[k] = '0';
+            }
+        }
+
+        if (index == 160) {
+            latcherP2 = String.valueOf(toPut);
+            String port2 = "";
+            try { port2 = Main.board.getPortState("P2"); }
+            catch (Exception e) {
+                port2 = "11111111";
+            }
+            for (int k = 0; k < 8; k++) {
+                if (latcherP2.charAt(k) == '1' && port2.charAt(k) == '1')
+                    toPut[k] = '1';
+                else
+                    toPut[k] = '0';
+            }
+        }
+        if (index == 176) {
+            latcherP3 = String.valueOf(toPut);
+            String port3 = "";
+            try { port3 = Main.board.getPortState("P3"); }
+            catch (Exception e) {
+                port3 = "11111111";
+            }
+            for (int k = 0; k < 8; k++) {
+                if (latcherP3.charAt(k) == '1' && port3.charAt(k) == '1')
+                    toPut[k] = '1';
+                else
+                    toPut[k] = '0';
+            }
+        }
             mainMemory[index] = toPut;
+
 
     }
     public void put(int index,int wartosc) {
@@ -162,30 +332,148 @@ public class Memory {
             i--;
             j--;
         }
-        if(index!=160)
-            mainMemory[index] = toPut;
-        else {
-            latcherP2 = String.valueOf(toPut);
-            for(int k = 0; k < 8;k++) {
-                if(latcherP2.charAt(k)=='0')
-                    toPut[k] = '0';
-                else
-                    toPut[k] = buttonsState[k];
+
+        if (index == 128) {
+            latcherP0 = String.valueOf(toPut);
+            String port0 = "";
+            try { port0 = Main.board.getPortState("P0"); }
+            catch (Exception e) {
+                port0 = "11111111";
             }
-            mainMemory[index] = toPut;
+            for (int k = 0; k < 8; k++) {
+                if (latcherP0.charAt(k) == '1' && port0.charAt(k) == '1')
+                    toPut[k] = '1';
+                else
+                    toPut[k] = '0';
+            }
         }
 
-    }
-    public void putFromExternal(int index) {
-        char value[] = buttonsState;
-        for(int k = 0; k < 8;k++) {
-            if(latcherP2.charAt(k)=='0')
-                value[k] = '0';
-            else
-                value[k] = buttonsState[k];
+        if (index == 144) {
+            latcherP1 = String.valueOf(toPut);
+            String port1 = "";
+            try { port1 = Main.board.getPortState("P1"); }
+            catch (Exception e) {
+                port1 = "11111111";
+            }
+            for (int k = 0; k < 8; k++) {
+                if (latcherP1.charAt(k) == '1' && port1.charAt(k) == '1')
+                    toPut[k] = '1';
+                else
+                    toPut[k] = '0';
+            }
         }
-        mainMemory[index] = value;
+
+        if (index == 160) {
+            latcherP2 = String.valueOf(toPut);
+            String port2 = "";
+            try { port2 = Main.board.getPortState("P2"); }
+            catch (Exception e) {
+                port2 = "11111111";
+            }
+            for (int k = 0; k < 8; k++) {
+                if (latcherP2.charAt(k) == '1' && port2.charAt(k) == '1')
+                    toPut[k] = '1';
+                else
+                    toPut[k] = '0';
+            }
+        }
+        if (index == 176) {
+            latcherP3 = String.valueOf(toPut);
+            String port3 = "";
+            try { port3 = Main.board.getPortState("P3"); }
+            catch (Exception e) {
+                port3 = "11111111";
+            }
+            for (int k = 0; k < 8; k++) {
+                if (latcherP3.charAt(k) == '1' && port3.charAt(k) == '1')
+                    toPut[k] = '1';
+                else
+                    toPut[k] = '0';
+            }
+        }
+        mainMemory[index] = toPut;
     }
+
+    public void putDirect(String number,int wartosc) throws NumberFormatException{
+        try {
+            int index = Integer.parseInt(number,2);
+            String binaryValue = Integer.toBinaryString(wartosc);
+            char[] toPut = {'0','0','0','0','0','0','0','0'};
+            int i = 7;
+            int j = binaryValue.length()-1;
+
+            while(j>=0) {
+                toPut[i] = binaryValue.charAt(j);
+                i--;
+                j--;
+            }
+
+            if (index == 128) {
+                latcherP0 = String.valueOf(toPut);
+                String port0 = "";
+                try { port0 = Main.board.getPortState("P0"); }
+                catch (Exception e) {
+                    port0 = "11111111";
+                }
+                for (int k = 0; k < 8; k++) {
+                    if (latcherP0.charAt(k) == '1' && port0.charAt(k) == '1')
+                        toPut[k] = '1';
+                    else
+                        toPut[k] = '0';
+                }
+            }
+
+            if (index == 144) {
+                latcherP1 = String.valueOf(toPut);
+                String port1 = "";
+                try { port1 = Main.board.getPortState("P1"); }
+                catch (Exception e) {
+                    port1 = "11111111";
+                }
+                for (int k = 0; k < 8; k++) {
+                    if (latcherP1.charAt(k) == '1' && port1.charAt(k) == '1')
+                        toPut[k] = '1';
+                    else
+                        toPut[k] = '0';
+                }
+            }
+
+            if (index == 160) {
+                latcherP2 = String.valueOf(toPut);
+                String port2 = "";
+                try { port2 = Main.board.getPortState("P2"); }
+                catch (Exception e) {
+                    port2 = "11111111";
+                }
+                for (int k = 0; k < 8; k++) {
+                    if (latcherP2.charAt(k) == '1' && port2.charAt(k) == '1')
+                        toPut[k] = '1';
+                    else
+                        toPut[k] = '0';
+                }
+            }
+            if (index == 176) {
+                latcherP3 = String.valueOf(toPut);
+                String port3 = "";
+                try { port3 = Main.board.getPortState("P3"); }
+                catch (Exception e) {
+                    port3 = "11111111";
+                }
+                for (int k = 0; k < 8; k++) {
+                    if (latcherP3.charAt(k) == '1' && port3.charAt(k) == '1')
+                        toPut[k] = '1';
+                    else
+                        toPut[k] = '0';
+                }
+            }
+
+            mainMemory[index] = toPut;
+
+        }catch (Exception e) {
+            throw new NumberFormatException();
+        }
+    }
+
     public int get(String label) {
         int index = memoryCellsNames.get(label);
         return Integer.parseInt(String.valueOf(mainMemory[index]),2);
@@ -200,25 +488,7 @@ public class Memory {
         return Integer.parseInt(String.valueOf(mainMemory[index]),2);
 
     }
-    public void putDirect(String number,int wartosc) throws NumberFormatException{
-        try {
-            int index = Integer.parseInt(number,2);
-            String binaryValue = Integer.toBinaryString(wartosc);
-            char[] toPut = {'0','0','0','0','0','0','0','0'};
-            int i = 7;
-            int j = binaryValue.length()-1;
 
-            while(j>=0) {
-                toPut[i] = binaryValue.charAt(j);
-                i--;
-                j--;
-            }
-            mainMemory[index] = toPut;
-
-        }catch (Exception e) {
-            throw new NumberFormatException();
-        }
-    }
 
     public int get(int wartosc) {
         return Integer.parseInt(String.valueOf(mainMemory[wartosc]),2);
@@ -231,13 +501,9 @@ public class Memory {
 
     private char[][] mainMemory;
 
-    private String latcherP0 = "11111111";
-    private String latcherP1 = "11111111";
-    private String latcherP2 = "11111111";
-    private String latcherP3 = "11111111";
-
-    public char[] buttonsState = {'1','1','1','1','1','1','1','1'};
-
-
+    public String latcherP0;
+    public String latcherP1;
+    public String latcherP2;
+    public String latcherP3;
 
 }
