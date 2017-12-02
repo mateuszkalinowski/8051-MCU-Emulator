@@ -1632,6 +1632,10 @@ public class Cpu {
         Main.stage.p1TextField.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("P1"))) + "b");
         Main.stage.p2TextField.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("P2"))) + "b");
         Main.stage.p3TextField.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("P3"))) + "b");
+        Main.stage.p0PinsTextField.setText("0x" + Integer.toHexString(Integer.parseInt(Main.cpu.mainMemory.latcherP0,2)).toUpperCase());
+        Main.stage.p1PinsTextField.setText("0x" + Integer.toHexString(Integer.parseInt(Main.cpu.mainMemory.latcherP1,2)).toUpperCase());
+        Main.stage.p2PinsTextField.setText("0x" + Integer.toHexString(Integer.parseInt(Main.cpu.mainMemory.latcherP2,2)).toUpperCase());
+        Main.stage.p3PinsTextField.setText("0x" + Integer.toHexString(Integer.parseInt(Main.cpu.mainMemory.latcherP3,2)).toUpperCase());
 
         Main.stage.accumulatorTextFieldHex.setText(Integer.toHexString(mainMemory.get("A")).toUpperCase()+"h");
         Main.stage.accumulatorTextFieldBin.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("A")).toUpperCase()) + "b");

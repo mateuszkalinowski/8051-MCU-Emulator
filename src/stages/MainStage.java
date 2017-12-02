@@ -7,7 +7,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 
 import javafx.concurrent.Task;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -25,8 +24,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.util.Pair;
-import microcontroller.Dac7524;
+import microcontroller.Dac;
 
 import javax.swing.*;
 import java.io.File;
@@ -391,59 +389,99 @@ public class MainStage extends Application {
         p0Label.setMaxWidth(Double.MAX_VALUE);
         p0Label.setAlignment(Pos.CENTER);
         p0Label.setFont(new Font("Arial", 11));
-        simulatorGridPane.add(p0Label, 16, 2);
+        simulatorGridPane.add(p0Label, 15, 2);
 
         p0TextField = new Label("11111111");
         p0TextField.setMaxWidth(Double.MAX_VALUE);
         p0TextField.setAlignment(Pos.CENTER);
         p0TextField.setFont(new Font("Arial", 11));
         p0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p0TextField, 17, 2, 2, 1);
+        simulatorGridPane.add(p0TextField, 16, 2, 2, 1);
+
+        p0PinsTextField = new Label("0xFF");
+        p0PinsTextField.setMaxWidth(Double.MAX_VALUE);
+        p0PinsTextField.setAlignment(Pos.CENTER);
+        p0PinsTextField.setFont(new Font("Arial", 11));
+        p0PinsTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(p0PinsTextField, 18, 2, 1, 1);
 
         p1Label = new Label("P1");
         p1Label.setMaxWidth(Double.MAX_VALUE);
         p1Label.setAlignment(Pos.CENTER);
         p1Label.setFont(new Font("Arial", 11));
-        simulatorGridPane.add(p1Label, 16, 4);
+        simulatorGridPane.add(p1Label, 15, 4);
 
         p1TextField = new Label("11111111");
         p1TextField.setMaxWidth(Double.MAX_VALUE);
         p1TextField.setAlignment(Pos.CENTER);
         p1TextField.setFont(new Font("Arial", 11));
         p1TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p1TextField, 17, 4, 2, 1);
+        simulatorGridPane.add(p1TextField, 16, 4, 2, 1);
+
+        p1PinsTextField = new Label("0xFF");
+        p1PinsTextField.setMaxWidth(Double.MAX_VALUE);
+        p1PinsTextField.setAlignment(Pos.CENTER);
+        p1PinsTextField.setFont(new Font("Arial", 11));
+        p1PinsTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(p1PinsTextField, 18, 4, 1, 1);
 
         p2Label = new Label("P2");
         p2Label.setMaxWidth(Double.MAX_VALUE);
         p2Label.setAlignment(Pos.CENTER);
         p2Label.setFont(new Font("Arial", 11));
-        simulatorGridPane.add(p2Label, 16, 6);
+        simulatorGridPane.add(p2Label, 15, 6);
 
         p2TextField = new Label("11111111");
         p2TextField.setMaxWidth(Double.MAX_VALUE);
         p2TextField.setAlignment(Pos.CENTER);
         p2TextField.setFont(new Font("Arial", 11));
         p2TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p2TextField, 17, 6, 2, 1);
+        simulatorGridPane.add(p2TextField, 16, 6, 2, 1);
+
+        p2PinsTextField = new Label("0xFF");
+        p2PinsTextField.setMaxWidth(Double.MAX_VALUE);
+        p2PinsTextField.setAlignment(Pos.CENTER);
+        p2PinsTextField.setFont(new Font("Arial", 11));
+        p2PinsTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(p2PinsTextField, 18, 6, 1, 1);
 
         p3Label = new Label("P3");
         p3Label.setMaxWidth(Double.MAX_VALUE);
         p3Label.setAlignment(Pos.CENTER);
         p3Label.setFont(new Font("Arial", 11));
-        simulatorGridPane.add(p3Label, 16, 8);
+        simulatorGridPane.add(p3Label, 15, 8);
 
         p3TextField = new Label("11111111");
         p3TextField.setMaxWidth(Double.MAX_VALUE);
         p3TextField.setAlignment(Pos.CENTER);
         p3TextField.setFont(new Font("Arial", 11));
         p3TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p3TextField, 17, 8, 2, 1);
+        simulatorGridPane.add(p3TextField, 16, 8, 2, 1);
 
-        portsDesc = new Label("Porty We/Wy:");
+        p3PinsTextField = new Label("0xFF");
+        p3PinsTextField.setMaxWidth(Double.MAX_VALUE);
+        p3PinsTextField.setAlignment(Pos.CENTER);
+        p3PinsTextField.setFont(new Font("Arial", 11));
+        p3PinsTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(p3PinsTextField, 18, 8, 1, 1);
+
+        portsDesc = new Label("Porty:");
         portsDesc.setMaxWidth(Double.MAX_VALUE);
         portsDesc.setAlignment(Pos.CENTER);
         portsDesc.setFont(new Font("Arial", 11));
-        simulatorGridPane.add(portsDesc, 16, 0, 3, 2);
+        simulatorGridPane.add(portsDesc, 15, 0, 1, 2);
+
+        portsDesc1 = new Label("Bity:");
+        portsDesc1.setMaxWidth(Double.MAX_VALUE);
+        portsDesc1.setAlignment(Pos.CENTER);
+        portsDesc1.setFont(new Font("Arial", 11));
+        simulatorGridPane.add(portsDesc1, 18, 0, 1, 2);
+
+        portsDesc2 = new Label("Piny:");
+        portsDesc2.setMaxWidth(Double.MAX_VALUE);
+        portsDesc2.setAlignment(Pos.CENTER);
+        portsDesc2.setFont(new Font("Arial", 11));
+        simulatorGridPane.add(portsDesc2, 16, 0, 2, 2);
 
         /*Label pswLabel = new Label("REG\nPSW:");
         pswLabel.setMaxWidth(Double.MAX_VALUE);
@@ -638,9 +676,19 @@ public class MainStage extends Application {
         translateToMemoryButton = new Button("Asemblacja");
         translateToMemoryButton.setOnAction(event -> {
             //  lines = editorTextArea.getText().split("\n");
+            if(editorTabPane.getTabs().size()==0)
+                return;
             lines = editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTextArea.getText().split("\n");
             try {
                 ArrayList<String> compilatedText = Main.cpu.codeMemory.setMemory(lines,true);
+                portToggle0.setSelected(false);
+                portToggle1.setSelected(false);
+                portToggle2.setSelected(false);
+                portToggle3.setSelected(false);
+                portToggle4.setSelected(false);
+                portToggle5.setSelected(false);
+                portToggle6.setSelected(false);
+                portToggle7.setSelected(false);
                 Main.cpu.resetCpu();
                 Main.cpu.refreshGui();
                 translateToMemoryButton.setDisable(true);
@@ -653,7 +701,7 @@ public class MainStage extends Application {
                 changeValueInChangeValueButton.setDisable(false);
                 setEditorText(compilatedText);
 
-                if (portToggle7.isSelected())
+               /* if (portToggle7.isSelected())
                     Main.cpu.mainMemory.buttonsState[0] = '0';
                 else
                     Main.cpu.mainMemory.buttonsState[0] = '1';
@@ -684,7 +732,7 @@ public class MainStage extends Application {
                 if (portToggle0.isSelected())
                     Main.cpu.mainMemory.buttonsState[7] = '0';
                 else
-                    Main.cpu.mainMemory.buttonsState[7] = '1';
+                    Main.cpu.mainMemory.buttonsState[7] = '1';*/
 
 
                 StringBuilder content = new StringBuilder();
@@ -722,7 +770,7 @@ public class MainStage extends Application {
                 programMemoryTextArea.setText(content.toString());
                 currentlyRunTabName = editorTabPane.getSelectionModel().getSelectedItem().getText();
                 editorTabPane.getSelectionModel().getSelectedItem().setClosable(false);
-                Main.cpu.mainMemory.putFromExternal(160);
+               // Main.cpu.mainMemory.putFromExternal(160);
                 Main.cpu.refreshGui();
 
             } catch (CompilingException e) {
@@ -737,8 +785,6 @@ public class MainStage extends Application {
             translateToMemoryButton.setDisable(false);
             stopSimulationButton.setDisable(true);
             oneStepButton.setDisable(true);
-            //editorTextArea.setEditable(true);
-            //editorTextArea.setText("");
             int numerKarty = 0;
             for (; numerKarty < editorTabs.size(); numerKarty++) {
                 if (editorTabs.get(numerKarty).ownTab.getText().equals(currentlyRunTabName)) break;
@@ -779,8 +825,18 @@ public class MainStage extends Application {
             }
             editorTabs.get(numerKarty).ownTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
             Main.cpu.resetCpu();
+            Main.board.reset();
+            portToggle0.setSelected(false);
+            portToggle1.setSelected(false);
+            portToggle2.setSelected(false);
+            portToggle3.setSelected(false);
+            portToggle4.setSelected(false);
+            portToggle5.setSelected(false);
+            portToggle6.setSelected(false);
+            portToggle7.setSelected(false);
+
             Main.cpu.refreshGui();
-            Dac7524.reset();
+            Dac.reset();
             compilationErrorsLabel.setText("");
             compilationErrorsLabel.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
             OscilloscopePane.resetPrzebieg();
@@ -790,8 +846,9 @@ public class MainStage extends Application {
         oneStepButton.setOnAction(event -> {
             try {
                 Main.cpu.executeInstruction();
+                Main.board.set();
                 Main.cpu.refreshGui();
-                Dac7524.convert();
+                Dac.convert();
                 OscilloscopePane.updateChart();
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -819,8 +876,9 @@ public class MainStage extends Application {
                         long time = System.nanoTime();
                         while (continuousRunFlag) {
                             if (System.nanoTime() - time > 1000000000 / speedSelectComboBox.getSelectionModel().getSelectedItem()) {
+                                Main.board.set();
                                 Main.cpu.executeInstruction();
-                                Platform.runLater(Dac7524::convert);
+                                Platform.runLater(Dac::convert);
                                 Platform.runLater(OscilloscopePane::updateChart);
                                 time = System.nanoTime();
                                 Platform.runLater(() -> Main.cpu.refreshGui());
@@ -1251,347 +1309,212 @@ public class MainStage extends Application {
         portButton5.setMaxWidth(Double.MAX_VALUE);
         portButton6.setMaxWidth(Double.MAX_VALUE);
         portButton7.setMaxWidth(Double.MAX_VALUE);
+        // Main.cpu.mainMemory.putFromExternal(160);
         portToggle7.setOnAction(event -> {
             if (portToggle7.isSelected()) {
-                Main.cpu.mainMemory.buttonsState[0] = '0';
-                if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
-                }
-                try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), false);
-                } catch (Exception e){}
+                Main.board.addZeroTo("P2.0");
+                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
             } else {
-                Main.cpu.mainMemory.buttonsState[0] = '1';
-                if (!anyTogglePressed()) {
-                    try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), true);
-                } catch (Exception e){}
-                }
+                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.removeZeroFrom("P2.0");
             }
-            Main.cpu.mainMemory.putFromExternal(160);
+            Main.board.set();
             Main.cpu.refreshGui();
         });
+
         portToggle6.setOnAction(event -> {
             if (portToggle6.isSelected()) {
-                Main.cpu.mainMemory.buttonsState[1] = '0';
-                if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
-                }
-                try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), false);
-                } catch (Exception e){}
+                Main.board.addZeroTo("P2.1");
+                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
             } else {
-                Main.cpu.mainMemory.buttonsState[1] = '1';
-                if (!anyTogglePressed()) {
-                    try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), true);
-                } catch (Exception e){}
-                }
+                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.removeZeroFrom("P2.1");
             }
-            Main.cpu.mainMemory.putFromExternal(160);
+            Main.board.set();
             Main.cpu.refreshGui();
         });
+
         portToggle5.setOnAction(event -> {
             if (portToggle5.isSelected()) {
-                Main.cpu.mainMemory.buttonsState[2] = '0';
-                if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
-                }
-                try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), false);
-                } catch (Exception e){}
+                Main.board.addZeroTo("P2.2");
+                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
             } else {
-                Main.cpu.mainMemory.buttonsState[2] = '1';
-                if (!anyTogglePressed()) {
-                    try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), true);
-                } catch (Exception e){}
-                }
+                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.removeZeroFrom("P2.2");
             }
-            Main.cpu.mainMemory.putFromExternal(160);
+            Main.board.set();
             Main.cpu.refreshGui();
         });
+
         portToggle4.setOnAction(event -> {
             if (portToggle4.isSelected()) {
-                Main.cpu.mainMemory.buttonsState[3] = '0';
-                if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
-                }
-                try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), false);
-                } catch (Exception e){}
+                Main.board.addZeroTo("P2.3");
+                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
             } else {
-                Main.cpu.mainMemory.buttonsState[3] = '1';
-                if (!anyTogglePressed()) {
-                    try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), true);
-                } catch (Exception e){}
-                }
+                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.removeZeroFrom("P2.3");
             }
-            Main.cpu.mainMemory.putFromExternal(160);
+            Main.board.set();
             Main.cpu.refreshGui();
         });
+
         portToggle3.setOnAction(event -> {
             if (portToggle3.isSelected()) {
-                Main.cpu.mainMemory.buttonsState[4] = '0';
-                if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
-                }
-                try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), false);
-                } catch (Exception e){}
+                Main.board.addZeroTo("P2.4");
+                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
             } else {
-                Main.cpu.mainMemory.buttonsState[4] = '1';
-                if (!anyTogglePressed()) {
-                    try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), true);
-                } catch (Exception e){}
-                }
+                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.removeZeroFrom("P2.4");
             }
-            Main.cpu.mainMemory.putFromExternal(160);
+            Main.board.set();
             Main.cpu.refreshGui();
         });
+
         portToggle2.setOnAction(event -> {
             if (portToggle2.isSelected()) {
-                Main.cpu.mainMemory.buttonsState[5] = '0';
-                if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
-                }
-                try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), false);
-                } catch (Exception e){}
+                Main.board.addZeroTo("P2.5");
+                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
             } else {
-                Main.cpu.mainMemory.buttonsState[5] = '1';
-                if (!anyTogglePressed()) {
-                    try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), true);
-                } catch (Exception e){}
-                }
+                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.removeZeroFrom("P2.5");
             }
-            Main.cpu.mainMemory.putFromExternal(160);
+            Main.board.set();
             Main.cpu.refreshGui();
         });
+
         portToggle1.setOnAction(event -> {
             if (portToggle1.isSelected()) {
-                Main.cpu.mainMemory.buttonsState[6] = '0';
-                if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
-                }
-                try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), false);
-                } catch (Exception e){}
+                Main.board.addZeroTo("P2.6");
+                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
             } else {
-                Main.cpu.mainMemory.buttonsState[6] = '1';
-                if (!anyTogglePressed()) {
-                    try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), true);
-                } catch (Exception e){}
-                }
+                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.removeZeroFrom("P2.6");
             }
-            Main.cpu.mainMemory.putFromExternal(160);
+            Main.board.set();
             Main.cpu.refreshGui();
         });
+
         portToggle0.setOnAction(event -> {
             if (portToggle0.isSelected()) {
-                Main.cpu.mainMemory.buttonsState[7] = '0';
-                if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT1"))) {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE1"), true);
-                }
-                try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), false);
-                } catch (Exception e){}
+                Main.board.addZeroTo("P2.7");
+                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
             } else {
-                Main.cpu.mainMemory.buttonsState[7] = '1';
-                if (!anyTogglePressed()) {
-                    try {
-                    Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("zadajnikiPrzerwania")), true);
-                } catch (Exception e){}
-                }
+                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.removeZeroFrom("P2.7");
             }
-            Main.cpu.mainMemory.putFromExternal(160);
+            Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton7.setOnMousePressed(event -> {
-            Main.cpu.mainMemory.buttonsState[0] = '0';
-            Main.cpu.mainMemory.putFromExternal(160);
-            if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
-            } try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), false);
-            } catch (Exception e) { }
+            Main.board.addZeroTo("P2.0");
+            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.set();
             Main.cpu.refreshGui();
         });
+
         portButton7.setOnMouseReleased(event -> {
-            if (portToggle7.isSelected())
-                Main.cpu.mainMemory.buttonsState[0] = '0';
-            else
-                Main.cpu.mainMemory.buttonsState[0] = '1';
-            Main.cpu.mainMemory.putFromExternal(160);
-            try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), true);
-            } catch (Exception e) { }
+            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.removeZeroFrom("P2.0");
+            Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton6.setOnMousePressed(event -> {
-            Main.cpu.mainMemory.buttonsState[1] = '0';
-            Main.cpu.mainMemory.putFromExternal(160);
-            if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
-            }
-            try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), false);
-            } catch (Exception e) { }
+            Main.board.addZeroTo("P2.1");
+            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.set();
             Main.cpu.refreshGui();
         });
+
         portButton6.setOnMouseReleased(event -> {
-            if (portToggle6.isSelected())
-                Main.cpu.mainMemory.buttonsState[1] = '0';
-            else
-                Main.cpu.mainMemory.buttonsState[1] = '1';
-            Main.cpu.mainMemory.putFromExternal(160);
-            try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), true);
-            } catch (Exception e) { }
+            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.removeZeroFrom("P2.1");
+            Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton5.setOnMousePressed(event -> {
-            Main.cpu.mainMemory.buttonsState[2] = '0';
-            Main.cpu.mainMemory.putFromExternal(160);
-            if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
-            }
-            try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), false);
-            } catch (Exception e) { }
+            Main.board.addZeroTo("P2.2");
+            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.set();
             Main.cpu.refreshGui();
         });
+
         portButton5.setOnMouseReleased(event -> {
-            if (portToggle5.isSelected())
-                Main.cpu.mainMemory.buttonsState[2] = '0';
-            else
-                Main.cpu.mainMemory.buttonsState[2] = '1';
-            Main.cpu.mainMemory.putFromExternal(160);
-            try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), true);
-            } catch (Exception e) { }
+            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.removeZeroFrom("P2.2");
+            Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton4.setOnMousePressed(event -> {
-            Main.cpu.mainMemory.buttonsState[3] = '0';
-            Main.cpu.mainMemory.putFromExternal(160);
-            if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
-            }
-            try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), false);
-            } catch (Exception e) { }
+            Main.board.addZeroTo("P2.3");
+            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.set();
             Main.cpu.refreshGui();
         });
+
         portButton4.setOnMouseReleased(event -> {
-            if (portToggle4.isSelected())
-                Main.cpu.mainMemory.buttonsState[3] = '0';
-            else
-                Main.cpu.mainMemory.buttonsState[3] = '1';
-            Main.cpu.mainMemory.putFromExternal(160);
-            try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), true);
-            } catch (Exception e) { }
+            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.removeZeroFrom("P2.3");
+            Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton3.setOnMousePressed(event -> {
-            Main.cpu.mainMemory.buttonsState[4] = '0';
-            Main.cpu.mainMemory.putFromExternal(160);
-            if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
-            }
-            try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), false);
-            } catch (Exception e) { }
+            Main.board.addZeroTo("P2.4");
+            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.set();
             Main.cpu.refreshGui();
         });
+
         portButton3.setOnMouseReleased(event -> {
-            if (portToggle3.isSelected())
-                Main.cpu.mainMemory.buttonsState[4] = '0';
-            else
-                Main.cpu.mainMemory.buttonsState[4] = '1';
-            Main.cpu.mainMemory.putFromExternal(160);
-            try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), true);
-            } catch (Exception e) { }
+            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.removeZeroFrom("P2.4");
+            Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton2.setOnMousePressed(event -> {
-            Main.cpu.mainMemory.buttonsState[5] = '0';
-            Main.cpu.mainMemory.putFromExternal(160);
-            if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
-            }
-            try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), false);
-            } catch (Exception e) { }
+            Main.board.addZeroTo("P2.5");
+            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.set();
             Main.cpu.refreshGui();
         });
+
         portButton2.setOnMouseReleased(event -> {
-            if (portToggle2.isSelected())
-                Main.cpu.mainMemory.buttonsState[5] = '0';
-            else
-                Main.cpu.mainMemory.buttonsState[5] = '1';
-            Main.cpu.mainMemory.putFromExternal(160);
-            try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), true);
-            } catch (Exception e) { }
+            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.removeZeroFrom("P2.5");
+            Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton1.setOnMousePressed(event -> {
-            Main.cpu.mainMemory.buttonsState[6] = '0';
-            Main.cpu.mainMemory.putFromExternal(160);
-            if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
-            }
-            try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), false);
-            } catch (Exception e) { }
+            Main.board.addZeroTo("P2.6");
+            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.set();
             Main.cpu.refreshGui();
         });
+
         portButton1.setOnMouseReleased(event -> {
-            if (portToggle1.isSelected())
-                Main.cpu.mainMemory.buttonsState[6] = '0';
-            else
-                Main.cpu.mainMemory.buttonsState[6] = '1';
-            Main.cpu.mainMemory.putFromExternal(160);
-            try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), true);
-            } catch (Exception e) { }
+            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.removeZeroFrom("P2.6");
+            Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton0.setOnMousePressed(event -> {
-            Main.cpu.mainMemory.buttonsState[7] = '0';
-            Main.cpu.mainMemory.putFromExternal(160);
-            if (!Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("IT0"))) {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get("IE0"), true);
-            }
-            try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), false);
-            } catch (Exception e) { }
+            Main.board.addZeroTo("P2.7");
+            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.set();
             Main.cpu.refreshGui();
         });
+
         portButton0.setOnMouseReleased(event -> {
-            if (portToggle0.isSelected())
-                Main.cpu.mainMemory.buttonsState[7] = '0';
-            else
-                Main.cpu.mainMemory.buttonsState[7] = '1';
-            Main.cpu.mainMemory.putFromExternal(160);
-            try {
-                Main.cpu.mainMemory.setBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przyciskiPrzerwania")), true);
-            } catch (Exception e) { }
+            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.removeZeroFrom("P2.7");
+            Main.board.set();
             Main.cpu.refreshGui();
         });
 
@@ -2487,13 +2410,6 @@ public class MainStage extends Application {
         //editorTextArea.setText(textToSet.toString());
     }
 
-    private boolean anyTogglePressed() {
-        for (int i = 0; i < Main.cpu.mainMemory.buttonsState.length; i++) {
-            if (Main.cpu.mainMemory.buttonsState[i] == '0')
-                return true;
-        }
-        return false;
-    }
 
     private GridPane mainGridPane;
     private GridPane editorElementsGridPane;
@@ -2545,15 +2461,19 @@ public class MainStage extends Application {
 
     private Label p0Label;
     public Label p0TextField;
+    public Label p0PinsTextField;
 
     private Label p1Label;
     public Label p1TextField;
+    public Label p1PinsTextField;
 
     private Label p2Label;
     public Label p2TextField;
+    public Label p2PinsTextField;
 
     private Label p3Label;
     public Label p3TextField;
+    public Label p3PinsTextField;
 
     private Label pLabel;
     public Label pTextField;
@@ -2646,6 +2566,8 @@ public class MainStage extends Application {
     private ComboBox<Integer> speedSelectComboBox;
 
     private Label portsDesc;
+    private Label portsDesc1;
+    private Label portsDesc2;
     private Label progrmMemoryLabel;
 
 

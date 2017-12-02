@@ -2,27 +2,21 @@ package stages;
 
 import core.Main;
 import javafx.application.Application;
-import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import microcontroller.Dac7524;
+import microcontroller.Dac;
 
 import java.util.ArrayList;
 
@@ -256,7 +250,7 @@ public class OscilloscopeStage extends Application {
         }
         if (Main.cpu.getTimePassed() - passedTime >= interval) {
             passedTime = Main.cpu.getTimePassed();
-            series.getData().add(new XYChart.Data(usedScale,Double.parseDouble(Dac7524.getValue())));
+            series.getData().add(new XYChart.Data(usedScale,Double.parseDouble(Dac.getValue())));
 
             usedScale++;
         }
