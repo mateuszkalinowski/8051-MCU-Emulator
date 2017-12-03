@@ -1527,7 +1527,7 @@ public class Cpu {
             hexLinePointer.insert(0, "0");
         }
 
-        Main.stage.pcTextField.setText( hexLinePointer+ "h");
+        Main.stage.pcTextField.setText("0x" + hexLinePointer);
 
         StringBuilder content = new StringBuilder();
         content.append("\t 0\t");
@@ -1619,14 +1619,14 @@ public class Cpu {
         Main.stage.upperRawTextArea.setScrollTop(pos);
         Main.stage.upperRawTextArea.setScrollLeft(pos2);
 
-        Main.stage.r0TextField.setText(Integer.toHexString(mainMemory.get("R0")).toUpperCase()+"h");
-        Main.stage.r1TextField.setText(Integer.toHexString(mainMemory.get("R1")).toUpperCase()+"h");
-        Main.stage.r2TextField.setText(Integer.toHexString(mainMemory.get("R2")).toUpperCase()+"h");
-        Main.stage.r3TextField.setText(Integer.toHexString(mainMemory.get("R3")).toUpperCase()+"h");
-        Main.stage.r4TextField.setText(Integer.toHexString(mainMemory.get("R4")).toUpperCase()+"h");
-        Main.stage.r5TextField.setText(Integer.toHexString(mainMemory.get("R5")).toUpperCase()+"h");
-        Main.stage.r6TextField.setText(Integer.toHexString(mainMemory.get("R6")).toUpperCase()+"h");
-        Main.stage.r7TextField.setText(Integer.toHexString(mainMemory.get("R7")).toUpperCase()+"h");
+        Main.stage.r0TextField.setText("0x" + Integer.toHexString(mainMemory.get("R0")).toUpperCase());
+        Main.stage.r1TextField.setText("0x" + Integer.toHexString(mainMemory.get("R1")).toUpperCase());
+        Main.stage.r2TextField.setText("0x" + Integer.toHexString(mainMemory.get("R2")).toUpperCase());
+        Main.stage.r3TextField.setText("0x" + Integer.toHexString(mainMemory.get("R3")).toUpperCase());
+        Main.stage.r4TextField.setText("0x" + Integer.toHexString(mainMemory.get("R4")).toUpperCase());
+        Main.stage.r5TextField.setText("0x" + Integer.toHexString(mainMemory.get("R5")).toUpperCase());
+        Main.stage.r6TextField.setText("0x" + Integer.toHexString(mainMemory.get("R6")).toUpperCase());
+        Main.stage.r7TextField.setText("0x" + Integer.toHexString(mainMemory.get("R7")).toUpperCase());
 
         Main.stage.p0TextField.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("P0"))) + "b");
         Main.stage.p1TextField.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("P1"))) + "b");
@@ -1649,19 +1649,19 @@ public class Cpu {
             number = "0" + number;
         Main.stage.p3PinsTextField.setText("0x" + number);
 
-        Main.stage.accumulatorTextFieldHex.setText(Integer.toHexString(mainMemory.get("A")).toUpperCase()+"h");
+        Main.stage.accumulatorTextFieldHex.setText("0x" + Integer.toHexString(mainMemory.get("A")).toUpperCase());
         Main.stage.accumulatorTextFieldBin.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("A")).toUpperCase()) + "b");
-        Main.stage.accumulatorTextFieldDec.setText(Integer.toString(mainMemory.get("A")).toUpperCase()+"d");
-        Main.stage.bTextFieldHex.setText(Integer.toHexString(mainMemory.get("B")).toUpperCase()+"h");
+        Main.stage.accumulatorTextFieldDec.setText(Integer.toString(mainMemory.get("A")).toUpperCase());
+        Main.stage.bTextFieldHex.setText("0x"+Integer.toHexString(mainMemory.get("B")).toUpperCase());
         Main.stage.bTextFieldBin.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("B")).toUpperCase()) + "b");
-        Main.stage.bTextFieldDec.setText(Integer.toString(mainMemory.get("B")).toUpperCase()+"d");
+        Main.stage.bTextFieldDec.setText(Integer.toString(mainMemory.get("B")).toUpperCase());
 
-        Main.stage.TMODTextField.setText(Integer.toHexString(mainMemory.get("TMOD"))+"h");
-        Main.stage.TCONTextField.setText(Integer.toHexString(mainMemory.get("TCON"))+"h");
-        Main.stage.T0LTextField.setText(Integer.toHexString(mainMemory.get("TL0"))+"h");
-        Main.stage.T1LTtextField.setText(Integer.toHexString(mainMemory.get("TL1"))+"h");
-        Main.stage.T0HTextField.setText(Integer.toHexString(mainMemory.get("TH0"))+"h");
-        Main.stage.T1HTextField.setText(Integer.toHexString(mainMemory.get("TH1"))+"h");
+        Main.stage.TMODTextField.setText("0x"+Integer.toHexString(mainMemory.get("TMOD")));
+        Main.stage.TCONTextField.setText("0x"+Integer.toHexString(mainMemory.get("TCON")));
+        Main.stage.T0LTextField.setText("0x"+Integer.toHexString(mainMemory.get("TL0")));
+        Main.stage.T1LTtextField.setText("0x"+Integer.toHexString(mainMemory.get("TL1")));
+        Main.stage.T0HTextField.setText("0x"+Integer.toHexString(mainMemory.get("TH0")));
+        Main.stage.T1HTextField.setText("0x"+Integer.toHexString(mainMemory.get("TH1")));
 
         boolean value = mainMemory.getBit(codeMemory.bitAddresses.get("CY"));
         if(value) {

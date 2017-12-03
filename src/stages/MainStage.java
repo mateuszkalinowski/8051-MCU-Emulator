@@ -695,40 +695,6 @@ public class MainStage extends Application {
                 changeValueInChangeValueButton.setDisable(false);
                 setEditorText(compilatedText);
 
-               /* if (portToggle7.isSelected())
-                    Main.cpu.mainMemory.buttonsState[0] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[0] = '1';
-                if (portToggle6.isSelected())
-                    Main.cpu.mainMemory.buttonsState[1] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[1] = '1';
-                if (portToggle5.isSelected())
-                    Main.cpu.mainMemory.buttonsState[2] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[2] = '1';
-                if (portToggle4.isSelected())
-                    Main.cpu.mainMemory.buttonsState[3] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[3] = '1';
-                if (portToggle3.isSelected())
-                    Main.cpu.mainMemory.buttonsState[4] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[4] = '1';
-                if (portToggle2.isSelected())
-                    Main.cpu.mainMemory.buttonsState[5] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[5] = '1';
-                if (portToggle1.isSelected())
-                    Main.cpu.mainMemory.buttonsState[6] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[6] = '1';
-                if (portToggle0.isSelected())
-                    Main.cpu.mainMemory.buttonsState[7] = '0';
-                else
-                    Main.cpu.mainMemory.buttonsState[7] = '1';*/
-
-
                 StringBuilder content = new StringBuilder();
                 content.append("\t 0\t");
                 content.append(" 1\t");
@@ -1015,6 +981,33 @@ public class MainStage extends Application {
             }
         });
 
+        exportToHexMenuItem = new MenuItem("Eksportuj do .hex");
+        exportToHexMenuItem.setOnAction(event -> {
+            if(running) {
+                FileChooser chooseFile = new FileChooser();
+                chooseFile.setTitle("Wybierz lokalizację zapisu");
+                chooseFile.setInitialDirectory(new File(System.getProperty("user.home")));
+                chooseFile.setInitialFileName(currentlyRunTabName+ ".hex");
+                File saveFile = chooseFile.showSaveDialog(primaryStage);
+                if(saveFile!=null) {
+                    try {
+                        PrintWriter in = new PrintWriter(saveFile);
+                        for (String s : Main.cpu.codeMemory.getIntelHex())
+                            in.println(s);
+                        in.close();
+                    } catch (Exception ignored){}
+                }
+
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Nie można wyeksportować programu");
+                alert.setHeaderText("Aby wyeksportować plik dokonaj asemblacji");
+                alert.setContentText("Wyeksportowany zostanie aktualnie uruchomiony program.");
+                alert.showAndWait();
+            }
+        });
+
         MenuItem exitMenuItem = new MenuItem("Zamknij");
         exitMenuItem.setOnAction(event -> System.exit(0));
         exitMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
@@ -1227,7 +1220,7 @@ public class MainStage extends Application {
 
         });
 
-        menuFile.getItems().addAll(newFileMenuItem, saveFileMenuItem, saveAsFileMenuItem, new SeparatorMenuItem(), importFileMenuItem, new SeparatorMenuItem(), exitMenuItem);
+        menuFile.getItems().addAll(newFileMenuItem, saveFileMenuItem, saveAsFileMenuItem, exportToHexMenuItem,new SeparatorMenuItem(), importFileMenuItem, new SeparatorMenuItem(), exitMenuItem);
         menuTools.getItems().add(menuItemOscilloscope);
 
 
@@ -2607,6 +2600,8 @@ public class MainStage extends Application {
     private MenuItem saveFileMenuItem;
     private MenuItem saveAsFileMenuItem;
     private MenuItem importFileMenuItem;
+
+    private MenuItem exportToHexMenuItem;
 
     private XYChart.Series series;
 

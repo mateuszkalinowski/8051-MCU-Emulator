@@ -158,10 +158,13 @@ public class CodeMemory {
 
     public ArrayList<String> setMemory(String[] lines,boolean isMain) throws CompilingException {
         int pointer = 0;
+        int rozmiarTabeliAdresow = 0;
+        int rozmiarPoczatkowy = addresses.size();
         if(isMain) {
             emulatedCodeMemory = new ArrayList<>();
             for (int i = 0; i < Cpu.programMemory; i++) {
                 emulatedCodeMemory.add("00000000");
+                addresses.clear();
             }
             labels.clear();
         }
@@ -210,6 +213,10 @@ public class CodeMemory {
                         continue;
                     if(splittedLine[0].toUpperCase().equals("ORG") && splittedLine.length==2) {
                         try {
+                            if(rozmiarTabeliAdresow!=0) {
+                                addresses.add(pointer);
+                                rozmiarTabeliAdresow++;
+                            }
                             if(splittedLine[1].toUpperCase().charAt(splittedLine[1].length()-1)=='H') {
                                 pointer = Integer.parseInt(splittedLine[1].substring(0,splittedLine[1].length()-1),16);
                                 linieZNumerami.add(backupLinii);
@@ -226,6 +233,8 @@ public class CodeMemory {
                                 pointer = Integer.parseInt(splittedLine[1]);
                                 linieZNumerami.add(backupLinii);
                             }
+                            addresses.add(pointer);
+                            rozmiarTabeliAdresow++;
                         }
                         catch (NumberFormatException e) {
                             throw new CompilingException(numeracjaLinii,"Błędny adres: '" + splittedLine[1] + ", linia: " + backupLinii + "'");
@@ -234,6 +243,10 @@ public class CodeMemory {
                     else if(splittedLine[0].toUpperCase().equals("CODE") && splittedLine.length==3) {
                         if(splittedLine[1].toUpperCase().equals("AT")) {
                             try {
+                                if(rozmiarTabeliAdresow!=0) {
+                                    addresses.add(pointer);
+                                    rozmiarTabeliAdresow++;
+                                }
                                 if (splittedLine[2].toUpperCase().charAt(splittedLine[2].length() - 1) == 'H') {
                                     pointer = Integer.parseInt(splittedLine[2].substring(0, splittedLine[2].length() - 1), 16);
                                     linieZNumerami.add(backupLinii);
@@ -249,6 +262,9 @@ public class CodeMemory {
                                     pointer = Integer.parseInt(splittedLine[2]);
                                     linieZNumerami.add(backupLinii);
                                 }
+
+                                    addresses.add(pointer);
+                                    rozmiarTabeliAdresow++;
                             } catch (NumberFormatException e) {
                                 throw new CompilingException(numeracjaLinii, "Błędny adres: '" + splittedLine[2] + ", linia: " + backupLinii + "'");
                             }
@@ -278,7 +294,7 @@ public class CodeMemory {
 
                         try {
                             String[] linesInside = Main.stage.getLinesFromTabByName(fileName);
-                            Main.cpu.codeMemory.setMemory(linesInside, false);
+                           // Main.cpu.codeMemory.setMemory(linesInside, false);
                             ArrayList<String> lineWewnetrzne = Main.cpu.codeMemory.setMemory(linesInside,false);
                             int size = linieZNumerami.size();
                             for(int i = 0; i < lineWewnetrzne.size();i++) {
@@ -1713,6 +1729,80 @@ public class CodeMemory {
                 }
             }
         }
+        addresses.add(pointer);
+        rozmiarTabeliAdresow++;
+        if (rozmiarTabeliAdresow % 2 == 1)
+            addresses.add(rozmiarPoczatkowy,0);
+        if(isMain) {
+           // addresses.add(pointer);
+        //    if (addresses.size() % 2 == 1)
+        //        addresses.add(0, 0);
+
+            for(int g = addresses.size()-1; g>0;g-=2) {
+                if(addresses.get(g).equals(addresses.get(g-1))) {
+                    addresses.remove(g);
+                    addresses.remove(g-1);
+                }
+            }
+            int i = 0;
+            while (true) {
+                int x = addresses.get(i);
+                int y = addresses.get(i + 1);
+                if (y - x > 255) {
+                    addresses.add(i + 1, x + 255);
+                    addresses.add(i + 1, x + 255);
+                }
+                i += 2;
+                if (i >= addresses.size())
+                    break;
+            }
+
+
+            wynik.clear();
+            for (int k = 0; k < addresses.size(); k += 2) {
+                String linia = ":";
+                int x = addresses.get(k);
+                int y = addresses.get(k + 1);
+
+                int iloscBajtow = y - x;
+                String iloscBajtowString = Integer.toHexString(iloscBajtow).toUpperCase();
+                if (iloscBajtowString.length() == 1)
+                    iloscBajtowString = "0" + iloscBajtowString;
+
+                linia += iloscBajtowString;
+
+                String adresString = Integer.toHexString(x);
+                while (adresString.length() < 4) {
+                    adresString = "0" + adresString;
+                }
+                linia = linia + adresString + "00";
+
+
+                int licznik = x;
+                for (; licznik < y; licznik++) {
+                    String hexToAdd = Integer.toHexString(Integer.parseInt(emulatedCodeMemory.get(licznik), 2)).toUpperCase();
+                    if (hexToAdd.length() == 1)
+                        hexToAdd = "0" + hexToAdd;
+                    linia = linia + hexToAdd;
+                }
+
+                String lineInBinary = "";
+
+                int wartosc = 0;
+                for(int w = 1; w < linia.length();w+=2) {
+                    wartosc+=Integer.parseInt(linia.substring(w,w+2),16);
+                }
+                wartosc = 256-wartosc;
+                String checkSum = Integer.toHexString(wartosc).toUpperCase().substring(Integer.toHexString(wartosc).length()-2,Integer.toHexString(wartosc).length());
+                if(checkSum.length()==1)
+                    checkSum = "0" + checkSum;
+             //   System.out.println(checkSum);
+                linia = linia + checkSum;
+                wynik.add(linia);
+            }
+            wynik.add(":00000001FF");
+        }
+
         Main.stage.compilationErrorsLabel.setText("Asemblacja przebiegła pomyślnie");
         Main.stage.compilationErrorsLabel.setStyle("-fx-background-color: lightgreen; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
         //show();
@@ -1831,5 +1921,13 @@ public class CodeMemory {
     }
 
     public Map<String,String> bitAddresses = new HashMap<>();
+
+    private ArrayList<Integer> addresses = new ArrayList<>();
+
+    private ArrayList<String> wynik = new ArrayList<>();
+
+    public ArrayList<String> getIntelHex() {
+        return wynik;
+    }
 
 }
