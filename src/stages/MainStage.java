@@ -43,7 +43,7 @@ import java.util.Scanner;
 public class MainStage extends Application {
     public void start(Stage primaryStage) {
         mainGridPane = new GridPane();
-        mainBorderPane = new BorderPane();
+        BorderPane mainBorderPane = new BorderPane();
         mainGridPane.setGridLinesVisible(false);
         RowConstraints upperRow = new RowConstraints();
         //upperRow.setPercentHeight(62.5);
@@ -105,7 +105,7 @@ public class MainStage extends Application {
         editorBorderPane.setBottom(compilationErrorsLabelHBox);
         editorBorderPane.setCenter(editorTextAreaHBox);
 
-        simulatorGridPane = new GridPane();
+        GridPane simulatorGridPane = new GridPane();
         //simulatorGridPane.setGridLinesVisible(true);
         RowConstraints rowInSimulator = new RowConstraints();
         rowInSimulator.setPercentHeight(10);
@@ -123,7 +123,7 @@ public class MainStage extends Application {
 
         //AKUMULATOR
 
-        accumulatorLabel = new Label("ACC");
+        Label accumulatorLabel = new Label("ACC");
         accumulatorLabel.setMaxWidth(Double.MAX_VALUE);
         accumulatorLabel.setAlignment(Pos.CENTER);
         accumulatorLabel.setFont(new Font("Arial", 11));
@@ -150,7 +150,7 @@ public class MainStage extends Application {
         accumulatorTextFieldDec.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(accumulatorTextFieldDec, 13, 6);
 
-        bLabel = new Label("B");
+        Label bLabel = new Label("B");
         bLabel.setMaxWidth(Double.MAX_VALUE);
         bLabel.setAlignment(Pos.CENTER);
         bLabel.setFont(new Font("Arial", 11));
@@ -177,7 +177,7 @@ public class MainStage extends Application {
         bTextFieldDec.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(bTextFieldDec, 13, 8);
 
-        r0Label = new Label("R0");
+        Label r0Label = new Label("R0");
         r0Label.setMaxWidth(Double.MAX_VALUE);
         r0Label.setAlignment(Pos.CENTER);
         r0Label.setFont(new Font("Arial", 11));
@@ -190,7 +190,7 @@ public class MainStage extends Application {
         r0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(r0TextField, 1, 8);
 
-        r1Label = new Label("R1");
+        Label r1Label = new Label("R1");
         r1Label.setMaxWidth(Double.MAX_VALUE);
         r1Label.setAlignment(Pos.CENTER);
         r1Label.setFont(new Font("Arial", 11));
@@ -203,7 +203,7 @@ public class MainStage extends Application {
         r1TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(r1TextField, 2, 8);
 
-        r2Label = new Label("R2");
+        Label r2Label = new Label("R2");
         r2Label.setMaxWidth(Double.MAX_VALUE);
         r2Label.setAlignment(Pos.CENTER);
         r2Label.setFont(new Font("Arial", 11));
@@ -216,7 +216,7 @@ public class MainStage extends Application {
         r2TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(r2TextField, 3, 8);
 
-        r3Label = new Label("R3");
+        Label r3Label = new Label("R3");
         r3Label.setMaxWidth(Double.MAX_VALUE);
         r3Label.setAlignment(Pos.CENTER);
         r3Label.setFont(new Font("Arial", 11));
@@ -229,7 +229,7 @@ public class MainStage extends Application {
         r3TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(r3TextField, 4, 8);
 
-        r4Label = new Label("R4");
+        Label r4Label = new Label("R4");
         r4Label.setMaxWidth(Double.MAX_VALUE);
         r4Label.setAlignment(Pos.CENTER);
         r4Label.setFont(new Font("Arial", 11));
@@ -242,7 +242,7 @@ public class MainStage extends Application {
         r4TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(r4TextField, 5, 8);
 
-        r5Label = new Label("R5");
+        Label r5Label = new Label("R5");
         r5Label.setMaxWidth(Double.MAX_VALUE);
         r5Label.setAlignment(Pos.CENTER);
         r5Label.setFont(new Font("Arial", 11));
@@ -255,7 +255,7 @@ public class MainStage extends Application {
         r5TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(r5TextField, 6, 8);
 
-        r6Label = new Label("R6");
+        Label r6Label = new Label("R6");
         r6Label.setMaxWidth(Double.MAX_VALUE);
         r6Label.setAlignment(Pos.CENTER);
         r6Label.setFont(new Font("Arial", 11));
@@ -268,7 +268,7 @@ public class MainStage extends Application {
         r6TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(r6TextField, 7, 8);
 
-        r7Label = new Label("R7");
+        Label r7Label = new Label("R7");
         r7Label.setMaxWidth(Double.MAX_VALUE);
         r7Label.setAlignment(Pos.CENTER);
         r7Label.setFont(new Font("Arial", 11));
@@ -281,7 +281,7 @@ public class MainStage extends Application {
         r7TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(r7TextField, 8, 8);
 
-        cLabel = new Label("C");
+        Label cLabel = new Label("C");
         cLabel.setMaxWidth(Double.MAX_VALUE);
         cLabel.setAlignment(Pos.CENTER);
         cLabel.setFont(new Font("Arial", 11));
@@ -294,7 +294,7 @@ public class MainStage extends Application {
         cTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(cTextField, 1, 6);
 
-        acLabel = new Label("AC");
+        Label acLabel = new Label("AC");
         acLabel.setMaxWidth(Double.MAX_VALUE);
         acLabel.setAlignment(Pos.CENTER);
         acLabel.setFont(new Font("Arial", 11));
@@ -307,7 +307,7 @@ public class MainStage extends Application {
         acTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(acTextField, 2, 6);
 
-        f0Label = new Label("F0");
+        Label f0Label = new Label("F0");
         f0Label.setMaxWidth(Double.MAX_VALUE);
         f0Label.setAlignment(Pos.CENTER);
         f0Label.setFont(new Font("Arial", 11));
@@ -320,7 +320,7 @@ public class MainStage extends Application {
         f0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(f0TextField, 3, 6);
 
-        f1Label = new Label("F1");
+        Label f1Label = new Label("F1");
         f1Label.setMaxWidth(Double.MAX_VALUE);
         f1Label.setAlignment(Pos.CENTER);
         f1Label.setFont(new Font("Arial", 11));
@@ -333,7 +333,7 @@ public class MainStage extends Application {
         f1TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(f1TextField, 7, 6);
 
-        rs1Label = new Label("RS1");
+        Label rs1Label = new Label("RS1");
         rs1Label.setMaxWidth(Double.MAX_VALUE);
         rs1Label.setAlignment(Pos.CENTER);
         rs1Label.setFont(new Font("Arial", 11));
@@ -346,7 +346,7 @@ public class MainStage extends Application {
         rs1TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(rs1TextField, 4, 6);
 
-        rs0Label = new Label("RS0");
+        Label rs0Label = new Label("RS0");
         rs0Label.setMaxWidth(Double.MAX_VALUE);
         rs0Label.setAlignment(Pos.CENTER);
         rs0Label.setFont(new Font("Arial", 11));
@@ -359,7 +359,7 @@ public class MainStage extends Application {
         rs0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(rs0TextField, 5, 6);
 
-        ovLabel = new Label("OV");
+        Label ovLabel = new Label("OV");
         ovLabel.setMaxWidth(Double.MAX_VALUE);
         ovLabel.setAlignment(Pos.CENTER);
         ovLabel.setFont(new Font("Arial", 11));
@@ -372,7 +372,7 @@ public class MainStage extends Application {
         ovTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(ovTextField, 6, 6);
 
-        pLabel = new Label("P");
+        Label pLabel = new Label("P");
         pLabel.setMaxWidth(Double.MAX_VALUE);
         pLabel.setAlignment(Pos.CENTER);
         pLabel.setFont(new Font("Arial", 11));
@@ -385,7 +385,7 @@ public class MainStage extends Application {
         pTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(pTextField, 8, 6);
 
-        p0Label = new Label("P0");
+        Label p0Label = new Label("P0");
         p0Label.setMaxWidth(Double.MAX_VALUE);
         p0Label.setAlignment(Pos.CENTER);
         p0Label.setFont(new Font("Arial", 11));
@@ -405,7 +405,7 @@ public class MainStage extends Application {
         p0PinsTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(p0PinsTextField, 18, 2, 1, 1);
 
-        p1Label = new Label("P1");
+        Label p1Label = new Label("P1");
         p1Label.setMaxWidth(Double.MAX_VALUE);
         p1Label.setAlignment(Pos.CENTER);
         p1Label.setFont(new Font("Arial", 11));
@@ -425,7 +425,7 @@ public class MainStage extends Application {
         p1PinsTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(p1PinsTextField, 18, 4, 1, 1);
 
-        p2Label = new Label("P2");
+        Label p2Label = new Label("P2");
         p2Label.setMaxWidth(Double.MAX_VALUE);
         p2Label.setAlignment(Pos.CENTER);
         p2Label.setFont(new Font("Arial", 11));
@@ -445,7 +445,7 @@ public class MainStage extends Application {
         p2PinsTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(p2PinsTextField, 18, 6, 1, 1);
 
-        p3Label = new Label("P3");
+        Label p3Label = new Label("P3");
         p3Label.setMaxWidth(Double.MAX_VALUE);
         p3Label.setAlignment(Pos.CENTER);
         p3Label.setFont(new Font("Arial", 11));
@@ -465,25 +465,25 @@ public class MainStage extends Application {
         p3PinsTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(p3PinsTextField, 18, 8, 1, 1);
 
-        portsDesc = new Label("Port:");
+        Label portsDesc = new Label("Port:");
         portsDesc.setMaxWidth(Double.MAX_VALUE);
         portsDesc.setAlignment(Pos.CENTER);
         portsDesc.setFont(new Font("Arial", 11));
         simulatorGridPane.add(portsDesc, 15, 0, 1, 2);
 
-        portsDesc1 = new Label("Bity:");
+        Label portsDesc1 = new Label("Bity:");
         portsDesc1.setMaxWidth(Double.MAX_VALUE);
         portsDesc1.setAlignment(Pos.CENTER);
         portsDesc1.setFont(new Font("Arial", 11));
         simulatorGridPane.add(portsDesc1, 18, 0, 1, 2);
 
-        portsDesc2 = new Label("Piny:");
+        Label portsDesc2 = new Label("Piny:");
         portsDesc2.setMaxWidth(Double.MAX_VALUE);
         portsDesc2.setAlignment(Pos.CENTER);
         portsDesc2.setFont(new Font("Arial", 11));
         simulatorGridPane.add(portsDesc2, 16, 0, 2, 2);
 
-        timePassedLabel = new Label("Czas Symulacji:");
+        Label timePassedLabel = new Label("Czas Symulacji:");
         timePassedLabel.setMaxWidth(Double.MAX_VALUE);
         timePassedLabel.setAlignment(Pos.CENTER);
         timePassedLabel.setFont(new Font("Arial", 11));
@@ -496,7 +496,7 @@ public class MainStage extends Application {
         timePassedTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(timePassedTextField, 1, 2, 2, 1);
 
-        pcLabel = new Label("PC:");
+        Label pcLabel = new Label("PC:");
         pcLabel.setMaxWidth(Double.MAX_VALUE);
         pcLabel.setAlignment(Pos.CENTER);
         pcLabel.setFont(new Font("Arial", 11));
@@ -509,7 +509,7 @@ public class MainStage extends Application {
         pcTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(pcTextField, 1, 4, 2, 1);
 
-        T0LLabel = new Label("TL0");
+        Label T0LLabel = new Label("TL0");
         T0LLabel.setMaxWidth(Double.MAX_VALUE);
         T0LLabel.setAlignment(Pos.CENTER);
         T0LLabel.setFont(new Font("Arial", 11));
@@ -522,7 +522,7 @@ public class MainStage extends Application {
         T0LTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(T0LTextField, 13, 2);
 
-        T0HLabel = new Label("TH0");
+        Label T0HLabel = new Label("TH0");
         T0HLabel.setMaxWidth(Double.MAX_VALUE);
         T0HLabel.setAlignment(Pos.CENTER);
         T0HLabel.setFont(new Font("Arial", 11));
@@ -535,7 +535,7 @@ public class MainStage extends Application {
         T0HTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(T0HTextField, 12, 2);
 
-        T1LLabel = new Label("TL1");
+        Label T1LLabel = new Label("TL1");
         T1LLabel.setMaxWidth(Double.MAX_VALUE);
         T1LLabel.setAlignment(Pos.CENTER);
         T1LLabel.setFont(new Font("Arial", 11));
@@ -548,7 +548,7 @@ public class MainStage extends Application {
         T1LTtextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(T1LTtextField, 11, 2);
 
-        T1HLabel = new Label("TH1");
+        Label T1HLabel = new Label("TH1");
         T1HLabel.setMaxWidth(Double.MAX_VALUE);
         T1HLabel.setAlignment(Pos.CENTER);
         T1HLabel.setFont(new Font("Arial", 11));
@@ -561,7 +561,7 @@ public class MainStage extends Application {
         T1HTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(T1HTextField, 10, 2);
 
-        TMODLabel = new Label("TMOD:");
+        Label TMODLabel = new Label("TMOD:");
         TMODLabel.setMaxWidth(Double.MAX_VALUE);
         TMODLabel.setAlignment(Pos.CENTER);
         TMODLabel.setFont(new Font("Arial", 11));
@@ -574,8 +574,7 @@ public class MainStage extends Application {
         TMODTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(TMODTextField, 11, 3, 1, 2);
 
-
-        TCONLabel = new Label("TCON:");
+        Label TCONLabel = new Label("TCON:");
         TCONLabel.setMaxWidth(Double.MAX_VALUE);
         TCONLabel.setAlignment(Pos.CENTER);
         TCONLabel.setFont(new Font("Arial", 11));
@@ -588,7 +587,7 @@ public class MainStage extends Application {
         TCONTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(TCONTextField, 13, 3, 1, 2);
 
-        EX0Label = new Label("EX0");
+        Label EX0Label = new Label("EX0");
         EX0Label.setMaxWidth(Double.MAX_VALUE);
         EX0Label.setAlignment(Pos.CENTER);
         EX0Label.setFont(new Font("Arial", 11));
@@ -601,7 +600,7 @@ public class MainStage extends Application {
         EX0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(EX0TextField, 8, 3);
 
-        ET0Label = new Label("ET0");
+        Label ET0Label = new Label("ET0");
         ET0Label.setMaxWidth(Double.MAX_VALUE);
         ET0Label.setAlignment(Pos.CENTER);
         ET0Label.setFont(new Font("Arial", 11));
@@ -614,7 +613,7 @@ public class MainStage extends Application {
         ET0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(ET0TextField, 7, 3);
 
-        EX1Label = new Label("EX1");
+        Label EX1Label = new Label("EX1");
         EX1Label.setMaxWidth(Double.MAX_VALUE);
         EX1Label.setAlignment(Pos.CENTER);
         EX1Label.setFont(new Font("Arial", 11));
@@ -627,7 +626,7 @@ public class MainStage extends Application {
         EX1TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(EX1TextField, 6, 3);
 
-        ET1Label = new Label("ET1");
+        Label ET1Label = new Label("ET1");
         ET1Label.setMaxWidth(Double.MAX_VALUE);
         ET1Label.setAlignment(Pos.CENTER);
         ET1Label.setFont(new Font("Arial", 11));
@@ -640,7 +639,7 @@ public class MainStage extends Application {
         ET1TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(ET1TextField, 5, 3);
 
-        ESLabel = new Label("ES");
+        Label ESLabel = new Label("ES");
         ESLabel.setMaxWidth(Double.MAX_VALUE);
         ESLabel.setAlignment(Pos.CENTER);
         ESLabel.setFont(new Font("Arial", 11));
@@ -653,7 +652,7 @@ public class MainStage extends Application {
         ESTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(ESTextField, 4, 3);
 
-        EALabel = new Label("EA");
+        Label EALabel = new Label("EA");
         EALabel.setMaxWidth(Double.MAX_VALUE);
         EALabel.setAlignment(Pos.CENTER);
         EALabel.setFont(new Font("Arial", 11));
@@ -670,11 +669,11 @@ public class MainStage extends Application {
         translateToMemoryButton = new Button("Asemblacja");
         translateToMemoryButton.setOnAction(event -> {
             //  lines = editorTextArea.getText().split("\n");
-            if(editorTabPane.getTabs().size()==0)
+            if (editorTabPane.getTabs().size() == 0)
                 return;
             lines = editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTextArea.getText().split("\n");
             try {
-                ArrayList<String> compilatedText = Main.cpu.codeMemory.setMemory(lines,true);
+                ArrayList<String> compilatedText = Main.cpu.codeMemory.setMemory(lines, true);
                 portToggle0.setSelected(false);
                 portToggle1.setSelected(false);
                 portToggle2.setSelected(false);
@@ -730,7 +729,7 @@ public class MainStage extends Application {
                 programMemoryTextArea.setText(content.toString());
                 currentlyRunTabName = editorTabPane.getSelectionModel().getSelectedItem().getText();
                 editorTabPane.getSelectionModel().getSelectedItem().setClosable(false);
-               // Main.cpu.mainMemory.putFromExternal(160);
+                // Main.cpu.mainMemory.putFromExternal(160);
                 Main.cpu.refreshGui();
 
             } catch (CompilingException e) {
@@ -805,19 +804,22 @@ public class MainStage extends Application {
         oneStepButton = new Button("Krok");
         oneStepButton.setOnAction(event -> {
             try {
-                Main.cpu.executeInstruction();
                 Main.board.set();
-                Main.cpu.refreshGui();
+                Main.cpu.executeInstruction();
+                Main.adc.updateState();
+                Main.adc.cycle();
                 Dac.convert();
                 OscilloscopePane.updateChart();
-            } catch (Exception e) {
+                Main.board.set();
+                Main.cpu.refreshGui();
+          } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Błąd Wykonania");
                 alert.setHeaderText("Wykonanie przebiegło nieudanie");
                 alert.setContentText("Sprawdź kod jeszcze raz, informacja gdzie wystąpił błąd zostanie" +
                         "dodana w jednej z kolejnych wersji programu");
                 alert.showAndWait();
-            }
+           }
         });
 
         continuousRunButton = new Button("Praca Ciągła");
@@ -838,9 +840,12 @@ public class MainStage extends Application {
                             if (System.nanoTime() - time > 1000000000 / speedSelectComboBox.getSelectionModel().getSelectedItem()) {
                                 Main.board.set();
                                 Main.cpu.executeInstruction();
+                                Main.adc.updateState();
+                                Main.adc.cycle();
                                 Platform.runLater(Dac::convert);
                                 Platform.runLater(OscilloscopePane::updateChart);
                                 time = System.nanoTime();
+                                Main.board.set();
                                 Platform.runLater(() -> Main.cpu.refreshGui());
                             }
                         }
@@ -869,7 +874,7 @@ public class MainStage extends Application {
         speedSelectComboBox.setMaxWidth(100);
         speedSelectComboBox.getSelectionModel().selectFirst();
 
-        speedSelectLabel = new Label("Prędkość Symulacji:");
+        Label speedSelectLabel = new Label("Prędkość Symulacji:");
         speedSelectLabel.setMaxWidth(Double.MAX_VALUE);
         speedSelectLabel.setAlignment(Pos.CENTER);
         speedSelectLabel.setFont(new Font("Arial", 11));
@@ -891,7 +896,6 @@ public class MainStage extends Application {
         buttonsBorderPane.setCenter(buttonBox);
         buttonsBorderPane.setBottom(programImageCanvas);
         editorBorderPane.setLeft(buttonsBorderPane);
-
 
 
         editorElementsGridPane.add(editorBorderPane, 0, 0);
@@ -981,25 +985,33 @@ public class MainStage extends Application {
             }
         });
 
-        exportToHexMenuItem = new MenuItem("Eksportuj do .hex");
+        MenuItem exportToHexMenuItem = new MenuItem("Eksportuj do .hex");
         exportToHexMenuItem.setOnAction(event -> {
-            if(running) {
+            if (running) {
                 FileChooser chooseFile = new FileChooser();
                 chooseFile.setTitle("Wybierz lokalizację zapisu");
                 chooseFile.setInitialDirectory(new File(System.getProperty("user.home")));
-                chooseFile.setInitialFileName(currentlyRunTabName+ ".hex");
+                int i = 0;
+                String cardName = currentlyRunTabName;
+                for(;i<cardName.length();i++) {
+                    if(cardName.charAt(i)=='.') {
+                        cardName = cardName.substring(0,i);
+                        break;
+                    }
+                }
+                chooseFile.setInitialFileName(cardName + ".hex");
                 File saveFile = chooseFile.showSaveDialog(primaryStage);
-                if(saveFile!=null) {
+                if (saveFile != null) {
                     try {
                         PrintWriter in = new PrintWriter(saveFile);
                         for (String s : Main.cpu.codeMemory.getIntelHex())
                             in.println(s);
                         in.close();
-                    } catch (Exception ignored){}
+                    } catch (Exception ignored) {
+                    }
                 }
 
-            }
-            else {
+            } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Nie można wyeksportować programu");
                 alert.setHeaderText("Aby wyeksportować plik dokonaj asemblacji");
@@ -1011,7 +1023,7 @@ public class MainStage extends Application {
         MenuItem exitMenuItem = new MenuItem("Zamknij");
         exitMenuItem.setOnAction(event -> System.exit(0));
         exitMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+Q"));
-        importFileMenuItem = new MenuItem("Otwórz");
+        MenuItem importFileMenuItem = new MenuItem("Otwórz");
         importFileMenuItem.setOnAction(event -> {
             if (!running) {
                 FileChooser chooseFile = new FileChooser();
@@ -1024,11 +1036,11 @@ public class MainStage extends Application {
                         while (in.hasNextLine())
                             textToSet.append(in.nextLine()).append("\n");
 
-                        for(int i = 0; i < editorTabs.size();i++) {
-                            if(editorTabs.get(i).ownTab.getText().equals(openFile.getName())) {
+                        for (MainStage.editorTab editorTab : editorTabs) {
+                            if (editorTab.ownTab.getText().equals(openFile.getName())) {
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("Błąd dodawania pliku");
-                                alert.setHeaderText("Nie można było zaimportować pliku o nazwie '"  +openFile.getName()+"'");
+                                alert.setHeaderText("Nie można było zaimportować pliku o nazwie '" + openFile.getName() + "'");
                                 alert.setContentText("Plik o tej nazwie już istnieje");
                                 alert.showAndWait();
                                 return;
@@ -1054,7 +1066,7 @@ public class MainStage extends Application {
         });
 
 
-        saveAsFileMenuItem = new MenuItem("Zapisz jako");
+        MenuItem saveAsFileMenuItem = new MenuItem("Zapisz jako");
         saveAsFileMenuItem.setOnAction(event -> {
             if (editorTabPane.getSelectionModel().getSelectedItem().getText().equals(currentlyRunTabName)) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -1099,20 +1111,20 @@ public class MainStage extends Application {
             }
         });
 
-        newFileMenuItem = new MenuItem("Nowy");
+        MenuItem newFileMenuItem = new MenuItem("Nowy");
         newFileMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+N"));
         newFileMenuItem.setOnAction(event -> {
 
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("Tworzenie nowego pliku");
             dialog.setHeaderText("Podaj nazwę nowego pliku");
-            while(true) {
+            while (true) {
                 boolean exit = false;
                 Optional<String> result = dialog.showAndWait();
                 if (result.isPresent()) {
                     String name = result.get();
 
-                    if(name.equals("")) {
+                    if (name.equals("")) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Błąd dodawania pliku");
                         alert.setHeaderText("Nie można było stworzyć pliku o nazwie '" + name + "'");
@@ -1130,8 +1142,8 @@ public class MainStage extends Application {
                         continue;
                     }
 
-                    for (int i = 0; i < editorTabs.size(); i++) {
-                        if (editorTabs.get(i).ownTab.getText().equals(name)) {
+                    for (MainStage.editorTab editorTab : editorTabs) {
+                        if (editorTab.ownTab.getText().equals(name)) {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setTitle("Błąd dodawania pliku");
                             alert.setHeaderText("Nie można było stworzyć pliku o nazwie '" + name + "'");
@@ -1140,18 +1152,17 @@ public class MainStage extends Application {
                             exit = true;
                         }
                     }
-                    if(!exit) {
+                    if (!exit) {
                         editorTabs.add(new editorTab());
                         editorTabs.get(editorTabs.size() - 1).ownTab.setText(name);
                         editorTabPane.getSelectionModel().selectLast();
                         break;
                     }
-                }
-                else
+                } else
                     break;
             }
         });
-        saveFileMenuItem = new MenuItem("Zapisz");
+        MenuItem saveFileMenuItem = new MenuItem("Zapisz");
         saveFileMenuItem.setAccelerator(KeyCombination.keyCombination("Ctrl+S"));
         saveFileMenuItem.setOnAction(event -> {
             String selectedCardName = editorTabPane.getSelectionModel().getSelectedItem().getText();
@@ -1211,8 +1222,7 @@ public class MainStage extends Application {
                     if (editorTabs.get(numerKarty).ownTab.getText().startsWith("*")) {
                         editorTabs.get(numerKarty).ownTab.setText(editorTabs.get(numerKarty).ownTab.getText().substring(1));
                     }
-                } catch (Exception e) {
-                    //TODO ERROR MESSAGE
+                } catch (Exception ignored) {
                 }
 
             }
@@ -1220,7 +1230,7 @@ public class MainStage extends Application {
 
         });
 
-        menuFile.getItems().addAll(newFileMenuItem, saveFileMenuItem, saveAsFileMenuItem, exportToHexMenuItem,new SeparatorMenuItem(), importFileMenuItem, new SeparatorMenuItem(), exitMenuItem);
+        menuFile.getItems().addAll(newFileMenuItem, saveFileMenuItem, saveAsFileMenuItem, exportToHexMenuItem, new SeparatorMenuItem(), importFileMenuItem, new SeparatorMenuItem(), exitMenuItem);
         menuTools.getItems().add(menuItemOscilloscope);
 
 
@@ -1234,7 +1244,7 @@ public class MainStage extends Application {
         elementsTabPane.getTabs().add(chartPane);
 
 
-        diodesPaneGridPane = new GridPane();
+        GridPane diodesPaneGridPane = new GridPane();
         ColumnConstraints columnInDiodesPane = new ColumnConstraints();
         columnInDiodesPane.setPercentWidth(100.0 / 8.0);
         for (int i = 0; i < 8; i++) {
@@ -1271,21 +1281,21 @@ public class MainStage extends Application {
         portToggle6.setMaxWidth(Double.MAX_VALUE);
         portToggle7.setMaxWidth(Double.MAX_VALUE);
 
-        portButton0 = new Button("0");
+        Button portButton0 = new Button("0");
         portButton0.setFont(new Font("Arial", 13));
-        portButton1 = new Button("1");
+        Button portButton1 = new Button("1");
         portButton1.setFont(new Font("Arial", 13));
-        portButton2 = new Button("2");
+        Button portButton2 = new Button("2");
         portButton2.setFont(new Font("Arial", 13));
-        portButton3 = new Button("3");
+        Button portButton3 = new Button("3");
         portButton3.setFont(new Font("Arial", 13));
-        portButton4 = new Button("4");
+        Button portButton4 = new Button("4");
         portButton4.setFont(new Font("Arial", 13));
-        portButton5 = new Button("5");
+        Button portButton5 = new Button("5");
         portButton5.setFont(new Font("Arial", 13));
-        portButton6 = new Button("6");
+        Button portButton6 = new Button("6");
         portButton6.setFont(new Font("Arial", 13));
-        portButton7 = new Button("7");
+        Button portButton7 = new Button("7");
         portButton7.setFont(new Font("Arial", 13));
 
         portButton0.setMaxWidth(Double.MAX_VALUE);
@@ -1296,14 +1306,15 @@ public class MainStage extends Application {
         portButton5.setMaxWidth(Double.MAX_VALUE);
         portButton6.setMaxWidth(Double.MAX_VALUE);
         portButton7.setMaxWidth(Double.MAX_VALUE);
-        // Main.cpu.mainMemory.putFromExternal(160);
+
+
         portToggle7.setOnAction(event -> {
             if (portToggle7.isSelected()) {
-                Main.board.addZeroTo("P2.0");
-                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.setGround("P2.0",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
-                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
-                Main.board.removeZeroFrom("P2.0");
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
+                Main.board.setCurrent("P2.0",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1311,11 +1322,11 @@ public class MainStage extends Application {
 
         portToggle6.setOnAction(event -> {
             if (portToggle6.isSelected()) {
-                Main.board.addZeroTo("P2.1");
-                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.setGround("P2.1",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
-                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
-                Main.board.removeZeroFrom("P2.1");
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
+                Main.board.setCurrent("P2.1",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1323,11 +1334,11 @@ public class MainStage extends Application {
 
         portToggle5.setOnAction(event -> {
             if (portToggle5.isSelected()) {
-                Main.board.addZeroTo("P2.2");
-                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.setGround("P2.2",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
-                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
-                Main.board.removeZeroFrom("P2.2");
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
+                Main.board.setCurrent("P2.2",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1335,11 +1346,11 @@ public class MainStage extends Application {
 
         portToggle4.setOnAction(event -> {
             if (portToggle4.isSelected()) {
-                Main.board.addZeroTo("P2.3");
-                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.setGround("P2.3",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
-                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
-                Main.board.removeZeroFrom("P2.3");
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
+                Main.board.setCurrent("P2.3",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1347,11 +1358,11 @@ public class MainStage extends Application {
 
         portToggle3.setOnAction(event -> {
             if (portToggle3.isSelected()) {
-                Main.board.addZeroTo("P2.4");
-                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.setGround("P2.4",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
-                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
-                Main.board.removeZeroFrom("P2.4");
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
+                Main.board.setCurrent("P2.4",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1359,11 +1370,11 @@ public class MainStage extends Application {
 
         portToggle2.setOnAction(event -> {
             if (portToggle2.isSelected()) {
-                Main.board.addZeroTo("P2.5");
-                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.setGround("P2.5",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
-                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
-                Main.board.removeZeroFrom("P2.5");
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
+                Main.board.setCurrent("P2.5",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1371,11 +1382,11 @@ public class MainStage extends Application {
 
         portToggle1.setOnAction(event -> {
             if (portToggle1.isSelected()) {
-                Main.board.addZeroTo("P2.6");
-                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.setGround("P2.6",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
-                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
-                Main.board.removeZeroFrom("P2.6");
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
+                Main.board.setCurrent("P2.6",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1383,124 +1394,126 @@ public class MainStage extends Application {
 
         portToggle0.setOnAction(event -> {
             if (portToggle0.isSelected()) {
-                Main.board.addZeroTo("P2.7");
-                Main.board.addZeroTo(Main.settingsMap.get("zadajnikiPrzerwania"));
+                Main.board.setGround("P2.7",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
-                Main.board.removeZeroFrom(Main.settingsMap.get("zadajnikiPrzerwania"));
-                Main.board.removeZeroFrom("P2.7");
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
+                Main.board.setCurrent("P2.7",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
+
+
         portButton7.setOnMousePressed(event -> {
-            Main.board.addZeroTo("P2.0");
-            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.setGround("P2.0",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton7.setOnMouseReleased(event -> {
-            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
-            Main.board.removeZeroFrom("P2.0");
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
+            Main.board.setCurrent("P2.0",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton6.setOnMousePressed(event -> {
-            Main.board.addZeroTo("P2.1");
-            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.setGround("P2.1",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton6.setOnMouseReleased(event -> {
-            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
-            Main.board.removeZeroFrom("P2.1");
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
+            Main.board.setCurrent("P2.1",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton5.setOnMousePressed(event -> {
-            Main.board.addZeroTo("P2.2");
-            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.setGround("P2.2",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton5.setOnMouseReleased(event -> {
-            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
-            Main.board.removeZeroFrom("P2.2");
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
+            Main.board.setCurrent("P2.2",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton4.setOnMousePressed(event -> {
-            Main.board.addZeroTo("P2.3");
-            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.setGround("P2.3",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton4.setOnMouseReleased(event -> {
-            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
-            Main.board.removeZeroFrom("P2.3");
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
+            Main.board.setCurrent("P2.3",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton3.setOnMousePressed(event -> {
-            Main.board.addZeroTo("P2.4");
-            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.setGround("P2.4",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton3.setOnMouseReleased(event -> {
-            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
-            Main.board.removeZeroFrom("P2.4");
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
+            Main.board.setCurrent("P2.4",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton2.setOnMousePressed(event -> {
-            Main.board.addZeroTo("P2.5");
-            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.setGround("P2.5",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton2.setOnMouseReleased(event -> {
-            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
-            Main.board.removeZeroFrom("P2.5");
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
+            Main.board.setCurrent("P2.5",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton1.setOnMousePressed(event -> {
-            Main.board.addZeroTo("P2.6");
-            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.setGround("P2.6",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton1.setOnMouseReleased(event -> {
-            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
-            Main.board.removeZeroFrom("P2.6");
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
+            Main.board.setCurrent("P2.6",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton0.setOnMousePressed(event -> {
-            Main.board.addZeroTo("P2.7");
-            Main.board.addZeroTo(Main.settingsMap.get("przyciskiPrzerwania"));
+            Main.board.setGround("P2.7",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton0.setOnMouseReleased(event -> {
-            Main.board.removeZeroFrom(Main.settingsMap.get("przyciskiPrzerwania"));
-            Main.board.removeZeroFrom("P2.7");
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
+            Main.board.setCurrent("P2.7",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
@@ -1556,17 +1569,17 @@ public class MainStage extends Application {
         buttonsHBox.getChildren().addAll(portButton0, portButton1, portButton2, portButton3, portButton4, portButton5, portButton6, portButton7);
 
         VBox dacStateHBox = new VBox();
-        VBox.setVgrow(dacStateHBox,Priority.ALWAYS);
+        VBox.setVgrow(dacStateHBox, Priority.ALWAYS);
 
         dacStateLabel = new Label("Wyjście DAC: 0.000 V");
         dacStateLabel.setFont(new Font("Arial", 15));
         dacStateLabel.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-background-insets: 0 0 0 0");
-        dacStateLabel.setPadding(new Insets(10,15,10,15));
+        dacStateLabel.setPadding(new Insets(10, 15, 10, 15));
         dacStateHBox.getChildren().add(dacStateLabel);
         dacStateHBox.setAlignment(Pos.CENTER);
-        dacStateHBox.setPadding(new Insets(0,0,10,0));
+        dacStateHBox.setPadding(new Insets(0, 0, 10, 0));
 
-        lowerBox.getChildren().addAll(dacStateHBox,zadajnikiLabel, togglesHBox, przyciskiLabel, buttonsHBox);
+        lowerBox.getChildren().addAll(dacStateHBox, zadajnikiLabel, togglesHBox, przyciskiLabel, buttonsHBox);
 
         final NumberAxis xAxis = new NumberAxis(0, 255, 64);
         final NumberAxis yAxis = new NumberAxis(0, 255, 64);
@@ -1576,7 +1589,7 @@ public class MainStage extends Application {
                 new ScatterChart<Number, Number>(xAxis, yAxis);
         lineChart.setLegendVisible(false);
         lineChart.setTitle("Przebieg - P0");
-        series = new XYChart.Series();
+        XYChart.Series series = new XYChart.Series();
         lineChart.getData().add(series);
         chartPane.setContent(chartBorderPane);
         chartBorderPane.setCenter(lineChart);
@@ -1595,10 +1608,10 @@ public class MainStage extends Application {
         BorderPane programMemoryBorderPane = new BorderPane();
         programMemoryBorderPane.setCenter(programMemoryTextArea);
 
-        progrmMemoryLabel = new Label("Pamięć Programu");
-        progrmMemoryLabel.setAlignment(Pos.CENTER);
-        progrmMemoryLabel.setMaxWidth(Double.MAX_VALUE);
-        programMemoryBorderPane.setTop(progrmMemoryLabel);
+        Label programMemoryLabel = new Label("Pamięć Programu");
+        programMemoryLabel.setAlignment(Pos.CENTER);
+        programMemoryLabel.setMaxWidth(Double.MAX_VALUE);
+        programMemoryBorderPane.setTop(programMemoryLabel);
         programMemoryBorderPane.setCenter(programMemoryTextArea);
 
         programMemoryInfoTab.setContent(programMemoryBorderPane);
@@ -1631,8 +1644,7 @@ public class MainStage extends Application {
                     content.append(" ").append(Integer.toHexString(Integer.parseInt(Main.cpu.codeMemory.getFromAddress(i * 16 + j), 2)).toUpperCase()).append(" ");
                 content.append("\t");
             }
-            if (i != 256)
-                content.append("\n");
+            content.append("\n");
         }
 
         programMemoryTextArea.setText(content.toString());
@@ -1767,7 +1779,7 @@ public class MainStage extends Application {
         mainStage = primaryStage;
         mainStage.setTitle("8051 MCU Emulator");
         mainBorderPane.setCenter(mainGridPane);
-        mainScene = new Scene(mainBorderPane, width, height);
+        Scene mainScene = new Scene(mainBorderPane, width, height);
         mainStage.getIcons().add(new Image(MainStage.class.getResourceAsStream("cpu.png")));
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
         mainStage.setScene(mainScene);
@@ -1778,7 +1790,7 @@ public class MainStage extends Application {
         try {
             URL iconURL = MainStage.class.getResource("cpu.png");
             java.awt.Image image = new ImageIcon(iconURL).getImage();
-             com.apple.eawt.Application.getApplication().setDockIconImage(image);
+            com.apple.eawt.Application.getApplication().setDockIconImage(image);
             // com.apple.eawt.Application.getApplication().setDockIconBadge("8051");
         } catch (Exception ignored) {
 
@@ -1793,19 +1805,19 @@ public class MainStage extends Application {
 
         mainScene.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
-            if(db.hasFiles()) {
-                for(File file:db.getFiles()) {
+            if (db.hasFiles()) {
+                for (File file : db.getFiles()) {
                     StringBuilder textToSet = new StringBuilder();
                     try {
                         Scanner in = new Scanner(file);
                         while (in.hasNextLine())
                             textToSet.append(in.nextLine()).append("\n");
                         boolean breakFlag = false;
-                        for(int i = 0; i < editorTabs.size();i++) {
-                            if(editorTabs.get(i).ownTab.getText().equals(file.getName())) {
+                        for (MainStage.editorTab editorTab : editorTabs) {
+                            if (editorTab.ownTab.getText().equals(file.getName())) {
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("Błąd dodawania pliku");
-                                alert.setHeaderText("Nie można było zaimportować pliku o nazwie '"  +file.getName()+"'");
+                                alert.setHeaderText("Nie można było zaimportować pliku o nazwie '" + file.getName() + "'");
                                 alert.setContentText("Plik o tej nazwie już istnieje");
                                 alert.showAndWait();
                                 event.setDropCompleted(true);
@@ -1814,10 +1826,8 @@ public class MainStage extends Application {
                             }
                         }
 
-                        if(breakFlag)
+                        if (breakFlag)
                             continue;
-
-                        String text = textToSet.substring(0,textToSet.length()-1);
 
                         editorTabs.add(new editorTab());
                         editorTabs.get(editorTabs.size() - 1).ownTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
@@ -1834,35 +1844,27 @@ public class MainStage extends Application {
         });
 
         Main.cpu.refreshGui();
-        //resizeComponents();
 
-        mainStage.fullScreenProperty().addListener((observable, oldValue, newValue) -> {
-            drawFrame();
-        });
-
-        mainScene.heightProperty().addListener((observable, oldValue, newValue) -> {
-            drawFrame();
-        });
-        mainScene.widthProperty().addListener((observable, oldValue, newValue) -> {
-            drawFrame();
-        });
+        mainStage.fullScreenProperty().addListener((observable, oldValue, newValue) -> drawFrame());
+        mainScene.heightProperty().addListener((observable, oldValue, newValue) -> drawFrame());
+        mainScene.widthProperty().addListener((observable, oldValue, newValue) -> drawFrame());
         mainStage.setOnCloseRequest(event -> {
 
             boolean flag = false;
-            for(int i = 0; i < editorTabs.size();i++) {
-                if(editorTabs.get(i).edited) {
+            for (MainStage.editorTab editorTab : editorTabs) {
+                if (editorTab.edited) {
                     flag = true;
                     break;
                 }
             }
 
-            if(flag) {
+            if (flag) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("Potwierdzenie wyjścia");
                 alert.setHeaderText("Masz niezapisane programy, na pewno chcesz wyjść?");
                 alert.setContentText("Wszelkie niezapisane zmiany zostaną utracone i nie będzie możliwości i ich przywrócenia.");
                 Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.CANCEL) {
+                if (result.isPresent() && result.get() == ButtonType.CANCEL) {
                     event.consume();
                     return;
                 }
@@ -1873,123 +1875,6 @@ public class MainStage extends Application {
         });
 
         drawFrame();
-    }
-
-    private void resizeComponents() {
-        double oneWidth = simulatorGridPane.getWidth() / 20.0;
-        double oneHeight = mainStage.getHeight() / 3.0 / 10.0;
-        double smaller = oneWidth < oneHeight ? oneWidth : oneHeight;
-        lowerRamTextArea.setFont(new Font("Arial", smaller / 1.5));
-        upperRawTextArea.setFont(new Font("Arial", smaller / 1.5));
-        programMemoryTextArea.setFont(new Font("Arial", smaller / 1.5));
-        r0Label.setFont(new Font("Arial", smaller / 2.0));
-        r0TextField.setFont(new Font("Arial", smaller / 2.0));
-        r1Label.setFont(new Font("Arial", smaller / 2.0));
-        r1TextField.setFont(new Font("Arial", smaller / 2.0));
-        r2Label.setFont(new Font("Arial", smaller / 2.0));
-        r2TextField.setFont(new Font("Arial", smaller / 2.0));
-        r3Label.setFont(new Font("Arial", smaller / 2.0));
-        r3TextField.setFont(new Font("Arial", smaller / 2.0));
-        r4Label.setFont(new Font("Arial", smaller / 2.0));
-        r4TextField.setFont(new Font("Arial", smaller / 2.0));
-        r5Label.setFont(new Font("Arial", smaller / 2.0));
-        r5TextField.setFont(new Font("Arial", smaller / 2.0));
-        r6Label.setFont(new Font("Arial", smaller / 2.0));
-        r6TextField.setFont(new Font("Arial", smaller / 2.0));
-        r7Label.setFont(new Font("Arial", smaller / 2.0));
-        r7TextField.setFont(new Font("Arial", smaller / 2.0));
-
-        accumulatorLabel.setFont(new Font("Arial", smaller / 2.0));
-        accumulatorTextFieldBin.setFont(new Font("Arial", smaller / 2.0));
-        accumulatorTextFieldDec.setFont(new Font("Arial", smaller / 2.0));
-        accumulatorTextFieldHex.setFont(new Font("Arial", smaller / 2.0));
-
-        bLabel.setFont(new Font("Arial", smaller / 2.0));
-        bTextFieldBin.setFont(new Font("Arial", smaller / 2.0));
-        bTextFieldDec.setFont(new Font("Arial", smaller / 2.0));
-        bTextFieldHex.setFont(new Font("Arial", smaller / 2.0));
-
-        cLabel.setFont(new Font("Arial", smaller / 2.0));
-        cTextField.setFont(new Font("Arial", smaller / 2.0));
-        acLabel.setFont(new Font("Arial", smaller / 2.0));
-        acTextField.setFont(new Font("Arial", smaller / 2.0));
-        f0Label.setFont(new Font("Arial", smaller / 2.0));
-        f0TextField.setFont(new Font("Arial", smaller / 2.0));
-        rs1Label.setFont(new Font("Arial", smaller / 2.0));
-        rs1TextField.setFont(new Font("Arial", smaller / 2.0));
-        rs0Label.setFont(new Font("Arial", smaller / 2.0));
-        rs0TextField.setFont(new Font("Arial", smaller / 2.0));
-        ovLabel.setFont(new Font("Arial", smaller / 2.0));
-        ovTextField.setFont(new Font("Arial", smaller / 2.0));
-        f1Label.setFont(new Font("Arial", smaller / 2.0));
-        f1TextField.setFont(new Font("Arial", smaller / 2.0));
-        pLabel.setFont(new Font("Arial", smaller / 2.0));
-        pTextField.setFont(new Font("Arial", smaller / 2.0));
-
-        p0Label.setFont(new Font("Arial", smaller / 2.0));
-        p0TextField.setFont(new Font("Arial", smaller / 2.0));
-        p1Label.setFont(new Font("Arial", smaller / 2.0));
-        p1TextField.setFont(new Font("Arial", smaller / 2.0));
-        p2Label.setFont(new Font("Arial", smaller / 2.0));
-        p2TextField.setFont(new Font("Arial", smaller / 2.0));
-        p3Label.setFont(new Font("Arial", smaller / 2.0));
-        p3TextField.setFont(new Font("Arial", smaller / 2.0));
-
-        timePassedLabel.setFont(new Font("Arial", smaller / 2.0));
-        timePassedTextField.setFont(new Font("Arial", smaller / 2.0));
-        pcLabel.setFont(new Font("Arial", smaller / 2.0));
-        pcTextField.setFont(new Font("Arial", smaller / 2.0));
-
-        EALabel.setFont(new Font("Arial", smaller / 2.0));
-        EATextField.setFont(new Font("Arial", smaller / 2.0));
-        ESLabel.setFont(new Font("Arial", smaller / 2.0));
-        ESTextField.setFont(new Font("Arial", smaller / 2.0));
-        ET1Label.setFont(new Font("Arial", smaller / 2.0));
-        ET1TextField.setFont(new Font("Arial", smaller / 2.0));
-        EX1Label.setFont(new Font("Arial", smaller / 2.0));
-        EX1TextField.setFont(new Font("Arial", smaller / 2.0));
-        ET0Label.setFont(new Font("Arial", smaller / 2.0));
-        ET0TextField.setFont(new Font("Arial", smaller / 2.0));
-        EX0Label.setFont(new Font("Arial", smaller / 2.0));
-        EX0TextField.setFont(new Font("Arial", smaller / 2.0));
-
-        T0HLabel.setFont(new Font("Arial", smaller / 2.0));
-        T0HTextField.setFont(new Font("Arial", smaller / 2.0));
-        T1HLabel.setFont(new Font("Arial", smaller / 2.0));
-        T1HTextField.setFont(new Font("Arial", smaller / 2.0));
-        T0LLabel.setFont(new Font("Arial", smaller / 2.0));
-        T0LTextField.setFont(new Font("Arial", smaller / 2.0));
-        T1LLabel.setFont(new Font("Arial", smaller / 2.0));
-        T1LTtextField.setFont(new Font("Arial", smaller / 2.0));
-        TMODLabel.setFont(new Font("Arial", smaller / 2.0));
-        TMODTextField.setFont(new Font("Arial", smaller / 2.0));
-        TCONLabel.setFont(new Font("Arial", smaller / 2.0));
-        TCONTextField.setFont(new Font("Arial", smaller / 2.0));
-
-        portsDesc.setFont(new Font("Arial", smaller / 2.0));
-        portsDesc.setFont(new Font("Arial", smaller / 2.0));
-
-        portButton0.setFont(new Font("Arial", smaller / 1.5));
-        System.out.println(smaller / 1.5);
-        portButton1.setFont(new Font("Arial", smaller / 1.5));
-        portButton2.setFont(new Font("Arial", smaller / 1.5));
-        portButton3.setFont(new Font("Arial", smaller / 1.5));
-        portButton4.setFont(new Font("Arial", smaller / 1.5));
-        portButton5.setFont(new Font("Arial", smaller / 1.5));
-        portButton6.setFont(new Font("Arial", smaller / 1.5));
-        portButton7.setFont(new Font("Arial", smaller / 1.5));
-
-        portToggle0.setFont(new Font("Arial", smaller / 1.5));
-        portToggle1.setFont(new Font("Arial", smaller / 1.5));
-        portToggle2.setFont(new Font("Arial", smaller / 1.5));
-        portToggle3.setFont(new Font("Arial", smaller / 1.5));
-        portToggle4.setFont(new Font("Arial", smaller / 1.5));
-        portToggle5.setFont(new Font("Arial", smaller / 1.5));
-        portToggle6.setFont(new Font("Arial", smaller / 1.5));
-        portToggle7.setFont(new Font("Arial", smaller / 1.5));
-
-        compilationErrorsLabel.setFont(new Font("Arial", smaller / 2.0));
-
     }
 
     public MainStage(double width, double height) {
@@ -2008,43 +1893,29 @@ public class MainStage extends Application {
 
         GraphicsContext gc = seg7Canvas.getGraphicsContext2D();
 
-        //Color mainBackgroud = Color.DARKGREEN;
-
-        //gc.setFill(mainBackgroud);
-        //gc.fillRect(0,0,width,height);
-
-       // gc.setStroke(Color.BLACK);
-       // gc.setLineWidth(5f);
-       // gc.strokeRect(0,0,width,height);
-
         double marginX = 10;
         double marginY = 80;
         double marginYUp = 20;
         height = 60;
 
-       // gc.clearRect(0, 0, width, height);
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(2);
         gc.setFill(Color.RED);
-
-
-
-
 
         for (int i = 0; i < 8; i++) {
             String portName = Main.settingsMap.get("ledsPort") + "." + (7 - i);
 
             Color mainColor = Color.BLACK;
 
-            if(Main.settingsMap.get("ledsColor").equals("Czerwony")) {
+            if (Main.settingsMap.get("ledsColor").equals("Czerwony")) {
                 gc.setFill(Color.DARKRED);
                 mainColor = Color.ORANGERED;
             }
-            if(Main.settingsMap.get("ledsColor").equals("Zielony")) {
+            if (Main.settingsMap.get("ledsColor").equals("Zielony")) {
                 gc.setFill(Color.DARKGREEN);
                 mainColor = Color.LIGHTGREEN;
             }
-            if(Main.settingsMap.get("ledsColor").equals("Niebieski")) {
+            if (Main.settingsMap.get("ledsColor").equals("Niebieski")) {
                 gc.setFill(Color.DARKBLUE);
                 mainColor = Color.LIGHTBLUE;
             }
@@ -2053,14 +1924,7 @@ public class MainStage extends Application {
             double centerY = height / 2.0;
             double radius = (oneLedWidth >= height ? height - 2 : oneLedWidth) / 2.0 - 5;
 
-            //gc.setStroke(Color.YELLOW);
-
-           //gc.setLineWidth(4);
-
-           // gc.strokeLine(centerX-radius/2.0,centerY-2*radius-5,centerX-radius/2.0+2,centerY-2*radius);
-           // gc.strokeLine(centerX-radius/2.0,centerY+2*radius+5,centerX-radius/2.0+2,centerY+2*radius);
-
-            gc.fillRect(centerX - radius,centerY-2*radius,radius+2,radius*4);
+            gc.fillRect(centerX - radius, centerY - 2 * radius, radius + 2, radius * 4);
 
             try {
 
@@ -2073,27 +1937,23 @@ public class MainStage extends Application {
                     gc.setFill(Color.TRANSPARENT);
                 else
                     gc.setFill(mainColor);
-            }
-            catch (NoSuchElementException e) {
-                if(Main.settingsMap.get("ledsType").equals("Katoda")) {
-                    if(Main.settingsMap.get("ledsPort").equals("VCC")) {
+            } catch (NoSuchElementException e) {
+                if (Main.settingsMap.get("ledsType").equals("Katoda")) {
+                    if (Main.settingsMap.get("ledsPort").equals("VCC")) {
                         gc.setFill(mainColor);
-                    }
-                    else {
+                    } else {
                         gc.setFill(Color.TRANSPARENT);
                     }
                 }
-                if(Main.settingsMap.get("ledsType").equals("Anoda")) {
-                    if(Main.settingsMap.get("ledsPort").equals("GND")) {
+                if (Main.settingsMap.get("ledsType").equals("Anoda")) {
+                    if (Main.settingsMap.get("ledsPort").equals("GND")) {
                         gc.setFill(mainColor);
-                    }
-                    else {
+                    } else {
                         gc.setFill(Color.TRANSPARENT);
                     }
                 }
             }
-            gc.fillRect(centerX - radius,centerY-radius,radius+2,radius*2);
-            //gc.fillOval(centerX - radius, centerY - radius, radius * 2, radius * 2);
+            gc.fillRect(centerX - radius, centerY - radius, radius + 2, radius * 2);
         }
 
         height = 210.0;
@@ -2103,38 +1963,23 @@ public class MainStage extends Application {
         gc.setLineWidth(2);
         double shorter = 10;
         double longer = (height - marginYUp - marginY - 4 * shorter) / 2.0 + 10;
-
         if ((longer + shorter + shorter + marginX + 10) >= (width / 2))
             longer = width / 2 - shorter - shorter - marginX - 10;
-
-        double breakHeight = (longer+longer+5*shorter - 2*shorter)/6;
-
-       /* for(int i = 0; i < 7; i ++) {
-            gc.setStroke(Color.YELLOW);
-            gc.setLineWidth(4);
-
-            gc.strokeLine(width/2.0 + longer + shorter + marginX+shorter+shorter,marginY+i*breakHeight,width/2.0 + longer + shorter + marginX+shorter+shorter+4,marginY+i*breakHeight);
-            gc.strokeLine(width/2.0 - longer - shorter - marginX-shorter-shorter,marginY+i*breakHeight,width/2.0 - longer - shorter - marginX-shorter-shorter-4,marginY+i*breakHeight);
-
-        }*/
-
         gc.setFill(Color.BLACK);
-
         Color seg7background = Color.web("0x454545");
         gc.setFill(seg7background);
-        gc.fillRect(width / 2.0 - longer - shorter - marginX-shorter-shorter,marginY-shorter,longer+longer+6*shorter+marginX+marginX,longer+longer+5*shorter);
-
+        gc.fillRect(width / 2.0 - longer - shorter - marginX - shorter - shorter, marginY - shorter, longer + longer + 6 * shorter + marginX + marginX, longer + longer + 5 * shorter);
 
         //LICZBA PIERWSZA
         int[] wartosci;
-        if(Main.settingsMap.get("seg7ConnectionType").equals("0")) {
+        if (Main.settingsMap.get("seg7ConnectionType").equals("0")) {
             wartosci = new int[8];
             String wartosc;
             try {
                 wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get(Main.settingsMap.get("seg7DisplayPort"))));
                 wartosci = Converters.bcdto7seg(wartosc.substring(0, 4));
             } catch (Exception e) {
-                if(Main.settingsMap.get("seg7DisplayPort").equals("GND")) {
+                if (Main.settingsMap.get("seg7DisplayPort").equals("GND")) {
                     wartosci[0] = 0;
                     wartosci[1] = 0;
                     wartosci[2] = 0;
@@ -2142,8 +1987,7 @@ public class MainStage extends Application {
                     wartosci[4] = 0;
                     wartosci[5] = 0;
                     wartosci[6] = 0;
-                }
-                else if(Main.settingsMap.get("seg7DisplayPort").equals("VCC")) {
+                } else if (Main.settingsMap.get("seg7DisplayPort").equals("VCC")) {
                     wartosci[0] = 1;
                     wartosci[1] = 1;
                     wartosci[2] = 1;
@@ -2153,12 +1997,11 @@ public class MainStage extends Application {
                     wartosci[6] = 1;
                 }
             }
-        }
-        else {
+        } else {
             String wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get("P0")));
             wartosci = new int[8];
-            for(int i = 0; i < 8;i++) {
-                if(wartosc.charAt(7-i)=='0')
+            for (int i = 0; i < 8; i++) {
+                if (wartosc.charAt(7 - i) == '0')
                     wartosci[i] = 0;
                 else
                     wartosci[i] = 1;
@@ -2169,13 +2012,13 @@ public class MainStage extends Application {
 
         Color seg7RealColor = Color.web("0x666666");
 
-        if(Main.settingsMap.get("seg7Color").equals("Czerwony")) {
+        if (Main.settingsMap.get("seg7Color").equals("Czerwony")) {
             seg7RealColor = Color.RED;
         }
-        if(Main.settingsMap.get("seg7Color").equals("Zielony")) {
+        if (Main.settingsMap.get("seg7Color").equals("Zielony")) {
             seg7RealColor = Color.LIGHTGREEN;
         }
-        if(Main.settingsMap.get("seg7Color").equals("Niebieski")) {
+        if (Main.settingsMap.get("seg7Color").equals("Niebieski")) {
             seg7RealColor = Color.LIGHTBLUE;
         }
 
@@ -2216,14 +2059,13 @@ public class MainStage extends Application {
         else
             gc.setFill(backgroud);
         gc.fillRect(width / 2.0 - marginX - shorter, marginY + shorter + longer + shorter, shorter, longer);//c
-        if(Main.settingsMap.get("seg7ConnectionType").equals("0")) {
+        if (Main.settingsMap.get("seg7ConnectionType").equals("0")) {
             String wartosc;
             try {
                 wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get(Main.settingsMap.get("seg7DisplayPort"))));
                 wartosci = Converters.bcdto7seg(wartosc.substring(4, 8));
-            }
-            catch (NullPointerException e) {
-                if(Main.settingsMap.get("seg7DisplayPort").equals("GND")) {
+            } catch (NullPointerException e) {
+                if (Main.settingsMap.get("seg7DisplayPort").equals("GND")) {
                     wartosci[0] = 0;
                     wartosci[1] = 0;
                     wartosci[2] = 0;
@@ -2231,8 +2073,7 @@ public class MainStage extends Application {
                     wartosci[4] = 0;
                     wartosci[5] = 0;
                     wartosci[6] = 0;
-                }
-                else if(Main.settingsMap.get("seg7DisplayPort").equals("VCC")) {
+                } else if (Main.settingsMap.get("seg7DisplayPort").equals("VCC")) {
                     wartosci[0] = 1;
                     wartosci[1] = 1;
                     wartosci[2] = 1;
@@ -2242,12 +2083,11 @@ public class MainStage extends Application {
                     wartosci[6] = 1;
                 }
             }
-        }
-        else {
+        } else {
             String wartosc = microcontroller.Cpu.expandTo8Digits(Integer.toBinaryString(Main.cpu.mainMemory.get("P1")));
             wartosci = new int[8];
-            for(int i = 0; i < 8;i++) {
-                if(wartosc.charAt(7-i)=='0')
+            for (int i = 0; i < 8; i++) {
+                if (wartosc.charAt(7 - i) == '0')
                     wartosci[i] = 0;
                 else
                     wartosci[i] = 1;
@@ -2370,15 +2210,14 @@ public class MainStage extends Application {
         gc.fillText("P2", XMargin + oneWidht + betweenMargin + oneWidht + betweenMargin + oneWidht / 2, upperMargin / 2.0);
         gc.fillText("P3", XMargin + oneWidht + betweenMargin + oneWidht + betweenMargin + oneWidht + betweenMargin + oneWidht / 2, upperMargin / 2.0);
 
-
         programImageCanvas.setWidth(buttonsBorderPane.getWidth());
-        programImageCanvas.setHeight(buttonsBorderPane.getWidth()+25);
+        programImageCanvas.setHeight(buttonsBorderPane.getWidth() + 25);
 
         gc = programImageCanvas.getGraphicsContext2D();
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(5);
-        gc.drawImage(new Image(MainStage.class.getResourceAsStream("cpu.png")),0,5,buttonsBorderPane.getWidth(),buttonsBorderPane.getWidth());
-        gc.strokeRoundRect(3.0/8.0 * buttonsBorderPane.getWidth() / 2.0,5,buttonsBorderPane.getWidth()-3.0/8.0 * buttonsBorderPane.getWidth(),buttonsBorderPane.getWidth(),10,10);
+        gc.drawImage(new Image(MainStage.class.getResourceAsStream("cpu.png")), 0, 5, buttonsBorderPane.getWidth(), buttonsBorderPane.getWidth());
+        gc.strokeRoundRect(3.0 / 8.0 * buttonsBorderPane.getWidth() / 2.0, 5, buttonsBorderPane.getWidth() - 3.0 / 8.0 * buttonsBorderPane.getWidth(), buttonsBorderPane.getWidth(), 10, 10);
 
     }
 
@@ -2394,136 +2233,78 @@ public class MainStage extends Application {
                 textToSet.append("\n");
         }
         editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTextArea.setText(textToSet.toString());
-        //editorTextArea.setText(textToSet.toString());
     }
 
 
     private GridPane mainGridPane;
     private GridPane editorElementsGridPane;
-    private GridPane simulatorGridPane;
 
     public char[][] port0History;
     public char[][] port1History;
     public char[][] port2History;
     public char[][] port3History;
 
-    private BorderPane mainBorderPane;
-
     private double height;
     private double width;
 
-    private Label accumulatorLabel;
     public Label accumulatorTextFieldHex;
     public Label accumulatorTextFieldBin;
     public Label accumulatorTextFieldDec;
 
-    private Label bLabel;
     public Label bTextFieldHex;
     public Label bTextFieldBin;
     public Label bTextFieldDec;
 
-    private Label r0Label;
     public Label r0TextField;
-
-    private Label r1Label;
     public Label r1TextField;
-
-    private Label r2Label;
     public Label r2TextField;
-
-    private Label r3Label;
     public Label r3TextField;
-
-    private Label r4Label;
     public Label r4TextField;
-
-    private Label r5Label;
     public Label r5TextField;
-
-    private Label r6Label;
     public Label r6TextField;
-
-    private Label r7Label;
     public Label r7TextField;
 
-    private Label p0Label;
     public Label p0TextField;
     public Label p0PinsTextField;
 
-    private Label p1Label;
     public Label p1TextField;
     public Label p1PinsTextField;
 
-    private Label p2Label;
     public Label p2TextField;
     public Label p2PinsTextField;
 
-    private Label p3Label;
     public Label p3TextField;
     public Label p3PinsTextField;
 
-    private Label pLabel;
     public Label pTextField;
 
-    private Label ovLabel;
     public Label ovTextField;
 
-    private Label rs0Label;
     public Label rs0TextField;
 
-    private Label rs1Label;
     public Label rs1TextField;
 
-    private Label f0Label;
     public Label f0TextField;
 
-    private Label f1Label;
     public Label f1TextField;
 
-    private Label acLabel;
     public Label acTextField;
 
-    private Label cLabel;
     public Label cTextField;
 
-    private Label timePassedLabel;
     public Label timePassedTextField;
-
-    private Label pcLabel;
     public Label pcTextField;
-
-    private Label T0LLabel;
     public Label T0LTextField;
-    private Label T0HLabel;
     public Label T0HTextField;
-
-    private Label T1LLabel;
     public Label T1LTtextField;
-    private Label T1HLabel;
     public Label T1HTextField;
-
-    private Label TMODLabel;
     public Label TMODTextField;
-
-    private Label TCONLabel;
     public Label TCONTextField;
-
-    private Label EX0Label;
     public Label EX0TextField;
-
-    private Label ET0Label;
     public Label ET0TextField;
-
-    private Label EX1Label;
     public Label EX1TextField;
-
-    private Label ET1Label;
     public Label ET1TextField;
-
-    private Label ESLabel;
     public Label ESTextField;
-
-    private Label EALabel;
     public Label EATextField;
 
     private ToggleButton portToggle0;
@@ -2535,15 +2316,6 @@ public class MainStage extends Application {
     private ToggleButton portToggle6;
     private ToggleButton portToggle7;
 
-    private Button portButton0;
-    private Button portButton1;
-    private Button portButton2;
-    private Button portButton3;
-    private Button portButton4;
-    private Button portButton5;
-    private Button portButton6;
-    private Button portButton7;
-
     public TextArea lowerRamTextArea;
     public TextArea upperRawTextArea;
     private TextArea programMemoryTextArea;
@@ -2552,23 +2324,14 @@ public class MainStage extends Application {
 
     private ComboBox<Integer> speedSelectComboBox;
 
-    private Label portsDesc;
-    private Label portsDesc1;
-    private Label portsDesc2;
-    private Label progrmMemoryLabel;
-
 
     private Button translateToMemoryButton;
     private Button stopSimulationButton;
     private Button oneStepButton;
     private Button continuousRunButton;
 
-    //private TextArea editorTextArea;
-
-    private Label speedSelectLabel;
 
     private Stage mainStage;
-    private Scene mainScene;
 
     private boolean continuousRunFlag;
 
@@ -2578,17 +2341,6 @@ public class MainStage extends Application {
 
     private boolean running;
 
-    private GridPane diodesPaneGridPane;
-
-  /*  private String ledsPort = "P0";
-    private String seg7displayPort = "P1";
-    private String ledsType = "Katoda";
-    private String ledsColor = "Czerwony";
-    private String seg7Color = "Czerwony";
-    private int seg7ConnectionType  = 0;
-    private String przyciskiPrzerwania = "P3.2";
-    private String zadajnikiPrzerwania = "P3.3";
-    */
     private TextField addressInChangeValueTextField;
     private TextField valueInChangeValueTextField;
 
@@ -2596,18 +2348,11 @@ public class MainStage extends Application {
 
     public int portChartScale = 16;
 
-    private MenuItem newFileMenuItem;
-    private MenuItem saveFileMenuItem;
-    private MenuItem saveAsFileMenuItem;
-    private MenuItem importFileMenuItem;
-
-    private MenuItem exportToHexMenuItem;
-
-    private XYChart.Series series;
-
-    BorderPane buttonsBorderPane;
+    private BorderPane buttonsBorderPane;
 
     private OscilloscopeStage OscilloscopePane = new OscilloscopeStage();
+
+    public DCPowerSupplyStage dcPowerSupplyStage = new DCPowerSupplyStage();
 
     private TabPane editorTabPane;
 
@@ -2617,26 +2362,23 @@ public class MainStage extends Application {
 
     public String[] getLinesFromTabByName(String name) throws NoSuchElementException {
         int numerKarty = -1;
-        for(int i =0; i < editorTabs.size();i++) {
-            if(editorTabs.get(i).ownTab.getText().equals(name)) {
+        for (int i = 0; i < editorTabs.size(); i++) {
+            if (editorTabs.get(i).ownTab.getText().equals(name)) {
                 numerKarty = i;
                 break;
-            }
-            else if(editorTabs.get(i).ownTab.getText().substring(1).equals(name)) {
+            } else if (editorTabs.get(i).ownTab.getText().substring(1).equals(name)) {
                 numerKarty = i;
                 break;
             }
         }
-        if(numerKarty==-1)
+        if (numerKarty == -1)
             throw new NoSuchElementException();
         else
             return editorTabs.get(numerKarty).ownTextArea.getText().split("\n");
 
     }
-
-
     class editorTab {
-        public editorTab() {
+        editorTab() {
             this.path = "";
             this.ownTab = new Tab();
             ownTab.setClosable(true);
@@ -2648,8 +2390,7 @@ public class MainStage extends Application {
                     String name = "Untitled " + String.valueOf(x);
                     if (w.ownTab.getText().equals(name) || w.ownTab.getText().substring(1).equals(name)) {
                         x++;
-                    } else
-                        continue;
+                    }
                 }
             }
             ownTab.setText("Untitled " + String.valueOf(x));
@@ -2663,20 +2404,19 @@ public class MainStage extends Application {
                 if (!edited && !ownTextArea.getText().equals(previousText)) {
                     edited = true;
                     ownTab.setText("*" + ownTab.getText());
-                }
-                else if (edited && ownTextArea.getText().equals(previousText)) {
+                } else if (edited && ownTextArea.getText().equals(previousText)) {
                     edited = false;
                     ownTab.setText(ownTab.getText().substring(1));
                 }
             });
             ownTab.setOnCloseRequest(event -> {
-                if(edited) {
+                if (edited) {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("Potwierdzenie zamknięcia karty");
                     alert.setHeaderText("Zmiany nie zostały zapisane, na pewno chcesz zamknąć kartę?");
                     alert.setContentText("Wszelkie niezapisane zmiany zostaną utracone i nie będzie możliwości i ich przywrócenia.");
                     Optional<ButtonType> result = alert.showAndWait();
-                    if (result.get() == ButtonType.CANCEL) {
+                    if (result.isPresent() && result.get() == ButtonType.CANCEL) {
                         event.consume();
                         return;
                     }
@@ -2689,13 +2429,14 @@ public class MainStage extends Application {
             this.edited = false;
         }
 
-        public String previousText = "";
-        public String path;
-        public Tab ownTab;
-        public TextArea ownTextArea;
-        public boolean edited;
+        String previousText = "";
+        String path;
+        Tab ownTab;
+        TextArea ownTextArea;
+        boolean edited;
 
     }
+
     public Label dacStateLabel;
 
 }

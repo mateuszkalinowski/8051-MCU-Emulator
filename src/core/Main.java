@@ -2,13 +2,13 @@ package core;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import microcontroller.Adc;
 import microcontroller.Board;
 import microcontroller.Cpu;
 import stages.MainStage;
 
 import java.io.File;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -20,17 +20,6 @@ public class Main extends Application {
         double initialWidth = 800;
         double initialHeight = 620;
         stage = new MainStage(initialWidth, initialHeight);
-
-      //  ArrayList<String> testowa = new ArrayList<>();
-
-       // testowa.add("0");
-       // testowa.add("0");
-       // testowa.add("0");
-       // testowa.remove("0");
-       // System.out.printf("" + testowa.contains("0"));
-
-     //   for(String s : testowa)
-     //       System.out.println(s);
 
         path = System.getProperty("user.home") + "/Documents/8051MCUEmulator";
         File resources = new File(path);
@@ -116,11 +105,13 @@ public class Main extends Application {
 
     public static MainStage stage;
 
+    public static Adc adc = new Adc();
+
     public static Cpu cpu = new Cpu();
 
     public static Board board = new Board();
 
-    public static String path;
+    private static String path;
 
     public static Map<String,String> settingsMap = new HashMap<String,String>();
 }

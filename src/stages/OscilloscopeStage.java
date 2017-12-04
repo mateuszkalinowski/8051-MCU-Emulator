@@ -25,50 +25,43 @@ import java.util.ArrayList;
  * Project InferenceEngine
  */
 public class OscilloscopeStage extends Application {
-    public OscilloscopeStage() {
-
-        chartDataArrayList = new ArrayList<>();
-
+     OscilloscopeStage() {
         createChart();
 
-        portSelectLabel = new Label("Port: ");
+        Label portSelectLabel = new Label("Port: ");
         portSelectLabel.setMaxWidth(Double.MAX_VALUE);
         portSelectLabel.setAlignment(Pos.CENTER);
         portSelectLabel.setFont(new Font("Arial",14));
 
-        intervalSelectLabel = new Label("Interwał: ");
+        Label intervalSelectLabel = new Label("Interwał: ");
         intervalSelectLabel.setMaxWidth(Double.MAX_VALUE);
         intervalSelectLabel.setAlignment(Pos.CENTER);
         intervalSelectLabel.setFont(new Font("Arial",14));
 
-        rangeSelectLabel = new Label("Zakres: ");
+        Label rangeSelectLabel = new Label("Zakres: ");
         rangeSelectLabel.setMaxWidth(Double.MAX_VALUE);
         rangeSelectLabel.setAlignment(Pos.CENTER);
         rangeSelectLabel.setFont(new Font("Arial",14));
 
         intervalSelectionLabel = new Label();
         intervalSelectionLabel.setText("1 mikrosekunda");
-        //intervalSelectionLabel.setMaxWidth(Double.MAX_VALUE);
         intervalSelectionLabel.setAlignment(Pos.CENTER);
         intervalSelectionLabel.setFont(new Font("Arial",14));
         intervalSelectionLabel.setMaxWidth(Double.MAX_VALUE);
         intervalSelectionLabel.setMinWidth(120);
 
 
-        portSelectComboBox = new ComboBox<>();
+         ComboBox<String> portSelectComboBox = new ComboBox<>();
         portSelectComboBox.getItems().addAll("P0","P1","P2","P3");
         portSelectComboBox.setMaxWidth(100);
         portSelectComboBox.getSelectionModel().selectFirst();
 
-        portSelectComboBox.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                resetPrzebieg();
-                createChart();
-            }
+        portSelectComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            resetPrzebieg();
+            createChart();
         });
 
-        intervalSlider = new Slider();
+         Slider intervalSlider = new Slider();
         intervalSlider.setMin(1);
         intervalSlider.setMax(10);
         intervalSlider.setValue(interval);
@@ -78,73 +71,52 @@ public class OscilloscopeStage extends Application {
         intervalSlider.setMinorTickCount(0);
         intervalSlider.setSnapToTicks(true);
 
-        intervalSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                //interval = (int)Math.pow(10,newValue.intValue()-1);
-                //intervalSelectionLabel.setText("10^" + (newValue.intValue()-1)+ " mks");
-                int tmpInterval = newValue.intValue();
-                if(tmpInterval==1) {
-                    interval = 1;
-                    intervalSelectionLabel.setText("1 mikrosekunda");
-                }
-                if(tmpInterval==2) {
-                    interval = 10;
-                    intervalSelectionLabel.setText("10 mikrosekund");
-                }
-                if(tmpInterval==3) {
-                    interval = 50;
-                    intervalSelectionLabel.setText("50 mikrosekund");
-                }
-                if(tmpInterval==4) {
-                    interval = 100;
-                    intervalSelectionLabel.setText("100 mikrosekund");
-                }
-                if(tmpInterval==5) {
-                    interval = 1000;
-                    intervalSelectionLabel.setText("1 milisekunda");
-                }
-                if(tmpInterval==6) {
-                    interval = 10000;
-                    intervalSelectionLabel.setText("10 milisekund");
-                }
-                if(tmpInterval==7) {
-                    interval = 50000;
-                    intervalSelectionLabel.setText("50 milisekund");
-                }
-                if(tmpInterval==8) {
-                    interval = 100000;
-                    intervalSelectionLabel.setText("100 milisekund");
-                }
-                if(tmpInterval==9) {
-                    interval = 1000000;
-                    intervalSelectionLabel.setText("1 sekunda");
-                }
-                if(tmpInterval==10) {
-                    interval = 10000000;
-                    intervalSelectionLabel.setText("10 sekund");
-                }
-
-                resetPrzebieg();
-                createChart();
+        intervalSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            int tmpInterval = newValue.intValue();
+            if(tmpInterval==1) {
+                interval = 1;
+                intervalSelectionLabel.setText("1 mikrosekunda");
             }
+            if(tmpInterval==2) {
+                interval = 10;
+                intervalSelectionLabel.setText("10 mikrosekund");
+            }
+            if(tmpInterval==3) {
+                interval = 50;
+                intervalSelectionLabel.setText("50 mikrosekund");
+            }
+            if(tmpInterval==4) {
+                interval = 100;
+                intervalSelectionLabel.setText("100 mikrosekund");
+            }
+            if(tmpInterval==5) {
+                interval = 1000;
+                intervalSelectionLabel.setText("1 milisekunda");
+            }
+            if(tmpInterval==6) {
+                interval = 10000;
+                intervalSelectionLabel.setText("10 milisekund");
+            }
+            if(tmpInterval==7) {
+                interval = 50000;
+                intervalSelectionLabel.setText("50 milisekund");
+            }
+            if(tmpInterval==8) {
+                interval = 100000;
+                intervalSelectionLabel.setText("100 milisekund");
+            }
+            if(tmpInterval==9) {
+                interval = 1000000;
+                intervalSelectionLabel.setText("1 sekunda");
+            }
+            if(tmpInterval==10) {
+                interval = 10000000;
+                intervalSelectionLabel.setText("10 sekund");
+            }
+
+            resetPrzebieg();
+            createChart();
         });
-
-        VBox lowerBox = new VBox();
-
-     //   HBox upperButtonBox = new HBox();
-     //   upperButtonBox.setPadding(new Insets(10,10,10,10));
-     //   upperButtonBox.setAlignment(Pos.CENTER);
-     //   HBox.setHgrow(portSelectLabel,Priority.ALWAYS);
-     //   HBox.setHgrow(portSelectComboBox,Priority.ALWAYS);
-     //   HBox.setHgrow(intervalSelectLabel,Priority.ALWAYS);
-     //   HBox.setHgrow(intervalSelectionLabel,Priority.ALWAYS);
-
-    //    upperButtonBox.setSpacing(5);
-
-        //upperButtonBox.getChildren().addAll(portSelectLabel,portSelectComboBox,intervalSelectLabel,intervalSlider,intervalSelectionLabel);
-        //lowerBox.getChildren().add(upperButtonBox);
-
 
         HBox lowerButtonBox = new HBox();
         lowerButtonBox.setPadding(new Insets(10,10,10,10));
@@ -152,12 +124,12 @@ public class OscilloscopeStage extends Application {
 
         lowerButtonBox.setSpacing(5);
 
-        xRangeLabel = new Label("Zakres X: ");
+         Label xRangeLabel = new Label("Zakres X: ");
         xRangeLabel.setMaxWidth(Double.MAX_VALUE);
         xRangeLabel.setAlignment(Pos.CENTER);
         xRangeLabel.setFont(new Font("Arial",14));
 
-        yRangeLabel = new Label("Zakres Y: ");
+         Label yRangeLabel = new Label("Zakres Y: ");
         yRangeLabel.setMaxWidth(Double.MAX_VALUE);
         yRangeLabel.setAlignment(Pos.CENTER);
         yRangeLabel.setFont(new Font("Arial",14));
@@ -165,7 +137,7 @@ public class OscilloscopeStage extends Application {
         HBox.setHgrow(xRangeLabel,Priority.ALWAYS);
         HBox.setHgrow(yRangeLabel,Priority.ALWAYS);
 
-        XRangeSelect = new Slider();
+         Slider XRangeSelect = new Slider();
         XRangeSelect.setMin(100);
         XRangeSelect.setMax(900);
         XRangeSelect.setValue(XAxisRange);
@@ -186,7 +158,7 @@ public class OscilloscopeStage extends Application {
         });
 
 
-        YRangeSelect = new Slider();
+         Slider YRangeSelect = new Slider();
         YRangeSelect.setMin(1);
         YRangeSelect.setMax(5);
         YRangeSelect.setValue(YAxisRange);
@@ -205,9 +177,6 @@ public class OscilloscopeStage extends Application {
             }
         });
 
-        //lowerButtonBox.getChildren().addAll(xRangeLabel,XRangeSelect,yRangeLabel,YRangeSelect);
-        //lowerBox.getChildren().add(lowerButtonBox);
-
         VBox RightVBox = new VBox();
         RightVBox.setSpacing(5);
         RightVBox.setPadding(new Insets(10,10,10,10));
@@ -222,12 +191,6 @@ public class OscilloscopeStage extends Application {
         RightVBox.getChildren().add(intervalSlider);
         RightVBox.getChildren().add(intervalSelectionLabel);
 
-
-
-
-
-
-        //mainBorderPane.setBottom(lowerBox);
         mainBorderPane.setRight(RightVBox);
         mainBorderPane.setPadding(new Insets(10,10,10,10));
         Scene mainScene = new Scene(mainBorderPane,700,450);
@@ -243,7 +206,7 @@ public class OscilloscopeStage extends Application {
         mainStage.show();
     }
 
-    public void updateChart() {
+    void updateChart() {
         if(usedScale==scale) {
             usedScale = 0;
             series.getData().clear();
@@ -283,25 +246,12 @@ public class OscilloscopeStage extends Application {
 
     private int interval = 1;
 
-    public void resetPrzebieg() {
+    void resetPrzebieg() {
         passedTime = 0;
         usedScale = 0;
         series.getData().clear();
     }
-
-    private Label portSelectLabel;
-    private Label intervalSelectLabel;
-    private Label rangeSelectLabel;
     private Label intervalSelectionLabel;
 
-    private Label xRangeLabel;
-    private Label yRangeLabel;
-
-    private ComboBox<String> portSelectComboBox;
-    private Slider intervalSlider;
-    private Slider XRangeSelect;
-    private Slider YRangeSelect;
-
-    private ArrayList<Double> chartDataArrayList;
 
 }

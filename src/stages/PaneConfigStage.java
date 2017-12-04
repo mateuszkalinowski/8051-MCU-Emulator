@@ -2,8 +2,6 @@ package stages;
 
 import core.Main;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -235,40 +233,25 @@ public class PaneConfigStage extends Application {
             Main.saveSettings();
         });
 
-
         Button resetToDefaultButton = new Button("Przywroć wartości domyślne");
         resetToDefaultButton.setMaxWidth(Double.MAX_VALUE);
-        resetToDefaultButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        resetToDefaultButton.setOnAction(event -> {
 
-                Main.loadDefaultSettings();
-                ledPortComboBox.getSelectionModel().select(Main.settingsMap.get("ledsPort"));
+            Main.loadDefaultSettings();
+            ledPortComboBox.getSelectionModel().select(Main.settingsMap.get("ledsPort"));
+            ledCommonComboBox.getSelectionModel().select(Main.settingsMap.get("ledsType"));
+            ledsColorPickerComboBox.getSelectionModel().select(Main.settingsMap.get("ledsColor"));
+            seg7PortComboBox.getSelectionModel().select(Main.settingsMap.get("seg7DisplayPort"));
+            seg7TypeComboBox.getSelectionModel().select(Integer.parseInt(Main.settingsMap.get("seg7ConnectionType")));
+            seg7ColorPickerComboBox.getSelectionModel().select(Main.settingsMap.get("seg7Color"));
+            przyciskiPrzerwaniaComboBox.getSelectionModel().select(Main.settingsMap.get("przyciskiPrzerwania"));
+            zadajnikiPrzerwaniaComboBox.getSelectionModel().select(Main.settingsMap.get("zadajnikiPrzerwania"));
+            dacPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACPort"));
+            wrPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACWR"));
+            csPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACCS"));
+            Main.stage.drawFrame();
+            Main.saveSettings();
 
-                ledCommonComboBox.getSelectionModel().select(Main.settingsMap.get("ledsType"));
-
-                ledsColorPickerComboBox.getSelectionModel().select(Main.settingsMap.get("ledsColor"));
-
-                seg7PortComboBox.getSelectionModel().select(Main.settingsMap.get("seg7DisplayPort"));
-
-                seg7TypeComboBox.getSelectionModel().select(Integer.parseInt(Main.settingsMap.get("seg7ConnectionType")));
-
-                seg7ColorPickerComboBox.getSelectionModel().select(Main.settingsMap.get("seg7Color"));
-
-                przyciskiPrzerwaniaComboBox.getSelectionModel().select(Main.settingsMap.get("przyciskiPrzerwania"));
-
-                zadajnikiPrzerwaniaComboBox.getSelectionModel().select(Main.settingsMap.get("zadajnikiPrzerwania"));
-
-                dacPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACPort"));
-
-                wrPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACWR"));
-
-                csPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACCS"));
-
-                Main.stage.drawFrame();
-                Main.saveSettings();
-
-            }
         });
 
         mainGridPane.add(ledsLabel,0,0,4,2);

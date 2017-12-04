@@ -44,9 +44,29 @@ public class Board {
         stanPinow.put("P3.5",new ArrayList<>());
         stanPinow.put("P3.6",new ArrayList<>());
         stanPinow.put("P3.7",new ArrayList<>());
+
+        for(String key : stanPinow.keySet()) {
+            stanPinow.get(key).add("1");
+            stanPinow.get(key).add("1");
+            stanPinow.get(key).add("1");
+        }
     }
 
-    public void addZeroTo(String pin) {
+    public void setGround(String pin,int position) {
+        try {
+            stanPinow.get(pin).set(position,"0");
+        } catch (Exception e) {
+        }
+    }
+
+    public void setCurrent(String pin,int position) {
+        try {
+            stanPinow.get(pin).set(position,"1");
+        } catch (Exception e) {
+        }
+    }
+
+    /*public void addZeroTo(String pin) {
         try {
             stanPinow.get(pin).add("0");
         } catch (Exception e) {
@@ -59,7 +79,7 @@ public class Board {
         } catch (Exception e) {
 
         }
-    }
+    }*/
 
     public String getState(String s) {
         if(stanPinow.get(s).contains("0"))
@@ -86,6 +106,11 @@ public class Board {
     public void reset() {
         for(String s : stanPinow.keySet()) {
             stanPinow.get(s).clear();
+        }
+        for(String key : stanPinow.keySet()) {
+            stanPinow.get(key).add("1");
+            stanPinow.get(key).add("1");
+            stanPinow.get(key).add("1");
         }
     }
 

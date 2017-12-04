@@ -1,14 +1,9 @@
 package components;
 
 import core.Main;
-import javafx.util.Pair;
-import microcontroller.Cpu;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
 /**
  * Created by Mateusz on 24.04.2017.
  * Project 8051 MCU Emulator
@@ -70,11 +65,11 @@ public class Memory {
                     return mainMemory[bajt][bit] == '1';
                 }
                 else {
-                    for(int i = 0; i < bitAddressableBegginings.length;i++) {
-                        if(numer-bitAddressableBegginings[i]>=0 && numer-bitAddressableBegginings[i]<=7) {
-                            int index = numer - bitAddressableBegginings[i];
+                    for (int bitAddressableBeggining : bitAddressableBegginings) {
+                        if (numer - bitAddressableBeggining >= 0 && numer - bitAddressableBeggining <= 7) {
+                            int index = numer - bitAddressableBeggining;
                             index = 7 - index;
-                            return mainMemory[bitAddressableBegginings[i]][index] == '1';
+                            return mainMemory[bitAddressableBeggining][index] == '1';
                         }
                     }
                     throw new NoSuchElementException();
@@ -100,16 +95,15 @@ public class Memory {
                     mainMemory[bajt][bit] = '0';
             }
             else {
-                for(int i = 0; i < bitAddressableBegginings.length;i++) {
-                    if(numer-bitAddressableBegginings[i]>=0 && numer-bitAddressableBegginings[i]<=7) {
-                        int index = numer - bitAddressableBegginings[i];
+                for (int bitAddressableBeggining : bitAddressableBegginings) {
+                    if (numer - bitAddressableBeggining >= 0 && numer - bitAddressableBeggining <= 7) {
+                        int index = numer - bitAddressableBeggining;
                         index = 7 - index;
-                        if(value) {
-                            mainMemory[bitAddressableBegginings[i]][index] = '1';
+                        if (value) {
+                            mainMemory[bitAddressableBeggining][index] = '1';
                             return;
-                        }
-                        else {
-                            mainMemory[bitAddressableBegginings[i]][index] = '0';
+                        } else {
+                            mainMemory[bitAddressableBeggining][index] = '0';
                             return;
                         }
                     }
@@ -138,83 +132,74 @@ public class Memory {
                     mainMemory[bajt][bit] = '0';
             }
             else {
-                for(int i = 0; i < bitAddressableBegginings.length;i++) {
-                    if(numer-bitAddressableBegginings[i]>=0 && numer-bitAddressableBegginings[i]<=7) {
-                        int index = numer - bitAddressableBegginings[i];
+                for (int bitAddressableBeggining : bitAddressableBegginings) {
+                    if (numer - bitAddressableBeggining >= 0 && numer - bitAddressableBeggining <= 7) {
+                        int index = numer - bitAddressableBeggining;
                         index = 7 - index;
-                        if(value) {
-                            if(bitAddressableBegginings[i]==128) {
+                        if (value) {
+                            if (bitAddressableBeggining == 128) {
                                 char latcherTemp[] = latcherP0.toCharArray();
                                 latcherTemp[index] = '1';
                                 latcherP0 = String.valueOf(latcherTemp);
-                                if(Main.board.getState("P0." + (7-index)).equals("1")) {
-                                    mainMemory[bitAddressableBegginings[i]][index] = '1';
+                                if (Main.board.getState("P0." + (7 - index)).equals("1")) {
+                                    mainMemory[bitAddressableBeggining][index] = '1';
+                                } else {
+                                    mainMemory[bitAddressableBeggining][index] = '0';
                                 }
-                                else {
-                                    mainMemory[bitAddressableBegginings[i]][index] = '0';
-                                }
-                            }
-                            else if(bitAddressableBegginings[i]==144) {
+                            } else if (bitAddressableBeggining == 144) {
                                 char latcherTemp[] = latcherP1.toCharArray();
                                 latcherTemp[index] = '1';
                                 latcherP1 = String.valueOf(latcherTemp);
-                                if(Main.board.getState("P1." + (7-index)).equals("1")) {
-                                    mainMemory[bitAddressableBegginings[i]][index] = '1';
+                                if (Main.board.getState("P1." + (7 - index)).equals("1")) {
+                                    mainMemory[bitAddressableBeggining][index] = '1';
+                                } else {
+                                    mainMemory[bitAddressableBeggining][index] = '0';
                                 }
-                                else {
-                                    mainMemory[bitAddressableBegginings[i]][index] = '0';
-                                }
-                            }
-                            else if(bitAddressableBegginings[i]==160) {
+                            } else if (bitAddressableBeggining == 160) {
                                 char latcherTemp[] = latcherP2.toCharArray();
                                 latcherTemp[index] = '1';
                                 latcherP2 = String.valueOf(latcherTemp);
-                                if(Main.board.getState("P2." + (7-index)).equals("1")) {
-                                    mainMemory[bitAddressableBegginings[i]][index] = '1';
+                                if (Main.board.getState("P2." + (7 - index)).equals("1")) {
+                                    mainMemory[bitAddressableBeggining][index] = '1';
+                                } else {
+                                    mainMemory[bitAddressableBeggining][index] = '0';
                                 }
-                                else {
-                                    mainMemory[bitAddressableBegginings[i]][index] = '0';
-                                }
-                            }
-                            else if(bitAddressableBegginings[i]==176) {
+                            } else if (bitAddressableBeggining == 176) {
                                 char latcherTemp[] = latcherP3.toCharArray();
                                 latcherTemp[index] = '1';
                                 latcherP3 = String.valueOf(latcherTemp);
-                                if(Main.board.getState("P3." + (7-index)).equals("1")) {
-                                    mainMemory[bitAddressableBegginings[i]][index] = '1';
+                                if (Main.board.getState("P3." + (7 - index)).equals("1")) {
+                                    mainMemory[bitAddressableBeggining][index] = '1';
+                                } else {
+                                    mainMemory[bitAddressableBeggining][index] = '0';
                                 }
-                                else {
-                                    mainMemory[bitAddressableBegginings[i]][index] = '0';
-                                }
-                            }
-                            else
-                                mainMemory[bitAddressableBegginings[i]][index] = '1';
+                            } else
+                                mainMemory[bitAddressableBeggining][index] = '1';
                             return;
-                        }
-                        else {
-                            if(bitAddressableBegginings[i]==128) {
+                        } else {
+                            if (bitAddressableBeggining == 128) {
                                 char latcherTemp[] = latcherP0.toCharArray();
                                 latcherTemp[index] = '0';
                                 latcherP0 = String.valueOf(latcherTemp);
                             }
-                            if(bitAddressableBegginings[i]==144) {
+                            if (bitAddressableBeggining == 144) {
                                 char latcherTemp[] = latcherP1.toCharArray();
                                 latcherTemp[index] = '0';
                                 latcherP1 = String.valueOf(latcherTemp);
                             }
-                            if(bitAddressableBegginings[i]==160) {
+                            if (bitAddressableBeggining == 160) {
                                 char latcherTemp[] = latcherP2.toCharArray();
                                 latcherTemp[index] = '0';
                                 latcherP2 = String.valueOf(latcherTemp);
                             }
-                            if(bitAddressableBegginings[i]==176) {
+                            if (bitAddressableBeggining == 176) {
                                 char latcherTemp[] = latcherP3.toCharArray();
                                 latcherTemp[index] = '0';
                                 latcherP3 = String.valueOf(latcherTemp);
                             }
 
 
-                            mainMemory[bitAddressableBegginings[i]][index] = '0';
+                            mainMemory[bitAddressableBeggining][index] = '0';
                             return;
                         }
                     }
@@ -261,7 +246,7 @@ public class Memory {
 
         if (index == 128) {
             latcherP0 = String.valueOf(toPut);
-            String port0 = "";
+            String port0;
             try { port0 = Main.board.getPortState("P0"); }
             catch (Exception e) {
                 port0 = "11111111";
@@ -276,7 +261,7 @@ public class Memory {
 
         if (index == 144) {
             latcherP1 = String.valueOf(toPut);
-            String port1 = "";
+            String port1;
             try { port1 = Main.board.getPortState("P1"); }
             catch (Exception e) {
                 port1 = "11111111";
@@ -291,7 +276,7 @@ public class Memory {
 
         if (index == 160) {
             latcherP2 = String.valueOf(toPut);
-            String port2 = "";
+            String port2;
             try { port2 = Main.board.getPortState("P2"); }
             catch (Exception e) {
                 port2 = "11111111";
@@ -305,7 +290,7 @@ public class Memory {
         }
         if (index == 176) {
             latcherP3 = String.valueOf(toPut);
-            String port3 = "";
+            String port3;
             try { port3 = Main.board.getPortState("P3"); }
             catch (Exception e) {
                 port3 = "11111111";
@@ -335,7 +320,7 @@ public class Memory {
 
         if (index == 128) {
             latcherP0 = String.valueOf(toPut);
-            String port0 = "";
+            String port0;
             try { port0 = Main.board.getPortState("P0"); }
             catch (Exception e) {
                 port0 = "11111111";
@@ -350,7 +335,7 @@ public class Memory {
 
         if (index == 144) {
             latcherP1 = String.valueOf(toPut);
-            String port1 = "";
+            String port1;
             try { port1 = Main.board.getPortState("P1"); }
             catch (Exception e) {
                 port1 = "11111111";
@@ -365,7 +350,7 @@ public class Memory {
 
         if (index == 160) {
             latcherP2 = String.valueOf(toPut);
-            String port2 = "";
+            String port2;
             try { port2 = Main.board.getPortState("P2"); }
             catch (Exception e) {
                 port2 = "11111111";
@@ -379,7 +364,7 @@ public class Memory {
         }
         if (index == 176) {
             latcherP3 = String.valueOf(toPut);
-            String port3 = "";
+            String port3;
             try { port3 = Main.board.getPortState("P3"); }
             catch (Exception e) {
                 port3 = "11111111";
@@ -410,7 +395,7 @@ public class Memory {
 
             if (index == 128) {
                 latcherP0 = String.valueOf(toPut);
-                String port0 = "";
+                String port0;
                 try { port0 = Main.board.getPortState("P0"); }
                 catch (Exception e) {
                     port0 = "11111111";
@@ -425,7 +410,7 @@ public class Memory {
 
             if (index == 144) {
                 latcherP1 = String.valueOf(toPut);
-                String port1 = "";
+                String port1;
                 try { port1 = Main.board.getPortState("P1"); }
                 catch (Exception e) {
                     port1 = "11111111";
@@ -440,7 +425,7 @@ public class Memory {
 
             if (index == 160) {
                 latcherP2 = String.valueOf(toPut);
-                String port2 = "";
+                String port2;
                 try { port2 = Main.board.getPortState("P2"); }
                 catch (Exception e) {
                     port2 = "11111111";
@@ -454,7 +439,7 @@ public class Memory {
             }
             if (index == 176) {
                 latcherP3 = String.valueOf(toPut);
-                String port3 = "";
+                String port3;
                 try { port3 = Main.board.getPortState("P3"); }
                 catch (Exception e) {
                     port3 = "11111111";
