@@ -214,7 +214,6 @@ public class OscilloscopeStage extends Application {
         if (Main.cpu.getTimePassed() - passedTime >= interval) {
             passedTime = Main.cpu.getTimePassed();
             series.getData().add(new XYChart.Data(usedScale,Double.parseDouble(Dac.getValue())));
-
             usedScale++;
         }
     }

@@ -12,11 +12,11 @@ public class Adc {
 
         if(conversionTime==-1) {
             int wynik = (int)Math.round(analogInput/5.0*255);
-            String wynikString = Integer.toBinaryString(wynik);
+            StringBuilder wynikString = new StringBuilder(Integer.toBinaryString(wynik));
             while(wynikString.length()<8) {
-                wynikString = "0" + wynikString;
+                wynikString.insert(0, "0");
             }
-            digitalOutput = wynikString;
+            digitalOutput = wynikString.toString();
             if(cs) {
                 Main.board.setGround("P3.3",2);
             }
@@ -31,7 +31,7 @@ public class Adc {
                         Main.board.setGround("P2." + i,2);
                 }
             }
-            else {
+            if(!rd) {
                 Main.board.setCurrent("P2.0",2);
                 Main.board.setCurrent("P2.1",2);
                 Main.board.setCurrent("P2.2",2);
@@ -43,11 +43,9 @@ public class Adc {
             }
             if(!lastWR && wr) {
                 conversionTime = 7;
-                //TODO
                 analogInput = Main.stage.dcPowerSupplyPane.current;
                 Main.board.setCurrent("P3.3",2);
             }
-
         }
 
         if(!cs) {

@@ -273,8 +273,6 @@ public class CodeMemory {
                     }
                 } else if (splittedLine[0].toUpperCase().equals("INCLUDE")) {
                     String fileName = line.substring(7).trim();
-                    //TODO
-
                     try {
                         String[] linesInside = Main.stage.getLinesFromTabByName(fileName);
                         ArrayList<String> lineWewnetrzne = Main.cpu.codeMemory.setMemory(linesInside, false);
@@ -1529,7 +1527,7 @@ public class CodeMemory {
                 }
             }
             int i = 0;
-            while (true && addresses.size()>=2) {
+            while (addresses.size() >= 2) {
                 int x = addresses.get(i);
                 int y = addresses.get(i + 1);
                 if (y - x > 16) {

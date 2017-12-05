@@ -799,6 +799,7 @@ public class MainStage extends Application {
             compilationErrorsLabel.setText("");
             compilationErrorsLabel.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
             OscilloscopePane.resetPrzebieg();
+            Main.adc.reset();
         });
 
         oneStepButton = new Button("Krok");

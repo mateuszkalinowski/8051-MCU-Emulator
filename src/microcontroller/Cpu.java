@@ -3,7 +3,6 @@ package microcontroller;
 import components.CodeMemory;
 import components.Memory;
 import core.Main;
-import exceptions.InstructionException;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 
@@ -1876,22 +1875,20 @@ public class Cpu {
             }
         }
         catch (Exception ignored){
-            System.out.println(ignored.fillInStackTrace());
         }
     }
-
 
     public long getTimePassed(){return timePassed;}
 
     private ArrayList<Boolean> interrupts = new ArrayList<>();
 
     private long timePassed;
-    public int linePointer;
+    private int linePointer;
     public Memory mainMemory;
     public CodeMemory codeMemory = new CodeMemory();
 
-    public boolean LastP32 = true;
-    public boolean LastP33 = true;
+    private boolean LastP32 = true;
+    private boolean LastP33 = true;
 
     public static int programMemory = 16384;
 

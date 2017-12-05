@@ -55,31 +55,16 @@ public class Board {
     public void setGround(String pin,int position) {
         try {
             stanPinow.get(pin).set(position,"0");
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
     public void setCurrent(String pin,int position) {
         try {
             stanPinow.get(pin).set(position,"1");
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
-
-    /*public void addZeroTo(String pin) {
-        try {
-            stanPinow.get(pin).add("0");
-        } catch (Exception e) {
-        }
-    }
-
-    public void removeZeroFrom(String pin) {
-        try {
-            stanPinow.get(pin).remove("0");
-        } catch (Exception e) {
-
-        }
-    }*/
 
     public String getState(String s) {
         if(stanPinow.get(s).contains("0"))
@@ -88,16 +73,15 @@ public class Board {
             return "1";
     }
     public String getPortState(String port) {
-        String state = "";
+        StringBuilder state = new StringBuilder();
         try {
             for (int i = 7; i >= 0; i--) {
-                String p = port + "." + i;
                 if (stanPinow.get(port + "." + i).contains("0"))
-                    state += "0";
+                    state.append("0");
                 else
-                    state += "1";
+                    state.append("1");
             }
-            return state;
+            return state.toString();
         } catch (Exception e) {
             return null;
         }

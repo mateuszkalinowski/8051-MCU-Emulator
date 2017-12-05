@@ -13,11 +13,12 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class DCPowerSupplyStage extends Application {
-    public DCPowerSupplyStage(){
+    DCPowerSupplyStage(){
 
         VBox mainVBox = new VBox();
         mainVBox.setSpacing(5);
         mainVBox.setPadding(new Insets(10,10,10,10));
+        BorderPane mainBorderPane = new BorderPane();
         mainBorderPane.setCenter(mainVBox);
 
         Label currentLabel = new Label("0.000");
@@ -63,7 +64,6 @@ public class DCPowerSupplyStage extends Application {
         mainStage.show();
     }
 
-    private BorderPane mainBorderPane = new BorderPane();
     private Stage mainStage = new Stage();
 
     public double current = 0.0;

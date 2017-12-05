@@ -5,8 +5,8 @@ import core.Main;
 public class Dac {
 
     public static void convert(){
-        boolean wr = false;
-        boolean cs = false;
+        boolean wr;
+        boolean cs;
         if(Main.settingsMap.get("przetwornikDACWR").equals("GND")) {
             wr = true;
         }
@@ -16,6 +16,7 @@ public class Dac {
         else {
             wr = !Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przetwornikDACWR")));
         }
+
         if(Main.settingsMap.get("przetwornikDACCS").equals("GND")) {
             cs = true;
         }
@@ -26,12 +27,8 @@ public class Dac {
             cs = !Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przetwornikDACCS")));
         }
 
-        if(!cs)
-            return;
-        else {
-            if(!wr)
-                return;
-            else {
+        if(cs) {
+            if(wr) {
                 int wartoscportu;
                 if(Main.settingsMap.get("przetwornikDACPort").equals("VCC")) {
                     wartoscportu = 255;

@@ -113,5 +113,5 @@ public class Main extends Application {
 
     private static String path;
 
-    public static Map<String,String> settingsMap = new HashMap<String,String>();
+    public static Map<String,String> settingsMap = new HashMap<>();
 }
