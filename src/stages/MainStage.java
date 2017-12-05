@@ -915,6 +915,7 @@ public class MainStage extends Application {
         Menu menuTools = new Menu("Narzędzia");
         mainMenuBar.getMenus().add(menuTools);
 
+        MenuItem menuItemDCPowerSupply = new MenuItem("Zasilacz DC");
         MenuItem menuItemOscilloscope = new MenuItem("Oscyloskop");
 
         Menu menuLowRam = new Menu("Low RAM");
@@ -981,6 +982,13 @@ public class MainStage extends Application {
         menuItemOscilloscope.setOnAction(event -> {
             try {
                 OscilloscopePane.start(primaryStage);
+            } catch (Exception ignored) {
+            }
+        });
+
+        menuItemDCPowerSupply.setOnAction(event -> {
+            try {
+                dcPowerSupplyPane.start(primaryStage);
             } catch (Exception ignored) {
             }
         });
@@ -1231,7 +1239,7 @@ public class MainStage extends Application {
         });
 
         menuFile.getItems().addAll(newFileMenuItem, saveFileMenuItem, saveAsFileMenuItem, exportToHexMenuItem, new SeparatorMenuItem(), importFileMenuItem, new SeparatorMenuItem(), exitMenuItem);
-        menuTools.getItems().add(menuItemOscilloscope);
+        menuTools.getItems().addAll(menuItemDCPowerSupply,menuItemOscilloscope);
 
 
         //PRAWY OBSZAR
@@ -2352,7 +2360,7 @@ public class MainStage extends Application {
 
     private OscilloscopeStage OscilloscopePane = new OscilloscopeStage();
 
-    public DCPowerSupplyStage dcPowerSupplyStage = new DCPowerSupplyStage();
+    public DCPowerSupplyStage dcPowerSupplyPane = new DCPowerSupplyStage();
 
     private TabPane editorTabPane;
 

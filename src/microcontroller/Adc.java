@@ -44,7 +44,7 @@ public class Adc {
             if(!lastWR && wr) {
                 conversionTime = 7;
                 //TODO
-                analogInput = Main.stage.dcPowerSupplyStage.current;
+                analogInput = Main.stage.dcPowerSupplyPane.current;
                 Main.board.setCurrent("P3.3",2);
             }
 

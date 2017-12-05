@@ -61,7 +61,7 @@ public class OscilloscopeStage extends Application {
             createChart();
         });
 
-         Slider intervalSlider = new Slider();
+        Slider intervalSlider = new Slider();
         intervalSlider.setMin(1);
         intervalSlider.setMax(10);
         intervalSlider.setValue(interval);
