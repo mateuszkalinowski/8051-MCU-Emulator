@@ -46,6 +46,11 @@ public class Main extends Application {
                 createCfg.println("przetwornikDACWR=P1.6");
                 createCfg.println("przetwornikDACCS=P1.7");
 
+                createCfg.println("przetwornikADCPort=P2");
+                createCfg.println("przetwornikADCRD=P1.3");
+                createCfg.println("przetwornikADCWR=P1.4");
+                createCfg.println("przetwornikADCCS=P1.5");
+
                 createCfg.close();
                 loadDefaultSettings();
             }
@@ -86,6 +91,11 @@ public class Main extends Application {
         settingsMap.put("przetwornikDACPort","P0");
         settingsMap.put("przetwornikDACWR","P1.6");
         settingsMap.put("przetwornikDACCS","P1.7");
+
+        settingsMap.put("przetwornikADCPort","P2");
+        settingsMap.put("przetwornikADCRD","P1.3");
+        settingsMap.put("przetwornikADCWR","P1.4");
+        settingsMap.put("przetwornikADCCS","P1.5");
 
     }
     public static void saveSettings() {

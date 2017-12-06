@@ -6,11 +6,13 @@ public class Adc {
 
     public void updateState() {
 
-        boolean cs = !Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("P1.5"));
-        boolean wr = !Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("P1.4"));
-        boolean rd = !Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("P1.3"));
+        boolean cs = !Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przetwornikADCCS")));
+        boolean wr = !Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przetwornikADCWR")));
+        boolean rd = !Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przetwornikADCRD")));
 
-        if(conversionTime==-1) {
+        String port = Main.settingsMap.get("przetwornikADCPort");
+
+        if(Main.cpu.getTimePassed()-conversionStart>7) {
             int wynik = (int)Math.round(analogInput/5.0*255);
             StringBuilder wynikString = new StringBuilder(Integer.toBinaryString(wynik));
             while(wynikString.length()<8) {
@@ -26,23 +28,23 @@ public class Adc {
             if(rd) {
                 for(int i = 0; i < 8;i++) {
                     if(digitalOutput.charAt(7-i)=='1')
-                        Main.board.setCurrent("P2." + i,2);
+                        Main.board.setCurrent(port+ "." + i,2);
                     else
-                        Main.board.setGround("P2." + i,2);
+                        Main.board.setGround(port+"." + i,2);
                 }
             }
             if(!rd) {
-                Main.board.setCurrent("P2.0",2);
-                Main.board.setCurrent("P2.1",2);
-                Main.board.setCurrent("P2.2",2);
-                Main.board.setCurrent("P2.3",2);
-                Main.board.setCurrent("P2.4",2);
-                Main.board.setCurrent("P2.5",2);
-                Main.board.setCurrent("P2.6",2);
-                Main.board.setCurrent("P2.7",2);
+                Main.board.setCurrent(port+".0",2);
+                Main.board.setCurrent(port+".1",2);
+                Main.board.setCurrent(port+".2",2);
+                Main.board.setCurrent(port+".3",2);
+                Main.board.setCurrent(port+".4",2);
+                Main.board.setCurrent(port+".5",2);
+                Main.board.setCurrent(port+".6",2);
+                Main.board.setCurrent(port+".7",2);
             }
             if(!lastWR && wr) {
-                conversionTime = 7;
+                conversionStart = Main.cpu.getTimePassed();
                 analogInput = Main.stage.dcPowerSupplyPane.current;
                 Main.board.setCurrent("P3.3",2);
             }
@@ -50,20 +52,18 @@ public class Adc {
 
         if(!cs) {
             Main.board.setCurrent("P3.3",2);
-            Main.board.setCurrent("P2.0",2);
-            Main.board.setCurrent("P2.1",2);
-            Main.board.setCurrent("P2.2",2);
-            Main.board.setCurrent("P2.3",2);
-            Main.board.setCurrent("P2.4",2);
-            Main.board.setCurrent("P2.5",2);
-            Main.board.setCurrent("P2.6",2);
-            Main.board.setCurrent("P2.7",2);
+            Main.board.setCurrent(port+".0",2);
+            Main.board.setCurrent(port+".1",2);
+            Main.board.setCurrent(port+".2",2);
+            Main.board.setCurrent(port+".3",2);
+            Main.board.setCurrent(port+".4",2);
+            Main.board.setCurrent(port+".5",2);
+            Main.board.setCurrent(port+".6",2);
+            Main.board.setCurrent(port+".7",2);
         }
     }
     public void cycle() {
-        if(conversionTime>=0)
-            conversionTime--;
-        lastWR = !Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get("P1.4"));
+        lastWR = !Main.cpu.mainMemory.getBit(Main.cpu.codeMemory.bitAddresses.get(Main.settingsMap.get("przetwornikADCWR")));
     }
 
     public void reset() {
@@ -80,5 +80,6 @@ public class Adc {
 
 
     private boolean lastWR = false;
-    private int conversionTime = -2;
+
+    private long conversionStart = 0;
 }

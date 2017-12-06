@@ -2,12 +2,11 @@ package stages;
 
 import core.Main;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import microcontroller.Dac;
@@ -22,16 +21,23 @@ public class PaneConfigStage extends Application {
     public void start(Stage primaryStage) throws Exception {
         Stage mainStage = new Stage();
         GridPane mainGridPane = new GridPane();
+        GridPane convertersGridPane = new GridPane();
+        GridPane interruptsGridPane = new GridPane();
         ColumnConstraints column = new ColumnConstraints();
-        column.setPercentWidth(10);
-        for(int i = 0; i < 10 ; i ++)
+        column.setPercentWidth(100.0/10.0);
+        for(int i = 0; i < 10 ; i ++) {
             mainGridPane.getColumnConstraints().add(column);
-        RowConstraints row = new RowConstraints();
-        row.setPercentHeight(100.0/21.0);
-        for(int i = 0; i < 21;i++)
-            mainGridPane.getRowConstraints().add(row);
+            convertersGridPane.getColumnConstraints().add(column);
+            interruptsGridPane.getColumnConstraints().add(column);
 
-        //mainGridPane.setGridLinesVisible(true);
+        }
+        RowConstraints row = new RowConstraints();
+        row.setPercentHeight(100.0/7.0);
+        for(int i = 0; i < 7;i++) {
+            mainGridPane.getRowConstraints().add(row);
+            convertersGridPane.getRowConstraints().add(row);
+            interruptsGridPane.getRowConstraints().add(row);
+        }
 
         Label ledsLabel = new Label("Diody:");
         ledsLabel.setAlignment(Pos.CENTER);
@@ -178,6 +184,77 @@ public class PaneConfigStage extends Application {
             Main.saveSettings();
         });
 
+        Label adcLabel = new Label("Przetwornik ADC:");
+        adcLabel.setAlignment(Pos.CENTER);
+        adcLabel.setMaxWidth(Double.MAX_VALUE);
+        adcLabel.setFont(new Font("Arial",15));
+
+        Label adcPortLabel = new Label("Port:");
+        adcPortLabel.setAlignment(Pos.CENTER);
+        adcPortLabel.setMaxWidth(Double.MAX_VALUE);
+        adcPortLabel.setFont(new Font("Arial",12));
+
+        ComboBox<String> adcPortComboBox = new ComboBox<>();
+        adcPortComboBox.getItems().addAll("P0","P1","P2");
+        adcPortComboBox.setMaxWidth(Double.MAX_VALUE);
+        adcPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikADCPort"));
+        adcPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Main.settingsMap.put("przetwornikADCPort",adcPortComboBox.getSelectionModel().getSelectedItem());
+            Main.stage.drawFrame();
+            Main.saveSettings();
+        });
+
+        Label rdAdcPortLabel = new Label("/RD:");
+        rdAdcPortLabel.setAlignment(Pos.CENTER);
+        rdAdcPortLabel.setMaxWidth(Double.MAX_VALUE);
+        rdAdcPortLabel.setFont(new Font("Arial",12));
+
+        ComboBox<String> rdAdcPortComboBox = new ComboBox<>();
+        rdAdcPortComboBox.getItems().addAll("VCC","GND","P0.3","P1.3");
+        rdAdcPortComboBox.setMaxWidth(Double.MAX_VALUE);
+        rdAdcPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikADCRD"));
+        rdAdcPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Main.settingsMap.put("przetwornikADCRD",rdAdcPortComboBox.getSelectionModel().getSelectedItem());
+            Main.stage.drawFrame();
+            Main.saveSettings();
+        });
+
+        ComboBox<String> wrAdcPortComboBox = new ComboBox<>();
+        wrAdcPortComboBox.getItems().addAll("VCC","GND","P0.4","P1.4");
+        wrAdcPortComboBox.setMaxWidth(Double.MAX_VALUE);
+        wrAdcPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikADCWR"));
+        wrAdcPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Main.settingsMap.put("przetwornikADCWR",wrAdcPortComboBox.getSelectionModel().getSelectedItem());
+            Main.stage.drawFrame();
+            Main.saveSettings();
+        });
+
+        ComboBox<String> csAdcPortComboBox = new ComboBox<>();
+        csAdcPortComboBox.getItems().addAll("VCC","GND","P0.5","P1.5");
+        csAdcPortComboBox.setMaxWidth(Double.MAX_VALUE);
+        csAdcPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikADCCS"));
+        csAdcPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Main.settingsMap.put("przetwornikADCCS",csAdcPortComboBox.getSelectionModel().getSelectedItem());
+            Main.stage.drawFrame();
+            Main.saveSettings();
+        });
+
+
+
+        Label wrAdcPortLabel = new Label("/WR:");
+        wrAdcPortLabel.setAlignment(Pos.CENTER);
+        wrAdcPortLabel.setMaxWidth(Double.MAX_VALUE);
+        wrAdcPortLabel.setFont(new Font("Arial",12));
+
+        Label csAdcPortLabel = new Label("/CS:");
+        csAdcPortLabel.setAlignment(Pos.CENTER);
+        csAdcPortLabel.setMaxWidth(Double.MAX_VALUE);
+        csAdcPortLabel.setFont(new Font("Arial",12));
+
+
+
+
+
         Label dacLabel = new Label("Przetwornik DAC:");
         dacLabel.setAlignment(Pos.CENTER);
         dacLabel.setMaxWidth(Double.MAX_VALUE);
@@ -231,16 +308,8 @@ public class PaneConfigStage extends Application {
             Main.saveSettings();
         });
 
-        Label adcLabel = new Label("Przetwornik ADC:");
-        adcLabel.setAlignment(Pos.CENTER);
-        adcLabel.setMaxWidth(Double.MAX_VALUE);
-        adcLabel.setFont(new Font("Arial",15));
-
-
-
-
         Button resetToDefaultButton = new Button("Przywroć wartości domyślne");
-        resetToDefaultButton.setMaxWidth(Double.MAX_VALUE);
+        //resetToDefaultButton.setMaxWidth(Double.MAX_VALUE);
         resetToDefaultButton.setOnAction(event -> {
 
             Main.loadDefaultSettings();
@@ -255,25 +324,32 @@ public class PaneConfigStage extends Application {
             dacPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACPort"));
             wrPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACWR"));
             csPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACCS"));
+            adcPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikADCPort"));
+            rdAdcPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikADCRD"));
+            wrAdcPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikADCWR"));
+            csAdcPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikADCCS"));
+
+
             Main.stage.drawFrame();
             Main.saveSettings();
 
         });
 
         mainGridPane.add(ledsLabel,0,0,4,2);
-        mainGridPane.add(ledsPortLabel,0,3,2,1);
-        mainGridPane.add(ledPortComboBox,2,3,2,1);
-        mainGridPane.add(ledsCommonLabel,0,5,2,1);
-        mainGridPane.add(ledCommonComboBox,2,5,2,1);
-        mainGridPane.add(ledsColorLabel,0,7,2,1);
-        mainGridPane.add(ledsColorPickerComboBox,2,7,2,1);
+        mainGridPane.add(ledsPortLabel,0,2,2,1);
+        mainGridPane.add(ledPortComboBox,2,2,2,1);
+        mainGridPane.add(ledsCommonLabel,0,3,2,1);
+        mainGridPane.add(ledCommonComboBox,2,3,2,1);
+        mainGridPane.add(ledsColorLabel,0,4,2,1);
+        mainGridPane.add(ledsColorPickerComboBox,2,4,2,1);
+
         mainGridPane.add(seg7Label,5,0,4,2);
-        mainGridPane.add(seg7PortLabel,5,3,2,1);
-        mainGridPane.add(seg7PortComboBox,7,3,2,1);
-        mainGridPane.add(seg7TypeLabel,5,5,2,1);
-        mainGridPane.add(seg7TypeComboBox,7,5,2,1);
-        mainGridPane.add(seg7ColorLabel,5,7,2,1);
-        mainGridPane.add(seg7ColorPickerComboBox,7,7,2,1);
+        mainGridPane.add(seg7PortLabel,5,2,2,1);
+        mainGridPane.add(seg7PortComboBox,7,2,2,1);
+        mainGridPane.add(seg7TypeLabel,5,3,2,1);
+        mainGridPane.add(seg7TypeComboBox,7,3,2,1);
+        mainGridPane.add(seg7ColorLabel,5,4,2,1);
+        mainGridPane.add(seg7ColorPickerComboBox,7,4,2,1);
 
         mainGridPane.add(externalInterruptsLabel,0,10,4,2);
         mainGridPane.add(przyciskiInterruptsLabel,0,13,2,1);
@@ -281,26 +357,63 @@ public class PaneConfigStage extends Application {
         mainGridPane.add(zadajnikiInterruptsLabel,0,15,2,1);
         mainGridPane.add(zadajnikiPrzerwaniaComboBox,2,15,2,1);
 
-        mainGridPane.add(dacLabel,5,10,4,2);
-        mainGridPane.add(dacPortLabel,5,13,2,1);
-        mainGridPane.add(dacPortComboBox,7,13,2,1);
-        mainGridPane.add(wrPortLabel,5,15,2,1);
-        mainGridPane.add(wrPortComboBox,7,15,2,1);
-        mainGridPane.add(csPortLabel,5,17,2,1);
-        mainGridPane.add(csPortComboBox,7,17,2,1);
+        convertersGridPane.add(dacLabel,0,0,4,2);
+        convertersGridPane.add(dacPortLabel,0,2,2,1);
+        convertersGridPane.add(dacPortComboBox,2,2,2,1);
+        convertersGridPane.add(wrPortLabel,0,3,2,1);
+        convertersGridPane.add(wrPortComboBox,2,3,2,1);
+        convertersGridPane.add(csPortLabel,0,4,2,1);
+        convertersGridPane.add(csPortComboBox,2,4,2,1);
 
-       // mainGridPane.add(adcLabel,5,20,4,2);
+        convertersGridPane.add(adcLabel,5,0,4,2);
+        convertersGridPane.add(adcPortLabel,5,2,2,1);
+        convertersGridPane.add(adcPortComboBox,7,2,2,1);
 
-        mainGridPane.add(resetToDefaultButton,3,19,4,1);
+        convertersGridPane.add(rdAdcPortLabel,5,3,2,1);
+        convertersGridPane.add(rdAdcPortComboBox,7,3,2,1);
+        convertersGridPane.add(wrAdcPortLabel,5,4,2,1);
+        convertersGridPane.add(wrAdcPortComboBox,7,4,2,1);
+        convertersGridPane.add(csAdcPortLabel,5,5,2,1);
+        convertersGridPane.add(csAdcPortComboBox,7,5,2,1);
+
+        interruptsGridPane.add(externalInterruptsLabel,0,0,4,2);
+        interruptsGridPane.add(przyciskiInterruptsLabel,0,2,2,1);
+        interruptsGridPane.add(przyciskiPrzerwaniaComboBox,2,2,2,1);
+        interruptsGridPane.add(zadajnikiInterruptsLabel,0,3,2,1);
+        interruptsGridPane.add(zadajnikiPrzerwaniaComboBox,2,3,2,1);
+
 
         TabPane mainTabPane = new TabPane();
         Tab generalSettingsTab = new Tab();
-        generalSettingsTab.setText("Ogólne");
+        generalSettingsTab.setClosable(false);
+        generalSettingsTab.setText("Diody i Wyświetlacze");
         mainTabPane.getTabs().add(generalSettingsTab);
-       // generalSettingsTab.setContent(mainGridPane);
+        generalSettingsTab.setContent(mainGridPane);
+
+        Tab interrputsSettingsTab = new Tab();
+        interrputsSettingsTab.setText("Przerwania i Timery");
+        interrputsSettingsTab.setClosable(false);
+        mainTabPane.getTabs().add(interrputsSettingsTab);
+        interrputsSettingsTab.setContent(interruptsGridPane);
+
+        Tab convertersSettingsTab = new Tab();
+        convertersSettingsTab.setText("Przetworniki");
+        convertersSettingsTab.setClosable(false);
+        mainTabPane.getTabs().add(convertersSettingsTab);
+        convertersSettingsTab.setContent(convertersGridPane);
+
+        BorderPane mainBorderPane = new BorderPane();
+        mainBorderPane.setCenter(mainTabPane);
+
+        VBox lowVBox = new VBox();
+        lowVBox.setPadding(new Insets(10,0,10,0));
+        lowVBox.getChildren().add(resetToDefaultButton);
+        VBox.setVgrow(resetToDefaultButton,Priority.ALWAYS);
+        lowVBox.setAlignment(Pos.CENTER);
+        mainBorderPane.setBottom(lowVBox);
 
 
-        Scene mainScene = new Scene(mainGridPane, 500, 320);
+        Scene mainScene = new Scene(mainBorderPane, 500, 300);
         mainStage.setScene(mainScene);
         mainStage.setTitle("Konfiguracja płytki prototypowej");
         mainStage.setResizable(false);
