@@ -4,9 +4,7 @@ import core.Main;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -29,9 +27,9 @@ public class PaneConfigStage extends Application {
         for(int i = 0; i < 10 ; i ++)
             mainGridPane.getColumnConstraints().add(column);
         RowConstraints row = new RowConstraints();
-        row.setPercentHeight(100.0/22.0);
-        for(int i = 0; i < 22;i++)
-            mainGridPane.getRowConstraints().addAll(row);
+        row.setPercentHeight(100.0/21.0);
+        for(int i = 0; i < 21;i++)
+            mainGridPane.getRowConstraints().add(row);
 
         //mainGridPane.setGridLinesVisible(true);
 
@@ -233,6 +231,14 @@ public class PaneConfigStage extends Application {
             Main.saveSettings();
         });
 
+        Label adcLabel = new Label("Przetwornik ADC:");
+        adcLabel.setAlignment(Pos.CENTER);
+        adcLabel.setMaxWidth(Double.MAX_VALUE);
+        adcLabel.setFont(new Font("Arial",15));
+
+
+
+
         Button resetToDefaultButton = new Button("Przywroć wartości domyślne");
         resetToDefaultButton.setMaxWidth(Double.MAX_VALUE);
         resetToDefaultButton.setOnAction(event -> {
@@ -283,10 +289,18 @@ public class PaneConfigStage extends Application {
         mainGridPane.add(csPortLabel,5,17,2,1);
         mainGridPane.add(csPortComboBox,7,17,2,1);
 
-        mainGridPane.add(resetToDefaultButton,3,20,4,1);
+       // mainGridPane.add(adcLabel,5,20,4,2);
+
+        mainGridPane.add(resetToDefaultButton,3,19,4,1);
+
+        TabPane mainTabPane = new TabPane();
+        Tab generalSettingsTab = new Tab();
+        generalSettingsTab.setText("Ogólne");
+        mainTabPane.getTabs().add(generalSettingsTab);
+       // generalSettingsTab.setContent(mainGridPane);
 
 
-        Scene mainScene = new Scene(mainGridPane, 500, 300);
+        Scene mainScene = new Scene(mainGridPane, 500, 320);
         mainStage.setScene(mainScene);
         mainStage.setTitle("Konfiguracja płytki prototypowej");
         mainStage.setResizable(false);
