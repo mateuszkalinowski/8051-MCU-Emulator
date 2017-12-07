@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 
 import javafx.concurrent.Task;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -881,7 +882,6 @@ public class MainStage extends Application {
         speedSelectLabel.setFont(new Font("Arial", 11));
 
         VBox buttonBox = new VBox();
-        buttonBox.setPadding(new Insets(0, 10, 0, 10));
         buttonBox.setAlignment(Pos.CENTER);
         VBox.setVgrow(translateToMemoryButton, Priority.ALWAYS);
         VBox.setVgrow(stopSimulationButton, Priority.ALWAYS);
@@ -889,7 +889,12 @@ public class MainStage extends Application {
         VBox.setVgrow(continuousRunButton, Priority.ALWAYS);
         buttonBox.setSpacing(5);
 
-        buttonBox.getChildren().addAll(translateToMemoryButton, stopSimulationButton, oneStepButton, speedSelectLabel, speedSelectComboBox, continuousRunButton);
+        lineNumberLabel = new Label("");
+        lineNumberLabel.setMaxWidth(Double.MAX_VALUE);
+        lineNumberLabel.setAlignment(Pos.CENTER);
+        lineNumberLabel.setFont(new Font("Arial", 11));
+
+        buttonBox.getChildren().addAll(translateToMemoryButton, stopSimulationButton, oneStepButton, speedSelectLabel, speedSelectComboBox, continuousRunButton,lineNumberLabel);
         buttonBox.setAlignment(Pos.TOP_CENTER);
         buttonBox.setPadding(new Insets(5, 5, 0, 5));
 
@@ -2417,7 +2422,38 @@ public class MainStage extends Application {
                     edited = false;
                     ownTab.setText(ownTab.getText().substring(1));
                 }
+
+                int position = ownTextArea.getCaretPosition();
+                int linia = 0;
+                int suma = 0;
+                String lines[] = ownTextArea.getText().split("\n");
+                for(linia = 0; linia < lines.length;linia++) {
+                    suma += lines[linia].length()+1;
+                    if(position<suma)
+                        break;
+                }
+                linia+=1;
+                if(editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTab.getText().equals(ownTab.getText())) {
+                    lineNumberLabel.setText("Linia: " + linia);
+                }
             });
+
+            ownTextArea.setOnMouseClicked(event -> {
+                int position = ownTextArea.getCaretPosition();
+                int linia;
+                int suma = 0;
+                String lines[] = ownTextArea.getText().split("\n");
+                for(linia = 0; linia < lines.length;linia++) {
+                    suma += lines[linia].length()+1;
+                    if(position<suma)
+                        break;
+                }
+                linia+=1;
+                if(editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTab.getText().equals(ownTab.getText())) {
+                    lineNumberLabel.setText("Linia: " + linia);
+                }
+            });
+
             ownTab.setOnCloseRequest(event -> {
                 if (edited) {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -2431,6 +2467,7 @@ public class MainStage extends Application {
                     }
                 }
                 editorTabs.remove(this);
+                lineNumberLabel.setText("");
             });
 
 
@@ -2447,5 +2484,7 @@ public class MainStage extends Application {
     }
 
     public Label dacStateLabel;
+
+    private Label lineNumberLabel;
 
 }

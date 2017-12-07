@@ -210,7 +210,7 @@ public class PaneConfigStage extends Application {
         rdAdcPortLabel.setFont(new Font("Arial",12));
 
         ComboBox<String> rdAdcPortComboBox = new ComboBox<>();
-        rdAdcPortComboBox.getItems().addAll("VCC","GND","P0.3","P1.3");
+        rdAdcPortComboBox.getItems().addAll("VCC","GND","P0.3","P1.3","P3.7");
         rdAdcPortComboBox.setMaxWidth(Double.MAX_VALUE);
         rdAdcPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikADCRD"));
         rdAdcPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -220,7 +220,7 @@ public class PaneConfigStage extends Application {
         });
 
         ComboBox<String> wrAdcPortComboBox = new ComboBox<>();
-        wrAdcPortComboBox.getItems().addAll("VCC","GND","P0.4","P1.4");
+        wrAdcPortComboBox.getItems().addAll("VCC","GND","P0.4","P1.4","P3.6");
         wrAdcPortComboBox.setMaxWidth(Double.MAX_VALUE);
         wrAdcPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikADCWR"));
         wrAdcPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -287,7 +287,7 @@ public class PaneConfigStage extends Application {
         csPortLabel.setFont(new Font("Arial",12));
 
         ComboBox<String> wrPortComboBox = new ComboBox<>();
-        wrPortComboBox.getItems().addAll("VCC","GND","P0.6","P1.6");
+        wrPortComboBox.getItems().addAll("VCC","GND","P0.6","P1.6","P3.6");
         wrPortComboBox.setMaxWidth(Double.MAX_VALUE);
         wrPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikDACWR"));
         wrPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -382,7 +382,6 @@ public class PaneConfigStage extends Application {
         interruptsGridPane.add(zadajnikiInterruptsLabel,0,3,2,1);
         interruptsGridPane.add(zadajnikiPrzerwaniaComboBox,2,3,2,1);
 
-
         TabPane mainTabPane = new TabPane();
         Tab generalSettingsTab = new Tab();
         generalSettingsTab.setClosable(false);
@@ -411,7 +410,6 @@ public class PaneConfigStage extends Application {
         VBox.setVgrow(resetToDefaultButton,Priority.ALWAYS);
         lowVBox.setAlignment(Pos.CENTER);
         mainBorderPane.setBottom(lowVBox);
-
 
         Scene mainScene = new Scene(mainBorderPane, 500, 300);
         mainStage.setScene(mainScene);
