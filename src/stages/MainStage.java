@@ -26,16 +26,21 @@ import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import microcontroller.Dac;
+import org.fxmisc.flowless.VirtualizedScrollPane;
+import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.LineNumberFactory;
+import org.fxmisc.richtext.model.Paragraph;
+import org.fxmisc.richtext.model.StyleSpans;
+import org.fxmisc.richtext.model.StyleSpansBuilder;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Mateusz on 19.04.2017.
@@ -756,7 +761,7 @@ public class MainStage extends Application {
             //editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTextArea.setText("");
 
             editorTabs.get(numerKarty).ownTextArea.setEditable(true);
-            editorTabs.get(numerKarty).ownTextArea.setText("");
+            editorTabs.get(numerKarty).ownTextArea.clear();  //setText("");
 
             continuousRunFlag = false;
             continuousRunButton.setDisable(true);
@@ -783,7 +788,9 @@ public class MainStage extends Application {
             for (String line : lines) {
                 textToSet.append(line).append("\n");
             }
-            editorTabs.get(numerKarty).ownTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
+            editorTabs.get(numerKarty).ownTextArea.clear();
+            editorTabs.get(numerKarty).ownTextArea.appendText(textToSet.substring(0, textToSet.length() - 1));
+           // editorTabs.get(numerKarty).ownTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
             Main.cpu.resetCpu();
             Main.board.reset();
             portToggle0.setSelected(false);
@@ -889,12 +896,7 @@ public class MainStage extends Application {
         VBox.setVgrow(continuousRunButton, Priority.ALWAYS);
         buttonBox.setSpacing(5);
 
-        lineNumberLabel = new Label("");
-        lineNumberLabel.setMaxWidth(Double.MAX_VALUE);
-        lineNumberLabel.setAlignment(Pos.CENTER);
-        lineNumberLabel.setFont(new Font("Arial", 11));
-
-        buttonBox.getChildren().addAll(translateToMemoryButton, stopSimulationButton, oneStepButton, speedSelectLabel, speedSelectComboBox, continuousRunButton,lineNumberLabel);
+        buttonBox.getChildren().addAll(translateToMemoryButton, stopSimulationButton, oneStepButton, speedSelectLabel, speedSelectComboBox, continuousRunButton);
         buttonBox.setAlignment(Pos.TOP_CENTER);
         buttonBox.setPadding(new Insets(5, 5, 0, 5));
 
@@ -1062,7 +1064,9 @@ public class MainStage extends Application {
                         }
 
                         editorTabs.add(new editorTab());
-                        editorTabs.get(editorTabs.size() - 1).ownTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
+                        //editorTabs.get(editorTabs.size() - 1).ownTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
+                        editorTabs.get(editorTabs.size() - 1).ownTextArea.clear();
+                        editorTabs.get(editorTabs.size() - 1).ownTextArea.appendText(textToSet.substring(0, textToSet.length() - 1));
                         editorTabs.get(editorTabs.size() - 1).path = openFile.getPath();
                         editorTabs.get(editorTabs.size() - 1).ownTab.setText(openFile.getName());
                         editorTabs.get(editorTabs.size() - 1).previousText = editorTabs.get(editorTabs.size() - 1).ownTextArea.getText();
@@ -1844,7 +1848,10 @@ public class MainStage extends Application {
                             continue;
 
                         editorTabs.add(new editorTab());
-                        editorTabs.get(editorTabs.size() - 1).ownTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
+                       // editorTabs.get(editorTabs.size() - 1).ownTextArea.setText(textToSet.substring(0, textToSet.length() - 1));
+                        editorTabs.get(editorTabs.size() - 1).ownTextArea.clear();
+                        editorTabs.get(editorTabs.size() - 1).ownTextArea.appendText(textToSet.substring(0, textToSet.length() - 1));
+
                         editorTabs.get(editorTabs.size() - 1).path = file.getPath();
                         editorTabs.get(editorTabs.size() - 1).ownTab.setText(file.getName());
                         editorTabs.get(editorTabs.size() - 1).previousText = editorTabs.get(editorTabs.size() - 1).ownTextArea.getText();
@@ -2246,7 +2253,10 @@ public class MainStage extends Application {
             if (i != toSet.size() - 1)
                 textToSet.append("\n");
         }
-        editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTextArea.setText(textToSet.toString());
+       // editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTextArea.setText(textToSet.toString());
+        editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTextArea.clear();
+        editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTextArea.appendText(textToSet.toString());
+
     }
 
 
@@ -2408,12 +2418,17 @@ public class MainStage extends Application {
                 }
             }
             ownTab.setText("Untitled " + String.valueOf(x));
-            this.ownTextArea = new TextArea();
+            ownTextArea = new CodeArea();
             ownTextArea.setPrefWidth(1000);
+            ownTextArea.setParagraphGraphicFactory(LineNumberFactory.get(ownTextArea));
 
-            ownTextArea = new TextArea();
+            ownTextArea.richChanges()
+                    .filter(ch -> !ch.getInserted().equals(ch.getRemoved())) // XXX
+                    .subscribe(change -> {
+                        ownTextArea.setStyleSpans(0, computeHighlighting(ownTextArea.getText()));
+                    });
+
             ownTab.setContent(ownTextArea);
-            ownTextArea.setPrefColumnCount(1000);
             ownTextArea.setOnKeyReleased(event -> {
                 if (!edited && !ownTextArea.getText().equals(previousText)) {
                     edited = true;
@@ -2423,35 +2438,6 @@ public class MainStage extends Application {
                     ownTab.setText(ownTab.getText().substring(1));
                 }
 
-                int position = ownTextArea.getCaretPosition();
-                int linia = 0;
-                int suma = 0;
-                String lines[] = ownTextArea.getText().split("\n");
-                for(linia = 0; linia < lines.length;linia++) {
-                    suma += lines[linia].length()+1;
-                    if(position<suma)
-                        break;
-                }
-                linia+=1;
-                if(editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTab.getText().equals(ownTab.getText())) {
-                    lineNumberLabel.setText("Linia: " + linia);
-                }
-            });
-
-            ownTextArea.setOnMouseClicked(event -> {
-                int position = ownTextArea.getCaretPosition();
-                int linia;
-                int suma = 0;
-                String lines[] = ownTextArea.getText().split("\n");
-                for(linia = 0; linia < lines.length;linia++) {
-                    suma += lines[linia].length()+1;
-                    if(position<suma)
-                        break;
-                }
-                linia+=1;
-                if(editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTab.getText().equals(ownTab.getText())) {
-                    lineNumberLabel.setText("Linia: " + linia);
-                }
             });
 
             ownTab.setOnCloseRequest(event -> {
@@ -2467,7 +2453,6 @@ public class MainStage extends Application {
                     }
                 }
                 editorTabs.remove(this);
-                lineNumberLabel.setText("");
             });
 
 
@@ -2475,16 +2460,55 @@ public class MainStage extends Application {
             this.edited = false;
         }
 
+        private final String[] KEYWORDS = new String[] {
+                "add", "addc", "subb", "inc", "dec",
+                "mul", "div", "anl", "orl", "xrl",
+                "clr", "rl", "rlc", "rr", "rrc",
+                "swap", "mov", "movc", "movx", "push",
+                "pop", "xch", "setb", "cpl", "acall",
+                "lcall", "ret", "reti", "ajmp", "ljmp",
+                "sjmp", "jmp", "jz", "jnz", "jc",
+                "jnc", "jb", "jnb", "jbc", "cjne",
+                "djnz", "nop","org","db","code at","include"
+        };
+
+        private final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
+        private final String LABEL_PATTERN = "[^(\n;)]*:";
+        private final String COMMENT_PATTERN = ";[^\n]*";
+
+        private final Pattern PATTERN = Pattern.compile(
+                "(?<KEYWORD>" + KEYWORD_PATTERN + ")"
+                        + "|(?<LABEL>" + LABEL_PATTERN + ")"
+                         + "|(?<COMMENT>" + COMMENT_PATTERN + ")"
+        );
+
+        private StyleSpans<Collection<String>> computeHighlighting(String text) {
+            Matcher matcher = PATTERN.matcher(text);
+            int lastKwEnd = 0;
+            StyleSpansBuilder<Collection<String>> spansBuilder
+                    = new StyleSpansBuilder<>();
+            while(matcher.find()) {
+                String styleClass =
+                        matcher.group("KEYWORD") != null ? "keyword" :
+                                matcher.group("LABEL") != null ? "label" :
+                                    matcher.group("COMMENT") != null ? "comment" :
+                                            null; /* never happens */ assert styleClass != null;
+                spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);
+                spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
+                lastKwEnd = matcher.end();
+            }
+            spansBuilder.add(Collections.emptyList(), text.length() - lastKwEnd);
+            return spansBuilder.create();
+        }
+
         String previousText = "";
         String path;
         Tab ownTab;
-        TextArea ownTextArea;
+        CodeArea ownTextArea;
         boolean edited;
 
     }
 
     public Label dacStateLabel;
-
-    private Label lineNumberLabel;
 
 }

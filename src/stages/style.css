@@ -39,3 +39,16 @@
     -fx-scale-y: 1.0;
     -fx-scale-z: 1.0;
 }
+
+.keyword {
+     -fx-fill: brown;
+     -fx-font-weight: bold;
+ }
+
+.label {
+     -fx-fill: blue;
+}
+
+.comment {
+     -fx-fill: green;
+}
