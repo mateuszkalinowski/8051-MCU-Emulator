@@ -201,7 +201,7 @@ public class CodeMemory {
                             splittedLine = splittedLine2;
                         }
                     } else
-                        throw new CompilingException();
+                        throw new CompilingException(numeracjaLinii,"Etykieta: '" + splittedLine[0].substring(0, splittedLine[0].length() - 1) + "' już istnieje");
                 }
                 if (splittedLine.length == 0)
                     continue;
@@ -1030,7 +1030,6 @@ public class CodeMemory {
 
                             }
                         } else if (splittedLine[1].toUpperCase().equals("DPTR")) {
-                            //TODO
                             if (splittedLine[2].charAt(0) != '#') {
                                 throw new CompilingException(numeracjaLinii, "Niepoprawna wartosc liczbowa ustawienia rejestru dptr: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                             }
