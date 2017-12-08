@@ -395,21 +395,21 @@ public class MainStage extends Application {
         p0Label.setMaxWidth(Double.MAX_VALUE);
         p0Label.setAlignment(Pos.CENTER);
         p0Label.setFont(new Font("Arial", 11));
-        simulatorGridPane.add(p0Label, 15, 2);
+        simulatorGridPane.add(p0Label, 15, 3);
 
         p0TextField = new Label("11111111");
         p0TextField.setMaxWidth(Double.MAX_VALUE);
         p0TextField.setAlignment(Pos.CENTER);
         p0TextField.setFont(new Font("Arial", 11));
         p0TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p0TextField, 16, 2, 2, 1);
+        simulatorGridPane.add(p0TextField, 16, 3, 2, 1);
 
         p0PinsTextField = new Label("0xFF");
         p0PinsTextField.setMaxWidth(Double.MAX_VALUE);
         p0PinsTextField.setAlignment(Pos.CENTER);
         p0PinsTextField.setFont(new Font("Arial", 11));
         p0PinsTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p0PinsTextField, 18, 2, 1, 1);
+        simulatorGridPane.add(p0PinsTextField, 18, 3, 1, 1);
 
         Label p1Label = new Label("P1");
         p1Label.setMaxWidth(Double.MAX_VALUE);
@@ -435,59 +435,101 @@ public class MainStage extends Application {
         p2Label.setMaxWidth(Double.MAX_VALUE);
         p2Label.setAlignment(Pos.CENTER);
         p2Label.setFont(new Font("Arial", 11));
-        simulatorGridPane.add(p2Label, 15, 6);
+        simulatorGridPane.add(p2Label, 15, 5);
 
         p2TextField = new Label("11111111");
         p2TextField.setMaxWidth(Double.MAX_VALUE);
         p2TextField.setAlignment(Pos.CENTER);
         p2TextField.setFont(new Font("Arial", 11));
         p2TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p2TextField, 16, 6, 2, 1);
+        simulatorGridPane.add(p2TextField, 16, 5, 2, 1);
 
         p2PinsTextField = new Label("0xFF");
         p2PinsTextField.setMaxWidth(Double.MAX_VALUE);
         p2PinsTextField.setAlignment(Pos.CENTER);
         p2PinsTextField.setFont(new Font("Arial", 11));
         p2PinsTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p2PinsTextField, 18, 6, 1, 1);
+        simulatorGridPane.add(p2PinsTextField, 18, 5, 1, 1);
 
         Label p3Label = new Label("P3");
         p3Label.setMaxWidth(Double.MAX_VALUE);
         p3Label.setAlignment(Pos.CENTER);
         p3Label.setFont(new Font("Arial", 11));
-        simulatorGridPane.add(p3Label, 15, 8);
+        simulatorGridPane.add(p3Label, 15, 6);
 
         p3TextField = new Label("11111111");
         p3TextField.setMaxWidth(Double.MAX_VALUE);
         p3TextField.setAlignment(Pos.CENTER);
         p3TextField.setFont(new Font("Arial", 11));
         p3TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p3TextField, 16, 8, 2, 1);
+        simulatorGridPane.add(p3TextField, 16, 6, 2, 1);
 
         p3PinsTextField = new Label("0xFF");
         p3PinsTextField.setMaxWidth(Double.MAX_VALUE);
         p3PinsTextField.setAlignment(Pos.CENTER);
         p3PinsTextField.setFont(new Font("Arial", 11));
         p3PinsTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
-        simulatorGridPane.add(p3PinsTextField, 18, 8, 1, 1);
+        simulatorGridPane.add(p3PinsTextField, 18, 6, 1, 1);
 
-        Label portsDesc = new Label("Port:");
+        Label p4Label = new Label("P4");
+        p4Label.setMaxWidth(Double.MAX_VALUE);
+        p4Label.setAlignment(Pos.CENTER);
+        p4Label.setFont(new Font("Arial", 11));
+        simulatorGridPane.add(p4Label, 15, 7);
+
+        p4TextField = new Label("11111111");
+        p4TextField.setMaxWidth(Double.MAX_VALUE);
+        p4TextField.setAlignment(Pos.CENTER);
+        p4TextField.setFont(new Font("Arial", 11));
+        p4TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(p4TextField, 16, 7, 2, 1);
+
+        p4PinsTextField = new Label("0xFF");
+        p4PinsTextField.setMaxWidth(Double.MAX_VALUE);
+        p4PinsTextField.setAlignment(Pos.CENTER);
+        p4PinsTextField.setFont(new Font("Arial", 11));
+        p4PinsTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(p4PinsTextField, 18, 7, 1, 1);
+
+        Label p5Label = new Label("P5");
+        p5Label.setMaxWidth(Double.MAX_VALUE);
+        p5Label.setAlignment(Pos.CENTER);
+        p5Label.setFont(new Font("Arial", 11));
+        simulatorGridPane.add(p5Label, 15, 8);
+
+        p5TextField = new Label("11111111");
+        p5TextField.setMaxWidth(Double.MAX_VALUE);
+        p5TextField.setAlignment(Pos.CENTER);
+        p5TextField.setFont(new Font("Arial", 11));
+        p5TextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(p5TextField, 16, 8, 2, 1);
+
+        p5PinsTextField = new Label("0xFF");
+        p5PinsTextField.setMaxWidth(Double.MAX_VALUE);
+        p5PinsTextField.setAlignment(Pos.CENTER);
+        p5PinsTextField.setFont(new Font("Arial", 11));
+        p5PinsTextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
+        simulatorGridPane.add(p5PinsTextField, 18, 8, 1, 1);
+
+
+
+        Label portsDesc = new Label("Porty:");
         portsDesc.setMaxWidth(Double.MAX_VALUE);
         portsDesc.setAlignment(Pos.CENTER);
         portsDesc.setFont(new Font("Arial", 11));
-        simulatorGridPane.add(portsDesc, 15, 0, 1, 2);
+        simulatorGridPane.add(portsDesc, 15, 0, 1, 3);
 
         Label portsDesc1 = new Label("Bity:");
         portsDesc1.setMaxWidth(Double.MAX_VALUE);
         portsDesc1.setAlignment(Pos.CENTER);
         portsDesc1.setFont(new Font("Arial", 11));
-        simulatorGridPane.add(portsDesc1, 18, 0, 1, 2);
+        simulatorGridPane.add(portsDesc1, 18, 0, 1, 3);
 
         Label portsDesc2 = new Label("Piny:");
         portsDesc2.setMaxWidth(Double.MAX_VALUE);
         portsDesc2.setAlignment(Pos.CENTER);
         portsDesc2.setFont(new Font("Arial", 11));
-        simulatorGridPane.add(portsDesc2, 16, 0, 2, 2);
+        simulatorGridPane.add(portsDesc2, 16, 0, 2, 3);
 
         Label timePassedLabel = new Label("Czas Symulacji:");
         timePassedLabel.setMaxWidth(Double.MAX_VALUE);
@@ -1328,11 +1370,11 @@ public class MainStage extends Application {
 
         portToggle7.setOnAction(event -> {
             if (portToggle7.isSelected()) {
-                Main.board.setGround("P2.0",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPort")+".0",1);
                 Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
                 Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
-                Main.board.setCurrent("P2.0",1);
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPort")+".0",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1340,11 +1382,11 @@ public class MainStage extends Application {
 
         portToggle6.setOnAction(event -> {
             if (portToggle6.isSelected()) {
-                Main.board.setGround("P2.1",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPort")+".1",1);
                 Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
                 Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
-                Main.board.setCurrent("P2.1",1);
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPort")+".1",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1352,11 +1394,11 @@ public class MainStage extends Application {
 
         portToggle5.setOnAction(event -> {
             if (portToggle5.isSelected()) {
-                Main.board.setGround("P2.2",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPort")+".2",1);
                 Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
                 Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
-                Main.board.setCurrent("P2.2",1);
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPort")+".2",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1364,11 +1406,11 @@ public class MainStage extends Application {
 
         portToggle4.setOnAction(event -> {
             if (portToggle4.isSelected()) {
-                Main.board.setGround("P2.3",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPort")+".3",1);
                 Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
                 Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
-                Main.board.setCurrent("P2.3",1);
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPort")+".3",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1376,11 +1418,11 @@ public class MainStage extends Application {
 
         portToggle3.setOnAction(event -> {
             if (portToggle3.isSelected()) {
-                Main.board.setGround("P2.4",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPort")+".4",1);
                 Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
                 Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
-                Main.board.setCurrent("P2.4",1);
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPort")+".4",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1388,11 +1430,11 @@ public class MainStage extends Application {
 
         portToggle2.setOnAction(event -> {
             if (portToggle2.isSelected()) {
-                Main.board.setGround("P2.5",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPort")+".5",1);
                 Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
                 Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
-                Main.board.setCurrent("P2.5",1);
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPort")+".5",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1400,11 +1442,11 @@ public class MainStage extends Application {
 
         portToggle1.setOnAction(event -> {
             if (portToggle1.isSelected()) {
-                Main.board.setGround("P2.6",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPort")+".6",1);
                 Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
                 Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
-                Main.board.setCurrent("P2.6",1);
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPort")+".6",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1412,11 +1454,11 @@ public class MainStage extends Application {
 
         portToggle0.setOnAction(event -> {
             if (portToggle0.isSelected()) {
-                Main.board.setGround("P2.7",1);
+                Main.board.setGround(Main.settingsMap.get("zadajnikiPort")+".7",1);
                 Main.board.setGround(Main.settingsMap.get("zadajnikiPrzerwania"),1);
             } else {
                 Main.board.setCurrent(Main.settingsMap.get("zadajnikiPrzerwania"),1);
-                Main.board.setCurrent("P2.7",1);
+                Main.board.setCurrent(Main.settingsMap.get("zadajnikiPort")+".7",1);
             }
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1425,7 +1467,7 @@ public class MainStage extends Application {
 
 
         portButton7.setOnMousePressed(event -> {
-            Main.board.setGround("P2.0",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPort")+".0",0);
             Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1433,13 +1475,13 @@ public class MainStage extends Application {
 
         portButton7.setOnMouseReleased(event -> {
             Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
-            Main.board.setCurrent("P2.0",0);
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPort")+".0",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton6.setOnMousePressed(event -> {
-            Main.board.setGround("P2.1",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPort")+".1",0);
             Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1447,13 +1489,13 @@ public class MainStage extends Application {
 
         portButton6.setOnMouseReleased(event -> {
             Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
-            Main.board.setCurrent("P2.1",0);
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPort")+".1",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton5.setOnMousePressed(event -> {
-            Main.board.setGround("P2.2",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPort")+".2",0);
             Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1461,13 +1503,13 @@ public class MainStage extends Application {
 
         portButton5.setOnMouseReleased(event -> {
             Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
-            Main.board.setCurrent("P2.2",0);
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPort")+".2",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton4.setOnMousePressed(event -> {
-            Main.board.setGround("P2.3",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPort")+".3",0);
             Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1475,13 +1517,13 @@ public class MainStage extends Application {
 
         portButton4.setOnMouseReleased(event -> {
             Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
-            Main.board.setCurrent("P2.3",0);
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPort")+".3",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton3.setOnMousePressed(event -> {
-            Main.board.setGround("P2.4",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPort")+".4",0);
             Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1489,13 +1531,13 @@ public class MainStage extends Application {
 
         portButton3.setOnMouseReleased(event -> {
             Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
-            Main.board.setCurrent("P2.4",0);
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPort")+".4",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton2.setOnMousePressed(event -> {
-            Main.board.setGround("P2.5",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPort")+".5",0);
             Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1503,13 +1545,13 @@ public class MainStage extends Application {
 
         portButton2.setOnMouseReleased(event -> {
             Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
-            Main.board.setCurrent("P2.5",0);
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPort")+".5",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton1.setOnMousePressed(event -> {
-            Main.board.setGround("P2.6",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPort")+".6",0);
             Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1517,13 +1559,13 @@ public class MainStage extends Application {
 
         portButton1.setOnMouseReleased(event -> {
             Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
-            Main.board.setCurrent("P2.6",0);
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPort")+".6",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
 
         portButton0.setOnMousePressed(event -> {
-            Main.board.setGround("P2.7",0);
+            Main.board.setGround(Main.settingsMap.get("przyciskiPort")+".7",0);
             Main.board.setGround(Main.settingsMap.get("przyciskiPrzerwania"),0);
             Main.board.set();
             Main.cpu.refreshGui();
@@ -1531,7 +1573,7 @@ public class MainStage extends Application {
 
         portButton0.setOnMouseReleased(event -> {
             Main.board.setCurrent(Main.settingsMap.get("przyciskiPrzerwania"),0);
-            Main.board.setCurrent("P2.7",0);
+            Main.board.setCurrent(Main.settingsMap.get("przyciskiPort")+".7",0);
             Main.board.set();
             Main.cpu.refreshGui();
         });
@@ -2300,6 +2342,12 @@ public class MainStage extends Application {
     public Label p3TextField;
     public Label p3PinsTextField;
 
+    public Label p4TextField;
+    public Label p4PinsTextField;
+
+    public Label p5TextField;
+    public Label p5PinsTextField;
+
     public Label pTextField;
 
     public Label ovTextField;
@@ -2469,19 +2517,44 @@ public class MainStage extends Application {
                 "lcall", "ret", "reti", "ajmp", "ljmp",
                 "sjmp", "jmp", "jz", "jnz", "jc",
                 "jnc", "jb", "jnb", "jbc", "cjne",
-                "djnz", "nop","org","db","code at","include"
+                "djnz", "nop","org","db","code at","include",
+                "ADD", "ADDC", "SUBB", "INC", "DEC",
+                "MUL", "DIV", "ANL", "ORL", "XRL",
+                "CLR", "RL", "RLC", "RR", "RRC",
+                "SWAP", "MOV", "MOVC", "MOVX", "PUSH",
+                "POP", "XCH", "SETB", "CPL", "ACALL",
+                "LCALL", "RET", "RETI", "AJMP", "LJMP",
+                "SJMP", "JMP", "JZ", "JNZ", "JC",
+                "JNC", "JB", "JNB", "JBC", "CJNE",
+                "DJNZ", "NOP","ORG","DB","CODE AT","INCLUDE"
+        };
+        private final String[] ADDRESSES = new String[] {
+            "r0","r1","r2","r3","r4","r5","r6","r7","a","acc","b","p0","sp",
+                "p1", "p2","p3","tcon","tmod","tl0","tl1","th0","th1","ie",
+                "dpl","dph","p4","p5",
+                "p0.0","p0.1","p0.2","p0.3","p0.4","p0.5","p0.6","p0.7",
+                "p1.0","p1.1","p1.2","p1.3","p1.4","p1.5","p1.6","p1.7",
+                "p2.0","p2.1","p2.2","p2.3","p2.4","p2.5","p2.6","p2.7",
+                "p3.0","p3.1","p3.2","p3.3","p3.4","p3.5","p3.6","p3.7",
+                "p4.0","p4.1","p4.2","p4.3","p4.4","p4.5","p4.6","p4.7",
+                "p5.0","p5.1","p5.2","p5.3","p5.4","p5.5","p5.6","p5.7",
+                "acc.0","acc.1","acc.2","acc.3","acc.4","acc.5","acc.6","acc.7"
         };
 
+
+
+
         private final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
+        private final String ADDRESSES_PATTERN = "\\b(" + String.join("|", ADDRESSES) + ")\\b";
         private final String LABEL_PATTERN = "[^(\n;)]*:";
         private final String COMMENT_PATTERN = ";[^\n]*";
 
         private final Pattern PATTERN = Pattern.compile(
                 "(?<KEYWORD>" + KEYWORD_PATTERN + ")"
                         + "|(?<LABEL>" + LABEL_PATTERN + ")"
-                         + "|(?<COMMENT>" + COMMENT_PATTERN + ")"
+                            + "|(?<ADDRESS>" + ADDRESSES_PATTERN + ")"
+                                + "|(?<COMMENT>" + COMMENT_PATTERN + ")"
         );
-
         private StyleSpans<Collection<String>> computeHighlighting(String text) {
             Matcher matcher = PATTERN.matcher(text);
             int lastKwEnd = 0;
@@ -2490,9 +2563,10 @@ public class MainStage extends Application {
             while(matcher.find()) {
                 String styleClass =
                         matcher.group("KEYWORD") != null ? "keyword" :
-                                matcher.group("LABEL") != null ? "label" :
-                                    matcher.group("COMMENT") != null ? "comment" :
-                                            null; /* never happens */ assert styleClass != null;
+                                matcher.group("ADDRESS") != null ? "address" :
+                                     matcher.group("LABEL") != null ? "label" :
+                                            matcher.group("COMMENT") != null ? "comment" :
+                                                null; /* never happens */ assert styleClass != null;
                 spansBuilder.add(Collections.emptyList(), matcher.start() - lastKwEnd);
                 spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
                 lastKwEnd = matcher.end();

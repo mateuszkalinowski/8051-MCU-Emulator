@@ -45,6 +45,24 @@ public class Board {
         stanPinow.put("P3.6",new ArrayList<>());
         stanPinow.put("P3.7",new ArrayList<>());
 
+        stanPinow.put("P4.0",new ArrayList<>());
+        stanPinow.put("P4.1",new ArrayList<>());
+        stanPinow.put("P4.2",new ArrayList<>());
+        stanPinow.put("P4.3",new ArrayList<>());
+        stanPinow.put("P4.4",new ArrayList<>());
+        stanPinow.put("P4.5",new ArrayList<>());
+        stanPinow.put("P4.6",new ArrayList<>());
+        stanPinow.put("P4.7",new ArrayList<>());
+
+        stanPinow.put("P5.0",new ArrayList<>());
+        stanPinow.put("P5.1",new ArrayList<>());
+        stanPinow.put("P5.2",new ArrayList<>());
+        stanPinow.put("P5.3",new ArrayList<>());
+        stanPinow.put("P5.4",new ArrayList<>());
+        stanPinow.put("P5.5",new ArrayList<>());
+        stanPinow.put("P5.6",new ArrayList<>());
+        stanPinow.put("P5.7",new ArrayList<>());
+
         for(String key : stanPinow.keySet()) {
             stanPinow.get(key).add("1");
             stanPinow.get(key).add("1");
@@ -149,6 +167,32 @@ public class Board {
                 }
                 else {
                     Main.cpu.mainMemory.setBitExternal(Main.cpu.codeMemory.bitAddresses.get("P3." + (7-i)),true);
+                }
+            }
+        }
+
+        for(int i = 0; i < 8; i ++) {
+            if(Main.cpu.mainMemory.latcherP4.charAt(i)=='0')
+                Main.cpu.mainMemory.setBitExternal(Main.cpu.codeMemory.bitAddresses.get("P4." + (7-i)),false);
+            else {
+                if(stanPinow.get("P4." + (7-i)).contains("0")) {
+                    Main.cpu.mainMemory.setBitExternal(Main.cpu.codeMemory.bitAddresses.get("P4." + (7-i)),false);
+                }
+                else {
+                    Main.cpu.mainMemory.setBitExternal(Main.cpu.codeMemory.bitAddresses.get("P4." + (7-i)),true);
+                }
+            }
+        }
+
+        for(int i = 0; i < 8; i ++) {
+            if(Main.cpu.mainMemory.latcherP5.charAt(i)=='0')
+                Main.cpu.mainMemory.setBitExternal(Main.cpu.codeMemory.bitAddresses.get("P5." + (7-i)),false);
+            else {
+                if(stanPinow.get("P5." + (7-i)).contains("0")) {
+                    Main.cpu.mainMemory.setBitExternal(Main.cpu.codeMemory.bitAddresses.get("P5." + (7-i)),false);
+                }
+                else {
+                    Main.cpu.mainMemory.setBitExternal(Main.cpu.codeMemory.bitAddresses.get("P5." + (7-i)),true);
                 }
             }
         }

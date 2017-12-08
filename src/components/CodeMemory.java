@@ -84,6 +84,24 @@ public class CodeMemory {
         bitAddresses.put("P3.6", "10110110");
         bitAddresses.put("P3.7", "10110111");
 
+        bitAddresses.put("P4.0","11101000");
+        bitAddresses.put("P4.1","11101001");
+        bitAddresses.put("P4.2","11101010");
+        bitAddresses.put("P4.3","11101011");
+        bitAddresses.put("P4.4","11101100");
+        bitAddresses.put("P4.5","11101101");
+        bitAddresses.put("P4.6","11101110");
+        bitAddresses.put("P4.7","11101111");
+
+        bitAddresses.put("P5.0","11111000");
+        bitAddresses.put("P5.1","11111001");
+        bitAddresses.put("P5.2","11111010");
+        bitAddresses.put("P5.3","11111011");
+        bitAddresses.put("P5.4","11111100");
+        bitAddresses.put("P5.5","11111101");
+        bitAddresses.put("P5.6","11111110");
+        bitAddresses.put("P5.7","11111111");
+
         bitAddresses.put("PSW.0", "11010000");
         bitAddresses.put("PSW.1", "11010001");
         bitAddresses.put("PSW.2", "11010010");
@@ -1487,7 +1505,7 @@ public class CodeMemory {
                 }
             }
         }
-        for (int i = 0; i < 8192; i++) {
+        for (int i = 0; i < 65536; i++) {
             String s = emulatedCodeMemory.get(i);
             if (s.charAt(s.length() - 1) != '0' && s.charAt(s.length() - 1) != '1') {
                 int numer = getLineFromLabel(s);

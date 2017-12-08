@@ -51,6 +51,9 @@ public class Main extends Application {
                 createCfg.println("przetwornikADCWR=P1.4");
                 createCfg.println("przetwornikADCCS=P1.5");
 
+                createCfg.println("przyciskiPort=P2");
+                createCfg.println("zadajnikiPort=P2");
+
                 createCfg.close();
                 loadDefaultSettings();
             }
@@ -87,6 +90,9 @@ public class Main extends Application {
 
         settingsMap.put("przyciskiPrzerwania","P3.2");
         settingsMap.put("zadajnikiPrzerwania","P3.3");
+
+        settingsMap.put("przyciskiPort","P2");
+        settingsMap.put("zadajnikiPort","P2");
 
         settingsMap.put("przetwornikDACPort","P0");
         settingsMap.put("przetwornikDACWR","P1.6");

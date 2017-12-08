@@ -86,7 +86,7 @@ public class PaneConfigStage extends Application {
         seg7ColorLabel.setFont(new Font("Arial",12));
 
         ComboBox<String> ledPortComboBox = new ComboBox<>();
-        ledPortComboBox.getItems().addAll("VCC","GND","P0","P1","P2","P3");
+        ledPortComboBox.getItems().addAll("VCC","GND","P0","P1","P2","P3","P4","P5");
         ledPortComboBox.setMaxWidth(Double.MAX_VALUE);
         ledPortComboBox.getSelectionModel().select(Main.settingsMap.get("ledsPort"));
         ledPortComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -107,7 +107,7 @@ public class PaneConfigStage extends Application {
 
 
         ComboBox<String> seg7PortComboBox = new ComboBox<>();
-        seg7PortComboBox.getItems().addAll("VCC","GND","P0","P1","P2","P3");
+        seg7PortComboBox.getItems().addAll("VCC","GND","P0","P1","P2","P3","P4","P5");
         seg7PortComboBox.setMaxWidth(Double.MAX_VALUE);
         seg7PortComboBox.getSelectionModel().select(Main.settingsMap.get("seg7DisplayPort"));
 
@@ -183,6 +183,45 @@ public class PaneConfigStage extends Application {
             Main.stage.drawFrame();
             Main.saveSettings();
         });
+
+        Label buttonsConnectWay = new Label("Sposób podłączenia:");
+        buttonsConnectWay.setAlignment(Pos.CENTER);
+        buttonsConnectWay.setMaxWidth(Double.MAX_VALUE);
+        buttonsConnectWay.setFont(new Font("Arial",15));
+
+        Label przyciskiSposobPodlaczeniaLabel = new Label("Przyciski");
+        przyciskiSposobPodlaczeniaLabel.setAlignment(Pos.CENTER);
+        przyciskiSposobPodlaczeniaLabel.setMaxWidth(Double.MAX_VALUE);
+        przyciskiSposobPodlaczeniaLabel.setFont(new Font("Arial",12));
+
+        Label zadajnikiSposobPodlaczaniaLabel = new Label("Zadajniki");
+        zadajnikiSposobPodlaczaniaLabel.setAlignment(Pos.CENTER);
+        zadajnikiSposobPodlaczaniaLabel.setMaxWidth(Double.MAX_VALUE);
+        zadajnikiSposobPodlaczaniaLabel.setFont(new Font("Arial",12));
+
+
+        ComboBox<String> przyciskiSposobPodlaczeniaComboBox = new ComboBox<>();
+        przyciskiSposobPodlaczeniaComboBox.getItems().addAll("-","P0","P1","P2","P3","P4","P5");
+        przyciskiSposobPodlaczeniaComboBox.setMaxWidth(Double.MAX_VALUE);
+        przyciskiSposobPodlaczeniaComboBox.getSelectionModel().select(Main.settingsMap.get("przyciskiPort"));
+        przyciskiSposobPodlaczeniaComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Main.settingsMap.put("przyciskiPort",przyciskiSposobPodlaczeniaComboBox.getSelectionModel().getSelectedItem());
+            Main.stage.drawFrame();
+            Main.saveSettings();
+        });
+
+        ComboBox<String> zadajnikiSposobPodlaczeniaComboBox = new ComboBox<>();
+        zadajnikiSposobPodlaczeniaComboBox.getItems().addAll("-","P0","P1","P2","P3","P4","P5");
+        zadajnikiSposobPodlaczeniaComboBox.setMaxWidth(Double.MAX_VALUE);
+        zadajnikiSposobPodlaczeniaComboBox.getSelectionModel().select(Main.settingsMap.get("zadajnikiPort"));
+        zadajnikiSposobPodlaczeniaComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            Main.settingsMap.put("zadajnikiPort",zadajnikiSposobPodlaczeniaComboBox.getSelectionModel().getSelectedItem());
+            Main.stage.drawFrame();
+            Main.saveSettings();
+        });
+
+
+
 
         Label adcLabel = new Label("Przetwornik ADC:");
         adcLabel.setAlignment(Pos.CENTER);
@@ -328,6 +367,9 @@ public class PaneConfigStage extends Application {
             rdAdcPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikADCRD"));
             wrAdcPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikADCWR"));
             csAdcPortComboBox.getSelectionModel().select(Main.settingsMap.get("przetwornikADCCS"));
+            przyciskiSposobPodlaczeniaComboBox.getSelectionModel().select(Main.settingsMap.get("przyciskiPort"));
+            zadajnikiSposobPodlaczeniaComboBox.getSelectionModel().select(Main.settingsMap.get("zadajnikiPort"));
+
 
 
             Main.stage.drawFrame();
@@ -368,7 +410,6 @@ public class PaneConfigStage extends Application {
         convertersGridPane.add(adcLabel,5,0,4,2);
         convertersGridPane.add(adcPortLabel,5,2,2,1);
         convertersGridPane.add(adcPortComboBox,7,2,2,1);
-
         convertersGridPane.add(rdAdcPortLabel,5,3,2,1);
         convertersGridPane.add(rdAdcPortComboBox,7,3,2,1);
         convertersGridPane.add(wrAdcPortLabel,5,4,2,1);
@@ -382,6 +423,14 @@ public class PaneConfigStage extends Application {
         interruptsGridPane.add(zadajnikiInterruptsLabel,0,3,2,1);
         interruptsGridPane.add(zadajnikiPrzerwaniaComboBox,2,3,2,1);
 
+        interruptsGridPane.add(buttonsConnectWay,5,0,4,2);
+        interruptsGridPane.add(przyciskiSposobPodlaczeniaLabel,5,2,2,1);
+        interruptsGridPane.add(przyciskiSposobPodlaczeniaComboBox,7,2,2,1);
+        interruptsGridPane.add(zadajnikiSposobPodlaczaniaLabel,5,3,2,1);
+        interruptsGridPane.add(zadajnikiSposobPodlaczeniaComboBox,7,3,2,1);
+
+
+
         TabPane mainTabPane = new TabPane();
         Tab generalSettingsTab = new Tab();
         generalSettingsTab.setClosable(false);
@@ -390,7 +439,7 @@ public class PaneConfigStage extends Application {
         generalSettingsTab.setContent(mainGridPane);
 
         Tab interrputsSettingsTab = new Tab();
-        interrputsSettingsTab.setText("Przerwania i Timery");
+        interrputsSettingsTab.setText("Przerwania i Przyciski");
         interrputsSettingsTab.setClosable(false);
         mainTabPane.getTabs().add(interrputsSettingsTab);
         interrputsSettingsTab.setContent(interruptsGridPane);

@@ -1631,6 +1631,8 @@ public class Cpu {
         Main.stage.p1TextField.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("P1"))) + "b");
         Main.stage.p2TextField.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("P2"))) + "b");
         Main.stage.p3TextField.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("P3"))) + "b");
+        Main.stage.p4TextField.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("P4"))) + "b");
+        Main.stage.p5TextField.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("P5"))) + "b");
         String number = Integer.toHexString(Integer.parseInt(Main.cpu.mainMemory.latcherP0,2)).toUpperCase();
         if(number.length()==1)
             number = "0" + number;
@@ -1647,6 +1649,14 @@ public class Cpu {
         if(number.length()==1)
             number = "0" + number;
         Main.stage.p3PinsTextField.setText("0x" + number);
+        number = Integer.toHexString(Integer.parseInt(Main.cpu.mainMemory.latcherP4,2)).toUpperCase();
+        if(number.length()==1)
+            number = "0" + number;
+        Main.stage.p4PinsTextField.setText("0x" + number);
+        number = Integer.toHexString(Integer.parseInt(Main.cpu.mainMemory.latcherP5,2)).toUpperCase();
+        if(number.length()==1)
+            number = "0" + number;
+        Main.stage.p5PinsTextField.setText("0x" + number);
 
         Main.stage.accumulatorTextFieldHex.setText("0x" + Integer.toHexString(mainMemory.get("A")).toUpperCase());
         Main.stage.accumulatorTextFieldBin.setText(expandTo8Digits(Integer.toBinaryString(mainMemory.get("A")).toUpperCase()) + "b");
@@ -1890,6 +1900,6 @@ public class Cpu {
     private boolean LastP32 = true;
     private boolean LastP33 = true;
 
-    public static int programMemory = 16384;
+    public static int programMemory = 65536;
 
 }
