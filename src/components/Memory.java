@@ -280,7 +280,7 @@ public class Memory {
     }
 
 
-    String get8BitAddress(String label) throws NoSuchElementException{
+   /*String get8BitAddress(String label) throws NoSuchElementException{
         try {
             if(!memoryCellsNames.containsKey(label))
              throw new NoSuchElementException();
@@ -295,7 +295,7 @@ public class Memory {
         catch (Exception e) {
             throw new NoSuchElementException();
         }
-    }
+    }*/
 
     public void put(String label,int wartosc) {
             int index = memoryCellsNames.get(label);

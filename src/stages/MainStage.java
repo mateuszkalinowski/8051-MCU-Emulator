@@ -804,8 +804,6 @@ public class MainStage extends Application {
             editorTabs.get(numerKarty).ownTab.setClosable(true);
             currentlyRunTabName = "";
 
-            //editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTextArea.setEditable(true);
-            //editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTextArea.setText("");
 
             editorTabs.get(numerKarty).ownTextArea.setEditable(true);
             editorTabs.get(numerKarty).ownTextArea.clear();  //setText("");
@@ -848,13 +846,14 @@ public class MainStage extends Application {
             portToggle5.setSelected(false);
             portToggle6.setSelected(false);
             portToggle7.setSelected(false);
-
             Main.cpu.refreshGui();
             Dac.reset();
             compilationErrorsLabel.setText("");
             compilationErrorsLabel.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
             OscilloscopePane.resetPrzebieg();
             Main.adc.reset();
+            Main.cpu.resetCpu();
+            Main.cpu.refreshGui();
         });
 
         oneStepButton = new Button("Krok");
@@ -1062,6 +1061,8 @@ public class MainStage extends Application {
                         break;
                     }
                 }
+                if (cardName.startsWith("*"))
+                    cardName = cardName.substring(1);
                 chooseFile.setInitialFileName(cardName + ".hex");
                 File saveFile = chooseFile.showSaveDialog(primaryStage);
                 if (saveFile != null) {

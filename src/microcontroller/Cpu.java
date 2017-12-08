@@ -335,6 +335,7 @@ public class Cpu {
         }
         else if(toExecute.equals("00000101")) { //INC Direct
             machineCycle();
+            System.out.println(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
             int wartosc = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
             wartosc+=1;
             if(wartosc==256)
