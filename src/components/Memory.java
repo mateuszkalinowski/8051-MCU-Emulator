@@ -1,6 +1,8 @@
 package components;
 
 import core.Main;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -14,6 +16,15 @@ public class Memory {
         for(int i = 0; i < 256; i++) {
             mainMemory[i] = "00000000".toCharArray();
         }
+
+        portsAddresses = new ArrayList<>();
+        portsAddresses.add("10000000");//P0
+        portsAddresses.add("10010000");//P1
+        portsAddresses.add("10100000");//P2
+        portsAddresses.add("10110000");//P3
+        portsAddresses.add("11101000");//P4
+        portsAddresses.add("11111000");//P5;
+
         memoryCellsNames.put("R0",0);
         memoryCellsNames.put("R1",1);
         memoryCellsNames.put("R2",2);
@@ -62,6 +73,23 @@ public class Memory {
         latcherP5 = "11111111";
 
         bitAddressableBegginings = new int[]{128,136,144,152,160,168,176,184,208,224,232,240,248};
+    }
+
+    public int getFromLatch(int adres) {
+        if(adres == 128)
+            return Integer.parseInt(latcherP0,2);
+        if(adres == 144)
+            return Integer.parseInt(latcherP1,2);
+        if(adres == 160)
+            return Integer.parseInt(latcherP2,2);
+        if(adres == 176)
+            return Integer.parseInt(latcherP3,2);
+        if(adres == 232)
+            return Integer.parseInt(latcherP4,2);
+        if(adres == 248)
+            return Integer.parseInt(latcherP5,2);
+        else
+            return -1;
     }
 
     public boolean getBit(String address) throws NoSuchElementException {
@@ -620,5 +648,7 @@ public class Memory {
     public String latcherP3;
     public String latcherP4;
     public String latcherP5;
+
+    public ArrayList<String> portsAddresses;
 
 }

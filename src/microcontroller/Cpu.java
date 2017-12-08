@@ -519,7 +519,6 @@ public class Cpu {
         }
         /*
             ANL:
-                wszystko bez Ri
          */
         else if(toExecute.equals("01010100")) { //ANL a,#01h
             machineCycle();
@@ -549,8 +548,14 @@ public class Cpu {
         else if(toExecute.equals("01010101")) {
             machineCycle();
             int wartosc1 = mainMemory.get("A");
-            int warotsc2 = mainMemory.getDirect(codeMemory.getFromAddress(linePointer+1));
-            int wynik = wartosc1&warotsc2;
+            int wartosc2 = 0;
+            if(mainMemory.portsAddresses.contains(codeMemory.getFromAddress(linePointer+1))) {
+                wartosc2 = mainMemory.getFromLatch(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            }
+            else {
+                wartosc2 = mainMemory.getDirect(codeMemory.getFromAddress(linePointer + 1));
+            }
+            int wynik = wartosc1&wartosc2;
             mainMemory.put("A",wynik);
             linePointer+=2;
         }
@@ -578,10 +583,18 @@ public class Cpu {
             }
             linePointer+=2;
         }
+
+
         else if(toExecute.equals("01010010")) { //ANL direct,A
             machineCycle();
             int wartosc1 = mainMemory.get("A");
-            int wartosc2 = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer + 1),2));
+            int wartosc2 = 0;
+            if(mainMemory.portsAddresses.contains(codeMemory.getFromAddress(linePointer+1))) {
+                wartosc2 = mainMemory.getFromLatch(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            }
+            else {
+                wartosc2 = mainMemory.getDirect(codeMemory.getFromAddress(linePointer + 1));
+            }
 
             int wynik = wartosc1 & wartosc2;
 
@@ -592,7 +605,13 @@ public class Cpu {
             machineCycle();
             machineCycle();
             int wartosc1 = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
-            int wartosc2 = Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
+            int wartosc2 = 0;
+            if(mainMemory.portsAddresses.contains(codeMemory.getFromAddress(linePointer+1))) {
+                wartosc2 = mainMemory.getFromLatch(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            }
+            else {
+                wartosc2 = mainMemory.getDirect(codeMemory.getFromAddress(linePointer + 1));
+            }
             int wynik = wartosc1&wartosc2;
 
             mainMemory.put(Integer.parseInt(codeMemory.getFromAddress(linePointer+1)),wynik);

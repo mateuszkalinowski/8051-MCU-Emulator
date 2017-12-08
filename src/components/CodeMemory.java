@@ -304,6 +304,15 @@ public class CodeMemory {
 
                 } else {
                     int backupPointer = pointer;
+                    /*for(int i = 0; i < splittedLine.length;i++) {
+                        splittedLine[i] = splittedLine[i].replaceAll("p0","80h");
+                        splittedLine[i] = splittedLine[i].replaceAll("p1","90h");
+                        splittedLine[i] = splittedLine[i].replaceAll("p2","A0h");
+                        splittedLine[i] = splittedLine[i].replaceAll("p3","B0h");
+                        splittedLine[i] = splittedLine[i].replaceAll("p4","E8h");
+                        splittedLine[i] = splittedLine[i].replaceAll("p5","F8h");
+                    }
+*/
                     if (splittedLine[0].toUpperCase().equals("LCALL")) {
 
                         if (splittedLine.length != 2) {
@@ -527,6 +536,9 @@ public class CodeMemory {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Bit: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                                     }
                                 }
+
+
+
                             }
                         } else if (splittedLine[1].toUpperCase().equals("C") || splittedLine[1].toUpperCase().equals("CY")) {
                             if (splittedLine[2].charAt(0) == '/') {
@@ -737,7 +749,7 @@ public class CodeMemory {
                     } else if (splittedLine[0].toUpperCase().equals("XRL")) {
 
                         if (splittedLine.length != 3)
-                            throw new CompilingException(numeracjaLinii, "Niepoprawna ilość argumentów funkcji ANL: '" + backupLinii + "'");
+                            throw new CompilingException(numeracjaLinii, "Niepoprawna ilość argumentów funkcji XRL: '" + backupLinii + "'");
 
 
                         if (splittedLine[1].toUpperCase().equals("A")) {
