@@ -713,12 +713,17 @@ public class MainStage extends Application {
         EATextField.setStyle("-fx-background-color: white; -fx-background-radius: 10");
         simulatorGridPane.add(EATextField, 3, 3);
 
-
         translateToMemoryButton = new Button("Asemblacja");
         translateToMemoryButton.setOnAction(event -> {
             //  lines = editorTextArea.getText().split("\n");
-            if (editorTabPane.getTabs().size() == 0)
+            if (editorTabPane.getTabs().size() == 0) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Błąd asemblacji");
+                alert.setHeaderText("Żaden plik nie jest otwarty");
+                alert.setContentText("Aby utworzyć nowy plik wybierz Plik-Nowy. Aby otworzyć istniejący wybierz Plik-Otwórz lub przeciągnij pożądany plik na pustą przestrzeń po prawej.");
+                alert.showAndWait();
                 return;
+            }
             lines = editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTextArea.getText().split("\n");
             try {
                 ArrayList<String> compilatedText = Main.cpu.codeMemory.setMemory(lines, true);
@@ -1730,12 +1735,26 @@ public class MainStage extends Application {
         lowerRamTextArea = new TextArea();
         lowerRamTextArea.setFont(new Font("Arial", 13));
         lowerRamTextArea.setEditable(false);
-        mainMemoryGridPane.add(lowerRamTextArea, 1, 1, 8, 1);
+        lowerRamTextArea.setMaxWidth(530.0);
+
+        VBox lowerRamVBox = new VBox();
+        VBox.setVgrow(lowerRamTextArea,Priority.ALWAYS);
+        lowerRamVBox.getChildren().add(lowerRamTextArea);
+        lowerRamVBox.setAlignment(Pos.CENTER);
+
+        mainMemoryGridPane.add(lowerRamVBox, 1, 1, 8, 1);
 
         upperRawTextArea = new TextArea();
         upperRawTextArea.setFont(new Font("Arial", 13));
         upperRawTextArea.setEditable(false);
-        mainMemoryGridPane.add(upperRawTextArea, 11, 1, 8, 1);
+        upperRawTextArea.setMaxWidth(530.0);
+
+        VBox upperRamVBox = new VBox();
+        VBox.setVgrow(upperRawTextArea,Priority.ALWAYS);
+        upperRamVBox.getChildren().add(upperRawTextArea);
+        upperRamVBox.setAlignment(Pos.CENTER);
+
+        mainMemoryGridPane.add(upperRamVBox, 11, 1, 8, 1);
 
         Label lowerRamLabel = new Label("Ram 00-7F");
         lowerRamLabel.setAlignment(Pos.CENTER);
@@ -1850,7 +1869,7 @@ public class MainStage extends Application {
         try {
             URL iconURL = MainStage.class.getResource("cpu.png");
             java.awt.Image image = new ImageIcon(iconURL).getImage();
-            com.apple.eawt.Application.getApplication().setDockIconImage(image);
+           // com.apple.eawt.Application.getApplication().setDockIconImage(image);
             // com.apple.eawt.Application.getApplication().setDockIconBadge("8051");
         } catch (Exception ignored) {
 
@@ -2467,7 +2486,7 @@ public class MainStage extends Application {
             }
             ownTab.setText("Untitled " + String.valueOf(x));
             ownTextArea = new CodeArea();
-            ownTextArea.setPrefWidth(1000);
+            ownTextArea.setPrefWidth(10000);
             ownTextArea.setParagraphGraphicFactory(LineNumberFactory.get(ownTextArea));
 
             ownTextArea.richChanges()
