@@ -625,7 +625,7 @@ public class CodeMemory {
                                 throw new CompilingException(numeracjaLinii, "Przekroczono zakres skoku ACALL");
                         }
                         catch (NumberFormatException e){
-                            emulatedCodeMemory.set(pointer,"00000001");
+                            emulatedCodeMemory.set(pointer,"00010001");
                             emulatedCodeMemory.set(pointer+1,splittedLine[1].toUpperCase());
                         }
 
@@ -1593,6 +1593,8 @@ public class CodeMemory {
                     if (emulatedCodeMemory.get(i - 1).equals("00000010") || emulatedCodeMemory.get(i - 1).equals("00010010")) {
                         emulatedCodeMemory.set(i, make16DigitsStringFromNumber(Integer.toString(numer) + "d").substring(0, 8));
                         emulatedCodeMemory.set(i + 1, make16DigitsStringFromNumber(Integer.toString(numer) + "d").substring(8, 16));
+
+
                     } else if(emulatedCodeMemory.get(i-1).substring(3).equals("00001")) {
                         String destination = make16DigitsStringFromNumber(Integer.toString(numer) + "d");
                         int destinationInt = Integer.parseInt(destination,2);
@@ -1605,12 +1607,12 @@ public class CodeMemory {
                             throw new CompilingException(i-1, "Przekroczono zakres skoku AJMP");
 
 
-                    } else if(emulatedCodeMemory.get(i-1).substring(3).equals("10001")) { //TODO!!!!!!
+                    } else if(emulatedCodeMemory.get(i-1).substring(3).equals("10001")) {
                         String destination = make16DigitsStringFromNumber(Integer.toString(numer) + "d");
                         int destinationInt = Integer.parseInt(destination,2);
                         if((i-1)/2048 == destinationInt/2048) {
                             destination = destination.substring(5);
-                            emulatedCodeMemory.set(i-1,destination.substring(0,3) + "00001");
+                            emulatedCodeMemory.set(i-1,destination.substring(0,3) + "10001");
                             emulatedCodeMemory.set(i,destination.substring(3,11));
                         }
                         else

@@ -261,6 +261,7 @@ public class Cpu {
             machineCycle();
             int stackPointer = mainMemory.get("SP");
             String linePointerBin = codeMemory.make16DigitsStringFromNumber(Integer.toBinaryString(linePointer+2) + "B");
+            System.out.println(linePointerBin);
             stackPointer+=1;
             if(stackPointer == 256)
                 stackPointer = 0;
