@@ -784,6 +784,7 @@ public class MainStage extends Application {
                 editorTabPane.getSelectionModel().getSelectedItem().setClosable(false);
                 // Main.cpu.mainMemory.putFromExternal(160);
                 Main.cpu.refreshGui();
+                editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTextArea.getUndoManager().forgetHistory();
 
             } catch (CompilingException e) {
                 Main.stage.compilationErrorsLabel.setText("Błąd: " + e.getMessage());
@@ -854,6 +855,7 @@ public class MainStage extends Application {
             Main.adc.reset();
             Main.cpu.resetCpu();
             Main.cpu.refreshGui();
+            editorTabs.get(numerKarty).ownTextArea.getUndoManager().forgetHistory();
         });
 
         oneStepButton = new Button("Krok");
@@ -2497,7 +2499,7 @@ public class MainStage extends Application {
 
             ownTab.setContent(ownTextArea);
             ownTextArea.setOnKeyReleased(event -> {
-                if (!edited && !ownTextArea.getText().equals(previousText)) {
+                if (!edited && !ownTextArea.getText().equals(previousText) && !ownTab.getText().equals(currentlyRunTabName)) {
                     edited = true;
                     ownTab.setText("*" + ownTab.getText());
                 } else if (edited && ownTextArea.getText().equals(previousText)) {
