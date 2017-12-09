@@ -2475,7 +2475,6 @@ public class MainStage extends Application {
             this.ownTab = new Tab();
             ownTab.setClosable(true);
 
-
             int x = 1;
             for (int i = 0; i < editorTabs.size(); i++) {
                 for (editorTab w : editorTabs) {
@@ -2537,7 +2536,7 @@ public class MainStage extends Application {
                 "lcall", "ret", "reti", "ajmp", "ljmp",
                 "sjmp", "jmp", "jz", "jnz", "jc",
                 "jnc", "jb", "jnb", "jbc", "cjne",
-                "djnz", "nop","org","db","code at","include",
+                "djnz", "nop","org","db","code at","include","xchd",
                 "ADD", "ADDC", "SUBB", "INC", "DEC",
                 "MUL", "DIV", "ANL", "ORL", "XRL",
                 "CLR", "RL", "RLC", "RR", "RRC",
@@ -2546,27 +2545,18 @@ public class MainStage extends Application {
                 "LCALL", "RET", "RETI", "AJMP", "LJMP",
                 "SJMP", "JMP", "JZ", "JNZ", "JC",
                 "JNC", "JB", "JNB", "JBC", "CJNE",
-                "DJNZ", "NOP","ORG","DB","CODE AT","INCLUDE"
+                "DJNZ", "NOP","ORG","DB","CODE AT","INCLUDE","XCHD"
         };
-        private final String[] ADDRESSES = new String[] {
-            "r0","r1","r2","r3","r4","r5","r6","r7","a","acc","b","p0","sp",
-                "p1", "p2","p3","tcon","tmod","tl0","tl1","th0","th1","ie",
-                "dpl","dph","p4","p5",
-        };
-
-
 
 
         private final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
-        private final String ADDRESSES_PATTERN = "\\b(" + String.join("|", ADDRESSES) + ")\\b";
         private final String LABEL_PATTERN = "[^(\n;)]*:";
-        private final String COMMENT_PATTERN = ";[^\n]*";
+        private final String COMMENT_PATTERN = "(;[^\n]*";
 
         private final Pattern PATTERN = Pattern.compile(
                 "(?<KEYWORD>" + KEYWORD_PATTERN + ")"
                         + "|(?<LABEL>" + LABEL_PATTERN + ")"
-                            + "|(?<ADDRESS>" + ADDRESSES_PATTERN + ")"
-                                + "|(?<COMMENT>" + COMMENT_PATTERN + ")"
+                                + "|(?<COMMENT>" + COMMENT_PATTERN + "))"
         );
         private StyleSpans<Collection<String>> computeHighlighting(String text) {
             Matcher matcher = PATTERN.matcher(text);
@@ -2576,7 +2566,6 @@ public class MainStage extends Application {
             while(matcher.find()) {
                 String styleClass =
                         matcher.group("KEYWORD") != null ? "keyword" :
-                                matcher.group("ADDRESS") != null ? "address" :
                                      matcher.group("LABEL") != null ? "label" :
                                             matcher.group("COMMENT") != null ? "comment" :
                                                 null; /* never happens */ assert styleClass != null;

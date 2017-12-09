@@ -209,9 +209,9 @@ public class CodeMemory {
                 if (splittedLine[0].charAt(splittedLine[0].length() - 1) == ':') {
                     if (getLineFromLabel(splittedLine[0].toUpperCase().substring(0, splittedLine[0].length() - 1)) == -1) {
                         try {
-                            make8DigitsStringFromNumber(splittedLine[0].toUpperCase().substring(0, splittedLine[0].length() - 1));
+                            isANumber(splittedLine[0].toUpperCase().substring(0, splittedLine[0].length() - 1));
                             throw new CompilingException(numeracjaLinii, "Niepoprawna Etykieta: '" + splittedLine[0].toUpperCase().substring(0, splittedLine[0].length() - 1));
-                        } catch (NumberFormatException e) {
+                        } catch (Exception e) {
                             labels.add(new Pair<>(splittedLine[0].toUpperCase().substring(0, splittedLine[0].length() - 1), pointer));
                             linieZNumerami.add(backupLinii);
                             String[] splittedLine2 = new String[splittedLine.length - 1];
@@ -581,8 +581,16 @@ public class CodeMemory {
                            }
 
                         }
+                    if (splittedLine[0].toUpperCase().equals("AJMP")) {
+                        if(splittedLine.length != 2) {
+                            throw new CompilingException(numeracjaLinii, "Niepoprawna ilosc argumentow instrukcji AJMP: " + backupLinii + "'");
+                        }
 
-                    if (splittedLine[0].toUpperCase().equals("LCALL")) {
+                        emulatedCodeMemory.set(pointer,"00000001");
+                        emulatedCodeMemory.set(pointer+1,splittedLine[1].toUpperCase());
+                        pointer = pointer+2;
+                    }
+                    else if (splittedLine[0].toUpperCase().equals("LCALL")) {
 
                         if (splittedLine.length != 2) {
                             throw new CompilingException(numeracjaLinii, "Niepoprawne uzycie LCALL: " + backupLinii + "'");
@@ -1681,7 +1689,7 @@ public class CodeMemory {
         return result.toString();
     }
 
-    public String make16DigitsStringFromNumber(String number) throws CompilingException {
+    public String make16DigitsStringFromNumber(String number) throws NumberFormatException {
         StringBuilder result;
         char lastSymbol = number.charAt(number.length() - 1);
         if (lastSymbol == 'd' || lastSymbol == 'D')
@@ -1715,6 +1723,35 @@ public class CodeMemory {
             result.insert(0, "0");
         }
         return result.toString();
+    }
+
+    public void isANumber(String number) throws Exception {
+        char lastSymbol = number.charAt(number.length() - 1);
+        if (lastSymbol == 'd' || lastSymbol == 'D')
+            number = number.substring(0, number.length() - 1);
+        int wartosc;
+        if (lastSymbol == 'b' || lastSymbol == 'B') {
+            try {
+                number = number.substring(0, number.length() - 1);
+                wartosc = Integer.parseInt(number, 2);
+            } catch (Exception e) {
+                throw new NumberFormatException();
+            }
+        } else if (lastSymbol == 'h' || lastSymbol == 'H') {
+            try {
+                number = number.substring(0, number.length() - 1);
+                wartosc = Integer.parseInt(number, 16);
+            } catch (Exception e) {
+                throw new NumberFormatException();
+            }
+        } else {
+            try {
+                wartosc = Integer.parseInt(number);
+            } catch (Exception e) {
+                throw new NumberFormatException();
+            }
+        }
+
     }
 
     private String getRAddress(String label) {
