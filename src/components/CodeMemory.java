@@ -608,6 +608,28 @@ public class CodeMemory {
                         }
 
                         pointer = pointer+2;
+                    } else if (splittedLine[0].toUpperCase().equals("ACALL")) {
+                        if(splittedLine.length != 2) {
+                            throw new CompilingException(numeracjaLinii, "Niepoprawna ilosc argumentow instrukcji ACALL: " + backupLinii + "'");
+                        }
+
+                        try {
+                            String destination = make16DigitsStringFromNumber(splittedLine[1]);
+                            int destinationInt = Integer.parseInt(destination,2);
+                            if(pointer/2048 == destinationInt/2048) {
+                                destination = destination.substring(5);
+                                emulatedCodeMemory.set(pointer,destination.substring(0,3) + "10001");
+                                emulatedCodeMemory.set(pointer+1,destination.substring(3,11));
+                            }
+                            else
+                                throw new CompilingException(numeracjaLinii, "Przekroczono zakres skoku ACALL");
+                        }
+                        catch (NumberFormatException e){
+                            emulatedCodeMemory.set(pointer,"00000001");
+                            emulatedCodeMemory.set(pointer+1,splittedLine[1].toUpperCase());
+                        }
+
+                        pointer = pointer+2;
                     }
                     else if (splittedLine[0].toUpperCase().equals("LCALL")) {
 
