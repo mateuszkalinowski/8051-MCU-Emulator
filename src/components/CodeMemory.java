@@ -209,9 +209,9 @@ public class CodeMemory {
                 if (splittedLine[0].charAt(splittedLine[0].length() - 1) == ':') {
                     if (getLineFromLabel(splittedLine[0].toUpperCase().substring(0, splittedLine[0].length() - 1)) == -1) {
                         try {
-                            make8DigitsStringFromNumber(splittedLine[0].toUpperCase().substring(0, splittedLine[0].length() - 1));
+                            isANumber(splittedLine[0].toUpperCase().substring(0, splittedLine[0].length() - 1));
                             throw new CompilingException(numeracjaLinii, "Niepoprawna Etykieta: '" + splittedLine[0].toUpperCase().substring(0, splittedLine[0].length() - 1));
-                        } catch (NumberFormatException e) {
+                        } catch (Exception e) {
                             labels.add(new Pair<>(splittedLine[0].toUpperCase().substring(0, splittedLine[0].length() - 1), pointer));
                             linieZNumerami.add(backupLinii);
                             String[] splittedLine2 = new String[splittedLine.length - 1];
@@ -304,16 +304,293 @@ public class CodeMemory {
 
                 } else {
                     int backupPointer = pointer;
-                    /*for(int i = 0; i < splittedLine.length;i++) {
-                        splittedLine[i] = splittedLine[i].replaceAll("p0","80h");
-                        splittedLine[i] = splittedLine[i].replaceAll("p1","90h");
-                        splittedLine[i] = splittedLine[i].replaceAll("p2","A0h");
-                        splittedLine[i] = splittedLine[i].replaceAll("p3","B0h");
-                        splittedLine[i] = splittedLine[i].replaceAll("p4","E8h");
-                        splittedLine[i] = splittedLine[i].replaceAll("p5","F8h");
+                        for(int i = 0; i < splittedLine.length;i++) {
+
+                            splittedLine[i] = splittedLine[i].toUpperCase();
+
+                           boolean isBitAddress = false;
+
+                           if(splittedLine.length>=2) {
+                               if(splittedLine[0].equals("SETB") || splittedLine[0].equals("CLR") || splittedLine[0].equals("CPL") || splittedLine[0].equals("JB") || splittedLine[0].equals("JNB"))
+                                   isBitAddress=true;
+                           }
+                           if(splittedLine.length>=3) {
+                               if(splittedLine[0].equals("ANL") || splittedLine[0].equals("ORL")) {
+                                   if(splittedLine[1].equals("C") && i==2)
+                                       isBitAddress=true;
+                               }
+                           }
+                           if(splittedLine.length>=3) {
+                               if(splittedLine[0].equals("MOV")) {
+                                   if(i==1 && splittedLine[2].equals("C"))
+                                       isBitAddress=true;
+                                   if(i==2 && splittedLine[1].equals("C"))
+                                       isBitAddress=true;
+                               }
+                           }
+
+
+                            if (!isBitAddress) {
+
+                               if (splittedLine[i].equals("B"))
+                                   splittedLine[i] = "F0h";
+                               else if (splittedLine[i].equals("SP"))
+                                   splittedLine[i] = "81h";
+                               else if (splittedLine[i].equals("TCON"))
+                                   splittedLine[i] = "88h";
+                               else if (splittedLine[i].equals("TMOD"))
+                                   splittedLine[i] = "89h";
+
+                               else if (splittedLine[i].equals("TL0"))
+                                   splittedLine[i] = "8Ah";
+                               else if (splittedLine[i].equals("TH0"))
+                                   splittedLine[i] = "8Ch";
+                               else if (splittedLine[i].equals("TL1"))
+                                   splittedLine[i] = "8Bh";
+                               else if (splittedLine[i].equals("TH1"))
+                                   splittedLine[i] = "8Dh";
+
+                               else if (splittedLine[i].equals("IE"))
+                                   splittedLine[i] = "A8h";
+
+                               else if (splittedLine[i].equals("DPL"))
+                                   splittedLine[i] = "82h";
+                               else if (splittedLine[i].equals("DPH"))
+                                   splittedLine[i] = "83h";
+
+                               else if (splittedLine[i].equals("P0"))
+                                   splittedLine[i] = "80h";
+                               else if (splittedLine[i].equals("P1"))
+                                   splittedLine[i] = "90h";
+                               else if (splittedLine[i].equals("P2"))
+                                   splittedLine[i] = "A0h";
+                               else if (splittedLine[i].equals("P3"))
+                                   splittedLine[i] = "B0h";
+                               else if (splittedLine[i].equals("P4"))
+                                   splittedLine[i] = "E8h";
+                               else if (splittedLine[i].equals("P5"))
+                                   splittedLine[i] = "F8h";
+
+                            }
+                            if(isBitAddress) {
+                               if (splittedLine[i].equals("P0.0"))
+                                   splittedLine[i] = "80h";
+                               else if (splittedLine[i].equals("P0.1"))
+                                   splittedLine[i] = "81h";
+                               else if (splittedLine[i].equals("P0.2"))
+                                   splittedLine[i] = "82h";
+                               else if (splittedLine[i].equals("P0.3"))
+                                   splittedLine[i] = "83h";
+                               else if (splittedLine[i].equals("P0.4"))
+                                   splittedLine[i] = "84h";
+                               else if (splittedLine[i].equals("P0.5"))
+                                   splittedLine[i] = "85h";
+                               else if (splittedLine[i].equals("P0.6"))
+                                   splittedLine[i] = "86h";
+                               else if (splittedLine[i].equals("P0.7"))
+                                   splittedLine[i] = "87h";
+
+
+                               else if (splittedLine[i].equals("P1.0"))
+                                   splittedLine[i] = "90h";
+                               else if (splittedLine[i].equals("P1.1"))
+                                   splittedLine[i] = "91h";
+                               else if (splittedLine[i].equals("P1.2"))
+                                   splittedLine[i] = "92h";
+                               else if (splittedLine[i].equals("P1.3"))
+                                   splittedLine[i] = "93h";
+                               else if (splittedLine[i].equals("P1.4"))
+                                   splittedLine[i] = "94h";
+                               else if (splittedLine[i].equals("P1.5"))
+                                   splittedLine[i] = "95h";
+                               else if (splittedLine[i].equals("P1.6"))
+                                   splittedLine[i] = "96h";
+                               else if (splittedLine[i].equals("P1.7"))
+                                   splittedLine[i] = "97h";
+
+
+                               else if (splittedLine[i].equals("P2.0"))
+                                   splittedLine[i] = "A0h";
+                               else if (splittedLine[i].equals("P2.1"))
+                                   splittedLine[i] = "A1h";
+                               else if (splittedLine[i].equals("P2.2"))
+                                   splittedLine[i] = "A2h";
+                               else if (splittedLine[i].equals("P2.3"))
+                                   splittedLine[i] = "A3h";
+                               else if (splittedLine[i].equals("P2.4"))
+                                   splittedLine[i] = "A4h";
+                               else if (splittedLine[i].equals("P2.5"))
+                                   splittedLine[i] = "A5h";
+                               else if (splittedLine[i].equals("P2.6"))
+                                   splittedLine[i] = "A6h";
+                               else if (splittedLine[i].equals("P2.7"))
+                                   splittedLine[i] = "A7h";
+
+
+                               else if (splittedLine[i].equals("P3.0"))
+                                   splittedLine[i] = "B0h";
+                               else if (splittedLine[i].equals("P3.1"))
+                                   splittedLine[i] = "B1h";
+                               else if (splittedLine[i].equals("P3.2"))
+                                   splittedLine[i] = "B2h";
+                               else if (splittedLine[i].equals("P3.3"))
+                                   splittedLine[i] = "B3h";
+                               else if (splittedLine[i].equals("P3.4"))
+                                   splittedLine[i] = "B4h";
+                               else if (splittedLine[i].equals("P3.5"))
+                                   splittedLine[i] = "B5h";
+                               else if (splittedLine[i].equals("P3.6"))
+                                   splittedLine[i] = "B6h";
+                               else if (splittedLine[i].equals("P3.7"))
+                                   splittedLine[i] = "B7h";
+
+
+                               else if (splittedLine[i].equals("P4.0"))
+                                   splittedLine[i] = "E8h";
+                               else if (splittedLine[i].equals("P2.1"))
+                                   splittedLine[i] = "E9h";
+                               else if (splittedLine[i].equals("P2.2"))
+                                   splittedLine[i] = "EAh";
+                               else if (splittedLine[i].equals("P2.3"))
+                                   splittedLine[i] = "EBh";
+                               else if (splittedLine[i].equals("P2.4"))
+                                   splittedLine[i] = "ECh";
+                               else if (splittedLine[i].equals("P2.5"))
+                                   splittedLine[i] = "EDh";
+                               else if (splittedLine[i].equals("P2.6"))
+                                   splittedLine[i] = "EEh";
+                               else if (splittedLine[i].equals("P2.7"))
+                                   splittedLine[i] = "EFh";
+
+                               else if (splittedLine[i].equals("P5.0"))
+                                   splittedLine[i] = "F8h";
+                               else if (splittedLine[i].equals("P5.1"))
+                                   splittedLine[i] = "F9h";
+                               else if (splittedLine[i].equals("P5.2"))
+                                   splittedLine[i] = "FAh";
+                               else if (splittedLine[i].equals("P5.3"))
+                                   splittedLine[i] = "FBh";
+                               else if (splittedLine[i].equals("P5.4"))
+                                   splittedLine[i] = "FCh";
+                               else if (splittedLine[i].equals("P5.5"))
+                                   splittedLine[i] = "Fh";
+                               else if (splittedLine[i].equals("P5.6"))
+                                   splittedLine[i] = "FEh";
+                               else if (splittedLine[i].equals("P5.7"))
+                                   splittedLine[i] = "FFh";
+
+                               else if (splittedLine[i].equals("PSW.0") || splittedLine[i].equals("P"))
+                                   splittedLine[i] = "D0h";
+                               else if (splittedLine[i].equals("PSW.1") || splittedLine[i].equals("F1"))
+                                   splittedLine[i] = "D1h";
+                               else if (splittedLine[i].equals("PSW.2") || splittedLine[i].equals("OV"))
+                                   splittedLine[i] = "D2h";
+                               else if (splittedLine[i].equals("PSW.3") || splittedLine[i].equals("RS0"))
+                                   splittedLine[i] = "D3h";
+                               else if (splittedLine[i].equals("PSW.4") || splittedLine[i].equals("RS1"))
+                                   splittedLine[i] = "D4h";
+                               else if (splittedLine[i].equals("PSW.5") || splittedLine[i].equals("F0"))
+                                   splittedLine[i] = "D5h";
+                               else if (splittedLine[i].equals("PSW.6") || splittedLine[i].equals("AC"))
+                                   splittedLine[i] = "D6h";
+                               else if (splittedLine[i].equals("PSW.7") || splittedLine[i].equals("CY"))
+                                   splittedLine[i] = "D7h";
+
+
+                               else if (splittedLine[i].equals("TCON.0") || splittedLine[i].equals("IT0"))
+                                   splittedLine[i] = "88h";
+                               else if (splittedLine[i].equals("TCON.1") || splittedLine[i].equals("IE0"))
+                                   splittedLine[i] = "89h";
+                               else if (splittedLine[i].equals("TCON.2") || splittedLine[i].equals("IT1"))
+                                   splittedLine[i] = "8Ah";
+                               else if (splittedLine[i].equals("TCON.3") || splittedLine[i].equals("IE1"))
+                                   splittedLine[i] = "8Bh";
+                               else if (splittedLine[i].equals("TCON.4") || splittedLine[i].equals("TR0"))
+                                   splittedLine[i] = "8Ch";
+                               else if (splittedLine[i].equals("TCON.5") || splittedLine[i].equals("TF0"))
+                                   splittedLine[i] = "8Dh";
+                               else if (splittedLine[i].equals("TCON.6") || splittedLine[i].equals("TR1"))
+                                   splittedLine[i] = "8Eh";
+                               else if (splittedLine[i].equals("TCON.7") || splittedLine[i].equals("TF1"))
+                                   splittedLine[i] = "8Fh";
+
+                               else if (splittedLine[i].equals("SCON.0"))
+                                   splittedLine[i] = "98h";
+                               else if (splittedLine[i].equals("SCON.1"))
+                                   splittedLine[i] = "99h";
+                               else if (splittedLine[i].equals("SCON.2"))
+                                   splittedLine[i] = "9Ah";
+                               else if (splittedLine[i].equals("SCON.3"))
+                                   splittedLine[i] = "9Bh";
+                               else if (splittedLine[i].equals("SCON.4"))
+                                   splittedLine[i] = "9Ch";
+                               else if (splittedLine[i].equals("SCON.5"))
+                                   splittedLine[i] = "9Dh";
+                               else if (splittedLine[i].equals("SCON.6"))
+                                   splittedLine[i] = "9Eh";
+                               else if (splittedLine[i].equals("SCON.7"))
+                                   splittedLine[i] = "9Fh";
+
+                               else if (splittedLine[i].equals("ACC.0"))
+                                   splittedLine[i] = "E0h";
+                               else if (splittedLine[i].equals("ACC.1"))
+                                   splittedLine[i] = "E1h";
+                               else if (splittedLine[i].equals("ACC.2"))
+                                   splittedLine[i] = "E2h";
+                               else if (splittedLine[i].equals("ACC.3"))
+                                   splittedLine[i] = "E3h";
+                               else if (splittedLine[i].equals("ACC.4"))
+                                   splittedLine[i] = "E4h";
+                               else if (splittedLine[i].equals("ACC.5"))
+                                   splittedLine[i] = "E5h";
+                               else if (splittedLine[i].equals("ACC.6"))
+                                   splittedLine[i] = "E6h";
+                               else if (splittedLine[i].equals("ACC.7"))
+                                   splittedLine[i] = "E7h";
+
+                               else if (splittedLine[i].equals("B.0"))
+                                   splittedLine[i] = "F0h";
+                               else if (splittedLine[i].equals("B.1"))
+                                   splittedLine[i] = "F1h";
+                               else if (splittedLine[i].equals("B.2"))
+                                   splittedLine[i] = "F2h";
+                               else if (splittedLine[i].equals("B.3"))
+                                   splittedLine[i] = "F3h";
+                               else if (splittedLine[i].equals("B.4"))
+                                   splittedLine[i] = "F4h";
+                               else if (splittedLine[i].equals("B.5"))
+                                   splittedLine[i] = "F5h";
+                               else if (splittedLine[i].equals("B.6"))
+                                   splittedLine[i] = "F6h";
+                               else if (splittedLine[i].equals("B.7"))
+                                   splittedLine[i] = "F7h";
+
+
+                               else if (splittedLine[i].equals("IE.0") || splittedLine[i].equals("EX0"))
+                                   splittedLine[i] = "A8h";
+                               else if (splittedLine[i].equals("IE.1") || splittedLine[i].equals("ET0"))
+                                   splittedLine[i] = "A9h";
+                               else if (splittedLine[i].equals("IE.2") || splittedLine[i].equals("EX1"))
+                                   splittedLine[i] = "AAh";
+                               else if (splittedLine[i].equals("IE.3") || splittedLine[i].equals("ET1"))
+                                   splittedLine[i] = "ABh";
+                               else if (splittedLine[i].equals("IE.4") || splittedLine[i].equals("ES"))
+                                   splittedLine[i] = "ACh";
+                               else if (splittedLine[i].equals("IE.7") || splittedLine[i].equals("EA"))
+                                   splittedLine[i] = "AFh";
+                           }
+
+                        }
+                    if (splittedLine[0].toUpperCase().equals("AJMP")) {
+                        if(splittedLine.length != 2) {
+                            throw new CompilingException(numeracjaLinii, "Niepoprawna ilosc argumentow instrukcji AJMP: " + backupLinii + "'");
+                        }
+
+                        emulatedCodeMemory.set(pointer,"00000001");
+                        emulatedCodeMemory.set(pointer+1,splittedLine[1].toUpperCase());
+                        pointer = pointer+2;
                     }
-*/
-                    if (splittedLine[0].toUpperCase().equals("LCALL")) {
+                    else if (splittedLine[0].toUpperCase().equals("LCALL")) {
 
                         if (splittedLine.length != 2) {
                             throw new CompilingException(numeracjaLinii, "Niepoprawne uzycie LCALL: " + backupLinii + "'");
@@ -408,13 +685,6 @@ public class CodeMemory {
 
                             } else if (splittedLine[1].equals("A")) {
                                 String address;
-                                try {
-                                    address = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
-                                    emulatedCodeMemory.set(pointer, "10110101");
-                                    emulatedCodeMemory.set(pointer + 1, address);
-                                    emulatedCodeMemory.set(pointer + 2, splittedLine[3].toUpperCase());
-                                    pointer += 3;
-                                } catch (Exception e) {
                                     try {
                                         address = make8DigitsStringFromNumber(splittedLine[2]);
                                         emulatedCodeMemory.set(pointer, "10110101");
@@ -424,7 +694,6 @@ public class CodeMemory {
                                     } catch (Exception e1) {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Adres: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
                             } else
                                 throw new CompilingException(numeracjaLinii, "Błędnie użyta komenda CJNE: '" + backupLinii + "'");
                         } else
@@ -449,20 +718,13 @@ public class CodeMemory {
                             emulatedCodeMemory.set(pointer, "0000011" + splittedLine[1].charAt(2));
                             pointer += 1;
                         } else {
-                            if (bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
-                                emulatedCodeMemory.set(pointer, "00000101");
-                                emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[1].toUpperCase()));
-                                pointer += 2;
-                            } else {
                                 try {
-                                    int numer = Integer.parseInt(make8DigitsStringFromNumber(splittedLine[1]), 2);
                                     emulatedCodeMemory.set(pointer, "00000101");
                                     emulatedCodeMemory.set(pointer + 1, make8DigitsStringFromNumber(splittedLine[1]));
                                     pointer += 2;
                                 } catch (Exception e) {
                                     throw new CompilingException(numeracjaLinii, "Nierozpoznany Bajt: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
                                 }
-                            }
                         }
                     } else if (splittedLine[0].toUpperCase().equals("DEC")) {
                         if (splittedLine.length != 2)
@@ -481,20 +743,13 @@ public class CodeMemory {
                             emulatedCodeMemory.set(pointer, "0001011" + splittedLine[1].charAt(2));
                             pointer += 1;
                         } else {
-                            if (bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
-                                emulatedCodeMemory.set(pointer, "00010101");
-                                emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[1].toUpperCase()));
-                                pointer += 2;
-                            } else {
                                 try {
-                                    int numer = Integer.parseInt(make8DigitsStringFromNumber(splittedLine[1]), 2);
                                     emulatedCodeMemory.set(pointer, "00010101");
                                     emulatedCodeMemory.set(pointer + 1, make8DigitsStringFromNumber(splittedLine[1]));
                                     pointer += 2;
                                 } catch (Exception e) {
                                     throw new CompilingException(numeracjaLinii, "Nierozpoznany Bajt: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
                                 }
-                            }
                         }
                     } else if (splittedLine[0].toUpperCase().equals("ANL")) {
                         if (splittedLine.length != 3)
@@ -521,49 +776,26 @@ public class CodeMemory {
                                 emulatedCodeMemory.set(pointer, "0101011" + splittedLine[2].charAt(2));
                                 pointer += 1;
                             } else {
-                                if (bitAddresses.containsKey(splittedLine[2].toUpperCase())) {
-                                    emulatedCodeMemory.set(pointer, "01010101");
-                                    emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[2].toUpperCase()));
-                                    pointer += 2;
-                                } else {
                                     try {
-                                        int numer = Integer.parseInt(make8DigitsStringFromNumber(splittedLine[2]), 2);
                                         emulatedCodeMemory.set(pointer, "01010101");
                                         emulatedCodeMemory.set(pointer + 1, make8DigitsStringFromNumber(splittedLine[2]));
                                         pointer += 2;
                                     } catch (Exception e) {
-
-                                        throw new CompilingException(numeracjaLinii, "Nierozpoznany Bit: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
+                                        throw new CompilingException(numeracjaLinii, "Nierozpoznany bajt: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
-
-
-
                             }
                         } else if (splittedLine[1].toUpperCase().equals("C") || splittedLine[1].toUpperCase().equals("CY")) {
                             if (splittedLine[2].charAt(0) == '/') {
                                 String value = splittedLine[2].substring(1, splittedLine[2].length()).toUpperCase();
-                                if (bitAddresses.containsKey(value)) {
-                                    emulatedCodeMemory.set(pointer, "10110000");
-                                    emulatedCodeMemory.set(pointer + 1, bitAddresses.get(value));
-                                    pointer += 2;
-                                } else {
                                     try {
-                                        int numer = Integer.parseInt(make8DigitsStringFromNumber(value), 2);
                                         emulatedCodeMemory.set(pointer, "10110000");
                                         emulatedCodeMemory.set(pointer + 1, make8DigitsStringFromNumber(value));
                                         pointer += 2;
                                     } catch (Exception e) {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Bit: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
                             } else {
                                 String value = splittedLine[2].toUpperCase();
-                                if (bitAddresses.containsKey(value)) {
-                                    emulatedCodeMemory.set(pointer, "10000010");
-                                    emulatedCodeMemory.set(pointer + 1, bitAddresses.get(value));
-                                    pointer += 2;
-                                } else {
                                     try {
                                         int numer = Integer.parseInt(make8DigitsStringFromNumber(value), 2);
                                         emulatedCodeMemory.set(pointer, "10000010");
@@ -572,37 +804,23 @@ public class CodeMemory {
                                     } catch (Exception e) {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Bit: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
                             }
                         } else {
                             if (splittedLine[2].toUpperCase().equals("A")) {
 
-                                if (bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
-                                    emulatedCodeMemory.set(pointer, "01010010");
-                                    emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[1].toUpperCase()));
-                                    pointer += 2;
-                                } else {
                                     try {
                                         String liczba = make8DigitsStringFromNumber(splittedLine[1]);
                                         emulatedCodeMemory.set(pointer, "01010010");
                                         emulatedCodeMemory.set(pointer + 1, liczba);
                                         pointer += 2;
                                     } catch (Exception e) {
-                                        throw new CompilingException(numeracjaLinii, "Błędny bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
+                                        throw new CompilingException(numeracjaLinii, "Błędny bajt: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
 
 
                             } else {
-
                                 if (splittedLine[2].charAt(0) == '#') {
                                     try {
-                                        if (bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
-                                            emulatedCodeMemory.set(pointer, "01010011");
-                                            emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[1].toUpperCase()));
-                                            emulatedCodeMemory.set(pointer + 2, make8DigitsStringFromNumber(splittedLine[2].substring(1)));
-                                            pointer += 3;
-                                        } else {
                                             try {
                                                 String liczba = make8DigitsStringFromNumber(splittedLine[1]);
                                                 emulatedCodeMemory.set(pointer, "01010011");
@@ -612,8 +830,6 @@ public class CodeMemory {
                                             } catch (Exception e) {
                                                 throw new CompilingException(numeracjaLinii, "Błędny bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
                                             }
-                                        }
-
 
                                     } catch (NumberFormatException e) {
                                         throw new CompilingException(numeracjaLinii, "Nieznana Wartosc: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
@@ -649,11 +865,6 @@ public class CodeMemory {
                                 emulatedCodeMemory.set(pointer, "0100011" + splittedLine[2].charAt(2));
                                 pointer += 1;
                             } else {
-                                if (bitAddresses.containsKey(splittedLine[2].toUpperCase())) {
-                                    emulatedCodeMemory.set(pointer, "01000101");
-                                    emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[2].toUpperCase()));
-                                    pointer += 2;
-                                } else {
                                     try {
                                         int numer = Integer.parseInt(make8DigitsStringFromNumber(splittedLine[2]), 2);
                                         emulatedCodeMemory.set(pointer, "01000101");
@@ -662,50 +873,30 @@ public class CodeMemory {
                                     } catch (Exception e) {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Bit: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
                             }
                         } else if (splittedLine[1].toUpperCase().equals("C") || splittedLine[1].toUpperCase().equals("CY")) {
                             if (splittedLine[2].charAt(0) == '/') {
                                 String value = splittedLine[2].substring(1, splittedLine[2].length()).toUpperCase();
-                                if (bitAddresses.containsKey(value)) {
-                                    emulatedCodeMemory.set(pointer, "10100000");
-                                    emulatedCodeMemory.set(pointer + 1, bitAddresses.get(value));
-                                    pointer += 2;
-                                } else {
                                     try {
-                                        int numer = Integer.parseInt(make8DigitsStringFromNumber(value), 2);
                                         emulatedCodeMemory.set(pointer, "10100000");
                                         emulatedCodeMemory.set(pointer + 1, make8DigitsStringFromNumber(value));
                                         pointer += 2;
                                     } catch (Exception e) {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Bit: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
                             } else {
                                 String value = splittedLine[2].toUpperCase();
-                                if (bitAddresses.containsKey(value)) {
-                                    emulatedCodeMemory.set(pointer, "01110010");
-                                    emulatedCodeMemory.set(pointer + 1, bitAddresses.get(value));
-                                    pointer += 2;
-                                } else {
                                     try {
-                                        int numer = Integer.parseInt(make8DigitsStringFromNumber(value), 2);
                                         emulatedCodeMemory.set(pointer, "01110010");
                                         emulatedCodeMemory.set(pointer + 1, make8DigitsStringFromNumber(value));
                                         pointer += 2;
                                     } catch (Exception e) {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Bit: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
                             }
                         } else {
                             if (splittedLine[2].toUpperCase().equals("A")) {
 
-                                if (bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
-                                    emulatedCodeMemory.set(pointer, "01000010");
-                                    emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[1].toUpperCase()));
-                                    pointer += 2;
-                                } else {
                                     try {
                                         String liczba = make8DigitsStringFromNumber(splittedLine[1]);
                                         emulatedCodeMemory.set(pointer, "01000010");
@@ -714,19 +905,12 @@ public class CodeMemory {
                                     } catch (Exception e) {
                                         throw new CompilingException(numeracjaLinii, "Błędny bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
 
 
                             } else {
 
                                 if (splittedLine[2].charAt(0) == '#') {
                                     try {
-                                        if (bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
-                                            emulatedCodeMemory.set(pointer, "01000011");
-                                            emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[1].toUpperCase()));
-                                            emulatedCodeMemory.set(pointer + 2, make8DigitsStringFromNumber(splittedLine[2].substring(1)));
-                                            pointer += 3;
-                                        } else {
                                             try {
                                                 String liczba = make8DigitsStringFromNumber(splittedLine[1]);
                                                 emulatedCodeMemory.set(pointer, "01000011");
@@ -736,9 +920,6 @@ public class CodeMemory {
                                             } catch (Exception e) {
                                                 throw new CompilingException(numeracjaLinii, "Błędny bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
                                             }
-                                        }
-
-
                                     } catch (NumberFormatException e) {
                                         throw new CompilingException(numeracjaLinii, "Nieznana Wartosc: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
 
@@ -773,48 +954,27 @@ public class CodeMemory {
                                 emulatedCodeMemory.set(pointer, "0110011" + splittedLine[2].charAt(2));
                                 pointer += 1;
                             } else {
-                                if (bitAddresses.containsKey(splittedLine[2].toUpperCase())) {
-                                    emulatedCodeMemory.set(pointer, "01100101");
-                                    emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[2].toUpperCase()));
-                                    pointer += 2;
-                                } else {
                                     try {
-                                        int numer = Integer.parseInt(make8DigitsStringFromNumber(splittedLine[2]), 2);
                                         emulatedCodeMemory.set(pointer, "01100101");
                                         emulatedCodeMemory.set(pointer + 1, make8DigitsStringFromNumber(splittedLine[2]));
                                         pointer += 2;
                                     } catch (Exception e) {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Bit: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
                             }
                         } else {
                             if (splittedLine[2].toUpperCase().equals("A")) {
-
-                                if (bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
-                                    emulatedCodeMemory.set(pointer, "01100010");
-                                    emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[1].toUpperCase()));
-                                    pointer += 2;
-                                } else {
                                     try {
-                                        String liczba = make8DigitsStringFromNumber(splittedLine[1]);
                                         emulatedCodeMemory.set(pointer, "01100010");
-                                        emulatedCodeMemory.set(pointer + 1, liczba);
+                                        emulatedCodeMemory.set(pointer + 1, make8DigitsStringFromNumber(splittedLine[1]));
                                         pointer += 2;
                                     } catch (Exception e) {
                                         throw new CompilingException(numeracjaLinii, "Błędny bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
                             } else {
 
                                 if (splittedLine[2].charAt(0) == '#') {
                                     try {
-                                        if (bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
-                                            emulatedCodeMemory.set(pointer, "01100011");
-                                            emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[1].toUpperCase()));
-                                            emulatedCodeMemory.set(pointer + 2, make8DigitsStringFromNumber(splittedLine[2].substring(1)));
-                                            pointer += 3;
-                                        } else {
                                             try {
                                                 String liczba = make8DigitsStringFromNumber(splittedLine[1]);
                                                 emulatedCodeMemory.set(pointer, "01100011");
@@ -824,7 +984,6 @@ public class CodeMemory {
                                             } catch (Exception e) {
                                                 throw new CompilingException(numeracjaLinii, "Błędny bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
                                             }
-                                        }
 
 
                                     } catch (NumberFormatException e) {
@@ -846,20 +1005,13 @@ public class CodeMemory {
                             emulatedCodeMemory.set(pointer, "10110011");
                             pointer++;
                         } else {
-                            if (bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
-                                emulatedCodeMemory.set(pointer, "10110010");
-                                emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[1].toUpperCase()));
-                                pointer += 2;
-                            } else {
                                 try {
-                                    int numer = Integer.parseInt(make8DigitsStringFromNumber(splittedLine[1]), 2);
                                     emulatedCodeMemory.set(pointer, "10110010");
                                     emulatedCodeMemory.set(pointer + 1, make8DigitsStringFromNumber(splittedLine[1]));
                                     pointer += 2;
                                 } catch (Exception e) {
                                     throw new CompilingException(numeracjaLinii, "Nierozpoznany Bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
                                 }
-                            }
                         }
                     } else if (splittedLine[0].toUpperCase().equals("JC")) {
                         if (splittedLine.length != 2) {
@@ -879,12 +1031,6 @@ public class CodeMemory {
                         if (splittedLine.length != 3) {
                             throw new CompilingException(numeracjaLinii, "Niepoprawna ilosć argumentów: '" + backupLinii + "'");
                         }
-                        if (bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
-                            emulatedCodeMemory.set(pointer, "00100000");
-                            emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[1].toUpperCase()));
-                            emulatedCodeMemory.set(pointer + 2, splittedLine[2].toUpperCase());
-                            pointer += 3;
-                        } else {
                             try {
                                 String liczba = make8DigitsStringFromNumber(splittedLine[1]);
                                 emulatedCodeMemory.set(pointer, "00100000");
@@ -894,29 +1040,20 @@ public class CodeMemory {
                             } catch (Exception e) {
                                 throw new CompilingException(numeracjaLinii, "Błędny bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
                             }
-                        }
 
                     } else if (splittedLine[0].toUpperCase().equals("JNB")) {
                         if (splittedLine.length != 3) {
                             throw new CompilingException(numeracjaLinii, "Niepoprawna ilosć argumentów: '" + backupLinii + "'");
                         }
-                        if (bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
-                            emulatedCodeMemory.set(pointer, "00110000");
-                            emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[1].toUpperCase()));
-                            emulatedCodeMemory.set(pointer + 2, splittedLine[2].toUpperCase());
-                            pointer += 3;
-                        } else {
                             try {
                                 String liczba = make8DigitsStringFromNumber(splittedLine[1]);
-                                if (Integer.parseInt(liczba, 2) >= 0 && Integer.parseInt(liczba, 2) <= 127)
-                                    emulatedCodeMemory.set(pointer, "00110000");
+                                emulatedCodeMemory.set(pointer, "00110000");
                                 emulatedCodeMemory.set(pointer + 1, liczba);
                                 emulatedCodeMemory.set(pointer + 2, splittedLine[2].toUpperCase());
                                 pointer += 3;
                             } catch (Exception e) {
                                 throw new CompilingException(numeracjaLinii, "Błędny bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
                             }
-                        }
 
                     } else if (splittedLine[0].toUpperCase().equals("JZ")) {
                         if (splittedLine.length != 2)
@@ -947,12 +1084,6 @@ public class CodeMemory {
                                 emulatedCodeMemory.set(pointer, "1111011" + splittedLine[1].charAt(2));
                                 pointer += 1;
                             } else {
-                                try {
-                                    String address = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
-                                    emulatedCodeMemory.set(pointer, "1010011" + splittedLine[1].charAt(2));
-                                    emulatedCodeMemory.set(pointer + 1, address);
-                                    pointer += 2;
-                                } catch (Exception e) {
                                     try {
                                         String number = make8DigitsStringFromNumber(splittedLine[2]);
                                         emulatedCodeMemory.set(pointer, "1010011" + splittedLine[1].charAt(2));
@@ -962,7 +1093,6 @@ public class CodeMemory {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Adres: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
 
                                     }
-                                }
 
                             }
                         } else if (splittedLine[1].toUpperCase().equals("A")) {
@@ -989,12 +1119,6 @@ public class CodeMemory {
                                 emulatedCodeMemory.set(pointer, "11101" + numer);
                                 pointer += 1;
                             } else {
-                                try {
-                                    String address = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
-                                    emulatedCodeMemory.set(pointer, "11100101");
-                                    emulatedCodeMemory.set(pointer + 1, address);
-                                    pointer += 2;
-                                } catch (Exception e) {
                                     try {
                                         String number = make8DigitsStringFromNumber(splittedLine[2]);
                                         emulatedCodeMemory.set(pointer, "11100101");
@@ -1004,7 +1128,6 @@ public class CodeMemory {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
 
                                     }
-                                }
                             }
 
 
@@ -1040,12 +1163,6 @@ public class CodeMemory {
                                 if (numer.equals(""))
                                     throw new CompilingException(numeracjaLinii, "Nieznany Rejestr: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
 
-                                try {
-                                    String address = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
-                                    emulatedCodeMemory.set(pointer, "10101" + numer);
-                                    emulatedCodeMemory.set(pointer + 1, address);
-                                    pointer += 2;
-                                } catch (Exception e) {
                                     try {
                                         String number = make8DigitsStringFromNumber(splittedLine[2]);
                                         emulatedCodeMemory.set(pointer, "10101" + numer);
@@ -1055,7 +1172,6 @@ public class CodeMemory {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Adres: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
 
                                     }
-                                }
 
 
                             }
@@ -1076,12 +1192,6 @@ public class CodeMemory {
 
                         } else {
                             if (splittedLine[2].toUpperCase().equals("A")) {
-                                try {
-                                    String address = Main.cpu.mainMemory.get8BitAddress(splittedLine[1].toUpperCase());
-                                    emulatedCodeMemory.set(pointer, "11110101");
-                                    emulatedCodeMemory.set(pointer + 1, address);
-                                    pointer += 2;
-                                } catch (Exception e) {
                                     try {
                                         String number = make8DigitsStringFromNumber(splittedLine[1]);
                                         emulatedCodeMemory.set(pointer, "11110101");
@@ -1091,14 +1201,7 @@ public class CodeMemory {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
 
                                     }
-                                }
                             } else if (splittedLine[2].toUpperCase().equals("@R0") || splittedLine[2].toUpperCase().equals("@R1")) {
-                                try {
-                                    String address = Main.cpu.mainMemory.get8BitAddress(splittedLine[1].toUpperCase());
-                                    emulatedCodeMemory.set(pointer, "1000011" + splittedLine[2].charAt(2));
-                                    emulatedCodeMemory.set(pointer + 1, address);
-                                    pointer += 2;
-                                } catch (Exception e) {
                                     try {
                                         String number = make8DigitsStringFromNumber(splittedLine[1]);
                                         emulatedCodeMemory.set(pointer, "1000011" + splittedLine[2].charAt(2));
@@ -1108,19 +1211,7 @@ public class CodeMemory {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
 
                                     }
-                                }
                             } else if (splittedLine[2].charAt(0) == '#') {
-                                try {
-                                    String address = Main.cpu.mainMemory.get8BitAddress(splittedLine[1].toUpperCase());
-                                    emulatedCodeMemory.set(pointer, "01110101");
-                                    emulatedCodeMemory.set(pointer + 1, address);
-                                    try {
-                                        emulatedCodeMemory.set(pointer + 2, make8DigitsStringFromNumber(splittedLine[2].substring(1)));
-                                        pointer += 3;
-                                    } catch (NumberFormatException e) {
-                                        throw new CompilingException(numeracjaLinii, "Nieznana Liczba: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
-                                    }
-                                } catch (Exception e) {
                                     try {
                                         String number = make8DigitsStringFromNumber(splittedLine[1]);
                                         emulatedCodeMemory.set(pointer, "01110101");
@@ -1135,30 +1226,21 @@ public class CodeMemory {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
 
                                     }
-                                }
                             } else {
                                 String address1;
                                 String address2;
 
-                                try {
-                                    address1 = Main.cpu.mainMemory.get8BitAddress(splittedLine[1].toUpperCase());
-                                } catch (Exception e) {
                                     try {
                                         address1 = make8DigitsStringFromNumber(splittedLine[1]);
                                     } catch (Exception e1) {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
 
-                                try {
-                                    address2 = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
-                                } catch (Exception e) {
                                     try {
                                         address2 = make8DigitsStringFromNumber(splittedLine[2]);
                                     } catch (Exception e1) {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Adres: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
 
                                 emulatedCodeMemory.set(pointer, "10000101");
                                 emulatedCodeMemory.set(pointer + 1, address1);
@@ -1234,12 +1316,6 @@ public class CodeMemory {
                                 pointer += 1;
                             } else {
                                 String address;
-                                try {
-                                    address = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
-                                    emulatedCodeMemory.set(pointer, "00100101");
-                                    emulatedCodeMemory.set(pointer + 1, address);
-                                    pointer += 2;
-                                } catch (Exception e) {
                                     try {
                                         address = make8DigitsStringFromNumber(splittedLine[2]);
                                         emulatedCodeMemory.set(pointer, "00100101");
@@ -1248,7 +1324,6 @@ public class CodeMemory {
                                     } catch (Exception e1) {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
                             }
                         } else
                             throw new CompilingException(numeracjaLinii, "Dodawać można tylko do akumulatora, linia: '" + backupLinii + "'");
@@ -1280,12 +1355,6 @@ public class CodeMemory {
                                 pointer += 1;
                             } else {
                                 String address;
-                                try {
-                                    address = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
-                                    emulatedCodeMemory.set(pointer, "00110101");
-                                    emulatedCodeMemory.set(pointer + 1, address);
-                                    pointer += 2;
-                                } catch (Exception e) {
                                     try {
                                         address = make8DigitsStringFromNumber(splittedLine[2]);
                                         emulatedCodeMemory.set(pointer, "00110101");
@@ -1294,7 +1363,6 @@ public class CodeMemory {
                                     } catch (Exception e1) {
                                         throw new CompilingException(numeracjaLinii, "Dodawać można tylko do akumulatora, linia: '" + backupLinii + "'");
                                     }
-                                }
                             }
                         } else
                             throw new CompilingException(numeracjaLinii, "Nierozpoznana etykieta: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
@@ -1328,12 +1396,6 @@ public class CodeMemory {
                                 pointer += 1;
                             } else {
                                 String address;
-                                try {
-                                    address = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
-                                    emulatedCodeMemory.set(pointer, "10010101");
-                                    emulatedCodeMemory.set(pointer + 1, address);
-                                    pointer += 2;
-                                } catch (Exception e) {
                                     try {
                                         address = make8DigitsStringFromNumber(splittedLine[2]);
                                         emulatedCodeMemory.set(pointer, "10010101");
@@ -1342,7 +1404,6 @@ public class CodeMemory {
                                     } catch (Exception e1) {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Adres: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
                             }
                         } else {
                             throw new CompilingException(numeracjaLinii, "Odejmować można tylko od akumulatora, linia: '" + backupLinii + "'");
@@ -1354,20 +1415,13 @@ public class CodeMemory {
                             emulatedCodeMemory.set(pointer, "11010011");
                             pointer += 1;
                         } else {
-                            if (bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
-                                emulatedCodeMemory.set(pointer, "11010010");
-                                emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[1].toUpperCase()));
-                                pointer += 2;
-                            } else {
                                 try {
-                                    int numer = Integer.parseInt(make8DigitsStringFromNumber(splittedLine[1]), 2);
                                     emulatedCodeMemory.set(pointer, "11010010");
                                     emulatedCodeMemory.set(pointer + 1, make8DigitsStringFromNumber(splittedLine[1]));
                                     pointer += 2;
                                 } catch (Exception e) {
                                     throw new CompilingException(numeracjaLinii, "Nierozpoznany Bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
                                 }
-                            }
                         }
                     } else if (splittedLine[0].toUpperCase().equals("CLR")) {
                         if (splittedLine.length != 2)
@@ -1378,20 +1432,13 @@ public class CodeMemory {
                         } else if (splittedLine[1].toUpperCase().equals("A")) {
                             emulatedCodeMemory.set(pointer, "11100100");
                         } else {
-                            if (bitAddresses.containsKey(splittedLine[1].toUpperCase())) {
-                                emulatedCodeMemory.set(pointer, "11000010");
-                                emulatedCodeMemory.set(pointer + 1, bitAddresses.get(splittedLine[1].toUpperCase()));
-                                pointer += 2;
-                            } else {
                                 try {
-                                    int numer = Integer.parseInt(make8DigitsStringFromNumber(splittedLine[1]), 2);
                                     emulatedCodeMemory.set(pointer, "11000010");
                                     emulatedCodeMemory.set(pointer + 1, make8DigitsStringFromNumber(splittedLine[1]));
                                     pointer += 2;
                                 } catch (Exception e) {
                                     throw new CompilingException(numeracjaLinii, "Nierozpoznany Bit: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
                                 }
-                            }
                         }
 
                     } else if (splittedLine[0].toUpperCase().equals("SWAP")) {
@@ -1405,12 +1452,6 @@ public class CodeMemory {
                         emulatedCodeMemory.set(pointer, "00000000");
                         pointer += 1;
                     } else if (splittedLine[0].toUpperCase().equals("PUSH")) {
-                        try {
-                            String address = Main.cpu.mainMemory.get8BitAddress(splittedLine[1].toUpperCase());
-                            emulatedCodeMemory.set(pointer, "11000000");
-                            emulatedCodeMemory.set(pointer + 1, address);
-                            pointer += 2;
-                        } catch (Exception e) {
                             try {
                                 String number = make8DigitsStringFromNumber(splittedLine[1]);
                                 emulatedCodeMemory.set(pointer, "11000000");
@@ -1420,14 +1461,7 @@ public class CodeMemory {
                                 throw new CompilingException(numeracjaLinii, "Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
 
                             }
-                        }
                     } else if (splittedLine[0].toUpperCase().equals("POP")) {
-                        try {
-                            String address = Main.cpu.mainMemory.get8BitAddress(splittedLine[1].toUpperCase());
-                            emulatedCodeMemory.set(pointer, "11010000");
-                            emulatedCodeMemory.set(pointer + 1, address);
-                            pointer += 2;
-                        } catch (Exception e) {
                             try {
                                 String number = make8DigitsStringFromNumber(splittedLine[1]);
                                 emulatedCodeMemory.set(pointer, "11010000");
@@ -1437,7 +1471,6 @@ public class CodeMemory {
                                 throw new CompilingException(numeracjaLinii, "Nierozpoznany Adres: '" + splittedLine[1] + "', linia: '" + backupLinii + "'");
 
                             }
-                        }
                     } else if (splittedLine[0].toUpperCase().equals("RET")) {
                         if (splittedLine.length != 1)
                             throw new CompilingException(numeracjaLinii, "'RET' nie ma żadnych argumentów, linia: '" + backupLinii + "'");
@@ -1484,12 +1517,6 @@ public class CodeMemory {
                                 pointer += 1;
                             } else {
                                 String address;
-                                try {
-                                    address = Main.cpu.mainMemory.get8BitAddress(splittedLine[2].toUpperCase());
-                                    emulatedCodeMemory.set(pointer, "11000101");
-                                    emulatedCodeMemory.set(pointer + 1, address);
-                                    pointer += 2;
-                                } catch (Exception e) {
                                     try {
                                         address = make8DigitsStringFromNumber(splittedLine[2]);
                                         emulatedCodeMemory.set(pointer, "11000101");
@@ -1498,7 +1525,6 @@ public class CodeMemory {
                                     } catch (Exception e1) {
                                         throw new CompilingException(numeracjaLinii, "Nierozpoznany Adres: '" + splittedLine[2] + "', linia: '" + backupLinii + "'");
                                     }
-                                }
                             }
                         } else
                             throw new CompilingException(numeracjaLinii, "Pierwszy argumentem powinien być akumulator: '" + backupLinii + "'");
@@ -1602,7 +1628,12 @@ public class CodeMemory {
                     wartosc += Integer.parseInt(linia.substring(w, w + 2), 16);
                 }
                 wartosc = 256 - wartosc;
-                String checkSum = Integer.toHexString(wartosc).toUpperCase().substring(Integer.toHexString(wartosc).length() - 2, Integer.toHexString(wartosc).length());
+
+                String checkSum = Integer.toHexString(wartosc).toUpperCase();
+                if(checkSum.length()>2) {
+                    checkSum = checkSum.substring(Integer.toHexString(wartosc).length() - 2, Integer.toHexString(wartosc).length());
+                }
+
                 if (checkSum.length() == 1)
                     checkSum = "0" + checkSum;
                 linia.append(checkSum);
@@ -1658,7 +1689,7 @@ public class CodeMemory {
         return result.toString();
     }
 
-    public String make16DigitsStringFromNumber(String number) throws CompilingException {
+    public String make16DigitsStringFromNumber(String number) throws NumberFormatException {
         StringBuilder result;
         char lastSymbol = number.charAt(number.length() - 1);
         if (lastSymbol == 'd' || lastSymbol == 'D')
@@ -1692,6 +1723,35 @@ public class CodeMemory {
             result.insert(0, "0");
         }
         return result.toString();
+    }
+
+    public void isANumber(String number) throws Exception {
+        char lastSymbol = number.charAt(number.length() - 1);
+        if (lastSymbol == 'd' || lastSymbol == 'D')
+            number = number.substring(0, number.length() - 1);
+        int wartosc;
+        if (lastSymbol == 'b' || lastSymbol == 'B') {
+            try {
+                number = number.substring(0, number.length() - 1);
+                wartosc = Integer.parseInt(number, 2);
+            } catch (Exception e) {
+                throw new NumberFormatException();
+            }
+        } else if (lastSymbol == 'h' || lastSymbol == 'H') {
+            try {
+                number = number.substring(0, number.length() - 1);
+                wartosc = Integer.parseInt(number, 16);
+            } catch (Exception e) {
+                throw new NumberFormatException();
+            }
+        } else {
+            try {
+                wartosc = Integer.parseInt(number);
+            } catch (Exception e) {
+                throw new NumberFormatException();
+            }
+        }
+
     }
 
     private String getRAddress(String label) {

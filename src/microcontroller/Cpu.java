@@ -335,6 +335,7 @@ public class Cpu {
         }
         else if(toExecute.equals("00000101")) { //INC Direct
             machineCycle();
+            System.out.println(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
             int wartosc = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
             wartosc+=1;
             if(wartosc==256)
@@ -651,8 +652,14 @@ public class Cpu {
         else if(toExecute.equals("01000101")) {
             machineCycle();
             int wartosc1 = mainMemory.get("A");
-            int warotsc2 = mainMemory.getDirect(codeMemory.getFromAddress(linePointer+1));
-            int wynik = wartosc1|warotsc2;
+            int wartosc2 = 0;
+            if(mainMemory.portsAddresses.contains(codeMemory.getFromAddress(linePointer+1))) {
+                wartosc2 = mainMemory.getFromLatch(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            }
+            else {
+                wartosc2 = mainMemory.getDirect(codeMemory.getFromAddress(linePointer + 1));
+            }
+            int wynik = wartosc1|wartosc2;
             mainMemory.put("A",wynik);
             linePointer+=2;
         }
@@ -734,15 +741,27 @@ public class Cpu {
         else if(toExecute.equals("01100101")) {
             machineCycle();
             int wartosc1 = mainMemory.get("A");
-            int warotsc2 = mainMemory.getDirect(codeMemory.getFromAddress(linePointer+1));
-            int wynik = wartosc1^warotsc2;
+            int wartosc2 = 0;
+            if(mainMemory.portsAddresses.contains(codeMemory.getFromAddress(linePointer+1))) {
+                wartosc2 = mainMemory.getFromLatch(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            }
+            else {
+                wartosc2 = mainMemory.getDirect(codeMemory.getFromAddress(linePointer + 1));
+            }
+            int wynik = wartosc1^wartosc2;
             mainMemory.put("A",wynik);
             linePointer+=2;
         }
         else if(toExecute.equals("01100010")) { //XRL direct,A
             machineCycle();
             int wartosc1 = mainMemory.get("A");
-            int wartosc2 = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer + 1),2));
+            int wartosc2 = 0;
+            if(mainMemory.portsAddresses.contains(codeMemory.getFromAddress(linePointer+1))) {
+                wartosc2 = mainMemory.getFromLatch(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            }
+            else {
+                wartosc2 = mainMemory.getDirect(codeMemory.getFromAddress(linePointer + 1));
+            }
 
             int wynik = wartosc1 ^ wartosc2;
 
@@ -752,7 +771,13 @@ public class Cpu {
         else if(toExecute.equals("01100011")) { //XRL direct,#01
             machineCycle();
             machineCycle();
-            int wartosc1 = mainMemory.get(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            int wartosc1 = 0;
+            if(mainMemory.portsAddresses.contains(codeMemory.getFromAddress(linePointer+1))) {
+                wartosc1 = mainMemory.getFromLatch(Integer.parseInt(codeMemory.getFromAddress(linePointer+1),2));
+            }
+            else {
+                wartosc1 = mainMemory.getDirect(codeMemory.getFromAddress(linePointer + 1));
+            }
             int wartosc2 = Integer.parseInt(codeMemory.getFromAddress(linePointer+2),2);
             int wynik = wartosc1^wartosc2;
 

@@ -804,8 +804,6 @@ public class MainStage extends Application {
             editorTabs.get(numerKarty).ownTab.setClosable(true);
             currentlyRunTabName = "";
 
-            //editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTextArea.setEditable(true);
-            //editorTabs.get(editorTabPane.getSelectionModel().getSelectedIndex()).ownTextArea.setText("");
 
             editorTabs.get(numerKarty).ownTextArea.setEditable(true);
             editorTabs.get(numerKarty).ownTextArea.clear();  //setText("");
@@ -848,13 +846,14 @@ public class MainStage extends Application {
             portToggle5.setSelected(false);
             portToggle6.setSelected(false);
             portToggle7.setSelected(false);
-
             Main.cpu.refreshGui();
             Dac.reset();
             compilationErrorsLabel.setText("");
             compilationErrorsLabel.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-background-insets: 0 20 0 20");
             OscilloscopePane.resetPrzebieg();
             Main.adc.reset();
+            Main.cpu.resetCpu();
+            Main.cpu.refreshGui();
         });
 
         oneStepButton = new Button("Krok");
@@ -1062,6 +1061,8 @@ public class MainStage extends Application {
                         break;
                     }
                 }
+                if (cardName.startsWith("*"))
+                    cardName = cardName.substring(1);
                 chooseFile.setInitialFileName(cardName + ".hex");
                 File saveFile = chooseFile.showSaveDialog(primaryStage);
                 if (saveFile != null) {
@@ -2474,7 +2475,6 @@ public class MainStage extends Application {
             this.ownTab = new Tab();
             ownTab.setClosable(true);
 
-
             int x = 1;
             for (int i = 0; i < editorTabs.size(); i++) {
                 for (editorTab w : editorTabs) {
@@ -2536,7 +2536,7 @@ public class MainStage extends Application {
                 "lcall", "ret", "reti", "ajmp", "ljmp",
                 "sjmp", "jmp", "jz", "jnz", "jc",
                 "jnc", "jb", "jnb", "jbc", "cjne",
-                "djnz", "nop","org","db","code at","include",
+                "djnz", "nop","org","db","code at","include","xchd",
                 "ADD", "ADDC", "SUBB", "INC", "DEC",
                 "MUL", "DIV", "ANL", "ORL", "XRL",
                 "CLR", "RL", "RLC", "RR", "RRC",
@@ -2545,34 +2545,18 @@ public class MainStage extends Application {
                 "LCALL", "RET", "RETI", "AJMP", "LJMP",
                 "SJMP", "JMP", "JZ", "JNZ", "JC",
                 "JNC", "JB", "JNB", "JBC", "CJNE",
-                "DJNZ", "NOP","ORG","DB","CODE AT","INCLUDE"
+                "DJNZ", "NOP","ORG","DB","CODE AT","INCLUDE","XCHD"
         };
-        private final String[] ADDRESSES = new String[] {
-            "r0","r1","r2","r3","r4","r5","r6","r7","a","acc","b","p0","sp",
-                "p1", "p2","p3","tcon","tmod","tl0","tl1","th0","th1","ie",
-                "dpl","dph","p4","p5",
-                "p0.0","p0.1","p0.2","p0.3","p0.4","p0.5","p0.6","p0.7",
-                "p1.0","p1.1","p1.2","p1.3","p1.4","p1.5","p1.6","p1.7",
-                "p2.0","p2.1","p2.2","p2.3","p2.4","p2.5","p2.6","p2.7",
-                "p3.0","p3.1","p3.2","p3.3","p3.4","p3.5","p3.6","p3.7",
-                "p4.0","p4.1","p4.2","p4.3","p4.4","p4.5","p4.6","p4.7",
-                "p5.0","p5.1","p5.2","p5.3","p5.4","p5.5","p5.6","p5.7",
-                "acc.0","acc.1","acc.2","acc.3","acc.4","acc.5","acc.6","acc.7"
-        };
-
-
 
 
         private final String KEYWORD_PATTERN = "\\b(" + String.join("|", KEYWORDS) + ")\\b";
-        private final String ADDRESSES_PATTERN = "\\b(" + String.join("|", ADDRESSES) + ")\\b";
         private final String LABEL_PATTERN = "[^(\n;)]*:";
-        private final String COMMENT_PATTERN = ";[^\n]*";
+        private final String COMMENT_PATTERN = "(;[^\n]*";
 
         private final Pattern PATTERN = Pattern.compile(
                 "(?<KEYWORD>" + KEYWORD_PATTERN + ")"
                         + "|(?<LABEL>" + LABEL_PATTERN + ")"
-                            + "|(?<ADDRESS>" + ADDRESSES_PATTERN + ")"
-                                + "|(?<COMMENT>" + COMMENT_PATTERN + ")"
+                                + "|(?<COMMENT>" + COMMENT_PATTERN + "))"
         );
         private StyleSpans<Collection<String>> computeHighlighting(String text) {
             Matcher matcher = PATTERN.matcher(text);
@@ -2582,7 +2566,6 @@ public class MainStage extends Application {
             while(matcher.find()) {
                 String styleClass =
                         matcher.group("KEYWORD") != null ? "keyword" :
-                                matcher.group("ADDRESS") != null ? "address" :
                                      matcher.group("LABEL") != null ? "label" :
                                             matcher.group("COMMENT") != null ? "comment" :
                                                 null; /* never happens */ assert styleClass != null;
