@@ -1583,6 +1583,18 @@ public class CodeMemory {
                             throw new CompilingException(i-1, "Przekroczono zakres skoku AJMP");
 
 
+                    } else if(emulatedCodeMemory.get(i-1).substring(3).equals("10001")) { //TODO!!!!!!
+                        String destination = make16DigitsStringFromNumber(Integer.toString(numer) + "d");
+                        int destinationInt = Integer.parseInt(destination,2);
+                        if((i-1)/2048 == destinationInt/2048) {
+                            destination = destination.substring(5);
+                            emulatedCodeMemory.set(i-1,destination.substring(0,3) + "00001");
+                            emulatedCodeMemory.set(i,destination.substring(3,11));
+                        }
+                        else
+                            throw new CompilingException(i-1, "Przekroczono zakres skoku ACALL");
+
+
                     }
                     else {
                         //offset
