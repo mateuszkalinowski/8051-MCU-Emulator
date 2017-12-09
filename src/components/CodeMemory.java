@@ -591,13 +591,24 @@ public class CodeMemory {
                             throw new CompilingException(numeracjaLinii, "Niepoprawna ilosc argumentow instrukcji AJMP: " + backupLinii + "'");
                         }
 
-                        emulatedCodeMemory.set(pointer,"00000001");
-                        emulatedCodeMemory.set(pointer+1,splittedLine[1].toUpperCase());
+                        try {
+                            String destination = make16DigitsStringFromNumber(splittedLine[1]);
+                            int destinationInt = Integer.parseInt(destination,2);
+                            if(pointer/2048 == destinationInt/2048) {
+                                destination = destination.substring(5);
+                                emulatedCodeMemory.set(pointer,destination.substring(0,3) + "00001");
+                                emulatedCodeMemory.set(pointer+1,destination.substring(3,11));
+                            }
+                            else
+                                throw new CompilingException(numeracjaLinii, "Przekroczono zakres skoku AJMP");
+                        }
+                       catch (NumberFormatException e){
+                            emulatedCodeMemory.set(pointer,"00000001");
+                            emulatedCodeMemory.set(pointer+1,splittedLine[1].toUpperCase());
+                        }
+
                         pointer = pointer+2;
                     }
-
-
-
                     else if (splittedLine[0].toUpperCase().equals("LCALL")) {
 
                         if (splittedLine.length != 2) {
@@ -1560,17 +1571,30 @@ public class CodeMemory {
                     if (emulatedCodeMemory.get(i - 1).equals("00000010") || emulatedCodeMemory.get(i - 1).equals("00010010")) {
                         emulatedCodeMemory.set(i, make16DigitsStringFromNumber(Integer.toString(numer) + "d").substring(0, 8));
                         emulatedCodeMemory.set(i + 1, make16DigitsStringFromNumber(Integer.toString(numer) + "d").substring(8, 16));
-                    } else {
+                    } else if(emulatedCodeMemory.get(i-1).substring(3).equals("00001")) {
+                        String destination = make16DigitsStringFromNumber(Integer.toString(numer) + "d");
+                        int destinationInt = Integer.parseInt(destination,2);
+                        if((i-1)/2048 == destinationInt/2048) {
+                            destination = destination.substring(5);
+                            emulatedCodeMemory.set(i-1,destination.substring(0,3) + "00001");
+                            emulatedCodeMemory.set(i,destination.substring(3,11));
+                        }
+                        else
+                            throw new CompilingException(i-1, "Przekroczono zakres skoku AJMP");
+
+
+                    }
+                    else {
                         //offset
                         int wynik = numer - i - 1;
                         if (wynik < 0)
                             wynik += 256;
                         if (wynik < 0 || wynik > 255)
-                            throw new CompilingException(numeracjaLinii, "Przekroczono zakres skoku: '" + s + "'");
+                            throw new CompilingException(i-1, "Przekroczono zakres skoku: '" + s + "'");
                         if (numer > i && wynik > 128)
-                            throw new CompilingException(numeracjaLinii, "Przekroczono zakres skoku: '" + s + "'");
+                            throw new CompilingException(i-1, "Przekroczono zakres skoku: '" + s + "'");
                         if (numer < i && wynik < 128)
-                            throw new CompilingException(numeracjaLinii, "Przekroczono zakres skoku: '" + s + "'");
+                            throw new CompilingException(i-1, "Przekroczono zakres skoku: '" + s + "'");
                         emulatedCodeMemory.set(i, make8DigitsStringFromNumber(Integer.toString(wynik) + "d"));
                     }
                 } else {

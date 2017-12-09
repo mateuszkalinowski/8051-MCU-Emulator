@@ -256,7 +256,14 @@ public class Cpu {
             } catch (Exception ignored) {
             }
         }
-        if(toExecute.equals("00000010")) { //LJMP
+        if(toExecute.substring(3).equals("00001")) {
+            machineCycle();
+            machineCycle();
+            String linePointerBin = codeMemory.make16DigitsStringFromNumber(linePointer + "d");
+            String newLinePointer = linePointerBin.substring(0,5) + codeMemory.getFromAddress(linePointer).substring(0,3) + codeMemory.getFromAddress(linePointer+1);
+            linePointer = Integer.parseInt(newLinePointer,2);
+        }
+        else if(toExecute.equals("00000010")) { //LJMP
             machineCycle();
             machineCycle();
             linePointer = Integer.parseInt(codeMemory.getFromAddress(linePointer+1) + codeMemory.getFromAddress(linePointer+2),2);
