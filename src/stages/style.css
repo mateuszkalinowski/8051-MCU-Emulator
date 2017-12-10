@@ -1,4 +1,4 @@
-.chart-symbol {
+/*.chart-symbol {
     -fx-background-radius: 2px ;
     -fx-background-color: green;
     -fx-padding: 2px ;
@@ -33,7 +33,7 @@
 .axis-minor-tick-mark {
     -fx-stroke: #859656;
 }
-
+*/
 .button:hover {
     -fx-scale-x: 1.0;
     -fx-scale-y: 1.0;

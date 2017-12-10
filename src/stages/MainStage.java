@@ -6,8 +6,9 @@ import exceptions.CompilingException;
 import javafx.application.Application;
 import javafx.application.Platform;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -26,10 +27,8 @@ import javafx.scene.text.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import microcontroller.Dac;
-import org.fxmisc.flowless.VirtualizedScrollPane;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
-import org.fxmisc.richtext.model.Paragraph;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 
@@ -892,7 +891,7 @@ public class MainStage extends Application {
                         continuousRunFlag = true;
                         long time = System.nanoTime();
                         while (continuousRunFlag) {
-                            if (System.nanoTime() - time > 1000000000 / speedSelectComboBox.getSelectionModel().getSelectedItem()) {
+                                if(System.nanoTime() - time > 1000000000 / speedSelectSlider.getValue()) {
                                 Main.board.set();
                                 Main.cpu.executeInstruction();
                                 Main.adc.updateState();
@@ -924,10 +923,6 @@ public class MainStage extends Application {
         oneStepButton.setMaxWidth(100);
         oneStepButton.setDisable(true);
 
-        speedSelectComboBox = new ComboBox<>();
-        speedSelectComboBox.getItems().addAll(1, 5, 10, 50, 100, 500, 1000, 2000);
-        speedSelectComboBox.setMaxWidth(100);
-        speedSelectComboBox.getSelectionModel().selectFirst();
 
         Label speedSelectLabel = new Label("Prędkość Symulacji:");
         speedSelectLabel.setMaxWidth(Double.MAX_VALUE);
@@ -942,7 +937,23 @@ public class MainStage extends Application {
         VBox.setVgrow(continuousRunButton, Priority.ALWAYS);
         buttonBox.setSpacing(5);
 
-        buttonBox.getChildren().addAll(translateToMemoryButton, stopSimulationButton, oneStepButton, speedSelectLabel, speedSelectComboBox, continuousRunButton);
+        speedSelectSlider = new Slider();
+        speedSelectSlider.setMin(1);
+        speedSelectSlider.setMax(500);
+        speedSelectSlider.setValue(1);
+        speedSelectSlider.setShowTickLabels(true);
+        speedSelectSlider.setShowTickMarks(true);
+        speedSelectSlider.setMajorTickUnit(500);
+        speedSelectSlider.setMinorTickCount(5);
+        speedSelectSlider.setSnapToTicks(false);
+        speedSelectSlider.setMaxWidth(100);
+
+        speedSelectSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+
+        });
+
+
+        buttonBox.getChildren().addAll(translateToMemoryButton, stopSimulationButton, oneStepButton, speedSelectLabel, speedSelectSlider, continuousRunButton);
         buttonBox.setAlignment(Pos.TOP_CENTER);
         buttonBox.setPadding(new Insets(5, 5, 0, 5));
 
@@ -2414,9 +2425,6 @@ public class MainStage extends Application {
 
     public Label compilationErrorsLabel;
 
-    private ComboBox<Integer> speedSelectComboBox;
-
-
     private Button translateToMemoryButton;
     private Button stopSimulationButton;
     private Button oneStepButton;
@@ -2586,5 +2594,7 @@ public class MainStage extends Application {
     }
 
     public Label dacStateLabel;
+
+    private Slider speedSelectSlider;
 
 }
