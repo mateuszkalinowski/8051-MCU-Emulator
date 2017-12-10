@@ -1535,8 +1535,30 @@ public class Cpu {
                 wynik-=256;
             linePointer = linePointer + 1 + 1 +wynik;
         }
+        else if(toExecute.equals("11010100")) { //DA A
+            machineCycle();
+
+            int wartoscA = mainMemory.get("A");
+            String wartoscABinary = expandTo8Digits(Integer.toBinaryString(wartoscA));
+            if(Integer.parseInt(wartoscABinary.substring(4,8),2)>9 || mainMemory.getBit(codeMemory.bitAddresses.get("AC"))) {
+                int wartoscTmp = Integer.parseInt(wartoscABinary.substring(4,8),2);
+                wartoscA+=6;
+                if(wartoscTmp+wartoscA>15)
+                    mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
+                if(wartoscA>255)
+                    wartoscA-=256;
+            }
+            if(Integer.parseInt(wartoscABinary.substring(0,4),2)>9 || mainMemory.getBit(codeMemory.bitAddresses.get("CY"))) {
+                wartoscA+=96;
+                if(wartoscA>255) {
+                    wartoscA -= 256;
+                    mainMemory.setBit(codeMemory.bitAddresses.get("CY"),true);
+                }
+            }
+            mainMemory.put("A",wartoscA);
+            linePointer+=1;
+        }
         checkP();
-        //refreshGui();
         checkRegistersBank();
         if(linePointer>=programMemory)
             linePointer=0;

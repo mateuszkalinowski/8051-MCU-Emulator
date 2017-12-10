@@ -1575,7 +1575,15 @@ public class CodeMemory {
                         emulatedCodeMemory.set(pointer + 1, splittedLine[1].toUpperCase());
                         pointer += 2;
 
-                    } else {
+                    } else if (splittedLine[0].toUpperCase().equals("DA")){
+                            if(splittedLine.length!=2)
+                                throw new CompilingException(numeracjaLinii, "Niepoprawna ilość argumentów instrukcji DA: '" + backupLinii + "'");
+                            if(!splittedLine[1].equals("A"))
+                                throw new CompilingException(numeracjaLinii, "Niepoprawny argument instrukcji DA: '" + backupLinii + "'");
+                            emulatedCodeMemory.set(pointer,"11010100");
+                            pointer+=1;
+                    }
+                    else {
                         throw new CompilingException(numeracjaLinii, "Nierozpoznana komenda, linia: '" + backupLinii + "'");
                     }
                     StringBuilder hexPointer = new StringBuilder(Integer.toHexString(backupPointer));

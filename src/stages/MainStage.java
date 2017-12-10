@@ -873,8 +873,6 @@ public class MainStage extends Application {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Błąd Wykonania");
                 alert.setHeaderText("Wykonanie przebiegło nieudanie");
-                alert.setContentText("Sprawdź kod jeszcze raz, informacja gdzie wystąpił błąd zostanie" +
-                        "dodana w jednej z kolejnych wersji programu");
                 alert.showAndWait();
            }
         });
@@ -2538,7 +2536,7 @@ public class MainStage extends Application {
                 "lcall", "ret", "reti", "ajmp", "ljmp",
                 "sjmp", "jmp", "jz", "jnz", "jc",
                 "jnc", "jb", "jnb", "jbc", "cjne",
-                "djnz", "nop","org","db","code at","include","xchd",
+                "djnz", "nop","org","db","code at","include","xchd","da",
                 "ADD", "ADDC", "SUBB", "INC", "DEC",
                 "MUL", "DIV", "ANL", "ORL", "XRL",
                 "CLR", "RL", "RLC", "RR", "RRC",
@@ -2547,7 +2545,7 @@ public class MainStage extends Application {
                 "LCALL", "RET", "RETI", "AJMP", "LJMP",
                 "SJMP", "JMP", "JZ", "JNZ", "JC",
                 "JNC", "JB", "JNB", "JBC", "CJNE",
-                "DJNZ", "NOP","ORG","DB","CODE AT","INCLUDE","XCHD"
+                "DJNZ", "NOP","ORG","DB","CODE AT","INCLUDE","XCHD","DA"
         };
 
 
