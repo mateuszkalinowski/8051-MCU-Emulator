@@ -59,6 +59,17 @@ public class Cpu {
         System.arraycopy(Main.stage.port3History, 0, Main.stage.port3History, 1, Main.stage.portChartScale - 1);
         Main.stage.port3History[0] = port3Char;
 
+        String port4String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P4")));
+        char[] port4Char = port4String.toCharArray();
+        System.arraycopy(Main.stage.port4History, 0, Main.stage.port4History, 1, Main.stage.portChartScale - 1);
+        Main.stage.port4History[0] = port4Char;
+
+        String port5String = expandTo8Digits(Integer.toBinaryString(mainMemory.get("P5")));
+        char[] port5Char = port5String.toCharArray();
+        System.arraycopy(Main.stage.port5History, 0, Main.stage.port5History, 1, Main.stage.portChartScale - 1);
+        Main.stage.port5History[0] = port5Char;
+
+
         int tmod = mainMemory.get("TMOD");
         String tmodString = expandTo8Digits(Integer.toBinaryString(tmod));
 

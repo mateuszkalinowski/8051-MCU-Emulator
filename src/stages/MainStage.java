@@ -814,6 +814,8 @@ public class MainStage extends Application {
             port1History = new char[portChartScale][8];
             port2History = new char[portChartScale][8];
             port3History = new char[portChartScale][8];
+            port4History = new char[portChartScale][8];
+            port5History = new char[portChartScale][8];
             for (int i = 0; i < portChartScale; i++) {
                 port0History[i] = "11111111".toCharArray();
             }
@@ -825,6 +827,12 @@ public class MainStage extends Application {
             }
             for (int i = 0; i < portChartScale; i++) {
                 port3History[i] = "11111111".toCharArray();
+            }
+            for (int i = 0; i < portChartScale; i++) {
+                port4History[i] = "11111111".toCharArray();
+            }
+            for (int i = 0; i < portChartScale; i++) {
+                port5History[i] = "11111111".toCharArray();
             }
             continuousRunButton.setText("Praca Ciągła");
             running = false;
@@ -1863,6 +1871,14 @@ public class MainStage extends Application {
         for (int i = 0; i < portChartScale; i++) {
             port3History[i] = "11111111".toCharArray();
         }
+        port4History = new char[portChartScale][8];
+        for (int i = 0; i < portChartScale; i++) {
+            port4History[i] = "11111111".toCharArray();
+        }
+        port5History = new char[portChartScale][8];
+        for (int i = 0; i < portChartScale; i++) {
+            port5History[i] = "11111111".toCharArray();
+        }
 
 
         memoryInfoTab.setContent(mainMemoryGridPane);
@@ -1871,7 +1887,7 @@ public class MainStage extends Application {
         mainStage.setTitle("8051 MCU Emulator");
         mainBorderPane.setCenter(mainGridPane);
         Scene mainScene = new Scene(mainBorderPane, width, height);
-        mainStage.getIcons().add(new Image(MainStage.class.getResourceAsStream("cpu.png")));
+        //mainStage.getIcons().add(new Image(MainStage.class.getResourceAsStream("ikona.png")));
         mainScene.getStylesheets().add(MainStage.class.getResource("style.css").toExternalForm());
         mainStage.setScene(mainScene);
         mainStage.show();
@@ -1879,10 +1895,10 @@ public class MainStage extends Application {
         mainStage.setMinWidth(800);
 
         try {
-            URL iconURL = MainStage.class.getResource("cpu.png");
+            URL iconURL = MainStage.class.getResource("ikona.png");
             java.awt.Image image = new ImageIcon(iconURL).getImage();
-           // com.apple.eawt.Application.getApplication().setDockIconImage(image);
-            // com.apple.eawt.Application.getApplication().setDockIconBadge("8051");
+            com.apple.eawt.Application.getApplication().setDockIconImage(image);
+             //com.apple.eawt.Application.getApplication().setDockIconBadge("MCS-51");
         } catch (Exception ignored) {
 
         }
@@ -2241,11 +2257,11 @@ public class MainStage extends Application {
         gc = portsStatusCanvas.getGraphicsContext2D();
         gc.clearRect(0, 0, width, height);
         double upperMargin = 40;
-        double XMargin = 30;
-        double betweenMargin = 20;
+        double XMargin = 20;
+        double betweenMargin = 6;
         double breakValue = (height - upperMargin) / 12.0;
         gc.setStroke(Color.BLACK);
-        double oneWidht = (width - 2 * XMargin - 3 * betweenMargin) / 4;
+        double oneWidht = (width - 2 * XMargin - 3 * betweenMargin) / 6;
         gc.setLineWidth(1);
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < portChartScale; j++) {
@@ -2280,6 +2296,22 @@ public class MainStage extends Application {
                     gc.setStroke(Color.RED);
                     gc.strokeLine(XMargin + 3.0 * oneWidht + 3.0 * betweenMargin + (oneWidht / (portChartScale * 1.0)) * j, upperMargin + i * breakValue + breakValue / 3.0, XMargin + 3.0 * oneWidht + 3.0 * betweenMargin + (oneWidht / (portChartScale * 1.0)) * (j + 1), upperMargin + i * breakValue + breakValue / 3.0);
                 }
+
+                if (port4History[j][i] == '0') {
+                    gc.setStroke(Color.GREEN);
+                    gc.strokeLine(XMargin + 4.0 * oneWidht + 4.0 * betweenMargin + (oneWidht / (portChartScale * 1.0)) * j, upperMargin + i * breakValue + breakValue / 3.0 * 2.0, XMargin + 4.0 * oneWidht + 4.0 * betweenMargin + (oneWidht / (portChartScale * 1.0)) * (j + 1), upperMargin + i * breakValue + breakValue / 3.0 * 2.0);
+                } else {
+                    gc.setStroke(Color.RED);
+                    gc.strokeLine(XMargin + 4.0 * oneWidht + 4.0 * betweenMargin + (oneWidht / (portChartScale * 1.0)) * j, upperMargin + i * breakValue + breakValue / 3.0, XMargin + 4.0 * oneWidht + 4.0 * betweenMargin + (oneWidht / (portChartScale * 1.0)) * (j + 1), upperMargin + i * breakValue + breakValue / 3.0);
+                }
+
+                if (port5History[j][i] == '0') {
+                    gc.setStroke(Color.GREEN);
+                    gc.strokeLine(XMargin + 5.0 * oneWidht + 5.0 * betweenMargin + (oneWidht / (portChartScale * 1.0)) * j, upperMargin + i * breakValue + breakValue / 3.0 * 2.0, XMargin + 5.0 * oneWidht + 5.0 * betweenMargin + (oneWidht / (portChartScale * 1.0)) * (j + 1), upperMargin + i * breakValue + breakValue / 3.0 * 2.0);
+                } else {
+                    gc.setStroke(Color.RED);
+                    gc.strokeLine(XMargin + 5.0 * oneWidht + 5.0 * betweenMargin + (oneWidht / (portChartScale * 1.0)) * j, upperMargin + i * breakValue + breakValue / 3.0, XMargin + 5.0 * oneWidht + 5.0 * betweenMargin + (oneWidht / (portChartScale * 1.0)) * (j + 1), upperMargin + i * breakValue + breakValue / 3.0);
+                }
             }
         }
         gc.setStroke(Color.BLACK);
@@ -2288,6 +2320,8 @@ public class MainStage extends Application {
         gc.strokeRect(XMargin + oneWidht + betweenMargin, upperMargin, oneWidht, breakValue * 8);
         gc.strokeRect(XMargin + 2.0 * oneWidht + 2.0 * betweenMargin, upperMargin, oneWidht, breakValue * 8);
         gc.strokeRect(XMargin + 3.0 * oneWidht + 3.0 * betweenMargin, upperMargin, oneWidht, breakValue * 8);
+        gc.strokeRect(XMargin + 4.0 * oneWidht + 4.0 * betweenMargin, upperMargin, oneWidht, breakValue * 8);
+        gc.strokeRect(XMargin + 5.0 * oneWidht + 5.0 * betweenMargin, upperMargin, oneWidht, breakValue * 8);
 
         gc.fillText("0", marginX, upperMargin + 8 * breakValue - breakValue / 2.0);
         gc.fillText("1", marginX, upperMargin + 7 * breakValue - breakValue / 2.0);
@@ -2303,7 +2337,8 @@ public class MainStage extends Application {
         gc.fillText("P1", XMargin + oneWidht + betweenMargin + oneWidht / 2, upperMargin / 2.0);
         gc.fillText("P2", XMargin + oneWidht + betweenMargin + oneWidht + betweenMargin + oneWidht / 2, upperMargin / 2.0);
         gc.fillText("P3", XMargin + oneWidht + betweenMargin + oneWidht + betweenMargin + oneWidht + betweenMargin + oneWidht / 2, upperMargin / 2.0);
-
+        gc.fillText("P4", XMargin + oneWidht + betweenMargin + oneWidht + betweenMargin + oneWidht + betweenMargin + oneWidht + betweenMargin + oneWidht / 2, upperMargin / 2.0);
+        gc.fillText("P5", XMargin + oneWidht + betweenMargin + oneWidht + betweenMargin + oneWidht + betweenMargin + oneWidht + betweenMargin + + oneWidht + betweenMargin + oneWidht / 2, upperMargin / 2.0);
         programImageCanvas.setWidth(buttonsBorderPane.getWidth());
         programImageCanvas.setHeight(buttonsBorderPane.getWidth() + 25);
 
@@ -2340,6 +2375,8 @@ public class MainStage extends Application {
     public char[][] port1History;
     public char[][] port2History;
     public char[][] port3History;
+    public char[][] port4History;
+    public char[][] port5History;
 
     private double height;
     private double width;
