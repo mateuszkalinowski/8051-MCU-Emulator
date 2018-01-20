@@ -6,7 +6,7 @@
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
       </element>
-      <element id="extracted-dir" path="$USER_HOME$/Desktop/richtextfx-fat-0.8.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/Documents/richtextfx-fat-0.8.1.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

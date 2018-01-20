@@ -50,8 +50,7 @@ public class OscilloscopeStage extends Application {
         intervalSelectionLabel.setMaxWidth(Double.MAX_VALUE);
         intervalSelectionLabel.setMinWidth(120);
 
-
-         ComboBox<String> portSelectComboBox = new ComboBox<>();
+        ComboBox<String> portSelectComboBox = new ComboBox<>();
         portSelectComboBox.getItems().addAll("P0","P1","P2","P3");
         portSelectComboBox.setMaxWidth(100);
         portSelectComboBox.getSelectionModel().selectFirst();
